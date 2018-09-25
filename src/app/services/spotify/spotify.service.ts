@@ -208,6 +208,38 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/me/player/currently-playing`, httpOptions);
   }
 
+  createPlaylist(token, body) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+    return this._http.post(this.spotifyApiBaseURI + `/me/playlists`, body, httpOptions);
+  }
+
+  uploadPlaylistCover(token: string, image: File, owner: string, playlistID: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'image/jpeg'
+      })
+    };
+    return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/images`, image, httpOptions);
+  }
+
+  createNewPlaylist(body, image) {
+    let authToken = '';
+    return this.getAuthToken()
+      .pipe(
+        switchMap((token: string) => {
+          authToken = token['token'];
+          return this.createPlaylist(authToken, body);
+        }),
+        switchMap((data: Object) => this.uploadPlaylistCover(authToken, image, data['owner']['id'], data['id']))
+      );
+  }
+
   setupPlayer(token) {
     const head = document.getElementsByTagName('body')[0];
     const script = document.createElement('script');
