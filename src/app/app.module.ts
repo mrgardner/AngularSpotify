@@ -24,13 +24,15 @@ import { TrackComponent } from './components/track/track.component';
 import { SpotifyNavigationMenuComponent } from './components/spotify-navigation-menu/spotify-navigation-menu.component';
 import { SpotifyStatusBarComponent } from './components/spotify-status-bar/spotify-status-bar.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DeviceModalComponent } from './components/device-modal/device-modal.component';
 import {MatButtonModule, MatDialogModule} from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 
 
 @NgModule({
   entryComponents: [
-    NewPlaylistDialogComponent
+    NewPlaylistDialogComponent,
+    DeviceModalComponent
   ],
   declarations: [
     AppComponent,
@@ -47,6 +49,7 @@ import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new
     TrackComponent,
     SpotifyNavigationMenuComponent,
     SpotifyStatusBarComponent,
+    DeviceModalComponent,
     NewPlaylistDialogComponent
   ],
   imports: [

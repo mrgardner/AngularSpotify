@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import querystring from 'querystring';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -18,6 +18,7 @@ export class SpotifyService {
   private readonly loginURI: string;
   private readonly spotifyApiBaseURI: string;
   private didPlaylistChange: boolean;
+  public currentTrackPosition$: EventEmitter<number>;
 
   constructor(private _http: HttpClient, private router: Router,
               private afs: AngularFirestore,
@@ -37,6 +38,7 @@ export class SpotifyService {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.playlistService.didPlaylistChange$.subscribe(value => this.didPlaylistChange = value);
     this.didPlaylistChange = false;
+    this.currentTrackPosition$ = new EventEmitter();
   }
 
   generateRandomString(length) {
@@ -148,14 +150,14 @@ export class SpotifyService {
     return this._http.post(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, tracks, httpOptions);
   }
 
-  playSpotifyTrack(token, track, deviceID) {
+  playSpotifyTrack(token, track, deviceID, currentPosition) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       })
     };
-    return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`, {uris: [track]}, httpOptions);
+    return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`, {uris: [track], position_ms: currentPosition}, httpOptions);
   }
 
   pauseSpotifyTrack(token, deviceID) {
@@ -261,9 +263,15 @@ export class SpotifyService {
 
       // Playback status updates
       player.addListener('player_state_changed', state => {
-        console.log('state_change');
         // this.trackService.setCurrentTrack(state);
         this.trackService.nowPlaying(state);
+        if (state['paused'] && state['position'] === 0) {
+          // play next song in the queue
+        }
+
+        if (state['paused'] && state['position'] !== 0) {
+          this.currentPositionOfTrack(state['position']);
+        }
       });
 
       // Ready
@@ -278,6 +286,10 @@ export class SpotifyService {
       // Connect to the player!
       player.connect();
     };
+  }
+
+  currentPositionOfTrack(position: number) {
+    this.currentTrackPosition$.emit(position);
   }
 
   makeDeviceActive(token, deviceID) {
