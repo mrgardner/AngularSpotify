@@ -7,6 +7,7 @@ import {PlaylistService} from '../../../services/playlist/playlist.service';
 import {switchMap} from 'rxjs/internal/operators';
 import {concat, of} from 'rxjs';
 import {StatusBarService} from '../../../services/status-bar/status-bar.service';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-playlist-table',
@@ -30,6 +31,8 @@ export class PlaylistTableComponent implements OnInit {
   private deviceID: string;
   private playlistID: string;
   currentTrack: Object;
+  track: Object;
+  private currentTrackPosition: number;
 
   constructor(private spotifyService: SpotifyService, private route: ActivatedRoute,
       private trackService: TrackService, private router: Router, private playlistService: PlaylistService, private statusBarService: StatusBarService) {
@@ -42,12 +45,14 @@ export class PlaylistTableComponent implements OnInit {
     this.playlistID = '';
     this.deviceID = '';
     this.currentTrack = {track: {name: ''}};
+    this.track = {track: {name: ''}};
     this.trackService.checkDuplicate$
       .subscribe(isDuplicate => {this.checkDuplicate = isDuplicate; this.headers[0]['show'] = isDuplicate; });
     this.trackService.filterTrackName$.subscribe(name => this.filterTrackName = name);
     this.trackService.filterTrackArtist$.subscribe(artist => this.filterTrackArtist = artist);
     this.isPlayButtonShowing = false;
     this.isPauseButtonShowing = false;
+    this.currentTrackPosition = 0;
     // this.trackService.areTracksLoading$.subscribe(isLoading => this.loading = isLoading);
     // this.trackService.areTracksLoaded$.subscribe(isLoading => this.tracksLoaded = isLoading);
     this.headers = [
@@ -92,6 +97,7 @@ export class PlaylistTableComponent implements OnInit {
         this.currentTrack = track['track_window']['current_track'];
       }
     });
+    this.spotifyService.currentTrackPosition$.subscribe(position => this.currentTrackPosition = position);
     this.spotifyService.getAuthToken()
       .pipe(
         switchMap(spotifyToken => {
@@ -191,8 +197,10 @@ export class PlaylistTableComponent implements OnInit {
         }
       }),
       switchMap(track => {
+        const trackPosition = this.track['name'] !== track['track']['name'] ? 0 : this.currentTrackPosition;
         this.currentTrack = track['track'];
-        return this.spotifyService.playSpotifyTrack(this.token, track['track']['uri'], this.deviceID);
+        this.track = track['track'];
+        return this.spotifyService.playSpotifyTrack(this.token, track['track']['uri'], this.deviceID, trackPosition);
       })
     ).subscribe(() => {});
 

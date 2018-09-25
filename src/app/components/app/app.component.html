@@ -12,6 +12,9 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+<ng-container *ngIf="showDeviceModal">
+    <app-device-modal></app-device-modal>
+</ng-container>
 
 <app-spotify-status-bar></app-spotify-status-bar>
 

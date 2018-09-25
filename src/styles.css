@@ -17,6 +17,17 @@ body {
   padding: 15px;
 }
 
+.device-modal-panel {
+  position: absolute !important;
+  right: 60px;
+  top: 21.6em;
+}
+
+.device-modal-panel .mat-dialog-container {
+  background-color: grey;
+  padding: 0;
+}
+
 .cdk-global-scrollblock {
   overflow: hidden;
 }
