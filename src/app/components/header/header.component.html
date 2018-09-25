@@ -1,0 +1,16 @@
+<div class="headerContainer" *ngIf="isLoggedIn">
+  <div class="headerSection">
+    Angular Spotify
+  </div>
+  <div class="signInSection">
+    <button class="btn btn-primary" *ngIf="!loggedIn" (click)="loginSpotify()">
+      Login to Spotify
+    </button>
+    <button class="btn btn-primary" *ngIf="loggedIn" (click)="logoutOfSpotify()">
+      Log out of Spotify
+    </button>
+    <button class="btn btn-primary" *ngIf="isLoggedIn" (click)="logout()">
+      Log out of App
+    </button>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<div *ngIf="track">
+  <button (click)="goBack()">Go Back</button>
+  <div>{{track['is_local']}}</div>
+    <div>{{track['name']}}</div>
+    <div>{{displayArtist(track['artists'])}}</div>
+</div>
+

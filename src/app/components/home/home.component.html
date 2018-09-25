@@ -1,0 +1,26 @@
+<div *ngIf="playlistsLoaded">
+  <table>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+    </tr>
+    <tr *ngFor="let playlist of playlists">
+      <td>
+        <ng-container *ngIf="playlist['images'].length > 0; then showAlbum; else showBlankAlbum"></ng-container>
+        <ng-template #showAlbum>
+          <img class="playlistImage"  [src]="playlist['images'][0].url">
+        </ng-template>
+        <ng-template #showBlankAlbum>
+          <img class="playlistImage" src="/assets/blank_album.png" />
+        </ng-template>
+      </td>
+      <td>
+        <span (click)="goToTracks(playlist)">{{playlist['name']}}</span>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="loadingContainer" *ngIf="loading">
+  <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+</div>
+

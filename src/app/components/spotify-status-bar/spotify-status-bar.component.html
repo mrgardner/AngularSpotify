@@ -1,0 +1,59 @@
+<div class="statusBarContainer row">
+  <div class="trackInfo col-sm-3">
+    <div *ngIf="currentTrack" class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState">
+      <div class="test" (mouseenter)="showEnlargeIcon()" (mouseleave)="hideEnlargeIcon()"></div>
+        <img class="trackImage" [src]="currentTrack['album'].images[0].url">
+        <div (click)="enlargePicture()" class="test2">
+          <i class="fas fa-angle-up"></i>
+          <i class="fas fa-circle"></i>
+        </div>
+        <div [className]="imageEnlargeState === 'active' ? 'titleShifted trackTitle' : 'titleNormal trackTitle'">
+          {{currentTrack['name']}}
+        </div>
+        <div [className]="imageEnlargeState === 'active' ? 'artistsShifted trackArtists' : 'artistsNormal trackArtists'">
+          {{displayArtists(currentTrack['artists']).join('')}}
+        </div>
+    </div>
+  </div>
+  <div class="playerContainer col-sm-7">
+    <!--<div class="playerButtons">-->
+      <!--<button class="btn">-->
+        <!--<i class="fas fa-random"></i>-->
+      <!--</button>-->
+      <!--<button class="btn">-->
+        <!--<i class="fas fa-step-backward"></i>-->
+      <!--</button>-->
+      <!--<button class="btn">-->
+        <!--<i class="fas fa-play-circle"></i>-->
+      <!--</button>-->
+      <!--<button class="btn">-->
+        <!--<i class="fas fa-step-forward"></i>-->
+      <!--</button>-->
+    <!--</div>-->
+    <!--<div class="playerProgressBar">-->
+      <!--<div>-->
+        <!--<ng-container *ngIf="currentTrackSeconds < 10; then showCurrentSimiplfiedSeconds; else showCurrentNormalSeconds"></ng-container>-->
+        <!--<ng-template #showCurrentSimiplfiedSeconds> <span>{{currentTrackMinutes}}:</span><span>0{{currentTrackSeconds}}</span></ng-template>-->
+        <!--<ng-template #showCurrentNormalSeconds> <span>{{currentTrackMinutes}}:</span><span>{{currentTrackSeconds}}</span></ng-template>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--<ng-container *ngIf="trackDurationSeconds < 10; then showDurationSimiplfiedSeconds; else showDurationNormalSeconds"></ng-container>-->
+        <!--<ng-template #showDurationSimiplfiedSeconds> <span>{{trackDurationMinutes}}:</span><span>0{{trackDurationSeconds}}</span></ng-template>-->
+        <!--<ng-template #showDurationNormalSeconds> <span>{{trackDurationMinutes}}:</span><span>{{trackDurationSeconds}}</span></ng-template>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+  <div class="col-sm-2">
+    <div class="volumeContainer">
+      <i class="fas fa-desktop" (click)="checkPlaybackDevices()"></i>
+      <ng-container *ngIf="volume > 0; then showSound; else showMute"></ng-container>
+      <ng-template #showSound>
+        <i class="fas fa-volume-up"></i>
+      </ng-template>
+      <ng-template #showMute>
+        <i class="fas fa-volume-off"></i>
+      </ng-template>
+      <input type="range" min="0" max="100" [value]="volume" [(ngModel)]="volume" (change)="onVolumeChange($event)"/>
+    </div>
+  </div>
+</div>

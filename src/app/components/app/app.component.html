@@ -1,0 +1,18 @@
+<app-header></app-header>
+
+<div class="row">
+  <div class="col-sm-2">
+    <app-spotify-navigation-menu></app-spotify-navigation-menu>
+  </div>
+  <div class="col-md-8">
+    <!--<div>-->
+      <!--<i class="fas fa-angle-left" (click)="goBack()"></i>-->
+      <!--<i class="fas fa-angle-right" (click)="goForward()"></i>-->
+    <!--</div>-->
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<app-spotify-status-bar></app-spotify-status-bar>
+
+

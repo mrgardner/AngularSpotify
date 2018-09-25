@@ -1,0 +1,64 @@
+.filterContainer {
+  width: 100%;
+  padding: 5px;
+  color: #999999;
+
+  &:hover {
+    i:nth-child(1) {
+      color: white;
+    }
+
+    .filter::placeholder {
+      color:white
+    }
+  }
+
+  i {
+    width: 2%;
+    color: #999999;
+  }
+
+  .filter {
+    background-color: #211b1b;
+    width: 96%;
+    border: 0;
+  }
+
+  .filter::placeholder {
+    color: #999999;
+  }
+}
+
+.filterContainerSelected {
+  background-color: #868686;
+  color: #999999;
+  width: 100%;
+  padding: 5px;
+
+  &:hover {
+    i:nth-child(1) {
+      color: white;
+    }
+
+    .filter::placeholder {
+      color:white
+    }
+  }
+  .filter {
+    background-color: #868686;
+    width: 96%;
+    border: 0;
+  }
+
+  .filter::placeholder {
+    color: #999999;
+  }
+
+  i {
+    width: 2%;
+  }
+
+  .fa-times:hover {
+    color: white;
+  }
+}
