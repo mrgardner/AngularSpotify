@@ -6,6 +6,8 @@ import {PlaylistService} from '../../services/playlist/playlist.service';
 import {StatusBarService} from '../../services/status-bar/status-bar.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {TrackService} from '../../services/track/track.service';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
+import {NewPlaylistDialogComponent} from '../new-playlist-dialog/new-playlist-dialog.component';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -33,7 +35,7 @@ export class SpotifyNavigationMenuComponent {
   public currentTrack: Object;
   public imageEnlargeState: string;
 
-  constructor(private spotifyService: SpotifyService, private playlistService: PlaylistService, private statusBarService: StatusBarService, private trackService: TrackService) {
+  constructor(private spotifyService: SpotifyService, private playlistService: PlaylistService, private statusBarService: StatusBarService, private trackService: TrackService, private dialog: MatDialog) {
     let token = '';
     this.selectedPlaylist = '';
     this.imageEnlargeState = 'inactive';
@@ -115,5 +117,13 @@ export class SpotifyNavigationMenuComponent {
 
   shrinkPicture() {
     this.statusBarService.enlargePicture(false);
+  }
+
+  openNewPlaylistModal() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'new-playlist-panel';
+    dialogConfig.height = '480px';
+    dialogConfig.width = '800px';
+    this.dialog.open(NewPlaylistDialogComponent, dialogConfig);
   }
 }

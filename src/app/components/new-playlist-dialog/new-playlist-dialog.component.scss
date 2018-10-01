@@ -1,0 +1,162 @@
+.modalContainer {
+  label {
+    color: #959595;
+    width: 100%;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .custom-file-upload {
+    border: 1px solid white;
+    display: inline-block;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    width: 90%;
+    font-size: 14px;
+  }
+
+  .badge {
+    background-color: #23b0de;
+    color: white;
+    width: auto;
+    border-radius: 10px;
+    float: left;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 5px;
+  }
+
+  .modalHeader {
+    border-bottom: 1px solid grey;
+
+    h6 {
+      text-align: center;
+      color: white;
+    }
+  }
+
+  .titleContainer {
+    float: left;
+    width: 100%;
+    margin-bottom: 1em;
+
+    .title {
+      width: 89%;
+      float: left;
+    }
+  }
+
+  .imageContainer {
+    float: left;
+    width: 30%;
+
+    button {
+      color: white;
+      border-radius: 40px;
+      width: 89%;
+      background-color: #282828;
+      line-height: 27px;
+      font-size: 14px;
+
+      label {
+        position: absolute;
+        left: 0;
+      }
+    }
+
+    .user-image {
+      position: relative;
+
+      img {
+        height: 200px;
+      }
+
+      button {
+        border: 1px solid white;
+        position: absolute;
+        left: 0;
+        top: 130px;
+      }
+
+      label {
+        border: 1px solid white;
+        background-color: #282828;
+        position: absolute;
+        left: 0;
+        top: 165px;
+      }
+    }
+
+    img {
+      width: 90%;
+      height: 150px;
+      object-fit: cover;
+    }
+  }
+
+  .descriptionContainer {
+    float: left;
+    width: 70%;
+
+    label {
+      width: 84%;
+      float: left;
+    }
+
+    .description {
+      width: 100%;
+      height: 200px;
+      resize: none;
+    }
+  }
+
+  .button-container {
+    position: relative;
+    top: 75px;
+    left: 30%;
+    float: left;
+
+    .cancel-button {
+      border-radius: 40px;
+      width: 130px;
+      margin-right: 1em;
+      color: white;
+      background-color: black;
+    }
+    .create-button {
+      width: 130px;
+      color: white;
+      background-color: green;
+      border-radius: 40px;
+    }
+  }
+
+  .user-image-button-container {
+    top: 10px;
+  }
+
+  .image-disclaimer {
+    float: left;
+    padding-top: 1em;
+    padding-bottom: 1em;
+
+    p {
+      color: grey;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+
+

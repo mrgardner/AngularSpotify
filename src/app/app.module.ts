@@ -24,9 +24,14 @@ import { TrackComponent } from './components/track/track.component';
 import { SpotifyNavigationMenuComponent } from './components/spotify-navigation-menu/spotify-navigation-menu.component';
 import { SpotifyStatusBarComponent } from './components/spotify-status-bar/spotify-status-bar.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatButtonModule, MatDialogModule} from '@angular/material';
+import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 
 
 @NgModule({
+  entryComponents: [
+    NewPlaylistDialogComponent
+  ],
   declarations: [
     AppComponent,
     PlaylistTableComponent,
@@ -41,9 +46,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FilterTrackArtistPipe,
     TrackComponent,
     SpotifyNavigationMenuComponent,
-    SpotifyStatusBarComponent
+    SpotifyStatusBarComponent,
+    NewPlaylistDialogComponent
   ],
   imports: [
+    MatDialogModule,
+    MatButtonModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

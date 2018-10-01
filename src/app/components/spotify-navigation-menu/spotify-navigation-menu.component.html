@@ -13,7 +13,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="playlistsLoaded" class="newPlaylistContainer">
+<div *ngIf="playlistsLoaded" class="newPlaylistContainer" (click)="openNewPlaylistModal()">
   <i class="fas fa-plus-circle"></i>
   <span>New Playlist</span>
 </div>
