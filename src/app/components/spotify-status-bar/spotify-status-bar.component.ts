@@ -50,19 +50,19 @@ export class SpotifyStatusBarComponent implements OnInit {
 
   }
   ngOnInit() {
-    /** Currently disabled will be fixed in issue #3 */
-    // this.trackService.getNowPlaying().subscribe(song => {
-    //   this.isSongPaused = song['paused'];
-    //   if (this.currentTrack !== song['track_window']['current_track']) {
-    //     if (!song['paused']) {
-    //       this.currentTrack = song['track_window']['current_track'];
-    //       this.currentTrackMinutes = this.getMinutes(song['position']);
-    //       this.currentTrackSeconds = this.getSeconds(song['position']);
-    //       this.trackDurationMinutes = this.getMinutes(song['duration']);
-    //       this.trackDurationSeconds = this.getSeconds(song['duration']);
-    //     }
-    //   }
-    // });
+    this.trackService.getNowPlaying().subscribe(song => {
+      // this.isSongPaused = song['paused'];
+      if (this.currentTrack !== song['track_window']['current_track']) {
+        if (!song['paused']) {
+          this.currentTrack = song['track_window']['current_track'];
+          /** Currently disabled will be fixed in issue #3 */
+          // this.currentTrackMinutes = this.getMinutes(song['position']);
+          // this.currentTrackSeconds = this.getSeconds(song['position']);
+          // this.trackDurationMinutes = this.getMinutes(song['duration']);
+          // this.trackDurationSeconds = this.getSeconds(song['duration']);
+        }
+      }
+    });
     this.deviceModalService.changeActiveDevice$.subscribe(device => this.currentDevice = device)
     this.playlistService.getCurrentDevice().subscribe(data => this.appDevice = data);
     this.spotifyService.getAuthToken().pipe(

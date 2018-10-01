@@ -31,18 +31,18 @@
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
-      <div class="playerProgressBar">
-        <div>
-          <ng-container *ngIf="currentTrackSeconds < 10; then showCurrentSimiplfiedSeconds; else showCurrentNormalSeconds"></ng-container>
-          <ng-template #showCurrentSimiplfiedSeconds> <span>{{currentTrackMinutes}}:</span><span>0{{currentTrackSeconds}}</span></ng-template>
-          <ng-template #showCurrentNormalSeconds> <span>{{currentTrackMinutes}}:</span><span>{{currentTrackSeconds}}</span></ng-template>
-        </div>
-        <div>
-          <ng-container *ngIf="trackDurationSeconds < 10; then showDurationSimiplfiedSeconds; else showDurationNormalSeconds"></ng-container>
-          <ng-template #showDurationSimiplfiedSeconds> <span>{{trackDurationMinutes}}:</span><span>0{{trackDurationSeconds}}</span></ng-template>
-          <ng-template #showDurationNormalSeconds> <span>{{trackDurationMinutes}}:</span><span>{{trackDurationSeconds}}</span></ng-template>
-        </div>
-      </div>
+      <!--<div class="playerProgressBar">-->
+        <!--<div>-->
+          <!--<ng-container *ngIf="currentTrackSeconds < 10; then showCurrentSimiplfiedSeconds; else showCurrentNormalSeconds"></ng-container>-->
+          <!--<ng-template #showCurrentSimiplfiedSeconds> <span>{{currentTrackMinutes}}:</span><span>0{{currentTrackSeconds}}</span></ng-template>-->
+          <!--<ng-template #showCurrentNormalSeconds> <span>{{currentTrackMinutes}}:</span><span>{{currentTrackSeconds}}</span></ng-template>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<ng-container *ngIf="trackDurationSeconds < 10; then showDurationSimiplfiedSeconds; else showDurationNormalSeconds"></ng-container>-->
+          <!--<ng-template #showDurationSimiplfiedSeconds> <span>{{trackDurationMinutes}}:</span><span>0{{trackDurationSeconds}}</span></ng-template>-->
+          <!--<ng-template #showDurationNormalSeconds> <span>{{trackDurationMinutes}}:</span><span>{{trackDurationSeconds}}</span></ng-template>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
     <div class="col-sm-2">
       <div class="volumeContainer">
