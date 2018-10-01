@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {AngularFireAuth} from 'angularfire2/auth';
-import {switchMap} from 'rxjs/operators';
+import {first, last, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {PlaylistService} from '../playlist/playlist.service';
 
@@ -82,7 +82,6 @@ export class TrackService {
       }),
       switchMap(data => {
         if (data) {
-          console.log(data)
           return [data['currentTrack']];
         } else {
           return ['Nothing is currently playing'];

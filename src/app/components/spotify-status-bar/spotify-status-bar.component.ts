@@ -6,6 +6,10 @@ import parseMS from 'parse-ms';
 import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {SpotifyService} from '../../services/spotify/spotify.service';
+import {DeviceModalService} from '../../services/deviceModal/device-modal.service';
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {DeviceModalComponent} from "../device-modal/device-modal.component";
+import {PlaylistService} from "../../services/playlist/playlist.service";
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -33,76 +37,44 @@ export class SpotifyStatusBarComponent implements OnInit {
   public trackDurationMinutes: number;
   public trackDurationSeconds: number;
   public aString: string;
-  public isSongPaused: boolean;
   public volume: number;
-  public availableDevices: any;
+  public currentDevice: Object;
+  public appDevice: Object;
 
-  constructor(private statusBarService: StatusBarService, private trackService: TrackService, private spotifyService: SpotifyService) {
+  constructor(private statusBarService: StatusBarService, private playlistService: PlaylistService, private trackService: TrackService, private spotifyService: SpotifyService, private deviceModalService: DeviceModalService, private dialog: MatDialog) {
     this.imageEnlargeState = 'inactive';
     this.volume = 100;
     this.aString = '';
     this.isEnlargeIconShowing = false;
-    this.trackService.trackTime$.subscribe(data => {
-      if (data) {
-        console.log(data);
-
-
-      }
-    });
     this.statusBarService.enlargePicture$.subscribe(value => this.imageEnlargeState = value ? 'active' : 'inactive');
 
   }
   ngOnInit() {
-    // interval(1000).pipe(startWith(this.currentTrackSeconds)).subscribe(data => console.log(data));
-    this.trackService.getNowPlaying().subscribe(song => {
-      console.log(this.currentTrack)
-      if (this.currentTrack !== song['track_window']['current_track']) {
-        if (!song['paused']) {
-          console.log(song);
-          this.currentTrack = song['track_window']['current_track'];
-          this.isSongPaused = song['paused'];
-          this.currentTrackMinutes = this.getMinutes(song['position']);
-          this.currentTrackSeconds = this.getSeconds(song['position']);
-          this.trackDurationMinutes = this.getMinutes(song['duration']);
-          this.trackDurationSeconds = this.getSeconds(song['duration']);
-        }
-        // timer(0, 1000).subscribe(data => console.log(data));
-      } else {
-        console.log('please don not show');
-      }
-      // setInterval(this.test2, 1000);
-      // timer(6, 1000).subscribe(data => console.log(data));
-
-      // if (this.isSongPaused) {
-      //   console.log('sfsdf');
-      //   window.clearInterval(this.tt);
-      // }
-    });
-    // that.trackService.currentTrack$.subscribe(song => {
-    //   // that.currentTrack = null;
-    //   if (song['track_window']['current_track']) {
-    //     that.currentTrack = song['track_window']['current_track'];
-    //     // that.test = Observable.create()
+    /** Currently disabled will be fixed in issue #3 */
+    // this.trackService.getNowPlaying().subscribe(song => {
+    //   this.isSongPaused = song['paused'];
+    //   if (this.currentTrack !== song['track_window']['current_track']) {
+    //     if (!song['paused']) {
+    //       this.currentTrack = song['track_window']['current_track'];
+    //       this.currentTrackMinutes = this.getMinutes(song['position']);
+    //       this.currentTrackSeconds = this.getSeconds(song['position']);
+    //       this.trackDurationMinutes = this.getMinutes(song['duration']);
+    //       this.trackDurationSeconds = this.getSeconds(song['duration']);
+    //     }
     //   }
-    //   // that.currentTrackMinutes = that.getMinutes(song['position']);
-    //   // that.currentTrackSeconds = that.getSeconds(song['position']);
-    //   // that.trackDurationMinutes = that.getMinutes(song['duration']);
-    //   // that.trackDurationSeconds = that.getSeconds(song['duration']);
     // });
-  }
-
-  test(event) {
-    console.log(event, 'df');
-    // if (that.isSongPaused) {
-    //   window.clearInterval(that.tt);
-    // } else {
-    //   console.log(that.currentTrackSeconds);
-    //   if (that.currentTrackSeconds > 59) {
-    //     that.currentTrackMinutes += 1;
-    //     that.currentTrackSeconds = 0;
-    //   }
-    //   that.currentTrackSeconds += 1;
-    // }
+    this.deviceModalService.changeActiveDevice$.subscribe(device => this.currentDevice = device)
+    this.playlistService.getCurrentDevice().subscribe(data => this.appDevice = data);
+    this.spotifyService.getAuthToken().pipe(
+      switchMap(token => {
+        const authToken = !!token['token'];
+        if (authToken) {
+          return this.spotifyService.getCurrentPlayer(token['token']);
+        } else {
+          return of();
+        }
+      }),
+    ).subscribe(data => this.currentDevice = data['device']);
   }
 
   displayArtists(artists) {
@@ -134,15 +106,16 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.isEnlargeIconShowing = false;
   }
 
-  getMinutes(ms) {
-    const time = parseMS(ms);
-    return (time.days * (60 * 24)) + (time.hours * 60) + (time.minutes);
-  }
-
-  getSeconds(ms) {
-    const time = parseMS(ms);
-    return time.seconds;
-  }
+  /** Currently disabled will be fixed in issue #3 */
+  // getMinutes(ms) {
+  //   const time = parseMS(ms);
+  //   return (time.days * (60 * 24)) + (time.hours * 60) + (time.minutes);
+  // }
+  //
+  // getSeconds(ms) {
+  //   const time = parseMS(ms);
+  //   return time.seconds;
+  // }
 
   onVolumeChange(event) {
     let spotifyToken = '';
@@ -166,20 +139,11 @@ export class SpotifyStatusBarComponent implements OnInit {
     ).subscribe(() => {});
   }
 
-  checkPlaybackDevices() {
-    console.log('test')
-    this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        const authToken = !!token['token'];
-        if (authToken) {
-          return this.spotifyService.getAvailableDevices(token['token']);
-        } else {
-          return of();
-        }
-      }),
-    ).subscribe(data => {
-      console.log(data);
-      this.availableDevices = data;
-    });
+  openDeviceModal() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'device-modal-panel';
+    dialogConfig.height = '350px';
+    dialogConfig.width = '300px';
+    this.dialog.open(DeviceModalComponent, dialogConfig);
   }
 }

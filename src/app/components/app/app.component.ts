@@ -7,7 +7,9 @@ import {Location} from '@angular/common';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  public showDeviceModal: boolean;
   constructor(private location: Location) {
+    this.showDeviceModal = false;
     this.location.subscribe(data => {
       if (data.url.indexOf('callback') !== -1) {
         this.location.go('/');

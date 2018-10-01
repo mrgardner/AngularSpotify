@@ -45,7 +45,7 @@ export class SpotifyNavigationMenuComponent {
       this.imageEnlargeState = value ? 'active' : 'inactive';
     });
     this.statusBarService.currenttrack$.subscribe(value => this.currentTrack = value['track']);
-    this.trackService.currentTrack$.subscribe(value => this.currentTrack = value['track_window']['current_track']);
+    this.trackService.getNowPlaying().subscribe(value => this.currentTrack = value['track_window']['current_track']);
     this.spotifyService.getAuthToken()
       .pipe(
         switchMap(spotifyToken => {

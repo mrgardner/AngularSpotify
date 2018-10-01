@@ -97,7 +97,7 @@
   }
 
   .volumeContainer {
-    padding: 2.5em;
+    padding-top: 2.5em;
 
     i {
       margin-right: 1em;
@@ -105,8 +105,35 @@
   }
 }
 
+.externalDeviceMessage {
+  background-color: green;
+  position: relative;
+  margin-left: 0;
+  margin-right: 0;
+  height: 20px;
+
+  div {
+    position: absolute;
+    right: 25px;
+    font-size: 12px;
+  }
+}
+
 @media screen and (min-width: 1920px) {
   .statusBarContainer {
     height: 12vh;
   }
+}
+
+.triangle-down {
+  position: fixed;
+  right: 12.5em;
+  top: 46.9em;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 12px solid green;
+}
+
+.bold {
+  font-weight: 800;
 }
