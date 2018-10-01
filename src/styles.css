@@ -16,3 +16,7 @@ body {
   background-color: #282828;
   padding: 15px;
 }
+
+.cdk-global-scrollblock {
+  overflow: hidden;
+}
