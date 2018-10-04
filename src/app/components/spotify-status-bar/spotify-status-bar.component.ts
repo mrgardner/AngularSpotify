@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {StatusBarService} from '../../services/status-bar/status-bar.service';
 import {trigger, state, style, transition, animate} from '@angular/animations';
 import {TrackService} from '../../services/track/track.service';
-import parseMS from 'parse-ms';
+/** Currently disabled will be fixed in issue #3 */
+// import parseMS from 'parse-ms';
 import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {SpotifyService} from '../../services/spotify/spotify.service';
@@ -32,14 +33,17 @@ export class SpotifyStatusBarComponent implements OnInit {
   public currentTrack: Object;
   public imageEnlargeState: string;
   public isEnlargeIconShowing: boolean;
-  public currentTrackMinutes: number;
-  public currentTrackSeconds: number;
-  public trackDurationMinutes: number;
-  public trackDurationSeconds: number;
+  /** Currently disabled will be fixed in issue #3 */
+  // public currentTrackMinutes: number;
+  // public currentTrackSeconds: number;
+  // public trackDurationMinutes: number;
+  // public trackDurationSeconds: number;
   public aString: string;
   public volume: number;
   public currentDevice: Object;
-  public appDevice: Object;
+  public currentDeviceId: string;
+  public currentDeviceName: string;
+  public appDevice: string;
 
   constructor(private statusBarService: StatusBarService, private playlistService: PlaylistService, private trackService: TrackService, private spotifyService: SpotifyService, private deviceModalService: DeviceModalService, private dialog: MatDialog) {
     this.imageEnlargeState = 'inactive';
@@ -63,7 +67,11 @@ export class SpotifyStatusBarComponent implements OnInit {
         }
       }
     });
-    this.deviceModalService.changeActiveDevice$.subscribe(device => this.currentDevice = device)
+    this.deviceModalService.changeActiveDevice$.subscribe(device => {
+      this.currentDeviceId = device['id'];
+      this.currentDeviceName = device['name'];
+      this.currentDevice = device;
+    });
     this.playlistService.getCurrentDevice().subscribe(data => this.appDevice = data);
     this.spotifyService.getAuthToken().pipe(
       switchMap(token => {
@@ -74,7 +82,11 @@ export class SpotifyStatusBarComponent implements OnInit {
           return of();
         }
       }),
-    ).subscribe(data => this.currentDevice = data['device']);
+    ).subscribe(data => {
+      this.currentDevice = data['device'];
+      this.currentDeviceId = data['device']['id'];
+      this.currentDeviceName = data['device']['name'];
+    });
   }
 
   displayArtists(artists) {
