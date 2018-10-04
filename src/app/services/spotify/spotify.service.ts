@@ -9,6 +9,7 @@ import {AngularFireAuth} from 'angularfire2/auth';
 import {TrackService} from '../track/track.service';
 import {PlaylistService} from '../playlist/playlist.service';
 import {environment} from '../../../environments/environment';
+import {DeviceModalService} from "../deviceModal/device-modal.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class SpotifyService {
               private afa: AngularFireAuth,
               private trackService: TrackService,
               private route: ActivatedRoute,
-              private playlistService: PlaylistService) {
+              private playlistService: PlaylistService,
+              private deviceModalService: DeviceModalService) {
     this.state = this.generateRandomString(16);
     const query = querystring.stringify({
       response_type: environment.spotify.loginResponseType,
@@ -263,14 +265,17 @@ export class SpotifyService {
 
       // Playback status updates
       player.addListener('player_state_changed', state => {
-        // this.trackService.setCurrentTrack(state);
-        this.trackService.nowPlaying(state);
-        if (state['paused'] && state['position'] === 0) {
-          // play next song in the queue
-        }
+        if (state) {
+          // this.trackService.setCurrentTrack(state);
+          this.trackService.nowPlaying(state);
+          /** Disabled for when queue system is added **/
+          // if (state['paused'] && state['position'] === 0) {
+          //   // play next song in the queue
+          // }
 
-        if (state['paused'] && state['position'] !== 0) {
-          this.currentPositionOfTrack(state['position']);
+          if (state['paused'] && state['position'] !== 0) {
+            this.currentPositionOfTrack(state['position']);
+          }
         }
       });
 

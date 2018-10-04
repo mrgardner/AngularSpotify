@@ -46,7 +46,7 @@
     </div>
     <div class="col-sm-2">
       <div class="volumeContainer">
-        <i class="fas fa-mobile-alt" (click)="openDeviceModal()"></i>
+        <i [className]="currentDevice && appDevice !== currentDeviceId ? 'fas fa-mobile-alt differentDevice' : 'fas fa-mobile-alt'" (click)="openDeviceModal()"></i>
         <ng-container *ngIf="volume > 0; then showSound; else showMute"></ng-container>
         <ng-template #showSound>
           <i class="fas fa-volume-up"></i>
@@ -59,12 +59,12 @@
     </div>
   </div>
   <div *ngIf="currentDevice">
-    <div *ngIf="appDevice !== currentDevice['id']">
-      <div class="row externalDeviceMessage">
+    <div *ngIf="appDevice !== currentDeviceId">
+      <div class="externalDeviceMessage">
         <div>
           <i class="fas fa-headphones"></i>
           <span> Listening on</span>
-          <span class="bold"> {{currentDevice['name']}}</span>
+          <span class="bold"> {{currentDeviceName}}</span>
         </div>
       </div>
       <div class="triangle-down"></div>

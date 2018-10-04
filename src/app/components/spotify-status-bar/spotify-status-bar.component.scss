@@ -50,6 +50,7 @@
 
   .trackInfo {
     position: relative;
+    height: 92px;
   }
 
   .titleShifted {
@@ -110,6 +111,7 @@
   position: relative;
   margin-left: 0;
   margin-right: 0;
+  top: -8px;
   height: 20px;
 
   div {
@@ -136,4 +138,8 @@
 
 .bold {
   font-weight: 800;
+}
+
+.differentDevice {
+  color: green;
 }
