@@ -27,6 +27,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DeviceModalComponent } from './components/device-modal/device-modal.component';
 import {MatButtonModule, MatDialogModule} from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
+import { AlbumsComponent } from './components/library/albums/albums.component';
+import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
 
 
 @NgModule({
@@ -50,7 +52,9 @@ import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new
     SpotifyNavigationMenuComponent,
     SpotifyStatusBarComponent,
     DeviceModalComponent,
-    NewPlaylistDialogComponent
+    NewPlaylistDialogComponent,
+    AlbumsComponent,
+    FilterAlbumNamePipe
   ],
   imports: [
     MatDialogModule,

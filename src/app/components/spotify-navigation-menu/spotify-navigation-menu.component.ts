@@ -8,6 +8,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {TrackService} from '../../services/track/track.service';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {NewPlaylistDialogComponent} from '../new-playlist-dialog/new-playlist-dialog.component';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -35,7 +36,7 @@ export class SpotifyNavigationMenuComponent {
   public currentTrack: Object;
   public imageEnlargeState: string;
 
-  constructor(private spotifyService: SpotifyService, private playlistService: PlaylistService, private statusBarService: StatusBarService, private trackService: TrackService, private dialog: MatDialog) {
+  constructor(private spotifyService: SpotifyService, private playlistService: PlaylistService, private statusBarService: StatusBarService, private trackService: TrackService, private dialog: MatDialog, private router: Router) {
     let token = '';
     this.selectedPlaylist = '';
     this.imageEnlargeState = 'inactive';
@@ -104,6 +105,10 @@ export class SpotifyNavigationMenuComponent {
     this.playlists.forEach(tt => tt['selected'] = false);
     playlist['selected'] = true;
     this.playlistService.savePlaylist(playlist);
+  }
+
+  goToSavedAlbums() {
+    this.router.navigate(['library/albums'])
   }
 
   shortenString(string) {
