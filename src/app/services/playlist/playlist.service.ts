@@ -59,20 +59,12 @@ export class PlaylistService {
       switchMap(user => {
         userObject = user;
         if (user) {
-          return this.afs.collection('users').doc(userObject['email']).collection('devices').doc('currentDevice').valueChanges();
+          return this.afs.collection('users').doc(userObject['email']).collection('devices').doc('currentDevice').set({currentDevice: id});
         } else {
           return of();
         }
       })
-    ).subscribe(data => {
-      if (!this.isPlaylistsBeingDeleted) {
-        if (!data) {
-          this.afs.collection('users').doc(userObject['email']).collection('devices').doc('currentDevice').set({currentDevice: id});
-        } else {
-          this.afs.collection('users').doc(userObject['email']).collection('devices').doc('currentDevice').update({currentDevice: id});
-        }
-      }
-    });
+    ).subscribe(() => {});
   }
 
   getCurrentDevice() {
