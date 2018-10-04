@@ -307,6 +307,17 @@ export class SpotifyService {
     return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]}, httpOptions);
   }
 
+  getUsersSavedAlbums(token, moreAlbums?) {
+    const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+    return this._http.get(url, httpOptions);
+  }
+
   replaceTrack(token: string, owner: string, playlistID: string, startIndex: number, endIndex: number) {
     const httpOptions = {
       headers: new HttpHeaders({
