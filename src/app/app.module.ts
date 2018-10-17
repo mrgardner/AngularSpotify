@@ -29,6 +29,7 @@ import {MatButtonModule, MatDialogModule} from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
+import { ArtistsComponent } from './components/library/artists/artists.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
     DeviceModalComponent,
     NewPlaylistDialogComponent,
     AlbumsComponent,
-    FilterAlbumNamePipe
+    FilterAlbumNamePipe,
+    ArtistsComponent
   ],
   imports: [
     MatDialogModule,

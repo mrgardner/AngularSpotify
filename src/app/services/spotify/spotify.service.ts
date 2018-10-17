@@ -281,9 +281,9 @@ export class SpotifyService {
 
       // Ready
       player.addListener('ready', ({device_id}) => {
-        this.makeDeviceActive(token, device_id).subscribe(() => {
-          this.playlistService.saveDeviceID(device_id);
-        });
+        // this.makeDeviceActive(token, device_id).subscribe(() => {
+        //   this.playlistService.saveDeviceID(device_id);
+        // });
       });
       // Not Ready
       player.addListener('not_ready', ({device_id}) => {});
@@ -309,6 +309,28 @@ export class SpotifyService {
 
   getUsersSavedAlbums(token, moreAlbums?) {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+    return this._http.get(url, httpOptions);
+  }
+
+  getUsersSavedTracks(token, moreSongs?) {
+    const url = moreSongs ? moreSongs : this.spotifyApiBaseURI + `/me/tracks`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+    return this._http.get(url, httpOptions);
+  }
+
+  getArtist(token, artistID) {
+    const url = this.spotifyApiBaseURI + `/artists/${artistID}`;
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,

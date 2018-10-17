@@ -1,0 +1,6 @@
+<div>
+  <div *ngFor="let album of artists">
+    <div>{{album['album']['name']}}</div>
+    <div>{{artistSongCounts.get(album['album']['name'])}}</div>
+  </div>
+</div>

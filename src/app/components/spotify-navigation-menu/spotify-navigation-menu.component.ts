@@ -108,7 +108,11 @@ export class SpotifyNavigationMenuComponent {
   }
 
   goToSavedAlbums() {
-    this.router.navigate(['library/albums'])
+    this.router.navigate(['library/albums']);
+  }
+
+  goToSavedArtists() {
+    this.router.navigate(['library/artists']);
   }
 
   shortenString(string) {
