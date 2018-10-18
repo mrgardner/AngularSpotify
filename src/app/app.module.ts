@@ -29,6 +29,7 @@ import {MatButtonModule, MatDialogModule} from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

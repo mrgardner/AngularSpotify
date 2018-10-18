@@ -16,7 +16,7 @@ export class CallbackComponent {
       const parsed = querystring.parse(fragment);
       if ('access_token' in parsed && 'expires_in' in parsed) {
         this.spotifyService.storeToken(parsed);
-        this.spotifyService.setupPlayer(parsed['access_token']);
+        // this.spotifyService.setupPlayer(parsed['access_token']);
       }
     });
   }

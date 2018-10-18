@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit{
   ngOnInit() {
     this.spotifyService.getAuthToken().subscribe(token => {
       this.loggedIn = !!token['token'];
-      this.spotifyService.setupPlayer(token['token']);
+      // this.spotifyService.setupPlayer(token['token']);
     });
     this.authService.isAuthenticated().subscribe(data => this.isLoggedIn = !!data);
   }
