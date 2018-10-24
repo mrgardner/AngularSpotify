@@ -24,6 +24,6 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    this.wrongCredentials = !!this.authService.login(this.loginForm.value);
+    this.wrongCredentials = this.authService.login(this.loginForm.value);
   }
 }

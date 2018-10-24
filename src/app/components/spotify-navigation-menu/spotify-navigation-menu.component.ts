@@ -82,18 +82,20 @@ export class SpotifyNavigationMenuComponent {
         })
       )
       .subscribe(data => {
-        data['items'].forEach(playlist => {
-          if (playlist['name'] === this.selectedPlaylist) {
-            playlist['selected'] = true;
-          } else {
-            playlist['selected'] = false;
+        if (data) {
+          data['items'].forEach(playlist => {
+            if (playlist['name'] === this.selectedPlaylist) {
+              playlist['selected'] = true;
+            } else {
+              playlist['selected'] = false;
+            }
+          });
+          if (!data['next']) {
+            this.loading = false;
+            this.playlistsLoaded = true;
           }
-        });
-        if (!data['next']) {
-          this.loading = false;
-          this.playlistsLoaded = true;
+          this.playlists = this.playlists.concat(data['items']);
         }
-        this.playlists = this.playlists.concat(data['items']);
       });
 
     this.playlistService.selectPlaylist$.subscribe(playlist => {
