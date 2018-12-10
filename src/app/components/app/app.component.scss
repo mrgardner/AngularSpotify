@@ -1,14 +1,14 @@
 .row {
   width: 100%;
   height: 77vh;
-}
 
-.col-md-8 {
-  background-color: #211b1b;
-}
-
-.col-sm-2 {
-  padding-right: 0;
+  .col-md-8 {
+    background-color: #211b1b;
+  }
+  
+  .col-sm-2 {
+    padding-right: 0;
+  }
 }
 
 @media screen and (min-width: 1920px){

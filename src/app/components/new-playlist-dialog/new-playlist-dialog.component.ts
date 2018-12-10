@@ -17,7 +17,12 @@ export class NewPlaylistDialogComponent implements OnInit {
   public imageFile: any;
   public showUserButtons: boolean;
 
-  constructor(public dialogRef: MatDialogRef<NewPlaylistDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Object, private spotifyService: SpotifyService) {
+  constructor(
+    public dialogRef: MatDialogRef<NewPlaylistDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Object,
+    private spotifyService: SpotifyService) {}
+
+  ngOnInit() {
     this.playlistName = 'New Playlist';
     this.playlistDescription = '';
     this.playlistNameMaxLength = 100;
@@ -26,14 +31,11 @@ export class NewPlaylistDialogComponent implements OnInit {
     this.showUserButtons = false;
   }
 
-  ngOnInit() {
-  }
-
-  closeModal() {
+  closeModal(): void {
     this.dialogRef.close();
   }
 
-  getFile(event) {
+  getFile(event): void {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
 

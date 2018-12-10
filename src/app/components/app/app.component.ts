@@ -10,18 +10,13 @@ export class AppComponent {
   public showDeviceModal: boolean;
   constructor(private location: Location) {
     this.showDeviceModal = false;
-    this.location.subscribe(data => {
-      if (data.url.indexOf('callback') !== -1) {
-        this.location.go('/');
-      }
-    });
   }
 
-  goBack() {
+  goBack(): void {
     this.location.back();
   }
 
-  goForward() {
+  goForward(): void {
     this.location.forward();
   }
 }

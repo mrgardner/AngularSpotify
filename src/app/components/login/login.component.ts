@@ -23,7 +23,11 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
-    this.wrongCredentials = !!this.authService.login(this.loginForm.value);
+  onSubmit(): void {
+    this.authService.login(this.loginForm.value).then(() => {
+      this.wrongCredentials = false;
+      this.router.navigate(['']);
+    })
+    .catch(() => this.wrongCredentials = true);
   }
 }

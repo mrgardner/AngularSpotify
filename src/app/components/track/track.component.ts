@@ -1,47 +1,58 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 import {switchMap} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {TrackService} from '../../services/track/track.service';
-import {PreviousRouteService} from '../../services/previous-route/previous-route.service';
+import { Params } from 'src/app/interfaces/params/params.interface';
+import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
+import { Track } from 'src/app/interfaces/track/track.interface';
+import { Artist } from 'src/app/interfaces/artist/artist.interface';
 
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
   styleUrls: ['./track.component.scss']
 })
-export class TrackComponent {
+export class TrackComponent implements OnInit {
   public track: Object;
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, private trackService: TrackService, private previousRouteService: PreviousRouteService, private location: Location) {
-    const that = this;
-    let trackParams = {};
-    that.route.params.pipe(
-      switchMap(params => {
+  constructor(
+    private spotifyService: SpotifyService,
+    private route: ActivatedRoute,
+    private trackService: TrackService,
+    private location: Location) {}
+
+  ngOnInit() {
+    let trackParams: Params  = {
+      playlistID: '',
+      trackID: ''
+    };
+    this.route.params.pipe(
+      switchMap((params: Params) => {
         trackParams = params;
         if (params) {
-          return that.spotifyService.getAuthToken();
+          return this.spotifyService.getAuthToken();
         } else {
           return of();
         }
       }),
-      switchMap(token => {
-        const isLoggedIn = !!token['token'];
+      switchMap((token: SpotifyToken) => {
+        const isLoggedIn = !!token.token;
         if (isLoggedIn) {
-          return that.spotifyService.getTrack(token['token'], trackParams['trackID']);
+          return this.spotifyService.getTrack(token.token, trackParams.trackID);
         } else {
           return of();
         }
       })
-    ).subscribe(data => that.track = data);
+    ).subscribe((track: Track) => this.track = track);
   }
 
-  displayArtist(artist) {
+  displayArtist(artist: Array<Artist>): Array<string> {
     return this.trackService.displayArtists(artist);
   }
 
-  goBack() {
+  goBack(): void {
     this.location.back();
   }
 }

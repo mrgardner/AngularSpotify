@@ -1,35 +1,35 @@
-.validation-error {
-  color:red
-}
-
-.validation-pass {
-  color: green;
-}
-
-h3 {
-  text-align: center;
-}
-
 .registerFormContainer {
   margin: auto;
   width: 50%;
   padding-top: 5em;
-}
 
-label {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.submitButton {
-  margin: auto;
-  width: 50%;
-
-  button {
-    width: 100%;
+  h3 {
+    text-align: center;
   }
-}
 
-.registerForm {
-  padding-bottom: 1em;
+  .registerForm {
+    padding-bottom: 1em;
+
+    label {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .validation-error {
+      color:red
+    }
+    
+    .validation-pass {
+      color: green;
+    }    
+
+    .submitButton {
+      margin: auto;
+      width: 50%;
+    
+      button {
+        width: 100%;
+      }
+    }
+  }
 }
