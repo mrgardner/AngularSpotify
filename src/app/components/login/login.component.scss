@@ -1,35 +1,35 @@
-.validation-error {
-  color:red
-}
-
-h3 {
-  text-align: center;
-}
-
 .loginFormContainer {
   margin: auto;
   width: 50%;
   padding-top: 5em;
-}
 
-.invalidCredentials {
-  margin-bottom: 1em;
-}
-
-label {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.submitButton {
-  margin: auto;
-  width: 50%;
-
-  button {
-    width: 100%;
+  h3 {
+    text-align: center;
   }
-}
 
-.loginForm {
-  padding-bottom: 1em;
+  .loginForm {
+    padding-bottom: 1em;
+
+    label {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .invalidCredentials {
+      margin-bottom: 1em;
+    }
+
+    .validation-error {
+      color:red
+    }    
+
+    .submitButton {
+      margin: auto;
+      width: 50%;
+    
+      button {
+        width: 100%;
+      }
+    }
+  }
 }

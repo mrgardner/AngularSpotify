@@ -32,7 +32,7 @@ export class RegisterComponent {
     }, {validator: this.matchingPasswords('password', 'confirmPassword')});
   }
 
-  matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+  matchingPasswords(passwordKey: string, confirmPasswordKey: string): Object {
     return (group: FormGroup): {[key: string]: any} => {
       const password = group.controls[passwordKey];
       const confirmPassword = group.controls[confirmPasswordKey];
@@ -45,7 +45,7 @@ export class RegisterComponent {
     };
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.userService.createUser(this.registerForm.value);
   }
 }

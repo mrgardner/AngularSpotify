@@ -7,7 +7,15 @@ import {PlaylistService} from '../../../services/playlist/playlist.service';
 import {switchMap} from 'rxjs/internal/operators';
 import {concat, of} from 'rxjs';
 import {StatusBarService} from '../../../services/status-bar/status-bar.service';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
+import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
+import { Header } from 'src/app/interfaces/header/header.interface';
+import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
+import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
+import { Params } from 'src/app/interfaces/params/params.interface';
+import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interface';
+import { Track } from 'src/app/interfaces/track/track.interface';
+import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { Song } from 'src/app/interfaces/song/song.interface';
 
 @Component({
   selector: 'app-playlist-table',
@@ -22,7 +30,7 @@ export class PlaylistTableComponent implements OnInit {
   public filterTrackName: string;
   public filterTrackArtist: string;
   public playlistName: string;
-  public headers: Array<Object>;
+  public headers: Array<Header>;
   public playlistCover: string;
   public playlistOwner: string;
   public isPlayButtonShowing: boolean;
@@ -34,8 +42,15 @@ export class PlaylistTableComponent implements OnInit {
   track: Object;
   private currentTrackPosition: number;
 
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute,
-      private trackService: TrackService, private router: Router, private playlistService: PlaylistService, private statusBarService: StatusBarService) {
+  constructor(
+    private spotifyService: SpotifyService,
+    private route: ActivatedRoute,
+    private trackService: TrackService,
+    private router: Router,
+    private playlistService: PlaylistService,
+    private statusBarService: StatusBarService) {}
+
+  ngOnInit() {
     this.checkDuplicate = false;
     this.filterTrackName = '';
     this.filterTrackArtist = '';
@@ -46,10 +61,12 @@ export class PlaylistTableComponent implements OnInit {
     this.deviceID = '';
     this.currentTrack = {track: {name: ''}};
     this.track = {track: {name: ''}};
-    this.trackService.checkDuplicate$
-      .subscribe(isDuplicate => {this.checkDuplicate = isDuplicate; this.headers[0]['show'] = isDuplicate; });
-    this.trackService.filterTrackName$.subscribe(name => this.filterTrackName = name);
-    this.trackService.filterTrackArtist$.subscribe(artist => this.filterTrackArtist = artist);
+    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
+      this.checkDuplicate = isDuplicate;
+      this.headers[0].show = isDuplicate;
+    });
+    this.trackService.filterTrackName$.subscribe((name: string) => this.filterTrackName = name);
+    this.trackService.filterTrackArtist$.subscribe((artist: string) => this.filterTrackArtist = artist);
     this.isPlayButtonShowing = false;
     this.isPauseButtonShowing = false;
     this.currentTrackPosition = 0;
@@ -85,23 +102,27 @@ export class PlaylistTableComponent implements OnInit {
         show: true
       }
     ];
-  }
-
-  ngOnInit() {
     let loggedIn = false;
-    let playlist = {};
-    this.trackService.currentTrack$.subscribe(track => {
-      if (track['paused']) {
+    let playlist: PlaylistData = {
+      name: '',
+      owner: '',
+      playlistCoverURL: '',
+      playlistID: '',
+      playlistLength: 0,
+      selected: false
+    };
+    this.trackService.currentTrack$.subscribe((track: SpotifySongResponse) => {
+      if (track.paused) {
         this.currentTrack = {track: {name: ''}};
       } else {
-        this.currentTrack = track['track_window']['current_track'];
+        this.currentTrack = track.track_window.current_track;
       }
     });
-    this.spotifyService.currentTrackPosition$.subscribe(position => this.currentTrackPosition = position);
+    this.spotifyService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
     this.spotifyService.getAuthToken()
       .pipe(
-        switchMap(spotifyToken => {
-          this.token = spotifyToken['token'];
+        switchMap((spotifyToken: SpotifyToken) => {
+          this.token = spotifyToken.token;
           loggedIn = !!this.token;
           if (loggedIn) {
             return this.route.params;
@@ -111,25 +132,25 @@ export class PlaylistTableComponent implements OnInit {
           }
 
         }),
-        switchMap(params => {
-          return this.playlistService.getSavedPlaylist(params['playlistID']);
+        switchMap((params: Params) => {
+          return this.playlistService.getSavedPlaylist(params.playlistID);
         }),
-        switchMap(playlistInfo => {
+        switchMap((playlistInfo: PlaylistData) => {
           this.loading = true;
           this.tracksLoaded = false;
           this.tracks = [];
-          playlist = playlistInfo;
           const tempList = [];
+          playlist = playlistInfo;
           if (playlist && loggedIn) {
-            const owner = playlist['owner'];
-            const playlistID = playlist['playlistID'];
-            const playlistLength = playlist['playlistLength'];
+            const owner = playlist.owner;
+            const playlistID = playlist.playlistID;
+            const playlistLength = playlist.playlistLength;
             const numberOfTimesToLoop = Math.ceil(playlistLength / 100);
-            this.playlistName = playlist['name'];
-            this.playlistCover = playlist['playlistCoverURL'];
-            this.playlistOwner = playlist['owner'];
+            this.playlistName = playlist.name;
+            this.playlistCover = playlist.playlistCoverURL;
+            this.playlistOwner = playlist.owner;
             this.playlistService.selectPlaylist(this.playlistName);
-            if (playlistInfo['playlistLength'] > 0) {
+            if (playlist.playlistLength > 0) {
               for (let i = 0; i < numberOfTimesToLoop; i++) {
                 const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
                 tempList.push(this.spotifyService.getAllTracksFromPlaylist(owner, playlistID, this.token, baseURI));
@@ -147,15 +168,15 @@ export class PlaylistTableComponent implements OnInit {
           }
         })
       )
-      .subscribe(data => {
-        this.tracks = this.tracks.concat(data['items']);
+      .subscribe((data: any) => {
+        this.tracks = this.tracks.concat(data.items);
         if (!data['next']) {
           this.loading = false;
           this.tracksLoaded = true;
-          this.tracks.forEach((track, index) => {
-            this.trackService.saveTrack(playlist['playlistID'], track, index);
-            track['isPlayButtonShowing'] = false;
-            track['isPauseButtonShowing'] = false;
+          this.tracks.forEach((track: Track, index: number) => {
+            this.trackService.saveTrack(playlist.playlistID, track, index);
+            track.isPlayButtonShowing = false;
+            track.isPauseButtonShowing = false;
           });
           // const numberOfLoops = Math.ceil(this.tracks.length / 50);
           // const trackIDs = this.tracks.map(track => track['track']['id']);
@@ -180,15 +201,15 @@ export class PlaylistTableComponent implements OnInit {
     // ).subscribe(() => {});
 
     this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        this.token = token['token'];
+      switchMap((token: SpotifyToken) => {
+        this.token = token.token;
         if (this.token) {
           return this.playlistService.getCurrentDevice();
         } else {
           return of();
         }
       }),
-      switchMap(deviceID => {
+      switchMap((deviceID: string) => {
         this.deviceID = deviceID;
         if (this.deviceID) {
           return this.playlistService.test$;
@@ -205,15 +226,15 @@ export class PlaylistTableComponent implements OnInit {
     ).subscribe(() => {});
 
     this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        this.token = token['token'];
+      switchMap((token: SpotifyToken) => {
+        this.token = token.token;
         if (this.token) {
           return this.playlistService.getCurrentDevice();
         } else {
           return of();
         }
       }),
-      switchMap(deviceID => {
+      switchMap((deviceID: string) => {
         this.deviceID = deviceID;
         if (this.deviceID) {
           return this.playlistService.test2$;
@@ -221,18 +242,18 @@ export class PlaylistTableComponent implements OnInit {
           return of();
         }
       }),
-      switchMap(track => {
-        track['isPlayButtonShowing'] = true;
-        track['isPauseButtonShowing'] = false;
+      switchMap((currentTrack: CurrentTrack) => {
+        currentTrack.isPlayButtonShowing = true;
+        currentTrack.isPauseButtonShowing = false;
         this.currentTrack = {track: {name: ''}};
         return this.spotifyService.pauseSpotifyTrack(this.token, this.deviceID);
       })
     ).subscribe(() => {});
   }
 
-  testing(track) {
+  testing(track: Song): void {
     console.log('play');
-    console.log(track)
+    console.log(track);
     // this.spotifyService.getAuthToken().pipe(
     //   switchMap(token => {
     //     this.token = token['token'];
@@ -247,7 +268,7 @@ export class PlaylistTableComponent implements OnInit {
     // this.statusBarService.setCurrentTrack(track);
   }
 
-  pauseSong(track) {
+  pauseSong(track: Song): void {
     console.log('pause');
     this.playlistService.test2(track);
     // this.spotifyService.getAuthToken().pipe(
@@ -263,11 +284,11 @@ export class PlaylistTableComponent implements OnInit {
     // this.statusBarService.setCurrentTrack(track);
   }
 
-  convertMS(ms) {
+  convertMS(ms: number): number {
     return PrettyMS(ms, { secDecimalDigits: 0 });
   }
 
-  shortenString(string) {
+  shortenString(string: string): string {
     const stringLength = 25;
     if (string.length > stringLength) {
       return string.substr(0, stringLength) + '...';
@@ -276,7 +297,7 @@ export class PlaylistTableComponent implements OnInit {
     }
   }
 
-  displayArtists(artists) {
+  displayArtists(artists: Array<Artist>): Array<string> {
     const numberOfArtists = artists.length;
     return artists.map((artist, i) => {
       let artistString = '';
@@ -293,15 +314,15 @@ export class PlaylistTableComponent implements OnInit {
     });
   }
 
-  toBeRemoved(track) {
+  toBeRemoved(track: Track): void {
     track['remove'] = !track['remove'];
   }
 
-  goToTrack(track) {
+  goToTrack(track): void {
     this.router.navigate(['/track', track.track.id]);
   }
 
-  getPlaylistDuration() {
+  getPlaylistDuration(): (number | string) {
     let totalDuration = 0;
     this.tracks.forEach(track => {
       totalDuration += track['track']['duration_ms'];
@@ -314,19 +335,19 @@ export class PlaylistTableComponent implements OnInit {
     }
   }
 
-  showPlayButton(track) {
+  showPlayButton(track: Track): void {
     track.isPlayButtonShowing = true;
   }
 
-  hidePlayButton(track) {
+  hidePlayButton(track: Track): void {
     track.isPlayButtonShowing = false;
   }
 
-  showPauseButton(track) {
+  showPauseButton(track: Track): void {
     track.isPauseButtonShowing = true;
   }
 
-  hidePauseButton(track) {
+  hidePauseButton(track: Track): void {
     track.isPauseButtonShowing = false;
   }
 }
