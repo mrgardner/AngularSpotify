@@ -324,7 +324,7 @@
   }, s.prototype.stopListening = function(e) {
     e.removeEventListener("message", this._receiveMessage)
   }, s.prototype.send = function(e, t, n) {
-    return e.postMessage(this._addMessageId(t), n || "*"), t.seq
+    return e.postMessage(this._addMessageId(t), "*"), t.seq
   }, s.prototype._addMessageId = function(e) {
     return e.seq = this._messageId++, e
   }, s.prototype._receiveMessage = function(e) {

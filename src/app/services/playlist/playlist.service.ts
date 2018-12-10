@@ -103,7 +103,7 @@ export class PlaylistService {
     let userObject = {};
     this.afa.user.pipe(
       switchMap(user => {
-        userObject = user
+        userObject = user;
         if (user) {
           return this.afs.collection('users').doc(userObject['email']).collection('playlists').doc(playlist.id).valueChanges();
         } else {

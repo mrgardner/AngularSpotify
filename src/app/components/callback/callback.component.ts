@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import querystring from 'querystring';
+import querystring from 'query-string';
 import {SpotifyService} from '../../services/spotify/spotify.service';
-import {PlaylistService} from '../../services/playlist/playlist.service';
 
 @Component({
   selector: 'app-callback',
@@ -10,9 +9,8 @@ import {PlaylistService} from '../../services/playlist/playlist.service';
   styleUrls: ['./callback.component.scss']
 })
 export class CallbackComponent {
-
-  constructor(private route: ActivatedRoute, private spotifyService: SpotifyService, private playlistService: PlaylistService) {
-    this.route.fragment.subscribe(fragment => {
+  constructor(private route: ActivatedRoute, private spotifyService: SpotifyService) {
+    this.route.fragment.subscribe((fragment: string) => {
       const parsed = querystring.parse(fragment);
       if ('access_token' in parsed && 'expires_in' in parsed) {
         this.spotifyService.storeToken(parsed);

@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import querystring from 'querystring';
+import querystring from 'query-string';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {concat, of} from 'rxjs';
@@ -9,7 +9,7 @@ import {AngularFireAuth} from 'angularfire2/auth';
 import {TrackService} from '../track/track.service';
 import {PlaylistService} from '../playlist/playlist.service';
 import {environment} from '../../../environments/environment';
-import {DeviceModalService} from "../deviceModal/device-modal.service";
+import {DeviceModalService} from '../deviceModal/device-modal.service';
 
 @Injectable({
   providedIn: 'root'
@@ -159,7 +159,8 @@ export class SpotifyService {
         'Content-Type': 'application/json'
       })
     };
-    return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`, {uris: [track], position_ms: currentPosition}, httpOptions);
+    return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`,
+    {uris: [track], position_ms: currentPosition}, httpOptions);
   }
 
   pauseSpotifyTrack(token, deviceID) {
@@ -351,8 +352,10 @@ export class SpotifyService {
           const originalTracks = [];
           const shuffledPlaylist = [];
           playlistInfo = playlistData;
-          for (let t in tracks) {
-            originalTracks.push(tracks[t]);
+          for (const t in tracks) {
+            if (t) {
+              originalTracks.push(tracks[t]);
+            }
           }
           const shuffledTracks = this.shuffleTracks(tracks);
           for (let i = 0; i < originalTracks.length; i++) {

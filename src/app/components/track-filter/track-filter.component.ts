@@ -3,8 +3,6 @@ import {SpotifyService} from '../../services/spotify/spotify.service';
 import {ActivatedRoute} from '@angular/router';
 import {TrackService} from '../../services/track/track.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
-import {switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
 
 @Component({
   selector: 'app-track-filter',
@@ -12,7 +10,7 @@ import {of} from 'rxjs';
   styleUrls: ['./track-filter.component.scss']
 })
 
-export class TrackFilterComponent implements OnInit{
+export class TrackFilterComponent implements OnInit {
   @Input('tracks') tracks: Array<Object>;
   public isDuplicateTrack: boolean;
   public name: string;
@@ -21,30 +19,33 @@ export class TrackFilterComponent implements OnInit{
   public isSearchBoxShowing: boolean;
   private playlistID: string;
 
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, private trackService: TrackService, private playlistService: PlaylistService) {
+  constructor(
+    private spotifyService: SpotifyService,
+    private route: ActivatedRoute,
+    private trackService: TrackService,
+    private playlistService: PlaylistService) {}
+
+  ngOnInit() {
     // const that = this;
     // that.trackService.updateTracks$.subscribe(data => {this.tracks = data; console.log(data); });
     this.isSearchBoxShowing = false;
     this.name = '';
-  }
-
-  ngOnInit() {
     this.playlistID = '';
     this.route.params.subscribe(params => this.playlistID = params['playlistID']);
   }
 
-  checkForLocalTracks() {
+  checkForLocalTracks(): boolean {
     const that = this;
     const localTracks = that.tracks.filter(track => track['track']['is_local']);
     return localTracks.length > 0;
   }
 
-  checkForDuplicateTrack(e) {
+  checkForDuplicateTrack(e: any): void {
     this.isDuplicateTrack = e.target.checked;
     this.trackService.checkDuplicate(e.target.checked);
   }
 
-  removeDuplicates() {
+  removeDuplicates(): void {
     const that = this;
     that.isDuplicateTrack = false;
     that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
@@ -68,7 +69,7 @@ export class TrackFilterComponent implements OnInit{
     });
   }
 
-  shuffleSongs() {
+  shuffleSongs(): void {
     console.log(this.playlistID);
     const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
     this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
@@ -89,33 +90,33 @@ export class TrackFilterComponent implements OnInit{
     // });
   }
 
-  filterName(name) {
+  filterName(name: string): void {
     this.trackService.filterByTrackName(name);
   }
 
-  filterArtist(artist) {
+  filterArtist(artist: string): void {
     this.trackService.filterByTrackArtist(artist);
   }
 
-  showSearchBox() {
-    console.log('SHOULD NOT SHOW')
+  showSearchBox(): void {
+    console.log('SHOULD NOT SHOW');
     this.isSearchBoxShowing = true;
   }
 
-  hideSearchBox() {
+  hideSearchBox(): void {
     // if (this.isSearchBoxShowing) {
-      console.log('sdff')
+      console.log('sdff');
       this.name = '';
       this.filterName('');
       this.isSearchBoxShowing = false;
-      console.log(this.isSearchBoxShowing)
+      console.log(this.isSearchBoxShowing);
     // }
   }
 
-  onLoseFocus() {
-    console.log(this.name)
-    console.log(this.name.length)
-    if (this.name.length === 0){
+  onLoseFocus(): void {
+    console.log(this.name);
+    console.log(this.name.length);
+    if (this.name.length === 0) {
       this.hideSearchBox();
     }
   }
