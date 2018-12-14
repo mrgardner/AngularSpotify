@@ -6,7 +6,6 @@ import PrettyMS from 'pretty-ms';
 import {PlaylistService} from '../../../services/playlist/playlist.service';
 import {switchMap} from 'rxjs/internal/operators';
 import {concat, of} from 'rxjs';
-import {StatusBarService} from '../../../services/status-bar/status-bar.service';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { Header } from 'src/app/interfaces/header/header.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
@@ -16,6 +15,7 @@ import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interfac
 import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { Song } from 'src/app/interfaces/song/song.interface';
+import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 
 @Component({
   selector: 'app-playlist-table',
@@ -48,7 +48,7 @@ export class PlaylistTableComponent implements OnInit {
     private trackService: TrackService,
     private router: Router,
     private playlistService: PlaylistService,
-    private statusBarService: StatusBarService) {}
+    private spotifyPlaybackService: SpotifyPlaybackService) {}
 
   ngOnInit() {
     this.checkDuplicate = false;
@@ -111,14 +111,14 @@ export class PlaylistTableComponent implements OnInit {
       playlistLength: 0,
       selected: false
     };
-    this.trackService.currentTrack$.subscribe((track: SpotifySongResponse) => {
+    this.spotifyPlaybackService.currentSongState$.subscribe((track: SpotifySongResponse) => {
       if (track.paused) {
         this.currentTrack = {track: {name: ''}};
       } else {
         this.currentTrack = track.track_window.current_track;
       }
     });
-    this.spotifyService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
+    this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
     this.spotifyService.getAuthToken()
       .pipe(
         switchMap((spotifyToken: SpotifyToken) => {

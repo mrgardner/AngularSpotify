@@ -19,7 +19,6 @@ export class SpotifyService {
   private readonly loginURI: string;
   private readonly spotifyApiBaseURI: string;
   private didPlaylistChange: boolean;
-  public currentTrackPosition$: EventEmitter<number>;
 
   constructor(private _http: HttpClient, private router: Router,
               private afs: AngularFirestore,
@@ -40,7 +39,6 @@ export class SpotifyService {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.playlistService.didPlaylistChange$.subscribe(value => this.didPlaylistChange = value);
     this.didPlaylistChange = false;
-    this.currentTrackPosition$ = new EventEmitter();
   }
 
   generateRandomString(length) {
@@ -245,68 +243,61 @@ export class SpotifyService {
       );
   }
 
-  setupPlayer(token) {
-    const head = document.getElementsByTagName('body')[0];
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '/assets/spotify-playback.js';
-    head.appendChild(script);
-    window['onSpotifyWebPlaybackSDKReady'] = () => {
-      const player = new window['Spotify'].Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => {
-          cb(token);
-        }
-      });
+  // setupPlayer(token) {
+  //   const head = document.getElementsByTagName('body')[0];
+  //   const script = document.createElement('script');
+  //   script.type = 'text/javascript';
+  //   script.src = '/assets/spotify-playback.js';
+  //   head.appendChild(script);
+  //   window['onSpotifyWebPlaybackSDKReady'] = () => {
+  //     const player = new window['Spotify'].Player({
+  //       name: 'Web Playback SDK Quick Start Player',
+  //       getOAuthToken: cb => {
+  //         cb(token);
+  //       }
+  //     });
 
-      player.addListener('initialization_error', ({message}) => {});
-      player.addListener('authentication_error', ({message}) => {});
-      player.addListener('account_error', ({message}) => {});
-      player.addListener('playback_error', ({message}) => {});
+  //     player.addListener('initialization_error', ({message}) => {});
+  //     player.addListener('authentication_error', ({message}) => {});
+  //     player.addListener('account_error', ({message}) => {});
+  //     player.addListener('playback_error', ({message}) => {});
 
-      // Playback status updates
-      player.addListener('player_state_changed', state => {
-        if (state) {
-          // this.trackService.setCurrentTrack(state);
-          this.trackService.nowPlaying(state);
-          /** Disabled for when queue system is added **/
-          // if (state['paused'] && state['position'] === 0) {
-          //   // play next song in the queue
-          // }
+  //     // Playback status updates
+  //     player.addListener('player_state_changed', state => {
+  //       if (state) {
+  //         // this.trackService.setCurrentTrack(state);
+  //         // this.trackService.nowPlaying(state);
+  //         const time = parseMS(state['duration']);
+  //         const min = time.minutes;
+  //         const sec = time.seconds;
+  //         // if (min)
+  //         console.log('Minutes ', time.minutes);
+  //         console.log('Seconds ', time.seconds);
 
-          if (state['paused'] && state['position'] !== 0) {
-            this.currentPositionOfTrack(state['position']);
-          }
-        }
-      });
+  //         /** Disabled for when queue system is added **/
+  //         // if (state['paused'] && state['position'] === 0) {
+  //         //   // play next song in the queue
+  //         // }
 
-      // Ready
-      player.addListener('ready', ({device_id}) => {
-        this.makeDeviceActive(token, device_id).subscribe(() => {
-          this.playlistService.saveDeviceID(device_id);
-        });
-      });
-      // Not Ready
-      player.addListener('not_ready', ({device_id}) => {});
+  //         if (state['paused'] && state['position'] !== 0) {
+  //           this.currentPositionOfTrack(state['position']);
+  //         }
+  //       }
+  //     });
 
-      // Connect to the player!
-      player.connect();
-    };
-  }
+  //     // Ready
+  //     player.addListener('ready', ({device_id}) => {
+  //       this.makeDeviceActive(token, device_id).subscribe(() => {
+  //         this.playlistService.saveDeviceID(device_id);
+  //       });
+  //     });
+  //     // Not Ready
+  //     player.addListener('not_ready', ({device_id}) => {});
 
-  currentPositionOfTrack(position: number) {
-    this.currentTrackPosition$.emit(position);
-  }
-
-  makeDeviceActive(token, deviceID) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      })
-    };
-    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]}, httpOptions);
-  }
+  //     // Connect to the player!
+  //     player.connect();
+  //   };
+  // }
 
   getUsersSavedAlbums(token, moreAlbums?) {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;

@@ -25,7 +25,7 @@ import { SpotifyNavigationMenuComponent } from './components/spotify-navigation-
 import { SpotifyStatusBarComponent } from './components/spotify-status-bar/spotify-status-bar.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DeviceModalComponent } from './components/device-modal/device-modal.component';
-import {MatButtonModule, MatDialogModule} from '@angular/material';
+import {MatButtonModule, MatDialogModule, MatProgressBarModule} from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
@@ -59,6 +59,7 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
   imports: [
     MatDialogModule,
     MatButtonModule,
+    MatProgressBarModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
