@@ -9,6 +9,7 @@ import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.int
 import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
 import { SpotifyDevicesResponse } from 'src/app/interfaces/device/spotify-devices-response.interface';
 import { Device } from 'src/app/interfaces/device/device.interface';
+import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 
 @Component({
   selector: 'app-device-modal',
@@ -24,7 +25,8 @@ export class DeviceModalComponent implements OnInit {
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
     private playlistService: PlaylistService,
-    public dialogRef: MatDialogRef<DeviceModalComponent>) { }
+    public dialogRef: MatDialogRef<DeviceModalComponent>,
+    private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit() {
     this.spotifyService.getAuthToken().pipe(
@@ -69,7 +71,7 @@ export class DeviceModalComponent implements OnInit {
       switchMap((token: SpotifyToken) => {
         const authToken = token.token;
         if (!!authToken) {
-          return this.spotifyService.makeDeviceActive(authToken, device.id);
+          return this.spotifyPlaybackService.makeDeviceActive(authToken, device.id);
         } else {
           return of();
         }

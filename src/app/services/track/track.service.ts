@@ -18,6 +18,7 @@ export class TrackService {
   public currentTrack$: EventEmitter<any>;
   public trackTime$: EventEmitter<any>;
   private isPlaylistsBeingDeleted: boolean;
+  public currentlyPlaying$: EventEmitter<any>;
 
   constructor(private afs: AngularFirestore, private afa: AngularFireAuth, private playlistService: PlaylistService) {
     this.checkDuplicate$ = new EventEmitter();
@@ -28,6 +29,7 @@ export class TrackService {
     this.areTracksLoaded$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
     this.trackTime$ = new EventEmitter();
+    this.currentlyPlaying$ = new EventEmitter();
     this.playlistService.deletingPlaylists$.subscribe(value => this.isPlaylistsBeingDeleted = value);
   }
 
@@ -190,4 +192,8 @@ export class TrackService {
   //       })
   //     );
   // }
+
+  currentlyPlaying(state: any) {
+    this.currentlyPlaying$.emit(state);
+  }
 }
