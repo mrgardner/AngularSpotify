@@ -11,10 +11,23 @@ export class SpotifyPlaybackService {
   private spotifyApiBaseURI: string;
   public currentTrackPosition$: EventEmitter<number>;
   public currentSongState$: EventEmitter<any>;
+  public playSong$: EventEmitter<any>;
+  public pauseSong$: EventEmitter<any>;
+  public nextSong$: EventEmitter<any>;
+  public previousSong$: EventEmitter<any>;
+  public test$: EventEmitter<any>;
+  public test2$: EventEmitter<any>;
+  private currentTrack: Object;
   constructor(private playlistService: PlaylistService, private _http: HttpClient, private trackService: TrackService) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.currentTrackPosition$ = new EventEmitter();
     this.currentSongState$ = new EventEmitter();
+    this.playSong$ = new EventEmitter();
+    this.pauseSong$ = new EventEmitter();
+    this.nextSong$ = new EventEmitter();
+    this.previousSong$ = new EventEmitter();
+    this.test$ = new EventEmitter();
+    this.test2$ = new EventEmitter();
   }
 
   async waitForSpotifyWebPlaybackSDKToLoad () {
@@ -46,11 +59,8 @@ export class SpotifyPlaybackService {
       });
       sdk.on('player_state_changed', state => {
         counter++;
-        if (counter === 1) {
+        if (counter % 3 === 1) {
           this.sendCurrentState(state);
-        }
-        if (state['paused'] === true) {
-          counter = 0;
         }
 
         if (state['paused'] && state['position'] !== 0) {
@@ -66,6 +76,11 @@ export class SpotifyPlaybackService {
       });
 
       sdk.connect();
+
+      this.pauseSong$.subscribe(() => sdk.pause());
+      this.playSong$.subscribe(() => sdk.resume());
+      this.nextSong$.subscribe(() => sdk.nextTrack());
+      this.previousSong$.subscribe(() => sdk.previousTrack());
     })();
   }
 
@@ -85,5 +100,29 @@ export class SpotifyPlaybackService {
 
   sendCurrentState(state: SpotifySongResponse) {
     this.currentSongState$.emit(state);
+  }
+
+  playSong() {
+    this.playSong$.emit();
+  }
+
+  pauseSong() {
+    this.pauseSong$.emit();
+  }
+
+  nextSong() {
+    this.nextSong$.emit();
+  }
+
+  previousSong() {
+    this.previousSong$.emit();
+  }
+
+  test(track) {
+    return this.test$.emit(track);
+  }
+
+  test2() {
+    return this.test2$.emit();
   }
 }

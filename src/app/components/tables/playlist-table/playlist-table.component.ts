@@ -174,7 +174,6 @@ export class PlaylistTableComponent implements OnInit {
           this.loading = false;
           this.tracksLoaded = true;
           this.tracks.forEach((track: Track, index: number) => {
-            this.trackService.saveTrack(playlist.playlistID, track, index);
             track.isPlayButtonShowing = false;
             track.isPauseButtonShowing = false;
           });
@@ -199,7 +198,6 @@ export class PlaylistTableComponent implements OnInit {
     //     }
     //   })
     // ).subscribe(() => {});
-
     this.spotifyService.getAuthToken().pipe(
       switchMap((token: SpotifyToken) => {
         this.token = token.token;
@@ -221,7 +219,9 @@ export class PlaylistTableComponent implements OnInit {
         const trackPosition = this.track['name'] !== track['track']['name'] ? 0 : this.currentTrackPosition;
         this.currentTrack = track['track'];
         this.track = track['track'];
-        return this.spotifyService.playSpotifyTrack(this.token, track['track']['uri'], this.deviceID, trackPosition);
+        const tt = this.tracks.map(ff => ff['track']['uri']);
+        const offset = tt.indexOf(this.track['uri']);
+        return this.spotifyService.playSpotifyTrack(this.token, tt, offset, this.deviceID, trackPosition);
       })
     ).subscribe(() => {});
 
@@ -252,36 +252,11 @@ export class PlaylistTableComponent implements OnInit {
   }
 
   testing(track: Song): void {
-    console.log('play');
-    console.log(track);
-    // this.spotifyService.getAuthToken().pipe(
-    //   switchMap(token => {
-    //     this.token = token['token'];
-    //     if (this.token) {
-    //       return this.spotifyService.getCurrentSong(this.token);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe(data => {console.log('player', data); this.statusBarService.setCurrentTrack(data); });
     this.playlistService.test(track);
-    // this.statusBarService.setCurrentTrack(track);
   }
 
   pauseSong(track: Song): void {
-    console.log('pause');
-    this.playlistService.test2(track);
-    // this.spotifyService.getAuthToken().pipe(
-    //   switchMap(token => {
-    //     this.token = token['token'];
-    //     if (this.token) {
-    //       return this.spotifyService.getCurrentSong(this.token);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe(data => {console.log('player', data); ; });
-    // this.statusBarService.setCurrentTrack(track);
+    this.spotifyPlaybackService.pauseSong();
   }
 
   convertMS(ms: number): number {

@@ -5,7 +5,6 @@ import {SpotifyService} from '../../services/spotify/spotify.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import {StatusBarService} from '../../services/status-bar/status-bar.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {TrackService} from '../../services/track/track.service';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {NewPlaylistDialogComponent} from '../new-playlist-dialog/new-playlist-dialog.component';
 import {Router} from '@angular/router';
@@ -13,6 +12,7 @@ import { SpotifyPlaylistRespose } from 'src/app/interfaces/playlist/spotifyPlayl
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interface';
+import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -44,7 +44,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private spotifyService: SpotifyService,
     private playlistService: PlaylistService,
     private statusBarService: StatusBarService,
-    private trackService: TrackService,
+    private spotifyPlaybackService: SpotifyPlaybackService,
     private dialog: MatDialog,
     private router: Router) {}
 
@@ -58,7 +58,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
       this.imageEnlargeState = value ? 'active' : 'inactive';
     });
     this.statusBarService.currenttrack$.subscribe(value => this.currentTrack = value);
-    this.trackService.getNowPlaying().subscribe(value => this.currentTrack = value['track_window']['current_track']);
+    this.spotifyPlaybackService.currentSongState$.subscribe(value => this.currentTrack = value['track_window']['current_track']);
     this.spotifyService.getAuthToken()
       .pipe(
         switchMap((spotifyToken: SpotifyToken) => {
