@@ -16,6 +16,8 @@ import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.int
 import { Device } from 'src/app/interfaces/device/device.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
+import { Track } from 'src/app/interfaces/track/track.interface';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -35,7 +37,7 @@ import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotif
   ]
 })
 export class SpotifyStatusBarComponent implements OnInit {
-  public currentTrack: Object;
+  public currentTrack: Track;
   public imageEnlargeState: string;
   public isEnlargeIconShowing: boolean;
   public currentTrackMinutes: number;
@@ -52,6 +54,13 @@ export class SpotifyStatusBarComponent implements OnInit {
   public songProgression: number;
   public songTotalDuration: number;
   public songCurrentProgress: number;
+  public showPlayButton: boolean;
+  public showPauseButton: boolean;
+  private currentState: Object;
+  private currentTrackPosition: number;
+  public isRepeatPlaylistShowing: boolean;
+  public isRepeatTrackShowing: boolean;
+  public isRepeatOffShowing: boolean;
 
   constructor(
     private statusBarService: StatusBarService,
@@ -62,13 +71,22 @@ export class SpotifyStatusBarComponent implements OnInit {
     private dialog: MatDialog,
     private spotifyPlaybackService: SpotifyPlaybackService) {}
   ngOnInit() {
+    this.showPlayButton = true;
+    this.showPauseButton = false;
+    this.isRepeatPlaylistShowing = false;
+    this.isRepeatTrackShowing = false;
+    this.isRepeatOffShowing = true;
     this.imageEnlargeState = 'inactive';
     this.volume = 100;
     this.aString = '';
     this.timer = null;
     this.isEnlargeIconShowing = false;
     this.statusBarService.enlargePicture$.subscribe((value: boolean) => this.imageEnlargeState = value ? 'active' : 'inactive');
+    this.spotifyPlaybackService.test2$.subscribe(() => window.clearInterval(this.timer));
     this.spotifyPlaybackService.currentSongState$.subscribe(song => {
+      window.clearInterval(this.timer);
+      this.timer = null;
+
       this.currentTrackMinutes = this.getMinutes(song['position']);
       this.currentTrackSeconds = this.getSeconds(song['position']);
       this.trackDurationMinutes = this.getMinutes(song['duration']);
@@ -78,9 +96,13 @@ export class SpotifyStatusBarComponent implements OnInit {
       this.songTotalDuration = (this.trackDurationMinutes * 60) + (this.trackDurationSeconds);
       const totalMinutes = this.getMinutes(song['duration']);
       const totalSeconds = this.getSeconds(song['duration']);
+      this.songCurrentProgress = (this.songProgression / this.songTotalDuration) * 100;
+      this.currentTrack = song['track_window']['current_track'];
+      this.currentState = song;
 
       if (song['paused'] === false) {
-        this.currentTrack = song['track_window']['current_track'];
+        this.showPlayButton = false;
+        this.showPauseButton = true;
         this.statusBarService.setCurrentTrack(this.currentTrack);
         this.timer = window.setInterval(() => {
           this.currentTrackSeconds += 1;
@@ -97,6 +119,8 @@ export class SpotifyStatusBarComponent implements OnInit {
         }, 1000);
       } else {
         window.clearInterval(this.timer);
+        this.showPlayButton = true;
+        this.showPauseButton = false;
       }
     });
     this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
@@ -105,11 +129,12 @@ export class SpotifyStatusBarComponent implements OnInit {
       this.currentDevice = device;
     });
     this.playlistService.getCurrentDevice().subscribe((data: string) => this.appDevice = data);
+    this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
     this.spotifyService.getAuthToken().pipe(
-      switchMap((token: SpotifyToken) => {
-        const authToken = !!token.token;
+      switchMap((spotifyToken: SpotifyToken) => {
+        const authToken = !!spotifyToken.token;
         if (authToken) {
-          return this.spotifyService.getCurrentPlayer(token.token);
+          return this.spotifyService.getCurrentPlayer(spotifyToken.token);
         } else {
           return of();
         }
@@ -123,21 +148,32 @@ export class SpotifyStatusBarComponent implements OnInit {
     });
   }
 
+  shortenString(string: string): string {
+    const stringLength = 15;
+    if (string.length > stringLength) {
+      return string.substr(0, stringLength) + '...';
+    } else {
+      return string;
+    }
+  }
+
   displayArtists(artists: Array<Artist>): Array<string> {
-    const numberOfArtists = artists.length;
-    return artists.map((artist, i) => {
-      let artistString = '';
-      if (numberOfArtists > 1) {
-        if (numberOfArtists - 1 === i) {
-          artistString += artist.name;
-        } else {
-          artistString += `${artist.name}, `;
+    if (artists) {
+      const numberOfArtists = artists.length;
+      return artists.map((artist, i) => {
+        let artistString = '';
+        if (numberOfArtists > 1) {
+          if (numberOfArtists - 1 === i) {
+            artistString += artist.name;
+          } else {
+            artistString += `${artist.name}, `;
+          }
+        }  else {
+          artistString = artist.name;
         }
-      }  else {
-        artistString = artist.name;
-      }
-      return artistString;
-    });
+        return artistString;
+      });
+    }
   }
 
   enlargePicture(): void {
@@ -190,5 +226,90 @@ export class SpotifyStatusBarComponent implements OnInit {
     dialogConfig.height = '350px';
     dialogConfig.width = '300px';
     this.dialog.open(DeviceModalComponent, dialogConfig);
+  }
+
+  playSong() {
+    this.spotifyPlaybackService.playSong();
+  }
+
+  pauseSong() {
+    this.spotifyPlaybackService.pauseSong();
+  }
+
+  nextSong() {
+    this.spotifyPlaybackService.nextSong();
+  }
+
+  previousSong() {
+    this.spotifyPlaybackService.previousSong();
+  }
+
+  repeatPlaylist() {
+    let token = '';
+    this.isRepeatOffShowing = false;
+    this.isRepeatPlaylistShowing = true;
+    this.isRepeatTrackShowing = false;
+    this.spotifyService.getAuthToken().pipe(
+      switchMap((spotifyToken: SpotifyToken) => {
+        token = spotifyToken.token;
+        if (token) {
+          return this.playlistService.getCurrentDevice();
+        } else {
+          return of();
+        }
+      }),
+      switchMap((deviceID: string) => {
+        if (deviceID) {
+          return this.spotifyService.setRepeatMode(token, 'context', deviceID);
+        } else {
+          return of();
+        }
+      })).subscribe(() => {});
+  }
+
+  repeatTrack() {
+    let token = '';
+    this.isRepeatOffShowing = false;
+    this.isRepeatPlaylistShowing = false;
+    this.isRepeatTrackShowing = true;
+    this.spotifyService.getAuthToken().pipe(
+      switchMap((spotifyToken: SpotifyToken) => {
+        token = spotifyToken.token;
+        if (token) {
+          return this.playlistService.getCurrentDevice();
+        } else {
+          return of();
+        }
+      }),
+      switchMap((deviceID: string) => {
+        if (deviceID) {
+          return this.spotifyService.setRepeatMode(token, 'track', deviceID);
+        } else {
+          return of();
+        }
+      })).subscribe(() => {});
+  }
+
+  repeatOff() {
+    let token = '';
+    this.isRepeatOffShowing = true;
+    this.isRepeatPlaylistShowing = false;
+    this.isRepeatTrackShowing = false;
+    this.spotifyService.getAuthToken().pipe(
+      switchMap((spotifyToken: SpotifyToken) => {
+        token = spotifyToken.token;
+        if (token) {
+          return this.playlistService.getCurrentDevice();
+        } else {
+          return of();
+        }
+      }),
+      switchMap((deviceID: string) => {
+        if (deviceID) {
+          return this.spotifyService.setRepeatMode(token, 'off', deviceID);
+        } else {
+          return of();
+        }
+      })).subscribe(() => {});
   }
 }
