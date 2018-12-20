@@ -19,8 +19,8 @@ body {
 
 .device-modal-panel {
   position: absolute !important;
-  right: 60px;
-  top: 21.6em;
+  right: 25px;
+  top: 21.1em;
 }
 
 .device-modal-panel .mat-dialog-container {
@@ -31,3 +31,20 @@ body {
 .cdk-global-scrollblock {
   overflow: hidden;
 }
+
+.material-icons {
+  font-size: 17px;
+}
+
+.mat-progress-bar-buffer {
+  background-color: #565656;
+}
+
+.mat-progress-bar-fill::after {
+  background-color: #FFFFFF;
+}
+
+.mat-button[disabled], .mat-flat-button[disabled], .mat-icon-button[disabled], .mat-stroked-button[disabled] {
+  cursor: not-allowed !important;
+}
+

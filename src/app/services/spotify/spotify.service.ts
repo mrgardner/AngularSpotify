@@ -150,7 +150,13 @@ export class SpotifyService {
     return this._http.post(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, tracks, httpOptions);
   }
 
-  playSpotifyTrack(token, track, deviceID, currentPosition) {
+  /*
+    Need to figure out some logic to
+      - Set max cap on how many tracks to include at once 100?
+      - figure out logic to pull the next 100 tracks once you are at last track in last batch
+      - same point as above but for previous tracks
+  */
+  playSpotifyTrack(token, tracks,  offset, deviceID, currentPosition) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
@@ -158,7 +164,7 @@ export class SpotifyService {
       })
     };
     return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`,
-    {uris: [track], position_ms: currentPosition}, httpOptions);
+    {uris: tracks, position_ms: currentPosition, offset: {position: offset}}, httpOptions);
   }
 
   pauseSpotifyTrack(token, deviceID) {
@@ -169,6 +175,16 @@ export class SpotifyService {
       })
     };
     return this._http.put(this.spotifyApiBaseURI + `/me/player/pause?${deviceID}`, {}, httpOptions);
+  }
+
+  setRepeatMode(token, context, deviceID) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+    return this._http.put(this.spotifyApiBaseURI + `/me/player/repeat?state=${context}&device_id${deviceID}`, {}, httpOptions);
   }
 
   changeSpotifyTrackVolume(token, deviceID, volume) {
