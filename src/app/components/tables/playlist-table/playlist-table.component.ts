@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SpotifyService} from '../../../services/spotify/spotify.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TrackService} from '../../../services/track/track.service';
@@ -16,6 +16,8 @@ import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { Song } from 'src/app/interfaces/song/song.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import {MatSort, MatTableDataSource} from '@angular/material';
+import { PlaylistTableData } from 'src/app/interfaces/table/playlist-table-data.interface';
 
 @Component({
   selector: 'app-playlist-table',
@@ -23,7 +25,7 @@ import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotif
   styleUrls: ['./playlist-table.component.scss']
 })
 export class PlaylistTableComponent implements OnInit {
-  public tracks: Array<Object> = [];
+  public tracks: Array<Track> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
   public checkDuplicate: boolean;
@@ -41,6 +43,9 @@ export class PlaylistTableComponent implements OnInit {
   currentTrack: Object;
   track: Object;
   private currentTrackPosition: number;
+  public displayedColumns: string[] = ['title', 'artist', 'album', 'time'];
+  public dataSource: Object;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -177,6 +182,23 @@ export class PlaylistTableComponent implements OnInit {
             track.isPlayButtonShowing = false;
             track.isPauseButtonShowing = false;
           });
+          const source: Array<PlaylistTableData> = this.tracks.map((t: Track) => {
+            return {
+              title: t['track'].name,
+              artist: this.displayArtists(t['track'].artists).join(''),
+              album: t['track'].album.name,
+              time: this.convertMS(t['track'].duration_ms)
+            };
+          });
+          this.dataSource = new MatTableDataSource(source);
+
+          console.log(this.dataSource);
+          if (!this.dataSource['sort']) {
+            console.log('dfasdfdsf');
+            console.log(this.sort);
+            this.dataSource['sort'] = this.sort;
+          }
+          console.log(this.dataSource);
           // const numberOfLoops = Math.ceil(this.tracks.length / 50);
           // const trackIDs = this.tracks.map(track => track['track']['id']);
           // for (let i = 0; i < numberOfLoops; i++) {
