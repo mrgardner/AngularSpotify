@@ -16,7 +16,35 @@
     <div>
       <app-track-filter [tracks]="tracks"></app-track-filter>
     </div>
-    <table >
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <!-- Position Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>TITLE</th>
+        <td mat-cell *matCellDef="let element">{{element.title}}</td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="artist">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ARTIST</th>
+        <td mat-cell *matCellDef="let element">{{element.artist}}</td>
+      </ng-container>
+    
+      <!-- Weight Column -->
+       <ng-container matColumnDef="album">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ALBUM</th>
+        <td mat-cell *matCellDef="let element">{{element.album}}</td>
+      </ng-container>
+    
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>TIME</th>
+        <td mat-cell *matCellDef="let element">{{element.time}}</td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!-- <table >
       <thead>
         <tr class="tableHeaders">
           <ng-container *ngFor="let header of headers">
@@ -42,7 +70,7 @@
               <i *ngIf="track.isPauseButtonShowing" class="fas fa-pause-circle" (click)="pauseSong(track)"></i>
             </div>
 
-          </td>
+          </td> -->
           <!--<td>-->
             <!--<i [className]="track['isSaved'] ? 'fas fa-check' : 'fas fa-plus'"></i>-->
           <!--</td>-->
@@ -55,7 +83,7 @@
               <!--<img class="trackImage" src="/assets/blank_album.png" />-->
             <!--</ng-template>-->
           <!--</td>-->
-          <ng-container *ngIf="!track['track'].is_local; then canProceed; else cannotProceed"></ng-container>
+          <!-- <ng-container *ngIf="!track['track'].is_local; then canProceed; else cannotProceed"></ng-container>
           <ng-template #canProceed>
             <td (click)="goToTrack(track)" *ngIf="!track['highlight']">{{shortenString(track['track']['name'])}}</td>
             <td (click)="goToTrack(track)" *ngIf="track['highlight']" [innerHtml]="shortenString(track['track']['name'])"></td>
@@ -69,7 +97,7 @@
           <td>{{convertMS(track['track']['duration_ms'])}}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </div>
 <div class="loadingContainer" *ngIf="loading">
