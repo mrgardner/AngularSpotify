@@ -5,12 +5,10 @@ import { TrackService } from '../../../services/track/track.service';
 import PrettyMS from 'pretty-ms';
 import { PlaylistService } from '../../../services/playlist/playlist.service';
 import { switchMap } from 'rxjs/internal/operators';
-import { concat, of } from 'rxjs';
+import { of } from 'rxjs';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
-import { Params } from 'src/app/interfaces/params/params.interface';
-import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interface';
 import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { Song } from 'src/app/interfaces/song/song.interface';
@@ -18,6 +16,8 @@ import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotif
 import { MatTableDataSource, Sort } from '@angular/material';
 import { PlaylistTableData } from 'src/app/interfaces/table/playlist-table-data.interface';
 import { SelectionModel } from '@angular/cdk/collections';
+import { PlaylistTableService } from 'src/app/services/playlist-table/playlist-table.service';
+import { Playlist } from 'src/app/interfaces/playlist/playlist.interface';
 
 @Component({
   selector: 'app-playlist-table',
@@ -29,13 +29,7 @@ export class PlaylistTableComponent implements OnInit {
   public loading: boolean;
   public tracksLoaded: boolean;
   public checkDuplicate: boolean;
-  public filterTrackName: string;
-  public filterTrackArtist: string;
-  public playlistName: string;
-  public playlistCover: string;
-  public playlistOwner: string;
-  public isPlayButtonShowing: boolean;
-  public isPauseButtonShowing: boolean;
+  public playlist: Playlist;
   private token: string;
   private deviceID: string;
   currentTrack: Object;
@@ -52,24 +46,45 @@ export class PlaylistTableComponent implements OnInit {
     private trackService: TrackService,
     private router: Router,
     private playlistService: PlaylistService,
-    private spotifyPlaybackService: SpotifyPlaybackService) {}
+    private spotifyPlaybackService: SpotifyPlaybackService,
+    private playlistTableService: PlaylistTableService) {}
 
   ngOnInit() {
-    const that = this;
-    let loggedIn = false;
-    let playlist: PlaylistData = {
-      name: '',
-      owner: '',
-      playlistCoverURL: '',
-      playlistID: '',
-      playlistLength: 0,
-      selected: false
-    };
     this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
       this.checkDuplicate = isDuplicate;
       const tt = this.source;
       const t = this.trackService.filterDuplicateTracks(tt, isDuplicate);
       this.dataSource.data = t;
+    });
+    this.playlistTableService.tracks$.subscribe(tracks => this.tracks = tracks);
+    this.playlistTableService.playlistInfo$.subscribe(playlistInfo => this.playlist = playlistInfo);
+    this.playlistTableService.loading$.subscribe(loading => this.loading = loading);
+    this.playlistTableService.tracksLoaded$.subscribe(tracksLoaded => this.tracksLoaded = tracksLoaded);
+    this.playlistTableService.getPlayListTracks(this.route).subscribe((data: any) => {
+      this.tracks = this.tracks.concat(data.items);
+      if (!data['next']) {
+        this.loading = false;
+        this.tracksLoaded = true;
+        this.tracks.forEach((track: Track, index: number) => {
+          track.isPlayButtonShowing = false;
+          track.isPauseButtonShowing = false;
+        });
+          this.source = this.tracks.map((t: Track) => {
+          return {
+            title: t['track'].name,
+            artist: this.displayArtists(t['track'].artists).join(''),
+            album: t['track'].album.name,
+            addedAt: t['added_at'].split('T')[0],
+            time: this.convertMS(t['track'].duration_ms),
+            isPlayButtonShowing: t.isPlayButtonShowing,
+            isPauseButtonShowing: t.isPauseButtonShowing,
+            duration: t['track'].duration_ms,
+            uri: t['track'].uri,
+            track: t
+          };
+        });
+        this.dataSource = new MatTableDataSource(this.source);
+      }
     });
 
     this.spotifyService.getAuthToken()
@@ -156,21 +171,10 @@ export class PlaylistTableComponent implements OnInit {
         }
       });
     this.checkDuplicate = false;
-    this.filterTrackName = '';
-    this.filterTrackArtist = '';
-    this.playlistName = '';
-    this.playlistCover = '';
-    this.playlistOwner = '';
     this.deviceID = '';
     this.currentTrack = {track: {name: ''}};
     this.track = {track: {name: ''}};
-    this.trackService.filterTrackName$.subscribe((name: string) => this.filterTrackName = name);
-    this.trackService.filterTrackArtist$.subscribe((artist: string) => this.filterTrackArtist = artist);
-    this.isPlayButtonShowing = false;
-    this.isPauseButtonShowing = false;
     this.currentTrackPosition = 0;
-    // this.trackService.areTracksLoading$.subscribe(isLoading => this.loading = isLoading);
-    // this.trackService.areTracksLoaded$.subscribe(isLoading => this.tracksLoaded = isLoading);
     this.spotifyPlaybackService.currentSongState$.subscribe((track: SpotifySongResponse) => {
       if (track.paused) {
         this.currentTrack = {track: {name: ''}};
@@ -179,16 +183,6 @@ export class PlaylistTableComponent implements OnInit {
       }
     });
     this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
-
-    // this.route.params.pipe(
-    //   switchMap(params => {
-    //     if (params['playlistID']) {
-    //       return this.playlistService.getCurrentPlaylistTracksChange(params['playlistID']);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe(() => {});
     this.spotifyService.getAuthToken().pipe(
       switchMap((token: SpotifyToken) => {
         this.token = token.token;

@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 import { SpotifyPlaylistRespose } from 'src/app/interfaces/playlist/spotifyPlaylistResponse.interface';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
-import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interface';
+import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 
 @Component({
