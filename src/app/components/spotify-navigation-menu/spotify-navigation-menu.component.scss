@@ -108,6 +108,12 @@
   }
 }
 
+.loadingContainer {
+  position: absolute;
+  top: 40%;
+  left: 25%;
+}
+
 @media screen and (min-width: 1920px) {
   .imageNotEnlarged {
     height: 73vh;

@@ -1,13 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {SpotifyService} from '../../../services/spotify/spotify.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TrackService} from '../../../services/track/track.service';
+import { Component, OnInit } from '@angular/core';
+import { SpotifyService } from '../../../services/spotify/spotify.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TrackService } from '../../../services/track/track.service';
 import PrettyMS from 'pretty-ms';
-import {PlaylistService} from '../../../services/playlist/playlist.service';
-import {switchMap} from 'rxjs/internal/operators';
-import {concat, of} from 'rxjs';
+import { PlaylistService } from '../../../services/playlist/playlist.service';
+import { switchMap } from 'rxjs/internal/operators';
+import { concat, of } from 'rxjs';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
-import { Header } from 'src/app/interfaces/header/header.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { Params } from 'src/app/interfaces/params/params.interface';
@@ -16,6 +15,9 @@ import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { Song } from 'src/app/interfaces/song/song.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import { MatTableDataSource, Sort } from '@angular/material';
+import { PlaylistTableData } from 'src/app/interfaces/table/playlist-table-data.interface';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-playlist-table',
@@ -23,24 +25,26 @@ import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotif
   styleUrls: ['./playlist-table.component.scss']
 })
 export class PlaylistTableComponent implements OnInit {
-  public tracks: Array<Object> = [];
+  public tracks: Array<Track> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
   public checkDuplicate: boolean;
   public filterTrackName: string;
   public filterTrackArtist: string;
   public playlistName: string;
-  public headers: Array<Header>;
   public playlistCover: string;
   public playlistOwner: string;
   public isPlayButtonShowing: boolean;
   public isPauseButtonShowing: boolean;
   private token: string;
   private deviceID: string;
-  private playlistID: string;
   currentTrack: Object;
   track: Object;
   private currentTrackPosition: number;
+  displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'addedAt', 'time'];
+  dataSource: MatTableDataSource<any>;
+  selection = new SelectionModel<Object>(true, []);
+  source: Array<PlaylistTableData>;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -51,57 +55,7 @@ export class PlaylistTableComponent implements OnInit {
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
   ngOnInit() {
-    this.checkDuplicate = false;
-    this.filterTrackName = '';
-    this.filterTrackArtist = '';
-    this.playlistName = '';
-    this.playlistCover = '';
-    this.playlistOwner = '';
-    this.playlistID = '';
-    this.deviceID = '';
-    this.currentTrack = {track: {name: ''}};
-    this.track = {track: {name: ''}};
-    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
-      this.checkDuplicate = isDuplicate;
-      this.headers[0].show = isDuplicate;
-    });
-    this.trackService.filterTrackName$.subscribe((name: string) => this.filterTrackName = name);
-    this.trackService.filterTrackArtist$.subscribe((artist: string) => this.filterTrackArtist = artist);
-    this.isPlayButtonShowing = false;
-    this.isPauseButtonShowing = false;
-    this.currentTrackPosition = 0;
-    // this.trackService.areTracksLoading$.subscribe(isLoading => this.loading = isLoading);
-    // this.trackService.areTracksLoaded$.subscribe(isLoading => this.tracksLoaded = isLoading);
-    this.headers = [
-      {
-        name: 'X',
-        show: this.checkDuplicate
-      },
-      {
-        name: '',
-        show: true
-      },
-      // {
-      //   name: '',
-      //   show: true
-      // },
-      {
-        name: 'TITLE',
-        show: true
-      },
-      {
-        name: 'ARTIST',
-        show: true
-      },
-      {
-        name: 'ALBUM',
-        show: true
-      },
-      {
-        name: 'TIME',
-        show: true
-      }
-    ];
+    const that = this;
     let loggedIn = false;
     let playlist: PlaylistData = {
       name: '',
@@ -111,14 +65,13 @@ export class PlaylistTableComponent implements OnInit {
       playlistLength: 0,
       selected: false
     };
-    this.spotifyPlaybackService.currentSongState$.subscribe((track: SpotifySongResponse) => {
-      if (track.paused) {
-        this.currentTrack = {track: {name: ''}};
-      } else {
-        this.currentTrack = track.track_window.current_track;
-      }
+    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
+      this.checkDuplicate = isDuplicate;
+      const tt = this.source;
+      const t = this.trackService.filterDuplicateTracks(tt, isDuplicate);
+      this.dataSource.data = t;
     });
-    this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
+
     this.spotifyService.getAuthToken()
       .pipe(
         switchMap((spotifyToken: SpotifyToken) => {
@@ -177,6 +130,21 @@ export class PlaylistTableComponent implements OnInit {
             track.isPlayButtonShowing = false;
             track.isPauseButtonShowing = false;
           });
+           this.source = this.tracks.map((t: Track) => {
+            return {
+              title: t['track'].name,
+              artist: this.displayArtists(t['track'].artists).join(''),
+              album: t['track'].album.name,
+              addedAt: t['added_at'].split('T')[0],
+              time: this.convertMS(t['track'].duration_ms),
+              isPlayButtonShowing: t.isPlayButtonShowing,
+              isPauseButtonShowing: t.isPauseButtonShowing,
+              duration: t['track'].duration_ms,
+              uri: t['track'].uri,
+              track: t
+            };
+          });
+          this.dataSource = new MatTableDataSource(this.source);
           // const numberOfLoops = Math.ceil(this.tracks.length / 50);
           // const trackIDs = this.tracks.map(track => track['track']['id']);
           // for (let i = 0; i < numberOfLoops; i++) {
@@ -188,6 +156,30 @@ export class PlaylistTableComponent implements OnInit {
           // }
         }
       });
+    this.checkDuplicate = false;
+    this.filterTrackName = '';
+    this.filterTrackArtist = '';
+    this.playlistName = '';
+    this.playlistCover = '';
+    this.playlistOwner = '';
+    this.deviceID = '';
+    this.currentTrack = {track: {name: ''}};
+    this.track = {track: {name: ''}};
+    this.trackService.filterTrackName$.subscribe((name: string) => this.filterTrackName = name);
+    this.trackService.filterTrackArtist$.subscribe((artist: string) => this.filterTrackArtist = artist);
+    this.isPlayButtonShowing = false;
+    this.isPauseButtonShowing = false;
+    this.currentTrackPosition = 0;
+    // this.trackService.areTracksLoading$.subscribe(isLoading => this.loading = isLoading);
+    // this.trackService.areTracksLoaded$.subscribe(isLoading => this.tracksLoaded = isLoading);
+    this.spotifyPlaybackService.currentSongState$.subscribe((track: SpotifySongResponse) => {
+      if (track.paused) {
+        this.currentTrack = {track: {name: ''}};
+      } else {
+        this.currentTrack = track.track_window.current_track;
+      }
+    });
+    this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
 
     // this.route.params.pipe(
     //   switchMap(params => {
@@ -251,6 +243,38 @@ export class PlaylistTableComponent implements OnInit {
     ).subscribe(() => {});
   }
 
+  getDisplayedColumns() {
+    let tt = this.displayedColumns;
+
+    if (!this.checkDuplicate) {
+      tt = tt.filter(cd => {
+        return cd !== 'dupTrack';
+      });
+    }
+
+    return tt;
+  }
+
+  sortData(sort: Sort) {
+    const data = this.dataSource.data.slice();
+    if (!sort.active || sort.direction === '') {
+      this.dataSource.data = data;
+      return;
+    }
+
+    this.dataSource.data = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'title': return compare(a.title, b.title, isAsc);
+        case 'artist': return compare(a.artist, b.artist, isAsc);
+        case 'album': return compare(a.album, b.album, isAsc);
+        case 'addedAt': return compare(a.addedAt, b.addedAt, isAsc);
+        case 'time': return compare(a.duration, b.duration, isAsc);
+        default: return 0;
+      }
+    });
+  }
+
   testing(track: Song): void {
     this.playlistService.test(track);
   }
@@ -263,8 +287,7 @@ export class PlaylistTableComponent implements OnInit {
     return PrettyMS(ms, { secDecimalDigits: 0 });
   }
 
-  shortenString(string: string): string {
-    const stringLength = 25;
+  shortenString(string: string, stringLength: number): string {
     if (string.length > stringLength) {
       return string.substr(0, stringLength) + '...';
     } else {
@@ -311,11 +334,19 @@ export class PlaylistTableComponent implements OnInit {
   }
 
   showPlayButton(track: Track): void {
-    track.isPlayButtonShowing = true;
+    this.dataSource.data.forEach(t => {
+      if (t === track) {
+        t.isPlayButtonShowing = true;
+      }
+    });
   }
 
   hidePlayButton(track: Track): void {
-    track.isPlayButtonShowing = false;
+    this.dataSource.data.forEach(t => {
+      if (t === track) {
+        t.isPlayButtonShowing = false;
+      }
+    });
   }
 
   showPauseButton(track: Track): void {
@@ -325,4 +356,8 @@ export class PlaylistTableComponent implements OnInit {
   hidePauseButton(track: Track): void {
     track.isPauseButtonShowing = false;
   }
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

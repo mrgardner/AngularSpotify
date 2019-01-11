@@ -3,6 +3,7 @@ import {SpotifyService} from '../../services/spotify/spotify.service';
 import {ActivatedRoute} from '@angular/router';
 import {TrackService} from '../../services/track/track.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
+import { Track } from 'src/app/interfaces/track/track.interface';
 
 @Component({
   selector: 'app-track-filter',
@@ -12,6 +13,7 @@ import {PlaylistService} from '../../services/playlist/playlist.service';
 
 export class TrackFilterComponent implements OnInit {
   @Input('tracks') tracks: Array<Object>;
+  @Input('selectedTracks') selectedTracks: Array<Object>;
   public isDuplicateTrack: boolean;
   public name: string;
   public artist: string;
@@ -49,13 +51,11 @@ export class TrackFilterComponent implements OnInit {
     const that = this;
     that.isDuplicateTrack = false;
     that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
-    const tracksToRemove = [];
-    const t = that.tracks.filter(a => a['remove']);
-    const tt = t.map(a => {
+    const tracksToRemove = Array.from(this.selectedTracks['_selection']);
+    const tt = tracksToRemove.map((a: Track) => {
       const index = that.tracks.indexOf(a);
-      tracksToRemove.push(a);
       return {
-        uri: a['track']['uri'],
+        uri: a.uri,
         positions: [index]
       };
     });
