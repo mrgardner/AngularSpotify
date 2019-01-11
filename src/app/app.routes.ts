@@ -7,7 +7,7 @@ import {RegisterComponent} from './components/register/register.component';
 import {AuthGuard} from './guards/auth/auth.guard';
 import {SpotifyGuard} from './guards/spotify/spotify.guard';
 import {TrackComponent} from './components/track/track.component';
-import {AlbumsComponent} from "./components/library/albums/albums.component";
+import {AlbumsComponent} from './components/library/albums/albums.component';
 
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard, SpotifyGuard]},
