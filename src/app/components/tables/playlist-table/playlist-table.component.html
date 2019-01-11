@@ -1,12 +1,12 @@
 <div *ngIf="tracksLoaded" class="playlist">
   <div class="playlistHeader">
     <div class="playlistCoverSection">
-      <img class="playlistCoverImage" [src]="playlistCover" />
+      <img class="playlistCoverImage" [src]="playlist.playlistCoverUrl" />
     </div>
     <div class="playlistInfoSection">
       <span>PLAYLIST</span>
-      <h1>{{playlistName}}</h1>
-      <span>Created by {{playlistOwner}} * {{tracks.length}} <span *ngIf="tracks.length > 1 || tracks.length === 0">songs</span><span *ngIf="tracks.length === 1">song</span>, {{getPlaylistDuration()}}</span>
+      <h1>{{playlist.playlistName}}</h1>
+      <span>Created by {{playlist.playlistOwner}} * {{tracks.length}} <span *ngIf="tracks.length > 1 || tracks.length === 0">songs</span><span *ngIf="tracks.length === 1">song</span>, {{getPlaylistDuration()}}</span>
     </div>
   </div>
   <div *ngIf="tracks.length === 0">
