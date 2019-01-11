@@ -32,7 +32,8 @@ import {
   MatIconModule,
   MatTableModule,
   MatSortModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
@@ -72,6 +73,7 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
     MatCheckboxModule,
     MatTableModule,
     MatSortModule,
+    MatProgressSpinnerModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

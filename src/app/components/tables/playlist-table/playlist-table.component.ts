@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrackService } from '../../../services/track/track.service';
@@ -24,7 +24,7 @@ import { SelectionModel } from '@angular/cdk/collections';
   templateUrl: './playlist-table.component.html',
   styleUrls: ['./playlist-table.component.scss']
 })
-export class PlaylistTableComponent implements OnInit, AfterViewInit {
+export class PlaylistTableComponent implements OnInit {
   public tracks: Array<Track> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
@@ -42,7 +42,7 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
   track: Object;
   private currentTrackPosition: number;
   displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'addedAt', 'time'];
-  dataSource = new MatTableDataSource([]);
+  dataSource: MatTableDataSource<any>;
   selection = new SelectionModel<Object>(true, []);
   source: Array<PlaylistTableData>;
 
@@ -54,7 +54,8 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
     private playlistService: PlaylistService,
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
-  ngAfterViewInit() {
+  ngOnInit() {
+    const that = this;
     let loggedIn = false;
     let playlist: PlaylistData = {
       name: '',
@@ -67,14 +68,8 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
     this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
       this.checkDuplicate = isDuplicate;
       const tt = this.source;
-      this.loading = true;
       const t = this.trackService.filterDuplicateTracks(tt, isDuplicate);
-      console.log(this.dataSource.data);
       this.dataSource.data = t;
-      if (this.dataSource.data) {
-        this.loading = false;
-      }
-      console.log(this.dataSource.data);
     });
 
     this.spotifyService.getAuthToken()
@@ -149,8 +144,7 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
               track: t
             };
           });
-          this.dataSource.data = this.source;
-
+          this.dataSource = new MatTableDataSource(this.source);
           // const numberOfLoops = Math.ceil(this.tracks.length / 50);
           // const trackIDs = this.tracks.map(track => track['track']['id']);
           // for (let i = 0; i < numberOfLoops; i++) {
@@ -162,8 +156,6 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
           // }
         }
       });
-  }
-  ngOnInit() {
     this.checkDuplicate = false;
     this.filterTrackName = '';
     this.filterTrackArtist = '';
@@ -277,7 +269,7 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
         case 'artist': return compare(a.artist, b.artist, isAsc);
         case 'album': return compare(a.album, b.album, isAsc);
         case 'addedAt': return compare(a.addedAt, b.addedAt, isAsc);
-        case 'time': return compare(a.time, b.time, isAsc);
+        case 'time': return compare(a.duration, b.duration, isAsc);
         default: return 0;
       }
     });
@@ -347,7 +339,6 @@ export class PlaylistTableComponent implements OnInit, AfterViewInit {
         t.isPlayButtonShowing = true;
       }
     });
-    // track.isPlayButtonShowing = true;
   }
 
   hidePlayButton(track: Track): void {
