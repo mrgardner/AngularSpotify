@@ -1,6 +1,11 @@
 import {EventEmitter, Injectable} from '@angular/core';
+<<<<<<< HEAD
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {stringify} from 'query-string';
+=======
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import querystring from 'query-string';
+>>>>>>> S
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {concat, of} from 'rxjs';
@@ -112,14 +117,17 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/tracks/${id}`, httpOptions);
   }
 
-  getAllTracksFromPlaylist(owner, playlistID, token, moreSongs?) {
-    const url = moreSongs ? moreSongs : this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      })
-    };
-    return this._http.get(url, httpOptions);
+  getTracksFromPlaylist(owner, playlistID, token, offset, limit) {
+    const url = this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this._http.get(url, {
+      params: new HttpParams()
+      .set('offset', offset.toString())
+      .set('limit', limit.toString()),
+      headers
+    });
   }
 
   shuffleTracks(tracks) {

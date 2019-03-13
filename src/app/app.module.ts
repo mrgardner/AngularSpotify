@@ -32,12 +32,13 @@ import {
   MatTableModule,
   MatSortModule,
   MatCheckboxModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatToolbarModule
 } from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
-
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   entryComponents: [
@@ -73,6 +74,7 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
     MatTableModule,
     MatSortModule,
     MatProgressSpinnerModule,
+    MatToolbarModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -84,7 +86,9 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
     AngularFireAuthModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
