@@ -7,12 +7,16 @@ import { of, concat } from 'rxjs';
 import { PlaylistService } from '../playlist/playlist.service';
 import { Params } from 'src/app/interfaces/params/params.interface';
 import { Playlist } from 'src/app/interfaces/playlist/playlist.interface';
+import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
+import { Track } from 'src/app/interfaces/track/track.interface';
+import { Song } from 'src/app/interfaces/song/song.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaylistTableService {
   public tracks$: EventEmitter<any>;
+  public track$: EventEmitter<any>;
   public playlistInfo$: EventEmitter<any>;
   public loading$: EventEmitter<any>;
   public tracksLoaded$: EventEmitter<any>;
@@ -20,6 +24,7 @@ export class PlaylistTableService {
 
   constructor(private spotifyService: SpotifyService, private playlistService: PlaylistService) {
     this.tracks$ = new EventEmitter();
+    this.track$ = new EventEmitter();
     this.playlistInfo$ = new EventEmitter();
     this.loading$ = new EventEmitter();
     this.tracksLoaded$ = new EventEmitter();
@@ -32,6 +37,10 @@ export class PlaylistTableService {
 
   setTracks(tracks: Array<Object>): void {
     return this.tracks$.emit(tracks);
+  }
+
+  setTrack(track: Track): void {
+    return this.track$.emit(track);
   }
 
   setPlaylistInfo(playlistInfo: Playlist): void {
@@ -110,5 +119,61 @@ export class PlaylistTableService {
           }
         })
       );
+  }
+
+  playSpotifyTrack(currentTrackPosition, tracks, trackToBePlayed, track) {
+    let token = '';
+    let deviceId = '';
+
+    return this.spotifyService.getAuthToken().pipe(
+      switchMap((spotifyToken: SpotifyToken) => {
+        token = spotifyToken.token;
+        if (token) {
+          return this.playlistService.getCurrentDevice();
+        } else {
+          return of();
+        }
+      }),
+      switchMap((deviceID: string) => {
+        deviceId = deviceID;
+        if (deviceId) {
+          const trackPosition = trackToBePlayed['name'] !== track['track']['name'] ? 0 : currentTrackPosition;
+          this.setCurrentTrack(track['track']);
+          this.setTrack(track['track']);
+          const tt = tracks.map(ff => ff['track']['uri']);
+          const offset = tt.indexOf(track['track']['uri']);
+          return this.spotifyService.playSpotifyTrack(token, tt, offset, deviceId, trackPosition);
+        } else {
+          return of();
+        }
+      })
+    );
+  }
+
+  pauseSpotifyTrack(currentTrack: Song) {
+    let token = '';
+    let deviceId = '';
+
+    return this.spotifyService.getAuthToken().pipe(
+      switchMap((spotifyToken: SpotifyToken) => {
+        token = spotifyToken.token;
+        if (token) {
+          return this.playlistService.getCurrentDevice();
+        } else {
+          return of();
+        }
+      }),
+      switchMap((deviceID: string) => {
+        deviceId = deviceID;
+        if (deviceId) {
+          currentTrack.isPlayButtonShowing = true;
+          currentTrack.isPauseButtonShowing = false;
+          this.setCurrentTrack({track: {name: ''}});
+          return this.spotifyService.pauseSpotifyTrack(token, deviceId);
+        } else {
+          return of();
+        }
+      })
+    );
   }
 }
