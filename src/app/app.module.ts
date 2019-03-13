@@ -30,7 +30,8 @@ import {
   MatTableModule,
   MatSortModule,
   MatCheckboxModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatToolbarModule
 } from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
@@ -70,6 +71,7 @@ import { SpotifyInterceptorService } from './services/spotify-interceptor/spotif
     MatTableModule,
     MatSortModule,
     MatProgressSpinnerModule,
+    MatToolbarModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

@@ -104,7 +104,7 @@ export class PlaylistTableService {
             if (playlist.playlistLength > 0) {
               for (let i = 0; i < numberOfTimesToLoop; i++) {
                 const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
-                tempList.push(this.spotifyService.getAllTracksFromPlaylist(owner, playlistID, token, baseURI));
+                tempList.push(this.spotifyService.getTracksFromPlaylist(owner, playlistID, token, ));
               }
               return concat(...tempList);
             } else {
