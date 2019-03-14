@@ -150,7 +150,6 @@ export class PlaylistTableComponent implements OnInit {
           // for (let i = 0; i < numberOfLoops; i++) {
           //   this.spotifyService.checkSavedTrack(this.token, trackIDs.slice((i * 50), ((i + 1) * 50)).join(','))
           //     .subscribe(trackData =>  {
-          //       console.log('test')
           //       this.tracks.forEach((track, index) => track['isSaved'] = trackData[index]);
           //     });
           // }

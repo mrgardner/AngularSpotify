@@ -28,8 +28,6 @@ export class TrackFilterComponent implements OnInit {
     private playlistService: PlaylistService) {}
 
   ngOnInit() {
-    // const that = this;
-    // that.trackService.updateTracks$.subscribe(data => {this.tracks = data; console.log(data); });
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
@@ -70,22 +68,18 @@ export class TrackFilterComponent implements OnInit {
   }
 
   shuffleSongs(): void {
-    console.log(this.playlistID);
     const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
     this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
     //
     // this.route.params.pipe(switchMap(params => {
-    //   console.log(params)
     //   return of();
     //
     // })).subscribe(() => {});
     // const that = this;
     // this.route.params.subscribe(params => {
     //   // this.originalTracks = this.tracks;
-    //   // console.log(this.originalTracks[0]['track']['name']);
     //   this.trackService.addTrackToPlaylist(params['playlistID']);
     //   // const shuffledTracks = that.spotifyService.shuffleTracks(this.tracks);
-    //   // console.log(shuffledTracks[0]['track']['name']);
     //   // that.spotifyService.shuffler(params['playlistID'], this.originalTracks);
     // });
   }
@@ -99,23 +93,18 @@ export class TrackFilterComponent implements OnInit {
   }
 
   showSearchBox(): void {
-    console.log('SHOULD NOT SHOW');
     this.isSearchBoxShowing = true;
   }
 
   hideSearchBox(): void {
     // if (this.isSearchBoxShowing) {
-      console.log('sdff');
       this.name = '';
       this.filterName('');
       this.isSearchBoxShowing = false;
-      console.log(this.isSearchBoxShowing);
     // }
   }
 
   onLoseFocus(): void {
-    console.log(this.name);
-    console.log(this.name.length);
     if (this.name.length === 0) {
       this.hideSearchBox();
     }

@@ -111,7 +111,6 @@ export class PlaylistService {
         }
       })
     ).subscribe(data => {
-      console.log(data);
       if (!this.isPlaylistsBeingDeleted) {
         const playlistCoverURL = playlist.images.length > 0 ? playlist.images[0].url : '/assets/blank_album.png';
         const tuple = {
