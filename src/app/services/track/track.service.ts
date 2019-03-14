@@ -198,7 +198,6 @@ export class TrackService {
   }
 
   filterDuplicateTracks(tracks, args) {
-    console.log(tracks);
     const getNotUnique = (array) => {
       const map = new Map();
       const map2 = new Map();

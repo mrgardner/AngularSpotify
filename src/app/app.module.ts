@@ -1,9 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppComponent } from './components/app/app.component';
-import { routing } from './app.routes';
+import { AppRoutingModule } from './app.routes';
 import { PlaylistTableComponent } from './components/tables/playlist-table/playlist-table.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
@@ -77,7 +76,7 @@ import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.p
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    routing,
+    AppRoutingModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

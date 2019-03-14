@@ -8,6 +8,7 @@ import {AuthGuard} from './guards/auth/auth.guard';
 import {SpotifyGuard} from './guards/spotify/spotify.guard';
 import {TrackComponent} from './components/track/track.component';
 import {AlbumsComponent} from './components/library/albums/albums.component';
+import { NgModule } from '@angular/core';
 
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard, SpotifyGuard]},
@@ -19,4 +20,8 @@ const APP_ROUTES: Routes = [
   { path: 'library/albums', component: AlbumsComponent, canActivate: [AuthGuard, SpotifyGuard]},
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES);
+@NgModule({
+  imports: [RouterModule.forRoot(APP_ROUTES)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
