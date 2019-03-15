@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { parse } from 'query-string';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
@@ -13,17 +13,21 @@ import { CookieService } from 'ngx-cookie-service';
 export class CallbackComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private spotifyService: SpotifyService,
     private spotifyPlaybackService: SpotifyPlaybackService,
-    private cookieService: CookieService) {}
+    private cookieService: CookieService,
+    private router: Router) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe(t => console.log(t));
     this.route.fragment.subscribe((fragment: string) => {
       const parsed = parse(fragment);
+
       if ('access_token' in parsed && 'expires_in' in parsed) {
-        this.spotifyService.storeToken(parsed);
-        this.spotifyPlaybackService.setupPlayer(parsed['access_token']);
+        const expiredDate = new Date();
+        expiredDate.setHours(expiredDate.getHours() + 1);
+        // @ts-ignore
+        this.cookieService.set('spotifyToken', parsed.access_token, expiredDate);
+        this.router.navigate(['']);
+        this.spotifyPlaybackService.setupPlayer();
       }
     });
   }

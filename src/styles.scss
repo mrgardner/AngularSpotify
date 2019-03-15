@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~bootstrap/dist/css/bootstrap.min.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 body {
@@ -10,6 +9,15 @@ body {
 
 *:focus {
   outline: none;
+}
+
+.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+  height: 0 !important;
+  padding: 0 !important;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
+  height: 25px !important;
 }
 
 .new-playlist-panel .mat-dialog-container {
