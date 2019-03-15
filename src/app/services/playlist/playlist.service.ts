@@ -125,7 +125,9 @@ export class PlaylistService {
         } else {
           this.afs.collection('users').doc(userObject['email']).collection('playlists').doc(playlist.id).update({playlistData: tuple});
         }
-        this.router.navigate(['/playlist', playlist.id]);
+        const playlistName = encodeURIComponent(playlist.name.toLowerCase());
+        const playlistId = encodeURIComponent(playlist.id.toLowerCase());
+        this.router.navigateByUrl(`/playlist/${playlistName}/${playlistId}`);
       }
     });
   }

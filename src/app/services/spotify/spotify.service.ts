@@ -1,11 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
-<<<<<<< HEAD
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {stringify} from 'query-string';
-=======
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import querystring from 'query-string';
->>>>>>> S
+import {stringify} from 'query-string';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {concat, of} from 'rxjs';
@@ -15,6 +10,7 @@ import {TrackService} from '../track/track.service';
 import {PlaylistService} from '../playlist/playlist.service';
 import {environment} from '../../../environments/environment';
 import {DeviceModalService} from '../deviceModal/device-modal.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +27,8 @@ export class SpotifyService {
               private trackService: TrackService,
               private route: ActivatedRoute,
               private playlistService: PlaylistService,
-              private deviceModalService: DeviceModalService) {
+              private deviceModalService: DeviceModalService,
+              private cookieService: CookieService) {
     this.state = this.generateRandomString(16);
     const query = stringify({
       response_type: environment.spotify.loginResponseType,
@@ -62,6 +59,17 @@ export class SpotifyService {
   login() {
      window.location.href = this.getLoginURI();
   }
+
+  getUser() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
+      })
+    };
+    const url = this.spotifyApiBaseURI + '/me';
+    return this._http.get(url, httpOptions);
+  }
+
   storeToken(token) {
     const expireTime = new Date();
     expireTime.setMinutes(expireTime.getMinutes() + (token['expires_in'] / 60));
@@ -98,10 +106,10 @@ export class SpotifyService {
     );
   }
 
-  getAllPlaylists(token, morePlaylists?) {
+  getAllPlaylists(morePlaylists?) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
       })
     };
     const url = morePlaylists ? morePlaylists : this.spotifyApiBaseURI + '/me/playlists?limit=50';
@@ -117,10 +125,10 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/tracks/${id}`, httpOptions);
   }
 
-  getTracksFromPlaylist(owner, playlistID, token, offset, limit) {
-    const url = this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`;
+  getTracksFromPlaylist(playlistID, offset, limit) {
+    const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks`;
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
     });
     return this._http.get(url, {
       params: new HttpParams()

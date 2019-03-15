@@ -7,10 +7,15 @@
   </div>
   <div class="playlistContainer">
     <h3>PLAYLISTS</h3>
-    <div *ngFor="let playlist of playlists" class="playlist">
+    <mat-list>
+      <mat-list-item *ngFor="let playlist of playlists" (click)="goToTracks(playlist)" class="clickable">
+        {{shortenString(playlist['name'])}}
+      </mat-list-item>
+    </mat-list>
+    <!-- <div *ngFor="let playlist of playlists" class="playlist">
       <span *ngIf="playlist['selected']" class="playlist-selected"> </span>
       <span class="playlistName" (click)="goToTracks(playlist)">{{shortenString(playlist['name'])}}</span>
-    </div>
+    </div> -->
   </div>
 </div>
 <div *ngIf="playlistsLoaded" class="newPlaylistContainer" (click)="openNewPlaylistModal()">

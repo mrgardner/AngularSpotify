@@ -1,57 +1,18 @@
-.headerContainer {
-  height: 75px;
-  background-color: gray;
+.header-container {
+  background-color: #333333;
+  font-size: 14px;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12); 
 
   a {
+    flex-grow: 1;
     color: white;
     text-decoration: none;
-    display: inline-block;
-    width: 100%;
-    height: 100%;
+
+    .angular-text {
+      color: red;
+    }
   }
-
-  .headerSection {
-    float: left;
-    width: 75%;
-    font-size: 50px;
-    color: #40bc22;
-  }
-
-  .signInSection {
-    float: right;
-
-    button {
-      height: 75px;
-      margin-right: 1em;
-      cursor: pointer;
-    }
-
-    button:nth-child(1) {
-      background-color: #57d05a;
-      border-color: #57d05a;
-    }
-
-    button:nth-child(1):hover {
-      background-color: #3fa626;
-      border-color: #3fa626;
-    }
-
-    button:nth-child(2) {
-      margin-right: 0;
-      background-color: #23b0de;
-      border-color: #23b0de;
-    }
-
-    button:nth-child(2):hover {
-      margin-right: 0;
-      background-color: #1f5ca6;
-      border-color: #1f5ca6;
-    }
-
-    .avatar {
-      height: 75px;
-      float: right;
-      width: 23%;
-    }
+  button {
+    color: white;
   }
 }

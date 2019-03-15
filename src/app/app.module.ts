@@ -33,12 +33,16 @@ import {
   MatSortModule,
   MatCheckboxModule,
   MatProgressSpinnerModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatMenuModule,
+  MatSidenavModule,
+  MatListModule
 } from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
 import { CookieService } from 'ngx-cookie-service';
+import { DisplayUserComponent } from './components/display-user/display-user.component';
 
 @NgModule({
   entryComponents: [
@@ -63,7 +67,8 @@ import { CookieService } from 'ngx-cookie-service';
     DeviceModalComponent,
     NewPlaylistDialogComponent,
     AlbumsComponent,
-    FilterAlbumNamePipe
+    FilterAlbumNamePipe,
+    DisplayUserComponent
   ],
   imports: [
     MatDialogModule,
@@ -75,6 +80,10 @@ import { CookieService } from 'ngx-cookie-service';
     MatSortModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

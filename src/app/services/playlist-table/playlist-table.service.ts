@@ -55,71 +55,70 @@ export class PlaylistTableService {
     return this.tracksLoaded$.emit(tracksLoaded);
   }
 
-  getPlayListTracks(route) {
-    let loggedIn = false;
-    let token = '';
-    let playlist: PlaylistData = {
-      name: '',
-      owner: '',
-      playlistCoverURL: '',
-      playlistID: '',
-      playlistLength: 0,
-      selected: false
-    };
+  // getPlayListTracks(route) {
+  //   let loggedIn = false;
+  //   let token = '';
+  //   let playlist: PlaylistData = {
+  //     name: '',
+  //     owner: '',
+  //     playlistCoverURL: '',
+  //     playlistID: '',
+  //     playlistLength: 0,
+  //     selected: false
+  //   };
 
-    return this.spotifyService.getAuthToken()
-      .pipe(
-        switchMap((spotifyToken: SpotifyToken) => {
-          token = spotifyToken.token;
-          loggedIn = !!token;
-          if (loggedIn) {
-            return route.params;
-          } else {
-            this.setLoading(false);
-            this.setTracksLoaded(true);
-            return of();
-          }
+  //   return this.spotifyService.getAuthToken()
+  //     .pipe(
+  //       switchMap((spotifyToken: SpotifyToken) => {
+  //         token = spotifyToken.token;
+  //         loggedIn = !!token;
+  //         if (loggedIn) {
+  //           return route.params;
+  //         } else {
+  //           this.setLoading(false);
+  //           this.setTracksLoaded(true);
+  //           return of();
+  //         }
 
-        }),
-        switchMap((params: Params) => {
-          return this.playlistService.getSavedPlaylist(params.playlistID);
-        }),
-        switchMap((playlistInfo: PlaylistData) => {
-          this.setLoading(true);
-          this.setTracksLoaded(false);
-          this.setTracks([]);
-          const tempList = [];
-          playlist = playlistInfo;
-          if (playlist && loggedIn) {
-            const owner = playlist.owner;
-            const playlistID = playlist.playlistID;
-            const playlistLength = playlist.playlistLength;
-            const numberOfTimesToLoop = Math.ceil(playlistLength / 100);
-            this.setPlaylistInfo({
-              playlistName: playlist.name,
-              playlistOwner: playlist.owner,
-              playlistCoverUrl: playlist.playlistCoverURL
-            });
-            this.playlistService.selectPlaylist(playlist.name);
-            if (playlist.playlistLength > 0) {
-              for (let i = 0; i < numberOfTimesToLoop; i++) {
-                const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
-                tempList.push(this.spotifyService.getTracksFromPlaylist(owner, playlistID, token, ));
-              }
-              return concat(...tempList);
-            } else {
-              this.setLoading(false);
-              this.setTracksLoaded(true);
-              return of();
-            }
-          } else {
-            this.setLoading(false);
-            this.setTracksLoaded(true);
-            return of();
-          }
-        })
-      );
-  }
+  //       }),
+  //       switchMap((params: Params) => {
+  //         return this.playlistService.getSavedPlaylist(params.playlistID);
+  //       }),
+  //       switchMap((playlistInfo: PlaylistData) => {
+  //         this.setLoading(true);
+  //         this.setTracksLoaded(false);
+  //         this.setTracks([]);
+  //         const tempList = [];
+  //         playlist = playlistInfo;
+  //         if (playlist && loggedIn) {
+  //           const owner = playlist.owner;
+  //           const playlistID = playlist.playlistID;
+  //           const playlistLength = playlist.playlistLength;
+  //           const numberOfTimesToLoop = Math.ceil(playlistLength / 100);
+  //           this.setPlaylistInfo({
+  //             playlistName: playlist.name,
+  //             playlistOwner: playlist.owner,
+  //             playlistCoverUrl: playlist.playlistCoverURL
+  //           });
+  //           this.playlistService.selectPlaylist(playlist.name);
+  //           if (playlist.playlistLength > 0) {
+  //             for (let i = 0; i < numberOfTimesToLoop; i++) {
+  //               const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
+  //             }
+  //             return this.spotifyService.getTracksFromPlaylist(owner, playlistID, token, );
+  //           } else {
+  //             this.setLoading(false);
+  //             this.setTracksLoaded(true);
+  //             return of();
+  //           }
+  //         } else {
+  //           this.setLoading(false);
+  //           this.setTracksLoaded(true);
+  //           return of();
+  //         }
+  //       })
+  //     );
+  // }
 
   playSpotifyTrack(currentTrackPosition, tracks, trackToBePlayed, track) {
     let token = '';
