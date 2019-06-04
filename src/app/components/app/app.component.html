@@ -1,14 +1,10 @@
-<app-header></app-header>
+<!-- <app-header></app-header>
 
 <div class="row">
   <div class="col-sm-2">
     <app-spotify-navigation-menu></app-spotify-navigation-menu>
   </div>
   <div class="col-md-8">
-    <!--<div>-->
-      <!--<i class="fas fa-angle-left" (click)="goBack()"></i>-->
-      <!--<i class="fas fa-angle-right" (click)="goForward()"></i>-->
-    <!--</div>-->
     <router-outlet></router-outlet>
   </div>
 </div>
@@ -16,6 +12,24 @@
     <app-device-modal></app-device-modal>
 </ng-container>
 
-<app-spotify-status-bar></app-spotify-status-bar>
+<app-spotify-status-bar></app-spotify-status-bar> -->
 
 
+<div class="app-container">
+  <app-header></app-header>
+  <div class="router-container container">
+   
+    <mat-sidenav-container class="example-container">
+        <mat-sidenav mode="side" position="start" opened *ngIf="isLoggedIn()">
+            <app-spotify-navigation-menu></app-spotify-navigation-menu>
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <router-outlet></router-outlet>
+        </mat-sidenav-content>
+        <mat-sidenav mode="side" position="end" opened *ngIf="isLoggedIn()">
+            tset
+        </mat-sidenav>
+    </mat-sidenav-container>
+      <app-spotify-status-bar></app-spotify-status-bar>
+  </div>
+</div>

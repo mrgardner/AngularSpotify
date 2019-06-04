@@ -11,8 +11,10 @@ import {Router} from '@angular/router';
 import { SpotifyPlaylistRespose } from 'src/app/interfaces/playlist/spotifyPlaylistResponse.interface';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
-import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interface';
+import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -46,10 +48,11 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private statusBarService: StatusBarService,
     private spotifyPlaybackService: SpotifyPlaybackService,
     private dialog: MatDialog,
-    private router: Router) {}
+    private router: Router,
+    private authService: AuthService,
+    private utilService: UtilService) {}
 
   ngOnInit() {
-    let token = '';
     this.selectedPlaylist = '';
     this.imageEnlargeState = 'inactive';
     this.isPictureEnlarged = false;
@@ -59,38 +62,20 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     });
     this.statusBarService.currenttrack$.subscribe(value => this.currentTrack = value);
     this.spotifyPlaybackService.currentSongState$.subscribe(value => this.currentTrack = value['track_window']['current_track']);
-    this.spotifyService.getAuthToken()
+    this.spotifyService.getAllPlaylists()
       .pipe(
-        switchMap((spotifyToken: SpotifyToken) => {
-          token = spotifyToken.token;
-          const isLoggedIn = !!token;
-          if (isLoggedIn) {
-            return this.spotifyService.getAllPlaylists(token);
-          } else {
-            this.playlists = [];
-            this.playlistsLoaded = false;
-            return of();
-          }
-        }),
         switchMap((playlistInfo: SpotifyPlaylistRespose) => {
           this.loading = true;
           this.playlistsLoaded = false;
-          const isLoggedIn = !!token;
           const tempList = [];
-          if (isLoggedIn) {
             const playlistsLength = playlistInfo.total;
             const owner = String(playlistInfo.next).split('users/')[1].split('/playlists')[0];
             const numberOfTimesToLoop = Math.ceil(playlistsLength / 50);
             for (let i = 0; i < numberOfTimesToLoop; i++) {
               const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${i * 50}&limit=50`;
-              tempList.push(this.spotifyService.getAllPlaylists(token, baseURI));
+              tempList.push(this.spotifyService.getAllPlaylists(baseURI));
             }
             return concat(...tempList);
-          } else {
-            this.loading = false;
-            this.playlists = [];
-            return of();
-          }
         })
       )
       .subscribe((data: any) => {
@@ -114,9 +99,14 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   }
 
   goToTracks(playlist): void {
+    console.log(playlist);
     this.playlists.forEach(tt => tt['selected'] = false);
     playlist['selected'] = true;
-    this.playlistService.savePlaylist(playlist);
+    // this.playlistService.savePlaylist(playlist);
+    const playlistName = encodeURI(playlist.name.toLowerCase());
+    const playlistId = encodeURI(playlist.id);
+    const url = this.utilService.encodeSpecialSymbols(`/playlist/${playlistName}/${playlistId}`);
+    this.router.navigateByUrl(url);
   }
 
   goToSavedAlbums(): void {
@@ -124,7 +114,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   }
 
   shortenString(string: string): string {
-    const stringLength = 25;
+    const stringLength = 18;
     if (string.length > stringLength) {
       return string.substr(0, stringLength) + '...';
     } else {

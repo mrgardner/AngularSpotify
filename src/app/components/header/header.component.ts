@@ -3,6 +3,9 @@ import {SpotifyService} from '../../services/spotify/spotify.service';
 import {AuthService} from '../../services/auth/auth.service';
 import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -11,27 +14,28 @@ import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotif
 })
 export class HeaderComponent implements OnInit {
   public loggedIn: boolean;
-  public isLoggedIn: boolean;
+  public displayName: string;
 
   constructor(
     private spotifyService: SpotifyService,
     private authService: AuthService,
-    private spotifyPlaybackService: SpotifyPlaybackService) {}
+    private spotifyPlaybackService: SpotifyPlaybackService,
+    private cookieService: CookieService,
+    private router: Router) {}
 
   ngOnInit() {
-    this.spotifyService.getAuthToken().subscribe((token: SpotifyToken) => {
-      this.loggedIn = !!token.token;
-      this.spotifyPlaybackService.setupPlayer(token.token);
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const tt = !!this.cookieService.get('spotifyToken');
+      if (tt) {
+        this.spotifyPlaybackService.setupPlayer();
+      }
     });
-    this.authService.isAuthenticated().subscribe((data: Object) => this.isLoggedIn = !!data);
   }
 
-  loginSpotify(): void {
-    this.spotifyService.login();
-  }
-
-  logoutOfSpotify(): void {
-    this.spotifyService.logout();
+  isLoggedIn() {
+    return !!this.authService.getSpotifyToken();
   }
 
   logout(): void {

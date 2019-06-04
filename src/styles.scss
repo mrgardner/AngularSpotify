@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~bootstrap/dist/css/bootstrap.min.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~src/app/styles/variables.scss";
 
 body {
   background-color: black;
@@ -12,6 +12,15 @@ body {
   outline: none;
 }
 
+.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+  height: 0 !important;
+  padding: 0 !important;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
+  height: 25px !important;
+}
+
 .new-playlist-panel .mat-dialog-container {
   background-color: #282828;
   padding: 15px;
@@ -21,6 +30,10 @@ body {
   position: absolute !important;
   right: 25px;
   top: 21.1em;
+}
+
+.mat-list-base .mat-list-item {
+  color: #999999;
 }
 
 .device-modal-panel .mat-dialog-container {
@@ -48,3 +61,24 @@ body {
   cursor: not-allowed !important;
 }
 
+.mat-paginator-container {
+  background-color: #2d2929;
+}
+.mat-form-field-underline,
+.mat-select-value,
+.mat-select-arrow,
+.mat-paginator-icon,
+.mat-paginator-range-label,
+.mat-paginator-page-size-label {
+  color: white;
+}
+
+.mat-form-field-underline {
+  background-color: white !important;
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1500px;
+  }
+}

@@ -1,8 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { PlaylistService } from '../playlist/playlist.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { TrackService } from '../track/track.service';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,7 @@ export class SpotifyPlaybackService {
   public previousSong$: EventEmitter<any>;
   public test$: EventEmitter<any>;
   public test2$: EventEmitter<any>;
-  private currentTrack: Object;
-  constructor(private playlistService: PlaylistService, private _http: HttpClient, private trackService: TrackService) {
+  constructor(private _http: HttpClient, private cookieService: CookieService, private playlistService: PlaylistService) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.currentTrackPosition$ = new EventEmitter();
     this.currentSongState$ = new EventEmitter();
@@ -42,7 +41,8 @@ export class SpotifyPlaybackService {
     });
   }
 
-  setupPlayer(token) {
+  setupPlayer() {
+    const token = this.cookieService.get('spotifyToken');
     const head = document.getElementsByTagName('body')[0];
     const script = document.createElement('script');
     script.type = 'text/javascript';
