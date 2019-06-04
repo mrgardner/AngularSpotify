@@ -1,9 +1,13 @@
 
-.mat-drawer { width: 200px; padding: 10px;}
+.mat-drawer { width: 200px;}
 .mat-drawer-content {
   padding: 10px;
   height: 80vh;
-  background-color: #211b1b;
+  background-color: #2d2929;
+}
+
+.mat-sidenav {
+  background-color: #1b1919;
 }
 
 .mat-drawer-container {
@@ -12,5 +16,5 @@
 }
 
 .router-container {
-  padding: 30px 15px 10px 15px;
+  padding: 17px 15px 0px 15px;
 }

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~src/app/styles/variables.scss";
 
 body {
   background-color: black;
@@ -31,6 +32,10 @@ body {
   top: 21.1em;
 }
 
+.mat-list-base .mat-list-item {
+  color: #999999;
+}
+
 .device-modal-panel .mat-dialog-container {
   background-color: grey;
   padding: 0;
@@ -56,3 +61,24 @@ body {
   cursor: not-allowed !important;
 }
 
+.mat-paginator-container {
+  background-color: #2d2929;
+}
+.mat-form-field-underline,
+.mat-select-value,
+.mat-select-arrow,
+.mat-paginator-icon,
+.mat-paginator-range-label,
+.mat-paginator-page-size-label {
+  color: white;
+}
+
+.mat-form-field-underline {
+  background-color: white !important;
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1500px;
+  }
+}

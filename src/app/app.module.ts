@@ -34,7 +34,8 @@ import {
   MatToolbarModule,
   MatMenuModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  MatPaginatorModule
 } from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
@@ -79,6 +80,7 @@ import { SpotifyInterceptorService } from './services/spotify-interceptor/spotif
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
+    MatPaginatorModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

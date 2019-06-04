@@ -7,11 +7,12 @@
 .playlist {
   height: 76.99vh;
   overflow-y: scroll;
-  background-color: #211b1b;
+  background-color: #2d2929;
 
   .playlistHeader {
     margin-bottom: 1em;
     height: 200px;
+    color: white;
   
     .playlistCoverImage {
       height: 200px;
@@ -35,12 +36,12 @@
 
   &::-webkit-scrollbar-track {
     border-radius: 5px;
-    background-color: #211b1b;
+    background-color: #2d2929;
   }
 
   &::-webkit-scrollbar {
     width: 10px;
-    background-color: #211b1b;
+    background-color: #2d2929;
   }
 
   &::-webkit-scrollbar-thumb
@@ -52,7 +53,7 @@
 
 table {
   width: 100%;
-  background-color: #211b1b;
+  background-color: #2d2929;
 
   .trackPlayingHeader {
     width: 35px;

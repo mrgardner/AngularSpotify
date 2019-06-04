@@ -17,7 +17,7 @@ export class SpotifyPlaybackService {
   public previousSong$: EventEmitter<any>;
   public test$: EventEmitter<any>;
   public test2$: EventEmitter<any>;
-  constructor(private _http: HttpClient, private cookieService: CookieService) {
+  constructor(private _http: HttpClient, private cookieService: CookieService, private playlistService: PlaylistService) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.currentTrackPosition$ = new EventEmitter();
     this.currentSongState$ = new EventEmitter();
@@ -70,9 +70,9 @@ export class SpotifyPlaybackService {
 
        // Ready
        sdk.addListener('ready', ({device_id}) => {
-        // this.makeDeviceActive(token, device_id).subscribe(() => {
-        //   this.playlistService.saveDeviceID(device_id);
-        // });
+        this.makeDeviceActive(token, device_id).subscribe(() => {
+          this.playlistService.saveDeviceID(device_id);
+        });
       });
 
       sdk.connect();

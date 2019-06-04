@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { TrackService } from '../../../services/track/track.service';
 import PrettyMS from 'pretty-ms';
 import { PlaylistService } from '../../../services/playlist/playlist.service';
-import { switchMap, filter } from 'rxjs/internal/operators';
+import { switchMap, filter, tap } from 'rxjs/internal/operators';
 import { of } from 'rxjs';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
@@ -13,7 +13,7 @@ import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { Song } from 'src/app/interfaces/song/song.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
-import { Sort } from '@angular/material';
+import { Sort, MatSort, MatPaginator } from '@angular/material';
 import { PlaylistTableData } from 'src/app/interfaces/table/playlist-table-data.interface';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PlaylistTableService } from 'src/app/services/playlist-table/playlist-table.service';
@@ -25,7 +25,7 @@ import { PlaylistDataSourceService } from 'src/app/services/playlist-data-source
   templateUrl: './playlist-table.component.html',
   styleUrls: ['./playlist-table.component.scss']
 })
-export class PlaylistTableComponent implements OnInit {
+export class PlaylistTableComponent implements OnInit, AfterContentInit {
   public tracks: Array<Track> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
@@ -36,10 +36,15 @@ export class PlaylistTableComponent implements OnInit {
   currentTrack: Object;
   track: Object;
   private currentTrackPosition: number;
-  displayedColumns: string[] = ['dupTrack', 'title', 'artist', 'album', 'addedAt', 'time'];
+  displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'addedAt', 'time'];
   dataSource: PlaylistDataSourceService;
   selection = new SelectionModel<Object>(true, []);
   source: Array<PlaylistTableData>;
+  public itemCount: number;
+  public pageSize: number;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -50,8 +55,25 @@ export class PlaylistTableComponent implements OnInit {
     private spotifyPlaybackService: SpotifyPlaybackService,
     private playlistTableService: PlaylistTableService) {}
 
+  ngAfterContentInit() {
+    if (this.dataSource) {
+      this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
+        this.tracks = v;
+        if (v.length > 0) {
+          this.pageSize = v[0].size;
+          this.itemCount = v[0].total;
+        } else {
+          this.itemCount = 0;
+        }
+      });
+    }
+
+    this.paginator.page
+      .pipe(tap(() => this.loadTracks()))
+      .subscribe(() => {});
+  }
+
   ngOnInit() {
-    console.log('sdfs');
     this.dataSource = new PlaylistDataSourceService(this.spotifyService);
     // this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
     //   this.checkDuplicate = isDuplicate;
@@ -61,33 +83,35 @@ export class PlaylistTableComponent implements OnInit {
     // });
     this.playlistTableService.tracks$.subscribe(tracks => this.tracks = tracks);
     this.playlistTableService.track$.subscribe(track => this.track = track);
-    this.playlistTableService.playlistInfo$.subscribe(playlistInfo => this.playlist = playlistInfo);
+    // this.playlistTableService.playlistInfo$.subscribe(playlistInfo => this.playlist = playlistInfo);
     this.playlistTableService.tracksLoaded$.subscribe(tracksLoaded => this.tracksLoaded = tracksLoaded);
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      const tt = this.router.url.split('/');
+      filter(event => event instanceof NavigationEnd),
+      switchMap(() => {
+        const tt = this.router.url.split('/');
     if (tt.length === 4) {
-      console.log(tt);
       this.dataSource.loadTracks(tt[3]);
-      console.log(this.dataSource);
-      console.log(this.loading);
+      return this.spotifyService.getPlaylist(tt[3]);
+    } else {
+      return of();
     }
-    });
+      })
+    ).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
 
     // this.dataSource.loading$.subscribe(loading => this.loading = loading);
 
     const breadcrumbs = this.router.url.split('/');
     if (breadcrumbs.length === 4) {
-      console.log(breadcrumbs);
       this.dataSource.loadTracks(breadcrumbs[3]);
-      console.log(this.dataSource);
+      this.spotifyService.getPlaylist(breadcrumbs[3]).subscribe((playlistInfo: Playlist) => {
+        this.playlist = playlistInfo;
+      });
     }
   }
 
-  loadSearchReults() {
-    // const breadcrumbs = this.breadcrumbService.getBreadcrumbs();
-    // this.dataSource.(breadcrumbs[1].id, '', '', this.paginator.pageIndex, this.paginator.pageSize);
+  loadTracks() {
+    const tt = this.router.url.split('/');
+    this.dataSource.loadTracks(tt[3], '', '', this.paginator.pageIndex, this.paginator.pageSize);
   }
 
   getDisplayedColumns() {
@@ -152,7 +176,7 @@ export class PlaylistTableComponent implements OnInit {
 
   getPlaylistDuration(): (number | string) {
     let totalDuration = 0;
-    this.tracks.forEach(track => totalDuration += track['track']['duration_ms']);
+    this.tracks.forEach(track => totalDuration += track['track']['track']['duration_ms']);
 
     if (totalDuration === 0) {
       return '0 sec';
@@ -177,13 +201,13 @@ export class PlaylistTableComponent implements OnInit {
   //   });
   // }
 
-  // showPauseButton(track: Track): void {
-  //   track.isPauseButtonShowing = true;
-  // }
+  showPauseButton(track: Track): void {
+    track.isPauseButtonShowing = true;
+  }
 
-  // hidePauseButton(track: Track): void {
-  //   track.isPauseButtonShowing = false;
-  // }
+  hidePauseButton(track: Track): void {
+    track.isPauseButtonShowing = false;
+  }
 }
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {

@@ -52,8 +52,9 @@ export class PlaylistDataSourceService {
             track: t
           };
         });
-        tracks.items.forEach(element => {
+        sortedTracks.forEach(element => {
           element.total = tracks.total;
+          element.size = tracks.limit;
         });
         this.loadingSubject.next(false);
         this.tableSubject.next(sortedTracks);

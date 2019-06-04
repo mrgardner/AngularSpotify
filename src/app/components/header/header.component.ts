@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
     ).subscribe(() => {
       const tt = !!this.cookieService.get('spotifyToken');
       if (tt) {
-        // this.spotifyPlaybackService.setupPlayer();
+        this.spotifyPlaybackService.setupPlayer();
       }
     });
   }
