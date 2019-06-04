@@ -1,7 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {AngularFirestore} from 'angularfire2/firestore';
-import {AngularFireAuth} from 'angularfire2/auth';
-import {first, last, switchMap} from 'rxjs/operators';
+import { switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {PlaylistService} from '../playlist/playlist.service';
 
@@ -20,7 +18,7 @@ export class TrackService {
   private isPlaylistsBeingDeleted: boolean;
   public currentlyPlaying$: EventEmitter<any>;
 
-  constructor(private afs: AngularFirestore, private afa: AngularFireAuth, private playlistService: PlaylistService) {
+  constructor(private playlistService: PlaylistService) {
     this.checkDuplicate$ = new EventEmitter();
     this.filterTrackName$ = new EventEmitter();
     this.filterTrackArtist$ = new EventEmitter();
@@ -65,33 +63,6 @@ export class TrackService {
   //   this.updateTracks$.emit(tracks);
   // }
 
-  nowPlaying(track: Object) {
-    this.afa.user.subscribe(user => {
-      if (user) {
-        this.afs.collection('users').doc(user['email']).collection('currentTrack').doc('nowPlaying').update({currentTrack: track});
-      }
-    });
-  }
-
-  getNowPlaying() {
-    return this.afa.user.pipe(
-      switchMap(user => {
-      if (user) {
-        return this.afs.collection('users').doc(user['email']).collection('currentTrack').doc('nowPlaying').valueChanges();
-      } else {
-        return of();
-      }
-      }),
-      switchMap(data => {
-        if (data) {
-          return [data['currentTrack']];
-        } else {
-          return ['Nothing is currently playing'];
-        }
-      })
-    );
-  }
-
   displayArtists(artists) {
     const numberOfArtists = artists.length;
     return artists.map((artist, i) => {
@@ -106,47 +77,6 @@ export class TrackService {
         artistString = artist.name;
       }
       return artistString;
-    });
-  }
-
-  addTrackToPlaylist(playlistID) {
-    this.afa.user.subscribe(user => {
-      if (user) {
-        this.afs.collection('users').doc(user['email']).collection('playlists').doc(playlistID).collection('tracks').add({test: 'TESTING'});
-      }
-    });
-  }
-
-  saveTrack(playlistID, track, index) {
-    let userObject = {};
-    this.afa.user.pipe(
-      switchMap(user => {
-        userObject = user;
-        if (user) {
-          return this.afs.collection('users').doc(userObject['email'])
-            .collection('playlists').doc(playlistID).collection('tracks').doc(track.track.id).valueChanges();
-        } else {
-          return of();
-        }
-      })
-    ).subscribe(data => {
-      if (!this.isPlaylistsBeingDeleted) {
-        const mappedArtists = track.track.artists.map(artist => {
-          return {artist: artist.name};
-        });
-        const trackData = {
-          name: track.track.name,
-          currentIndex: index,
-          artists: mappedArtists
-        };
-        if (!data) {
-          this.afs.collection('users').doc(userObject['email'])
-            .collection('playlists').doc(playlistID).collection('tracks').doc(track.track.id).set({trackData});
-        } else {
-          this.afs.collection('users').doc(userObject['email'])
-            .collection('playlists').doc(playlistID).collection('tracks').doc(track.track.id).update({trackData});
-        }
-      }
     });
   }
 

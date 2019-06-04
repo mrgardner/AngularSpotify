@@ -3,7 +3,6 @@ import {switchMap} from 'rxjs/internal/operators';
 import {concat, of} from 'rxjs';
 import {SpotifyService} from '../../../services/spotify/spotify.service';
 import { Album } from 'src/app/interfaces/album/album.interface';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { SpotifyAlbumsResponse } from 'src/app/interfaces/album/spotify-albums-response.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 
@@ -22,33 +21,21 @@ export class AlbumsComponent implements OnInit {
   constructor(private spotifyService: SpotifyService) { }
 
   ngOnInit() {
-    let loggedIn = false;
-    let token = '';
     let numberOfSavedAlbums = 0;
-    this.spotifyService.getAuthToken()
+    this.spotifyService.getUsersSavedAlbums()
       .pipe(
-        switchMap((spotifyToken: SpotifyToken) => {
-          token = spotifyToken.token;
-          loggedIn = !!token;
-          if (loggedIn) {
-            return this.spotifyService.getUsersSavedAlbums(token);
-          } else {
-            this.loading = false;
-            return of();
-          }
-        }),
         switchMap((savedAlbums: SpotifyAlbumsResponse) => {
           this.loading = true;
           this.albumsLoaded = false;
           this.albums = [];
           const tempList = [];
-          if (savedAlbums && loggedIn) {
+          if (savedAlbums) {
             numberOfSavedAlbums = savedAlbums.total;
             const numberOfTimesToLoop = Math.ceil(numberOfSavedAlbums / 50);
             if (numberOfSavedAlbums > 0) {
               for (let i = 0; i < numberOfTimesToLoop; i++) {
                 const baseURI = `https://api.spotify.com/v1/me/albums?offset=${i * 50}&limit=50`;
-                tempList.push(this.spotifyService.getUsersSavedAlbums(token, baseURI));
+                tempList.push(this.spotifyService.getUsersSavedAlbums(baseURI));
               }
               return concat(...tempList);
             } else {

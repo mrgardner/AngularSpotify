@@ -6,7 +6,6 @@ import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {TrackService} from '../../services/track/track.service';
 import { Params } from 'src/app/interfaces/params/params.interface';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 
@@ -24,28 +23,29 @@ export class TrackComponent implements OnInit {
     private location: Location) {}
 
   ngOnInit() {
-    let trackParams: Params  = {
-      playlistID: '',
-      trackID: ''
-    };
-    this.route.params.pipe(
-      switchMap((params: Params) => {
-        trackParams = params;
-        if (params) {
-          return this.spotifyService.getAuthToken();
-        } else {
-          return of();
-        }
-      }),
-      switchMap((token: SpotifyToken) => {
-        const isLoggedIn = !!token.token;
-        if (isLoggedIn) {
-          return this.spotifyService.getTrack(token.token, trackParams.trackID);
-        } else {
-          return of();
-        }
-      })
-    ).subscribe((track: Track) => this.track = track);
+    // let trackParams: Params  = {
+    //   playlistID: '',
+    //   trackID: ''
+    // };
+    // TODO: FIX without having to use getAuthToken()
+    // this.route.params.pipe(
+    //   switchMap((params: Params) => {
+    //     trackParams = params;
+    //     if (params) {
+    //       return this.spotifyService.getAuthToken();
+    //     } else {
+    //       return of();
+    //     }
+    //   }),
+    //   switchMap((token: SpotifyToken) => {
+    //     const isLoggedIn = !!token.token;
+    //     if (isLoggedIn) {
+    //       return this.spotifyService.getTrack(token.token, trackParams.trackID);
+    //     } else {
+    //       return of();
+    //     }
+    //   })
+    // ).subscribe((track: Track) => this.track = track);
   }
 
   displayArtist(artist: Array<Artist>): Array<string> {

@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { PlaylistService } from '../playlist/playlist.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -17,7 +16,7 @@ export class SpotifyPlaybackService {
   public previousSong$: EventEmitter<any>;
   public test$: EventEmitter<any>;
   public test2$: EventEmitter<any>;
-  constructor(private _http: HttpClient, private cookieService: CookieService, private playlistService: PlaylistService) {
+  constructor(private _http: HttpClient, private cookieService: CookieService) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.currentTrackPosition$ = new EventEmitter();
     this.currentSongState$ = new EventEmitter();
@@ -42,7 +41,6 @@ export class SpotifyPlaybackService {
   }
 
   setupPlayer() {
-    const token = this.cookieService.get('spotifyToken');
     const head = document.getElementsByTagName('body')[0];
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -55,7 +53,7 @@ export class SpotifyPlaybackService {
       const sdk = new t['Player']({
         name: 'Web Playback SDK',
         volume: 1.0,
-        getOAuthToken: callback => { callback(token); }
+        getOAuthToken: callback => { callback(this.cookieService.get('token')); }
       });
       sdk.on('player_state_changed', state => {
         counter++;
@@ -70,6 +68,7 @@ export class SpotifyPlaybackService {
 
        // Ready
        sdk.addListener('ready', ({device_id}) => {
+         localStorage.setItem('deviceId', device_id);
         // this.makeDeviceActive(token, device_id).subscribe(() => {
         //   this.playlistService.saveDeviceID(device_id);
         // });
@@ -84,14 +83,8 @@ export class SpotifyPlaybackService {
     })();
   }
 
-  makeDeviceActive(token, deviceID) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      })
-    };
-    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]}, httpOptions);
+  makeDeviceActive(deviceID) {
+    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]});
   }
 
   currentPositionOfTrack(position: number) {

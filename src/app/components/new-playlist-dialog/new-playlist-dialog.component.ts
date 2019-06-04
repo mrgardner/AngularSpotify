@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 
 @Component({
@@ -57,6 +57,7 @@ export class NewPlaylistDialogComponent implements OnInit {
       description: playlistDescription,
       public: true
     };
-    this.spotifyService.createNewPlaylist(body, playlistImage).subscribe(() => this.dialogRef.close());
+    // TODO: Fix this function
+    // this.spotifyService.createNewPlaylist(body, playlistImage).subscribe(() => this.dialogRef.close());
   }
 }
