@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './components/app/app.component';
 import { AppRoutingModule } from './app.routes';
 import { PlaylistTableComponent } from './components/tables/playlist-table/playlist-table.component';
@@ -14,8 +14,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { DuplicateTrackPipe } from './pipes/duplicateTrack/duplicate-track.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { TrackFilterComponent } from './components/track-filter/track-filter.component';
 import { FilterTrackNamePipe } from './pipes/filterTrackName/filter-track-name.pipe';
 import { FilterTrackArtistPipe } from './pipes/filterTrackArtist/filter-track-artist.pipe';
@@ -44,6 +42,7 @@ import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { DisplayUserComponent } from './components/display-user/display-user.component';
+import { SpotifyInterceptorService } from './services/spotify-interceptor/spotify-interceptor.service';
 
 @NgModule({
   entryComponents: [
@@ -57,8 +56,6 @@ import { DisplayUserComponent } from './components/display-user/display-user.com
     HomeComponent,
     CallbackComponent,
     DuplicateTrackPipe,
-    LoginComponent,
-    RegisterComponent,
     TrackFilterComponent,
     FilterTrackNamePipe,
     FilterTrackArtistPipe,
@@ -98,7 +95,10 @@ import { DisplayUserComponent } from './components/display-user/display-user.com
     BrowserAnimationsModule
   ],
   providers: [
-    CookieService
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS, useClass: SpotifyInterceptorService, multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
