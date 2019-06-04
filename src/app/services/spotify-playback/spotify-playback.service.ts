@@ -70,9 +70,9 @@ export class SpotifyPlaybackService {
 
        // Ready
        sdk.addListener('ready', ({device_id}) => {
-        this.makeDeviceActive(token, device_id).subscribe(() => {
-          this.playlistService.saveDeviceID(device_id);
-        });
+        // this.makeDeviceActive(token, device_id).subscribe(() => {
+        //   this.playlistService.saveDeviceID(device_id);
+        // });
       });
 
       sdk.connect();

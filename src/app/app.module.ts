@@ -40,8 +40,8 @@ import {
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
+import { DisplayUserComponent } from './components/display-user/display-user.component';
 import { SpotifyInterceptorService } from './services/spotify-interceptor/spotify-interceptor.service';
-
 
 @NgModule({
   entryComponents: [
@@ -64,7 +64,8 @@ import { SpotifyInterceptorService } from './services/spotify-interceptor/spotif
     DeviceModalComponent,
     NewPlaylistDialogComponent,
     AlbumsComponent,
-    FilterAlbumNamePipe
+    FilterAlbumNamePipe,
+    DisplayUserComponent
   ],
   imports: [
     MatDialogModule,
