@@ -36,7 +36,8 @@ import {
   MatToolbarModule,
   MatMenuModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  MatPaginatorModule
 } from '@angular/material';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
@@ -84,6 +85,7 @@ import { DisplayUserComponent } from './components/display-user/display-user.com
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
+    MatPaginatorModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

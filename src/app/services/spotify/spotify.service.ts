@@ -16,8 +16,6 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class SpotifyService {
-  private readonly state: string;
-  private readonly loginURI: string;
   private readonly spotifyApiBaseURI: string;
   private didPlaylistChange: boolean;
 
@@ -29,36 +27,17 @@ export class SpotifyService {
               private playlistService: PlaylistService,
               private deviceModalService: DeviceModalService,
               private cookieService: CookieService) {
-    this.state = this.generateRandomString(16);
-    const query = stringify({
-      response_type: environment.spotify.loginResponseType,
-      client_id: environment.spotify.clientID,
-      scope: environment.spotify.scope,
-      redirect_uri: environment.spotify.redirectURI,
-      state: this.state
-    });
-    this.loginURI = environment.spotify.authURI + query;
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
     this.playlistService.didPlaylistChange$.subscribe(value => this.didPlaylistChange = value);
     this.didPlaylistChange = false;
   }
 
-  generateRandomString(length) {
-    let text = '';
-    const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
-
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  }
-
-  getLoginURI() {
-    return this.loginURI;
-  }
-  login() {
-     window.location.href = this.getLoginURI();
-  }
+  // getLoginURI() {
+  //   return this.loginURI;
+  // }
+  // login() {
+  //    window.location.href = this.getLoginURI();
+  // }
 
   getUser() {
     const httpOptions = {
@@ -126,16 +105,26 @@ export class SpotifyService {
   }
 
   getTracksFromPlaylist(playlistID, offset, limit) {
+    const t = offset * limit;
     const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks`;
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
     });
     return this._http.get(url, {
       params: new HttpParams()
-      .set('offset', offset.toString())
+      .set('offset', t.toString())
       .set('limit', limit.toString()),
       headers
     });
+  }
+
+  getPlaylist(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
+      })
+    };
+    return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`, httpOptions);
   }
 
   shuffleTracks(tracks) {
