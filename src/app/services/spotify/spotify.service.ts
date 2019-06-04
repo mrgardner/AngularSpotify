@@ -258,7 +258,7 @@ export class SpotifyService {
         switchMap((data: Object) => this.uploadPlaylistCover(authToken, image, data['owner']['id'], data['id']))
       );
   }
-  
+
   getUsersSavedAlbums(token, moreAlbums?) {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;
     const httpOptions = {

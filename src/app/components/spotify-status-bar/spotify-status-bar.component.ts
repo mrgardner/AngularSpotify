@@ -56,7 +56,7 @@ export class SpotifyStatusBarComponent implements OnInit {
   public songCurrentProgress: number;
   public showPlayButton: boolean;
   public showPauseButton: boolean;
-  private currentState: Object;
+  public currentState: SpotifySongResponse;
   private currentTrackPosition: number;
   public isRepeatPlaylistShowing: boolean;
   public isRepeatTrackShowing: boolean;
