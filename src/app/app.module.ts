@@ -7,11 +7,6 @@ import { PlaylistTableComponent } from './components/tables/playlist-table/playl
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { CallbackComponent } from './components/callback/callback.component';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from '../environments/environment';
 import { DuplicateTrackPipe } from './pipes/duplicateTrack/duplicate-track.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TrackFilterComponent } from './components/track-filter/track-filter.component';
@@ -22,26 +17,20 @@ import { SpotifyNavigationMenuComponent } from './components/spotify-navigation-
 import { SpotifyStatusBarComponent } from './components/spotify-status-bar/spotify-status-bar.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DeviceModalComponent } from './components/device-modal/device-modal.component';
-import {
-  MatButtonModule,
-  MatDialogModule,
-  MatProgressBarModule,
-  MatIconModule,
-  MatTableModule,
-  MatSortModule,
-  MatCheckboxModule,
-  MatProgressSpinnerModule,
-  MatToolbarModule,
-  MatMenuModule,
-  MatSidenavModule,
-  MatListModule,
-  MatPaginatorModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
 import { DisplayUserComponent } from './components/display-user/display-user.component';
 import { SpotifyInterceptorService } from './services/spotify-interceptor/spotify-interceptor.service';
+import { MatToolbarModule, MatMenuModule, MatSidenavModule, MatListModule, MatPaginatorModule } from '@angular/material';
 
 @NgModule({
   entryComponents: [
@@ -87,10 +76,6 @@ import { SpotifyInterceptorService } from './services/spotify-interceptor/spotif
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFirestoreModule,
-    AngularFireAuthModule,
     BrowserAnimationsModule
   ],
   providers: [

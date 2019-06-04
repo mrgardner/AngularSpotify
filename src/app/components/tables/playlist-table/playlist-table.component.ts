@@ -8,7 +8,7 @@ import { switchMap, filter, tap } from 'rxjs/internal/operators';
 import { of } from 'rxjs';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
+import { Params } from 'src/app/interfaces/params/params.interface';
 import { Track } from 'src/app/interfaces/track/track.interface';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { Song } from 'src/app/interfaces/song/song.interface';
@@ -43,8 +43,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   public itemCount: number;
   public pageSize: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  // TODO: FIX VIEW CHILD
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -68,9 +69,10 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
       });
     }
 
-    this.paginator.page
-      .pipe(tap(() => this.loadTracks()))
-      .subscribe(() => {});
+    // TODO: FIX PAGINATOR
+    // this.paginator.page
+    //   .pipe(tap(() => this.loadTracks()))
+    //   .subscribe(() => {});
   }
 
   ngOnInit() {
@@ -111,7 +113,197 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
 
   loadTracks() {
     const tt = this.router.url.split('/');
-    this.dataSource.loadTracks(tt[3], '', '', this.paginator.pageIndex, this.paginator.pageSize);
+    // TODO: FIX PAGINATOR
+    // this.dataSource.loadTracks(tt[3], '', '', this.paginator.pageIndex, this.paginator.pageSize);
+    // const that = this;
+    // let loggedIn = false;
+    // let playlist: PlaylistData = {
+    //   name: '',
+    //   owner: '',
+    //   playlistCoverURL: '',
+    //   playlistID: '',
+    //   playlistLength: 0,
+    //   selected: false
+    // };
+    // TODO: FIX
+    // this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
+    //   this.checkDuplicate = isDuplicate;
+    //   const tt = this.source;
+    //   const t = this.trackService.filterDuplicateTracks(tt, isDuplicate);
+    //   this.dataSource.data = t;
+    // });
+
+    // TODO: FIX without having to use getAuthToken()
+    // this.spotifyService.getAuthToken()
+    //   .pipe(
+    //     switchMap((spotifyToken: SpotifyToken) => {
+    //       this.token = spotifyToken.token;
+    //       loggedIn = !!this.token;
+    //       if (loggedIn) {
+    //         return this.route.params;
+    //       } else {
+    //         this.loading = false;
+    //         return of();
+    //       }
+
+    //     }),
+    //     switchMap((params: Params) => {
+    //       return this.playlistService.getSavedPlaylist(params.playlistID);
+    //     }),
+    //     switchMap((playlistInfo: PlaylistData) => {
+    //       this.loading = true;
+    //       this.tracksLoaded = false;
+    //       this.tracks = [];
+    //       const tempList = [];
+    //       playlist = playlistInfo;
+    //       if (playlist && loggedIn) {
+    //         const owner = playlist.owner;
+    //         const playlistID = playlist.playlistID;
+    //         const playlistLength = playlist.playlistLength;
+    //         const numberOfTimesToLoop = Math.ceil(playlistLength / 100);
+    //         this.playlistName = playlist.name;
+    //         this.playlistCover = playlist.playlistCoverURL;
+    //         this.playlistOwner = playlist.owner;
+    //         this.playlistService.selectPlaylist(this.playlistName);
+    //         if (playlist.playlistLength > 0) {
+    //           for (let i = 0; i < numberOfTimesToLoop; i++) {
+    //             const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
+    //             tempList.push(this.spotifyService.getAllTracksFromPlaylist(owner, playlistID, this.token, baseURI));
+    //           }
+    //           return concat(...tempList);
+    //         } else {
+    //           this.loading = false;
+    //           this.tracksLoaded = true;
+    //           return of();
+    //         }
+    //       } else {
+    //         this.loading = false;
+    //         this.tracksLoaded = true;
+    //         return of();
+    //       }
+    //     })
+    //   )
+    //   .subscribe((data: any) => {
+    //     this.tracks = this.tracks.concat(data.items);
+    //     if (!data['next']) {
+    //       this.loading = false;
+    //       this.tracksLoaded = true;
+    //       this.tracks.forEach((track: Track, index: number) => {
+    //         track.isPlayButtonShowing = false;
+    //         track.isPauseButtonShowing = false;
+    //       });
+    //        this.source = this.tracks.map((t: Track) => {
+    //         return {
+    //           title: t['track'].name,
+    //           artist: this.displayArtists(t['track'].artists).join(''),
+    //           album: t['track'].album.name,
+    //           addedAt: t['added_at'].split('T')[0],
+    //           time: this.convertMS(t['track'].duration_ms),
+    //           isPlayButtonShowing: t.isPlayButtonShowing,
+    //           isPauseButtonShowing: t.isPauseButtonShowing,
+    //           duration: t['track'].duration_ms,
+    //           uri: t['track'].uri,
+    //           track: t
+    //         };
+    //       });
+    //       this.dataSource = new MatTableDataSource(this.source);
+    //       // const numberOfLoops = Math.ceil(this.tracks.length / 50);
+    //       // const trackIDs = this.tracks.map(track => track['track']['id']);
+    //       // for (let i = 0; i < numberOfLoops; i++) {
+    //       //   this.spotifyService.checkSavedTrack(this.token, trackIDs.slice((i * 50), ((i + 1) * 50)).join(','))
+    //       //     .subscribe(trackData =>  {
+    //       //       this.tracks.forEach((track, index) => track['isSaved'] = trackData[index]);
+    //       //     });
+    //       // }
+    //     }
+    //   });
+    // this.checkDuplicate = false;
+    // this.filterTrackName = '';
+    // this.filterTrackArtist = '';
+    // this.playlistName = '';
+    // this.playlistCover = '';
+    // this.playlistOwner = '';
+    this.deviceID = '';
+    this.currentTrack = {track: {name: ''}};
+    this.track = {track: {name: ''}};
+    // this.trackService.filterTrackName$.subscribe((name: string) => this.filterTrackName = name);
+    // this.trackService.filterTrackArtist$.subscribe((artist: string) => this.filterTrackArtist = artist);
+    // this.isPlayButtonShowing = false;
+    // this.isPauseButtonShowing = false;
+    this.currentTrackPosition = 0;
+    // this.trackService.areTracksLoading$.subscribe(isLoading => this.loading = isLoading);
+    // this.trackService.areTracksLoaded$.subscribe(isLoading => this.tracksLoaded = isLoading);
+    this.spotifyPlaybackService.currentSongState$.subscribe((track: SpotifySongResponse) => {
+      if (track.paused) {
+        this.currentTrack = {track: {name: ''}};
+      } else {
+        this.currentTrack = track.track_window.current_track;
+      }
+    });
+    this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
+
+    // this.route.params.pipe(
+    //   switchMap(params => {
+    //     if (params['playlistID']) {
+    //       return this.playlistService.getCurrentPlaylistTracksChange(params['playlistID']);
+    //     } else {
+    //       return of();
+    //     }
+    //   })
+    // ).subscribe(() => {});
+    // TODO: FIX without having to use getAuthToken()
+    // this.spotifyService.getAuthToken().pipe(
+    //   switchMap((token: SpotifyToken) => {
+    //     this.token = token.token;
+    //     if (this.token) {
+    //       return this.playlistService.getCurrentDevice();
+    //     } else {
+    //       return of();
+    //     }
+    //   }),
+    //   switchMap((deviceID: string) => {
+    //     this.deviceID = deviceID;
+    //     if (this.deviceID) {
+    //       return this.playlistService.test$;
+    //     } else {
+    //       return of();
+    //     }
+    //   }),
+    //   switchMap(track => {
+    //     const trackPosition = this.track['name'] !== track['track']['name'] ? 0 : this.currentTrackPosition;
+    //     this.currentTrack = track['track'];
+    //     this.track = track['track'];
+    //     const tt = this.tracks.map(ff => ff['track']['uri']);
+    //     const offset = tt.indexOf(this.track['uri']);
+    //     return this.spotifyService.playSpotifyTrack(this.token, tt, offset, this.deviceID, trackPosition);
+    //   })
+    // ).subscribe(() => {});
+
+    // TODO: FIX without having to use getAuthToken()
+    // this.spotifyService.getAuthToken().pipe(
+    //   switchMap((token: SpotifyToken) => {
+    //     this.token = token.token;
+    //     if (this.token) {
+    //       return this.playlistService.getCurrentDevice();
+    //     } else {
+    //       return of();
+    //     }
+    //   }),
+    //   switchMap((deviceID: string) => {
+    //     this.deviceID = deviceID;
+    //     if (this.deviceID) {
+    //       return this.playlistService.test2$;
+    //     } else {
+    //       return of();
+    //     }
+    //   }),
+    //   switchMap((currentTrack: CurrentTrack) => {
+    //     currentTrack.isPlayButtonShowing = true;
+    //     currentTrack.isPauseButtonShowing = false;
+    //     this.currentTrack = {track: {name: ''}};
+    //     return this.spotifyService.pauseSpotifyTrack(this.token, this.deviceID);
+    //   })
+    // ).subscribe(() => {});
   }
 
   getDisplayedColumns() {

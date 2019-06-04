@@ -3,9 +3,7 @@ import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 import {DeviceModalService} from '../../services/deviceModal/device-modal.service';
-import {PlaylistService} from '../../services/playlist/playlist.service';
-import {MatDialogRef} from '@angular/material';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
 import { SpotifyDevicesResponse } from 'src/app/interfaces/device/spotify-devices-response.interface';
 import { Device } from 'src/app/interfaces/device/device.interface';
@@ -24,33 +22,12 @@ export class DeviceModalComponent implements OnInit {
   constructor(
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
-    private playlistService: PlaylistService,
     public dialogRef: MatDialogRef<DeviceModalComponent>,
     private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit() {
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((token: SpotifyToken) => {
-        const authToken = !!token.token;
-        if (authToken) {
-          return this.spotifyService.getAvailableDevices(token.token);
-        } else {
-          return of();
-        }
-      }),
-    ).subscribe((data: SpotifyDevicesResponse) => this.devices = data.devices);
-
-    this.playlistService.getCurrentDevice().subscribe((device: string) => this.appDevice = device);
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((token: SpotifyToken) => {
-        const authToken = !!token.token;
-        if (authToken) {
-          return this.spotifyService.getCurrentPlayer(token.token);
-        } else {
-          return of();
-        }
-      }),
-    ).subscribe((data: SpotifyDeviceResponse) => this.currentDevice = data.device.id);
+    this.spotifyService.getAvailableDevices().subscribe((data: SpotifyDevicesResponse) => this.devices = data.devices);
+    this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => this.currentDevice = data.device.id);
   }
 
   hideModal(): void {
@@ -67,16 +44,7 @@ export class DeviceModalComponent implements OnInit {
   }
 
   makeDeviceActive(device: Device): void {
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((token: SpotifyToken) => {
-        const authToken = token.token;
-        if (!!authToken) {
-          return this.spotifyPlaybackService.makeDeviceActive(authToken, device.id);
-        } else {
-          return of();
-        }
-      })
-    ).subscribe(() => {
+    this.spotifyPlaybackService.makeDeviceActive(device.id).subscribe(() => {
       this.currentDevice = device.id;
       this.deviceModalService.changeActiveDevice(device);
     });

@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {SpotifyService} from '../../services/spotify/spotify.service';
-import {AuthService} from '../../services/auth/auth.service';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -39,6 +38,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.cookieService.deleteAll();
+    this.loggedIn = false;
   }
 }

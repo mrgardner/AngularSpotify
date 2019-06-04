@@ -12,8 +12,9 @@ import { Track } from 'src/app/interfaces/track/track.interface';
 })
 
 export class TrackFilterComponent implements OnInit {
-  @Input('tracks') tracks: Array<Object>;
-  @Input('selectedTracks') selectedTracks: Array<Object>;
+  // TODO: FIX
+  // @Input('tracks') tracks: Array<Object>;
+  // @Input('selectedTracks') selectedTracks: Array<Object>;
   public isDuplicateTrack: boolean;
   public name: string;
   public artist: string;
@@ -34,42 +35,46 @@ export class TrackFilterComponent implements OnInit {
     this.route.params.subscribe(params => this.playlistID = params['playlistID']);
   }
 
-  checkForLocalTracks(): boolean {
-    const that = this;
-    const localTracks = that.tracks.filter(track => track['track']['is_local']);
-    return localTracks.length > 0;
-  }
+  // TODO: FIX when input variables are fixed
+  // checkForLocalTracks(): boolean {
+  //   const that = this;
+  //   const localTracks = that.tracks.filter(track => track['track']['is_local']);
+  //   return localTracks.length > 0;
+  // }
 
   checkForDuplicateTrack(e: any): void {
     this.isDuplicateTrack = e.target.checked;
     this.trackService.checkDuplicate(e.target.checked);
   }
 
-  removeDuplicates(): void {
-    const that = this;
-    that.isDuplicateTrack = false;
-    that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
-    const tracksToRemove = Array.from(this.selectedTracks['_selection']);
-    const tt = tracksToRemove.map((a: Track) => {
-      const index = that.tracks.indexOf(a);
-      return {
-        uri: a.uri,
-        positions: [index]
-      };
-    });
+  // TODO: FIX when input variables are fixed
+  // removeDuplicates(): void {
+  //   const that = this;
+  //   that.isDuplicateTrack = false;
+  //   that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
+  //   const tracksToRemove = Array.from(this.selectedTracks['_selection']);
+  //   const tt = tracksToRemove.map((a: Track) => {
+  //     const index = that.tracks.indexOf(a);
+  //     return {
+  //       uri: a.uri,
+  //       positions: [index]
+  //     };
+  //   });
 
-    tracksToRemove.forEach(a => that.tracks.splice(that.tracks.indexOf(a), 1));
+  //   tracksToRemove.forEach(a => that.tracks.splice(that.tracks.indexOf(a), 1));
 
-    that.route.params.subscribe(params => {
-      that.spotifyService.removeDuplicateTracks(params['playlistID'], tt);
-      that.isDuplicateTrack = false;
-      this.trackService.checkDuplicate(false);
-    });
-  }
+  //   that.route.params.subscribe(params => {
+  //     // TODO: FIX without having to use getAuthToken()
+  //     // that.spotifyService.removeDuplicateTracks(params['playlistID'], tt);
+  //     that.isDuplicateTrack = false;
+  //     this.trackService.checkDuplicate(false);
+  //   });
+  // }
 
   shuffleSongs(): void {
-    const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
-    this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
+    // const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
+    // TODO: FIX without having to use getAuthToken()
+    // this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
     //
     // this.route.params.pipe(switchMap(params => {
     //   return of();

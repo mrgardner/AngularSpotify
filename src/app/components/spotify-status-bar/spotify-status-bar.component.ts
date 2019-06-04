@@ -7,12 +7,11 @@ import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 import {DeviceModalService} from '../../services/deviceModal/device-modal.service';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {DeviceModalComponent} from '../device-modal/device-modal.component';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { Device } from 'src/app/interfaces/device/device.interface';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
@@ -128,18 +127,9 @@ export class SpotifyStatusBarComponent implements OnInit {
       this.currentDeviceName = device.name;
       this.currentDevice = device;
     });
-    this.playlistService.getCurrentDevice().subscribe((data: string) => this.appDevice = data);
+    // this.playlistService.getCurrentDevice().subscribe((data: string) => this.appDevice = data);
     this.spotifyPlaybackService.currentTrackPosition$.subscribe((position: number) => this.currentTrackPosition = position);
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((spotifyToken: SpotifyToken) => {
-        const authToken = !!spotifyToken.token;
-        if (authToken) {
-          return this.spotifyService.getCurrentPlayer(spotifyToken.token);
-        } else {
-          return of();
-        }
-      }),
-    ).subscribe((data: SpotifyDeviceResponse) => {
+    this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => {
       if (data) {
         this.currentDevice = data.device;
         this.currentDeviceId = data.device.id;
@@ -197,22 +187,11 @@ export class SpotifyStatusBarComponent implements OnInit {
     const time = parseMS(ms);
     return time.seconds;
   }
-
   onVolumeChange(event): void {
-    let spotifyToken = '';
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((token: SpotifyToken) => {
-        const authToken = !!token.token;
-        spotifyToken = token.token;
-        if (authToken) {
-          return this.spotifyService.getCurrentPlayer(token.token);
-        } else {
-          return of();
-        }
-      }),
+    this.spotifyService.getCurrentPlayer().pipe(
       switchMap((device: SpotifyDeviceResponse) => {
         if (device) {
-          return this.spotifyService.changeSpotifyTrackVolume(spotifyToken, device.device.id, event.target.value);
+          return this.spotifyService.changeSpotifyTrackVolume(device.device.id, event.target.value);
         } else {
           return of();
         }
@@ -244,72 +223,75 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.spotifyPlaybackService.previousSong();
   }
 
-  repeatPlaylist() {
-    let token = '';
-    this.isRepeatOffShowing = false;
-    this.isRepeatPlaylistShowing = true;
-    this.isRepeatTrackShowing = false;
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((spotifyToken: SpotifyToken) => {
-        token = spotifyToken.token;
-        if (token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap((deviceID: string) => {
-        if (deviceID) {
-          return this.spotifyService.setRepeatMode(token, 'context', deviceID);
-        } else {
-          return of();
-        }
-      })).subscribe(() => {});
-  }
+  // TODO: FIX without having to use getAuthToken()
+  // repeatPlaylist() {
+  //   let token = '';
+  //   this.isRepeatOffShowing = false;
+  //   this.isRepeatPlaylistShowing = true;
+  //   this.isRepeatTrackShowing = false;
+  //   this.spotifyService.getAuthToken().pipe(
+  //     switchMap((spotifyToken: SpotifyToken) => {
+  //       token = spotifyToken.token;
+  //       if (token) {
+  //         return this.playlistService.getCurrentDevice();
+  //       } else {
+  //         return of();
+  //       }
+  //     }),
+  //     switchMap((deviceID: string) => {
+  //       if (deviceID) {
+  //         return this.spotifyService.setRepeatMode(token, 'context', deviceID);
+  //       } else {
+  //         return of();
+  //       }
+  //     })).subscribe(() => {});
+  // }
 
-  repeatTrack() {
-    let token = '';
-    this.isRepeatOffShowing = false;
-    this.isRepeatPlaylistShowing = false;
-    this.isRepeatTrackShowing = true;
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((spotifyToken: SpotifyToken) => {
-        token = spotifyToken.token;
-        if (token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap((deviceID: string) => {
-        if (deviceID) {
-          return this.spotifyService.setRepeatMode(token, 'track', deviceID);
-        } else {
-          return of();
-        }
-      })).subscribe(() => {});
-  }
+  // TODO: FIX without having to use getAuthToken()
+  // repeatTrack() {
+  //   let token = '';
+  //   this.isRepeatOffShowing = false;
+  //   this.isRepeatPlaylistShowing = false;
+  //   this.isRepeatTrackShowing = true;
+  //   this.spotifyService.getAuthToken().pipe(
+  //     switchMap((spotifyToken: SpotifyToken) => {
+  //       token = spotifyToken.token;
+  //       if (token) {
+  //         return this.playlistService.getCurrentDevice();
+  //       } else {
+  //         return of();
+  //       }
+  //     }),
+  //     switchMap((deviceID: string) => {
+  //       if (deviceID) {
+  //         return this.spotifyService.setRepeatMode(token, 'track', deviceID);
+  //       } else {
+  //         return of();
+  //       }
+  //     })).subscribe(() => {});
+  // }
 
-  repeatOff() {
-    let token = '';
-    this.isRepeatOffShowing = true;
-    this.isRepeatPlaylistShowing = false;
-    this.isRepeatTrackShowing = false;
-    this.spotifyService.getAuthToken().pipe(
-      switchMap((spotifyToken: SpotifyToken) => {
-        token = spotifyToken.token;
-        if (token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap((deviceID: string) => {
-        if (deviceID) {
-          return this.spotifyService.setRepeatMode(token, 'off', deviceID);
-        } else {
-          return of();
-        }
-      })).subscribe(() => {});
-  }
+  // TODO: FIX without having to use getAuthToken()
+  // repeatOff() {
+  //   let token = '';
+  //   this.isRepeatOffShowing = true;
+  //   this.isRepeatPlaylistShowing = false;
+  //   this.isRepeatTrackShowing = false;
+  //   this.spotifyService.getAuthToken().pipe(
+  //     switchMap((spotifyToken: SpotifyToken) => {
+  //       token = spotifyToken.token;
+  //       if (token) {
+  //         return this.playlistService.getCurrentDevice();
+  //       } else {
+  //         return of();
+  //       }
+  //     }),
+  //     switchMap((deviceID: string) => {
+  //       if (deviceID) {
+  //         return this.spotifyService.setRepeatMode(token, 'off', deviceID);
+  //       } else {
+  //         return of();
+  //       }
+  //     })).subscribe(() => {});
+  // }
 }
