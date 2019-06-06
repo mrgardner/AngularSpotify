@@ -339,11 +339,13 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   // }
 
   testing(track: Song): void {
-    this.playlistTableService.playSpotifyTrack(this.currentTrackPosition, this.tracks, this.track, track).subscribe(() => {});
+    // TODO: Fix function
+    // this.playlistTableService.playSpotifyTrack(this.currentTrackPosition, this.tracks, this.track, track).subscribe(() => {});
   }
 
   pauseSong(track: Song): void {
-    this.playlistTableService.pauseSpotifyTrack(track).subscribe(() => {});
+    // TODO: Fix function
+    // this.playlistTableService.pauseSpotifyTrack(track).subscribe(() => {});
   }
 
   convertMS(ms: number): number {

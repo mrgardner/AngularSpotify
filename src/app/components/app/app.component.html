@@ -1,25 +1,7 @@
-<!-- <app-header></app-header>
-
-<div class="row">
-  <div class="col-sm-2">
-    <app-spotify-navigation-menu></app-spotify-navigation-menu>
-  </div>
-  <div class="col-md-8">
-    <router-outlet></router-outlet>
-  </div>
-</div>
-<ng-container *ngIf="showDeviceModal">
-    <app-device-modal></app-device-modal>
-</ng-container>
-
-<app-spotify-status-bar></app-spotify-status-bar> -->
-
-
 <div class="app-container">
   <app-header></app-header>
   <div class="router-container container">
-   
-    <mat-sidenav-container class="example-container">
+    <mat-sidenav-container>
         <mat-sidenav mode="side" position="start" opened *ngIf="isLoggedIn()">
             <app-spotify-navigation-menu></app-spotify-navigation-menu>
         </mat-sidenav>
@@ -30,6 +12,6 @@
             tset
         </mat-sidenav>
     </mat-sidenav-container>
-      <app-spotify-status-bar></app-spotify-status-bar>
+    <app-spotify-status-bar *ngIf="isLoggedIn()"></app-spotify-status-bar>
   </div>
 </div>

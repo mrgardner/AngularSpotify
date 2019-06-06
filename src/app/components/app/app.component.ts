@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class AppComponent {
   public showDeviceModal: boolean;
   constructor(private authService: AuthService) {
-    console.log('sdfasdasdfsdfbhasd');
     this.showDeviceModal = false;
   }
 

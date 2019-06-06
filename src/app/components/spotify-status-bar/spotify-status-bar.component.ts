@@ -60,6 +60,7 @@ export class SpotifyStatusBarComponent implements OnInit {
   public isRepeatPlaylistShowing: boolean;
   public isRepeatTrackShowing: boolean;
   public isRepeatOffShowing: boolean;
+  public isLoggedIn: boolean;
 
   constructor(
     private statusBarService: StatusBarService,
@@ -223,8 +224,8 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.spotifyPlaybackService.previousSong();
   }
 
+  repeatPlaylist() {
   // TODO: FIX without having to use getAuthToken()
-  // repeatPlaylist() {
   //   let token = '';
   //   this.isRepeatOffShowing = false;
   //   this.isRepeatPlaylistShowing = true;
@@ -245,10 +246,10 @@ export class SpotifyStatusBarComponent implements OnInit {
   //         return of();
   //       }
   //     })).subscribe(() => {});
-  // }
+  }
 
+  repeatTrack() {
   // TODO: FIX without having to use getAuthToken()
-  // repeatTrack() {
   //   let token = '';
   //   this.isRepeatOffShowing = false;
   //   this.isRepeatPlaylistShowing = false;
@@ -269,10 +270,10 @@ export class SpotifyStatusBarComponent implements OnInit {
   //         return of();
   //       }
   //     })).subscribe(() => {});
-  // }
+  }
 
+  repeatOff() {
   // TODO: FIX without having to use getAuthToken()
-  // repeatOff() {
   //   let token = '';
   //   this.isRepeatOffShowing = true;
   //   this.isRepeatPlaylistShowing = false;
@@ -293,5 +294,5 @@ export class SpotifyStatusBarComponent implements OnInit {
   //         return of();
   //       }
   //     })).subscribe(() => {});
-  // }
+  }
 }

@@ -1,6 +1,5 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {stringify} from 'query-string';
 import {ActivatedRoute, Router} from '@angular/router';
 import {concat, of} from 'rxjs';
 import {switchMap} from 'rxjs/internal/operators';
@@ -29,13 +28,8 @@ export class SpotifyService {
   }
 
   getUser() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
-      })
-    };
     const url = this.spotifyApiBaseURI + '/me';
-    return this._http.get(url, httpOptions);
+    return this._http.get(url);
   }
 
 
@@ -51,24 +45,16 @@ export class SpotifyService {
   getTracksFromPlaylist(playlistID, offset, limit) {
     const t = offset * limit;
     const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
-    });
+
     return this._http.get(url, {
       params: new HttpParams()
       .set('offset', t.toString())
       .set('limit', limit.toString()),
-      headers
     });
   }
 
   getPlaylist(id: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.cookieService.get('spotifyToken')}`
-      })
-    };
-    return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`, httpOptions);
+    return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`);
   }
 
   shuffleTracks(tracks) {
