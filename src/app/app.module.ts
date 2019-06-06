@@ -32,6 +32,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { DisplayUserComponent } from './components/display-user/display-user.component';
 import { SpotifyInterceptorService } from './services/spotify-interceptor/spotify-interceptor.service';
 import { MatToolbarModule, MatMenuModule, MatSidenavModule, MatListModule, MatPaginatorModule } from '@angular/material';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   entryComponents: [
@@ -55,7 +56,8 @@ import { MatToolbarModule, MatMenuModule, MatSidenavModule, MatListModule, MatPa
     NewPlaylistDialogComponent,
     AlbumsComponent,
     FilterAlbumNamePipe,
-    DisplayUserComponent
+    DisplayUserComponent,
+    LoginComponent
   ],
   imports: [
     MatDialogModule,

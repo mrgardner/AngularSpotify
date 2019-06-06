@@ -24,9 +24,6 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": [
-              "src/assets/spotify-playback.js"
             ]
           },
           "configurations": {

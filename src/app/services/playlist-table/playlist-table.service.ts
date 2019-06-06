@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { SpotifyService } from '../spotify/spotify.service';
 import { switchMap } from 'rxjs/operators';
-import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
 import { of, concat } from 'rxjs';
 import { PlaylistService } from '../playlist/playlist.service';
@@ -55,6 +54,7 @@ export class PlaylistTableService {
     return this.tracksLoaded$.emit(tracksLoaded);
   }
 
+  // TODO: FIX Without getAuthToken()
   // getPlayListTracks(route) {
   //   let loggedIn = false;
   //   let token = '';
@@ -120,59 +120,61 @@ export class PlaylistTableService {
   //     );
   // }
 
-  playSpotifyTrack(currentTrackPosition, tracks, trackToBePlayed, track) {
-    let token = '';
-    let deviceId = '';
+  // TODO: FIX Without getAuthToken()
+  // playSpotifyTrack(currentTrackPosition, tracks, trackToBePlayed, track) {
+  //   let token = '';
+  //   let deviceId = '';
 
-    return this.spotifyService.getAuthToken().pipe(
-      switchMap((spotifyToken: SpotifyToken) => {
-        token = spotifyToken.token;
-        if (token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap((deviceID: string) => {
-        deviceId = deviceID;
-        if (deviceId) {
-          const trackPosition = trackToBePlayed['name'] !== track['track']['name'] ? 0 : currentTrackPosition;
-          this.setCurrentTrack(track['track']);
-          this.setTrack(track['track']);
-          const tt = tracks.map(ff => ff['track']['uri']);
-          const offset = tt.indexOf(track['track']['uri']);
-          return this.spotifyService.playSpotifyTrack(token, tt, offset, deviceId, trackPosition);
-        } else {
-          return of();
-        }
-      })
-    );
-  }
+  //   return this.spotifyService.getAuthToken().pipe(
+  //     switchMap((spotifyToken: SpotifyToken) => {
+  //       token = spotifyToken.token;
+  //       if (token) {
+  //         return this.playlistService.getCurrentDevice();
+  //       } else {
+  //         return of();
+  //       }
+  //     }),
+  //     switchMap((deviceID: string) => {
+  //       deviceId = deviceID;
+  //       if (deviceId) {
+  //         const trackPosition = trackToBePlayed['name'] !== track['track']['name'] ? 0 : currentTrackPosition;
+  //         this.setCurrentTrack(track['track']);
+  //         this.setTrack(track['track']);
+  //         const tt = tracks.map(ff => ff['track']['uri']);
+  //         const offset = tt.indexOf(track['track']['uri']);
+  //         return this.spotifyService.playSpotifyTrack(token, tt, offset, deviceId, trackPosition);
+  //       } else {
+  //         return of();
+  //       }
+  //     })
+  //   );
+  // }
 
-  pauseSpotifyTrack(currentTrack: Song) {
-    let token = '';
-    let deviceId = '';
+  // TODO: FIX Without getAuthToken()
+  // pauseSpotifyTrack(currentTrack: Song) {
+  //   let token = '';
+  //   let deviceId = '';
 
-    return this.spotifyService.getAuthToken().pipe(
-      switchMap((spotifyToken: SpotifyToken) => {
-        token = spotifyToken.token;
-        if (token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap((deviceID: string) => {
-        deviceId = deviceID;
-        if (deviceId) {
-          currentTrack.isPlayButtonShowing = true;
-          currentTrack.isPauseButtonShowing = false;
-          this.setCurrentTrack({track: {name: ''}});
-          return this.spotifyService.pauseSpotifyTrack(token, deviceId);
-        } else {
-          return of();
-        }
-      })
-    );
-  }
+  //   return this.spotifyService.getAuthToken().pipe(
+  //     switchMap((spotifyToken: SpotifyToken) => {
+  //       token = spotifyToken.token;
+  //       if (token) {
+  //         return this.playlistService.getCurrentDevice();
+  //       } else {
+  //         return of();
+  //       }
+  //     }),
+  //     switchMap((deviceID: string) => {
+  //       deviceId = deviceID;
+  //       if (deviceId) {
+  //         currentTrack.isPlayButtonShowing = true;
+  //         currentTrack.isPauseButtonShowing = false;
+  //         this.setCurrentTrack({track: {name: ''}});
+  //         return this.spotifyService.pauseSpotifyTrack(token, deviceId);
+  //       } else {
+  //         return of();
+  //       }
+  //     })
+  //   );
+  // }
 }

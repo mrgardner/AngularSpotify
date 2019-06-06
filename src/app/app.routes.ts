@@ -6,11 +6,13 @@ import {SpotifyGuard} from './guards/spotify/spotify.guard';
 import {TrackComponent} from './components/track/track.component';
 import {AlbumsComponent} from './components/library/albums/albums.component';
 import { NgModule } from '@angular/core';
+import { LoginComponent } from './components/login/login.component';
 
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, canActivate: [SpotifyGuard]},
   { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [SpotifyGuard]},
   { path: 'callback', component: CallbackComponent},
+  { path: 'login', component: LoginComponent},
   { path: 'track/:name/:id', component: TrackComponent, canActivate: [SpotifyGuard]},
   { path: 'library/albums', component: AlbumsComponent, canActivate: [SpotifyGuard]},
 ];
