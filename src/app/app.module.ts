@@ -34,6 +34,7 @@ import { SpotifyInterceptorService } from './services/spotify-interceptor/spotif
 import { MatToolbarModule, MatMenuModule, MatSidenavModule, MatListModule, MatPaginatorModule } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
 
+
 @NgModule({
   entryComponents: [
     NewPlaylistDialogComponent,

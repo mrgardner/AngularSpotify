@@ -124,7 +124,6 @@ export class SpotifyPlaybackService {
       // let {
       //   _options: { id: device_id }
       // } = this.webPlaybackInstance;
-      
       // onPlayerWaitingForDevice({ device_id });
       // await this.waitForDeviceToBeSelected();
       // onPlayerDeviceSelected();
@@ -188,6 +187,11 @@ export class SpotifyPlaybackService {
       this.player = new window['Spotify'].Player({
         name: 'Testing123',
         getOAuthToken: cb => { cb(this.cookieService.get('spotifyToken')); },
+       // Ready
+      //  sdk.addListener('ready', ({device_id}) => {
+      //   // this.makeDeviceActive(token, device_id).subscribe(() => {
+      //   //   this.playlistService.saveDeviceID(device_id);
+      //   // });
       });
       // set up the player's event handlers
       this.createEventHandlers();
