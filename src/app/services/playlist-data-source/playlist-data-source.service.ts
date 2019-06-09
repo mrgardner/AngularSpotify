@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SpotifyService } from '../spotify/spotify.service';
 import { Track } from 'src/app/interfaces/track/track.interface';
+import PrettyMS from 'pretty-ms';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 
 @Injectable({
@@ -29,6 +30,7 @@ export class PlaylistDataSourceService {
             artist: this.displayArtists(t['track'].artists).join(''),
             album: t['track'].album.name,
             addedAt: t['added_at'].split('T')[0],
+            time: this.convertMS(t['track'].duration_ms),
             isPlayButtonShowing: false,
             isPauseButtonShowing: false,
             duration: t['track'].duration_ms,
@@ -59,5 +61,10 @@ export class PlaylistDataSourceService {
       }
       return artistString;
     });
+  }
+
+  // TODO: Remove this function
+  convertMS(ms: number): number {
+    return PrettyMS(ms, { secDecimalDigits: 0 });
   }
 }
