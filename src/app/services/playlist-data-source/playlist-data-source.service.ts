@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { CollectionViewer } from '@angular/cdk/collections';
-import { finalize, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SpotifyService } from '../spotify/spotify.service';
 import { Track } from 'src/app/interfaces/track/track.interface';
-import PrettyMS from 'pretty-ms';
 import { Artist } from 'src/app/interfaces/artist/artist.interface';
 
 @Injectable({
@@ -12,41 +9,28 @@ import { Artist } from 'src/app/interfaces/artist/artist.interface';
 })
 export class PlaylistDataSourceService {
   private tableSubject = new BehaviorSubject<any[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  public loading$ = this.loadingSubject.asObservable();
   public tableSubject$ = this.tableSubject.asObservable();
 
   constructor(private spotifyService: SpotifyService) {}
 
-  connect(collectionViewer: CollectionViewer): Observable<any[]> {
+  connect(): Observable<any[]> {
     return this.tableSubject.asObservable();
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
+  disconnect(): void {
     this.tableSubject.complete();
-    this.loadingSubject.complete();
   }
 
-
-  loadTracks(playlistId: string, startsWith = '', sort = '', page = 0, size = 100) {
-    console.log(playlistId);
-    this.loadingSubject.next(true);
-
-    this.spotifyService.getTracksFromPlaylist(playlistId, page, size).pipe(
-        catchError(() => of([])),
-        finalize(() => this.loadingSubject.next(false))
-      )
-      .subscribe((tracks: any) => {
-        console.log(tracks);
+  loadTracks(playlistId: string, page = 0, size = 100) {
+    this.spotifyService.getTracksFromPlaylist(playlistId, page, size).subscribe((tracks: any) => {
         const sortedTracks = tracks.items.map((t: Track) => {
           return {
             title: t['track'].name,
             artist: this.displayArtists(t['track'].artists).join(''),
             album: t['track'].album.name,
             addedAt: t['added_at'].split('T')[0],
-            time: this.convertMS(t['track'].duration_ms),
-            isPlayButtonShowing: t.isPlayButtonShowing,
-            isPauseButtonShowing: t.isPauseButtonShowing,
+            isPlayButtonShowing: false,
+            isPauseButtonShowing: false,
             duration: t['track'].duration_ms,
             uri: t['track'].uri,
             track: t
@@ -56,7 +40,6 @@ export class PlaylistDataSourceService {
           element.total = tracks.total;
           element.size = tracks.limit;
         });
-        this.loadingSubject.next(false);
         this.tableSubject.next(sortedTracks);
     });
   }
@@ -77,20 +60,4 @@ export class PlaylistDataSourceService {
       return artistString;
     });
   }
-
-  convertMS(ms: number): number {
-    return PrettyMS(ms, { secDecimalDigits: 0 });
-  }
-
-  // loadSearchResults(taxonomyId: string, startsWith = '', sort = '', page = 0, size = 20) {
-  //   this.loadingSubject.next(true);
-
-  //   // this.playlistTableService.getSearchResultsTableData(taxonomyId, startsWith, sort, page, size).pipe(
-  //   //     catchError(() => of([])),
-  //   //     finalize(() => this.loadingSubject.next(true))
-  //   //   )
-  //   //   .subscribe((lessons: any) => {
-  //   //     this.tableSubject.next(lessons.content);
-  //   // });
-  // }
 }

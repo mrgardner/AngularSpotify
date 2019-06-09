@@ -30,14 +30,13 @@
       <ng-container matColumnDef="trackPlaying">
         <th mat-header-cell *matHeaderCellDef class="trackPlayingHeader"></th>
         <td mat-cell *matCellDef="let element" class="trackPlayIcons">
-          <!-- <mat-icon *ngIf="element.isPlayButtonShowing && currentTrack['name'] !== element.title" (click)="testing(element.track)">play_circle_filled_white</mat-icon>
-          <mat-icon *ngIf="element.isPlayButtonShowing && (currentTrack['name'] === element.title && currentTrack['album']['name'] !== element.album)" (click)="testing(element.track)">play_circle_filled_white</mat-icon>
-          <div *ngIf="(currentTrack['name'] === element.title && currentTrack['album']['name'] === element.album)" (mouseleave)="hidePauseButton(element)" (mouseenter)="showPauseButton(element)">
-            <div *ngIf="!element.isPauseButtonShowing">
-              <mat-icon>volume_up</mat-icon>
+          <div *ngIf="currentTrack">
+            <mat-icon *ngIf="element.isPlayButtonShowing && currentTrack['name'] !== element.title" (click)="playSong(element.track)">play_circle_filled_white</mat-icon>
+            <div *ngIf="(currentTrack['name'] === element.title)" (mouseleave)="hidePauseButton(element)" (mouseenter)="showPauseButton(element)">
+              <mat-icon *ngIf="!element.isPauseButtonShowing">volume_up</mat-icon>
+              <mat-icon *ngIf="element.isPauseButtonShowing" (click)="pauseSong(element.track)">pause_circle_filled</mat-icon>
             </div>
-            <mat-icon *ngIf="element.isPauseButtonShowing" (click)="pauseSong(element.track)">pause_circle_filled</mat-icon>
-          </div> -->
+          </div>         
         </td>
       </ng-container>
 
@@ -71,10 +70,9 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();" (mouseleave)="hidePlayButton(row)" (mouseenter)="showPlayButton(row)" [className]="(state) && (state['track_window']['current_track']['name'] === row.title) ? 'trackPlaying' : ''"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [length]="itemCount" [pageSize]="pageSize"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [length]="itemCount" [pageSize]="pageSize" (page)="loadTracks()"></mat-paginator>
   </div>
 </div>
-<!-- <mat-spinner class="loadingContainer" *ngIf="loading"></mat-spinner> -->
