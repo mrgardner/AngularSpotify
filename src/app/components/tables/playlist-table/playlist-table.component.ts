@@ -96,7 +96,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
       });
     }
 
-    this.spotifyPlaybackService.test3$.subscribe(state => this.state = state);
+    this.spotifyPlaybackService.currentSongState$.subscribe(state => this.state = state);
     this.spotifyPlaybackService.currentTrack$.subscribe(track => this.currentTrack = track);
   }
 

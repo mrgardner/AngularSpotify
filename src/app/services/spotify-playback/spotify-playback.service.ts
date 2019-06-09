@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -7,32 +6,22 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class SpotifyPlaybackService {
-  private spotifyApiBaseURI: string;
-  public currentTrackPosition$: EventEmitter<number>;
   public currentSongState$: EventEmitter<any>;
   public playSong$: EventEmitter<any>;
   public pauseSong$: EventEmitter<any>;
   public nextSong$: EventEmitter<any>;
   public previousSong$: EventEmitter<any>;
   public showPlayButton$: EventEmitter<boolean>;
-  public test$: EventEmitter<any>;
-  public test2$: EventEmitter<any>;
-  public test3$: EventEmitter<any>;
   public currentTrack$: EventEmitter<any>;
   private player: any;
   private statePollingInterval: any = null;
-  constructor(private _http: HttpClient, private cookieService: CookieService) {
-    this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
-    this.currentTrackPosition$ = new EventEmitter();
+  constructor(private cookieService: CookieService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
     this.nextSong$ = new EventEmitter();
     this.showPlayButton$ = new EventEmitter();
     this.previousSong$ = new EventEmitter();
-    this.test$ = new EventEmitter();
-    this.test2$ = new EventEmitter();
-    this.test3$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
   }
 
@@ -68,7 +57,7 @@ export class SpotifyPlaybackService {
   async handleState(state) {
     if (state) {
       if (!state.paused) {
-        this.test3(state);
+        this.sendCurrentState(state);
         this.currentTrack(state.track_window.current_track);
         this.showPlayButton(false);
       } else {
@@ -150,14 +139,6 @@ export class SpotifyPlaybackService {
     });
   }
 
-  makeDeviceActive(deviceID) {
-    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]});
-  }
-
-  currentPositionOfTrack(position: number) {
-    this.currentTrackPosition$.emit(position);
-  }
-
   sendCurrentState(state: SpotifySongResponse) {
     this.currentSongState$.emit(state);
   }
@@ -176,18 +157,6 @@ export class SpotifyPlaybackService {
 
   previousSong() {
     this.previousSong$.emit();
-  }
-
-  test(track) {
-    return this.test$.emit(track);
-  }
-
-  test2() {
-    return this.test2$.emit();
-  }
-
-  test3(state) {
-    return this.test3$.emit(state);
   }
 
   showPlayButton(value: boolean) {

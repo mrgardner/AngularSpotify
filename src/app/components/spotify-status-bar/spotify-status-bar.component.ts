@@ -73,28 +73,27 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.imageEnlargeState = 'inactive';
     this.volume = 100;
     this.aString = '';
-    this.timer = null;
     this.isEnlargeIconShowing = false;
     this.statusBarService.enlargePicture$.subscribe((value: boolean) => this.imageEnlargeState = value ? 'active' : 'inactive');
-    this.spotifyPlaybackService.test2$.subscribe(() => window.clearInterval(this.timer));
     this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
       this.currentDeviceId = device.id;
       this.currentDeviceName = device.name;
       this.currentDevice = device;
+      this.appDevice = localStorage.getItem('deviceId');
     });
     this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => {
       if (data) {
         this.currentDevice = data.device;
         this.currentDeviceId = data.device.id;
         this.currentDeviceName = data.device.name;
+        this.appDevice = localStorage.getItem('deviceId');
       }
     });
 
-    this.spotifyPlaybackService.test3$.subscribe(state => {
+    this.spotifyPlaybackService.currentSongState$.subscribe(state => {
       this.state = state;
       this.songCurrentProgress = (Math.round(state.position/1000) / Math.round(state.duration/1000)) * 100;
       this.currentTrack = state.track_window.current_track;
-      this.playlistTableService.setCurrentTrack(state.track_window.current_track);
     });
 
     this.spotifyPlaybackService.showPlayButton$.subscribe(value => this.showPlayButton = value);

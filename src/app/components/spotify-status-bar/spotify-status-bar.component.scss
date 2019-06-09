@@ -2,75 +2,76 @@
 
 .status-bar-container {
   background-color: $dark-grey;
-  // height: 20vh;
   display: flex;
+  padding: 0;
+  height: 10vh;
+  position: relative;
 
   .show-cursor {
     cursor: pointer;
   }
+  .track-image-container {
+    height: 100%;
+    display: flex;
+    flex: 1;
 
-  // .track-info {
-  //   position: relative;
-    // height: 92px;
+    .test3 {
+      padding: 15px;
 
-    .track-image-container {
-      height: 100%;
-      display: flex;
-      flex: 1;
-
-      .test3 {
-        i {
-          color: #3e3e3e;
-          font-size: 25px;
-        }
-
-        .test2 {
-          z-index: 34;
-          top: 0;
-          right: 0;
-          position: absolute;
-
-          .fa-angle-up {
-            color: white;
-            z-index: 35;
-            left: 20px;
-            position: relative;
-          }
-
-          .fa-circle {
-            position: relative;
-            color: black;
-          }
-        }
-
-        .track-image {
-          width: 60px;
-        }
+      i {
+        color: #3e3e3e;
+        font-size: 25px;
       }
 
-      .test4-a {
-        left: 30px;
-      }
-  
-      .test4 {
-        position: relative;
-        left: 6px;
+      .test2 {
+        z-index: 34;
+        top: 0;
+        right: 0;
+        position: absolute;
 
-        .track-title {
-          font-size: 14px;
+        .fa-angle-up {
           color: white;
+          z-index: 35;
+          left: 20px;
+          position: relative;
         }
 
-        .track-artists {
-          font-size: 12px;
-          color: #8e8e8e;
+        .fa-circle {
+          position: relative;
+          color: black;
         }
       }
-    // }
+
+      .track-image {
+        width: 60px;
+      }
+    }
+
+    .test4-a {
+      left: 30px;
+    }
+
+    .test4 {
+      position: relative;
+
+      .track-title {
+        font-size: 14px;
+        color: white;
+        position: relative;
+        top: 15px;
+      }
+
+      .track-artists {
+        font-size: 12px;
+        position: relative;
+        top: 10px;
+        color: #8e8e8e;
+      }
+    }
   }
 
   .player-container {
-    flex: 2;
+    flex: 3;
     .player-buttons {
       text-align: center;
 
@@ -130,40 +131,45 @@
   .volume-container {
     position: relative;
     flex: 1;
-    padding-top: 2em;
-    left: 1em;
+    padding-top: 1em;
+    left: 3.5em;
 
     i {
       margin-right: 0.5em;
     }
   }
 
-  .external-device-message {
+  .external-device {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
     background-color: green;
-    position: relative;
-    margin-left: 0;
-    margin-right: 0;
-    top: -8px;
-    height: 20px;
-  
-    div {
-      position: absolute;
-      right: 25px;
-      font-size: 12px;
+    height: 15px;
+
+    .external-device-message {
+    
+      div {
+        position: absolute;
+        right: 25px;
+        font-size: 12px;
+        height: 100%;
+        align-items: center;
+        display: flex;
+      }
     }
   }
 }
 
 @media screen and (min-width: 1920px) {
   .status-bar-container {
-    height: 12vh;
+    height: 10vh;
   }
 }
 
 .triangle-down {
   position: fixed;
-  right: 12.5em;
-  top: 46.9em;
+  right: 20.3em;
+  top: 45.5em;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 12px solid green;
