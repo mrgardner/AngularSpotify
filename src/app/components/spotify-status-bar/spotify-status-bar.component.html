@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="player-container">
+  <div class="player-container" *ngIf="state">
       <div class="player-buttons">
           <button mat-icon-button color="warn">
             <mat-icon>shuffle</mat-icon>
@@ -27,7 +27,7 @@
           </button>
           <button mat-icon-button>
             <mat-icon *ngIf="showPlayButton" class="play-button" (click)="playSong()">play_circle_outline</mat-icon>
-            <mat-icon *ngIf="showPauseButton" class="pause-button" (click)="pauseSong()">pause_circle_outline</mat-icon>
+            <mat-icon *ngIf="!showPlayButton" class="pause-button" (click)="pauseSong()">pause_circle_outline</mat-icon>
           </button>
           <button mat-icon-button [disabled]="currentState?.track_window?.next_tracks?.length === 0" (click)="nextSong()">
             <mat-icon>skip_next</mat-icon>
@@ -39,20 +39,16 @@
           </button>
         </div>
         <div class="player-progress-bar">
-          <div class="current-time" *ngIf="currentTrackSeconds">
-            <ng-container *ngIf="currentTrackSeconds < 10; then showCurrentSimiplfiedSeconds; else showCurrentNormalSeconds"></ng-container>
-            <ng-template #showCurrentSimiplfiedSeconds> <span>{{currentTrackMinutes}}:</span><span>0{{currentTrackSeconds}}</span></ng-template>
-            <ng-template #showCurrentNormalSeconds> <span>{{currentTrackMinutes}}:</span><span>{{currentTrackSeconds}}</span></ng-template>
+          <div class="current-time">
+            <span>{{prettyMs(state.position)}}</span>
           </div>
           <mat-progress-bar [value]="songCurrentProgress"></mat-progress-bar>
-          <div class="total-time" *ngIf="currentTrackSeconds">
-            <ng-container *ngIf="trackDurationSeconds < 10; then showDurationSimiplfiedSeconds; else showDurationNormalSeconds"></ng-container>
-            <ng-template #showDurationSimiplfiedSeconds> <span>{{trackDurationMinutes}}:</span><span>0{{trackDurationSeconds}}</span></ng-template>
-            <ng-template #showDurationNormalSeconds> <span>{{trackDurationMinutes}}:</span><span>{{trackDurationSeconds}}</span></ng-template>
+          <div class="total-time">
+            <span>{{prettyMs(state.duration)}}</span>
           </div>
         </div>
   </div>
-  <div class="volume-container">
+  <div class="volume-container" *ngIf="state">
     <i class="material-icons show-cursor">
       playlist_play
     </i>

@@ -1,14 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { SpotifyService } from '../spotify/spotify.service';
-import { switchMap } from 'rxjs/operators';
-import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
-import { of, concat } from 'rxjs';
 import { PlaylistService } from '../playlist/playlist.service';
-import { Params } from 'src/app/interfaces/params/params.interface';
 import { Playlist } from 'src/app/interfaces/playlist/playlist.interface';
-import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { Track } from 'src/app/interfaces/track/track.interface';
-import { Song } from 'src/app/interfaces/song/song.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -121,34 +115,14 @@ export class PlaylistTableService {
   // }
 
   // TODO: FIX Without getAuthToken()
-  // playSpotifyTrack(currentTrackPosition, tracks, trackToBePlayed, track) {
-  //   let token = '';
-  //   let deviceId = '';
+  playSpotifyTrack(tracks, track) {
+    this.setCurrentTrack(track['track']);
+    this.setTrack(track['track']);
+    const tt = tracks.map(ff => ff['uri']);
+    const offset = tt.indexOf(track['track']['uri']);   
 
-  //   return this.spotifyService.getAuthToken().pipe(
-  //     switchMap((spotifyToken: SpotifyToken) => {
-  //       token = spotifyToken.token;
-  //       if (token) {
-  //         return this.playlistService.getCurrentDevice();
-  //       } else {
-  //         return of();
-  //       }
-  //     }),
-  //     switchMap((deviceID: string) => {
-  //       deviceId = deviceID;
-  //       if (deviceId) {
-  //         const trackPosition = trackToBePlayed['name'] !== track['track']['name'] ? 0 : currentTrackPosition;
-  //         this.setCurrentTrack(track['track']);
-  //         this.setTrack(track['track']);
-  //         const tt = tracks.map(ff => ff['track']['uri']);
-  //         const offset = tt.indexOf(track['track']['uri']);
-  //         return this.spotifyService.playSpotifyTrack(token, tt, offset, deviceId, trackPosition);
-  //       } else {
-  //         return of();
-  //       }
-  //     })
-  //   );
-  // }
+    return this.spotifyService.playSpotifyTrack(tt, offset, localStorage.getItem('deviceId'));
+  }
 
   // TODO: FIX Without getAuthToken()
   // pauseSpotifyTrack(currentTrack: Song) {

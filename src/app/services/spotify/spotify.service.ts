@@ -1,30 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {concat, of} from 'rxjs';
-import {switchMap} from 'rxjs/internal/operators';
-import {TrackService} from '../track/track.service';
-import {PlaylistService} from '../playlist/playlist.service';
-import {environment} from '../../../environments/environment';
-import {DeviceModalService} from '../deviceModal/device-modal.service';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotifyService {
   private readonly spotifyApiBaseURI: string;
-  private didPlaylistChange: boolean;
 
-  constructor(private _http: HttpClient, private router: Router,
-              private trackService: TrackService,
-              private route: ActivatedRoute,
-              private playlistService: PlaylistService,
-              private deviceModalService: DeviceModalService,
-              private cookieService: CookieService) {
+  constructor(private _http: HttpClient) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
-    this.playlistService.didPlaylistChange$.subscribe(value => this.didPlaylistChange = value);
-    this.didPlaylistChange = false;
   }
 
   getUser() {
@@ -81,9 +65,9 @@ export class SpotifyService {
       - figure out logic to pull the next 100 tracks once you are at last track in last batch
       - same point as above but for previous tracks
   */
-  playSpotifyTrack(tracks,  offset, deviceID, currentPosition) {
+  playSpotifyTrack(tracks,  offset, deviceID,) {
     return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`,
-    {uris: tracks, position_ms: currentPosition, offset: {position: offset}});
+    {uris: tracks, offset: {position: offset}});
   }
 
   pauseSpotifyTrack(deviceID) {

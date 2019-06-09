@@ -1,8 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import {  HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { CookieService } from 'ngx-cookie-service';
-import prettyMs from 'pretty-ms';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +14,12 @@ export class SpotifyPlaybackService {
   public pauseSong$: EventEmitter<any>;
   public nextSong$: EventEmitter<any>;
   public previousSong$: EventEmitter<any>;
+  public showPlayButton$: EventEmitter<boolean>;
   public test$: EventEmitter<any>;
   public test2$: EventEmitter<any>;
+  public test3$: EventEmitter<any>;
+  public currentTrack$: EventEmitter<any>;
   private player: any;
-  private playerCheckInterval: any;
   private statePollingInterval: any = null;
   constructor(private _http: HttpClient, private cookieService: CookieService) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
@@ -27,18 +28,21 @@ export class SpotifyPlaybackService {
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
     this.nextSong$ = new EventEmitter();
+    this.showPlayButton$ = new EventEmitter();
     this.previousSong$ = new EventEmitter();
     this.test$ = new EventEmitter();
     this.test2$ = new EventEmitter();
+    this.test3$ = new EventEmitter();
+    this.currentTrack$ = new EventEmitter();
   }
 
   async waitForSpotifyWebPlaybackSDKToLoad () {
     return new Promise(resolve => {
-      if (window.Spotify) {
-        resolve(window.Spotify);
+      if (window['Spotify']) {
+        resolve(window['Spotify']);
       } else {
-        window.onSpotifyWebPlaybackSDKReady = () => {
-          resolve(window.Spotify);
+        window['onSpotifyWebPlaybackSDKReady'] = () => {
+          resolve(window['Spotify']);
         };
       }
     });
@@ -48,14 +52,6 @@ export class SpotifyPlaybackService {
     (async () => {
       const Player = await this.waitForSpotifyWebPlaybackSDKToLoad();
 
-      // const t = await this.waitForSpotifyWebPlaybackSDKToLoad();
-      console.log('The Web Playback SDK has loaded.');
-
-      // if (window['Spotify'] !== null) {
-      console.log('dsfdfdsf');
-      // cancel the interval
-      // clearInterval(this.playerCheckInterval);
-      // this.playerCheckInterval = 0;
       // create a new player
       this.player = new Player['Player']({
         name: 'Testing123',
@@ -66,68 +62,21 @@ export class SpotifyPlaybackService {
 
       // // finally, connect!
       this.player.connect();
-      // }
     })();
-    // this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
-    // this.checkForPlayer();
-    // console.log('fsdf');
-    // (async () => {
-    //   let counter = 0;
-    //   const t = await this.waitForSpotifyWebPlaybackSDKToLoad();
-    //   const sdk = new t['Player']({
-    //     name: 'Web Playback SDK',
-    //     volume: 1.0,
-    //     getOAuthToken: callback => { callback(this.cookieService.get('spotifyToken')); }
-    //   });
-    //   sdk.on('player_state_changed', state => {
-    //     console.log('ggg');
-    //     console.log(state)
-    //     if (state !== null) {
-    //       console.log('ff')
-    //     }
-    //     counter++;
-    //     if (counter % 3 === 1) {
-    //       this.sendCurrentState(state);
-    //     }
-
-    //     if (state['paused'] && state['position'] !== 0) {
-    //       this.currentPositionOfTrack(state['position']);
-    //     }
-    //   });
-
-    //    // Ready
-    //    sdk.addListener('ready', ({device_id}) => {
-    //      console.log('sdfsdf');
-    //      localStorage.setItem('deviceId', device_id);
-    //     this.makeDeviceActive(device_id).subscribe(() => {
-    //       console.log('sdfs');
-    //       // this.playlistService.saveDeviceID(device_id);
-    //     });
-    //   });
-    //   sdk.connect();
-
-    //   this.pauseSong$.subscribe(() => sdk.pause());
-    //   this.playSong$.subscribe(() => sdk.resume());
-    //   this.nextSong$.subscribe(() => sdk.nextTrack());
-    //   this.previousSong$.subscribe(() => sdk.previousTrack());
-    // })();
   }
 
   async handleState(state) {
     if (state) {
       if (!state.paused) {
-        console.log(prettyMs(state.position, {secondsDecimalDigits: 0}));
+        this.test3(state);
+        this.currentTrack(state.track_window.current_track);
+        this.showPlayButton(false);
       } else {
         this.clearStatePolling();
+        this.showPlayButton(true);
+        this.currentTrack({track: {name: ''}});
+        await this.waitForDeviceToBeSelected();
       }
-    } else {
-      // let {
-      //   _options: { id: device_id }
-      // } = this.webPlaybackInstance;
-      
-      // onPlayerWaitingForDevice({ device_id });
-      // await this.waitForDeviceToBeSelected();
-      // onPlayerDeviceSelected();
     }
   }
 
@@ -143,7 +92,6 @@ export class SpotifyPlaybackService {
   }
 
   createEventHandlers() {
-    console.log('TEST');
     // problem setting up the player
     this.player.on('initialization_error', e => { console.error(e); });
     // problem authenticating the user.
@@ -160,41 +108,29 @@ export class SpotifyPlaybackService {
     this.player.on('ready', async data => {
       const { device_id } = data;
       this.startStatePolling();
-      console.log('Let the music play on!');
-      console.log(device_id);
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
       this.transferPlaybackHere();
     });
+
+    this.pauseSong$.subscribe(() => this.player.pause());
+    this.playSong$.subscribe(() => this.player.resume());
+    this.nextSong$.subscribe(() => this.player.nextTrack());
+    this.previousSong$.subscribe(() => this.player.previousTrack());
   }
 
-  onStateChanged(state) {
-    // only update if we got a real state
-    if (state !== null) {
-      console.log(state);
-      // console.log(this.playerCheckInterval)
-    }
-  }
-
-  checkForPlayer() {
-    // if the Spotify SDK has loaded
-    if (window['Spotify'] !== null) {
-      console.log('dsfdfdsf');
-      // cancel the interval
-      // clearInterval(this.playerCheckInterval);
-      // this.playerCheckInterval = 0;
-      // create a new player
-      this.player = new window['Spotify'].Player({
-        name: 'Testing123',
-        getOAuthToken: cb => { cb(this.cookieService.get('spotifyToken')); },
-      });
-      // set up the player's event handlers
-      this.createEventHandlers();
-
-      // finally, connect!
-      this.player.connect();
-    }
+  waitForDeviceToBeSelected() {
+    return new Promise(resolve => {
+      if (this.player) {
+        this.player.getCurrentState().then(state => {
+          if (state !== null) {
+            this.startStatePolling();
+            resolve(state);
+          }
+        });
+      }
+    });
   }
 
   transferPlaybackHere() {
@@ -248,5 +184,17 @@ export class SpotifyPlaybackService {
 
   test2() {
     return this.test2$.emit();
+  }
+
+  test3(state) {
+    return this.test3$.emit(state);
+  }
+
+  showPlayButton(value: boolean) {
+    this.showPlayButton$.emit(value);
+  }
+
+  currentTrack(value) {
+    this.currentTrack$.emit(value);
   }
 }

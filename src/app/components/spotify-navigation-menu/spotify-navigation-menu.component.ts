@@ -100,7 +100,6 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   }
 
   goToTracks(playlist): void {
-    console.log(playlist);
     this.playlists.forEach(tt => tt['selected'] = false);
     playlist['selected'] = true;
     // this.playlistService.savePlaylist(playlist);
