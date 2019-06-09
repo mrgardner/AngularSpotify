@@ -64,9 +64,7 @@
     </ng-template>
     <input type="range" min="0" max="100" [value]="volume" [(ngModel)]="volume" (change)="onVolumeChange($event)"/>
   </div>
-</mat-toolbar>
-<div *ngIf="currentDevice">
-  <div *ngIf="appDevice !== currentDeviceId">
+  <div *ngIf="(currentDevice) && (appDevice !== currentDeviceId)" class="external-device">
     <div class="external-device-message">
       <div>
         <i class="fas fa-headphones"></i>
@@ -76,4 +74,5 @@
     </div>
     <div class="triangle-down"></div>
   </div>
-</div>
+</mat-toolbar>
+

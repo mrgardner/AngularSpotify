@@ -86,6 +86,10 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/me/player`);
   }
 
+  makeDeviceActive(deviceID) {
+    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]});
+  }
+
   getAvailableDevices() {
     return this._http.get(this.spotifyApiBaseURI + `/me/player/devices`);
   }

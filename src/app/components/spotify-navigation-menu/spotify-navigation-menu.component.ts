@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {switchMap} from 'rxjs/internal/operators';
-import {of, concat} from 'rxjs';
+import {concat} from 'rxjs';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import {StatusBarService} from '../../services/status-bar/status-bar.service';
@@ -10,11 +10,7 @@ import {NewPlaylistDialogComponent} from '../new-playlist-dialog/new-playlist-di
 import {Router} from '@angular/router';
 import { SpotifyPlaylistRespose } from 'src/app/interfaces/playlist/spotifyPlaylistResponse.interface';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
-// import { SpotifyToken } from 'src/app/interfaces/spotify-token/spotify-token.interface';
 import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
-// import { PlaylistData } from 'src/app/interfaces/playlist/playlist-data.interface';
-import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
@@ -47,10 +43,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private spotifyService: SpotifyService,
     private playlistService: PlaylistService,
     private statusBarService: StatusBarService,
-    private spotifyPlaybackService: SpotifyPlaybackService,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService,
     private utilService: UtilService) {}
 
   ngOnInit() {
@@ -62,7 +56,6 @@ export class SpotifyNavigationMenuComponent implements OnInit {
       this.imageEnlargeState = value ? 'active' : 'inactive';
     });
     this.statusBarService.currenttrack$.subscribe(value => this.currentTrack = value);
-    this.spotifyPlaybackService.currentSongState$.subscribe(value => this.currentTrack = value['track_window']['current_track']);
     this.spotifyService.getAllPlaylists()
       .pipe(
         switchMap((playlistInfo: SpotifyPlaylistRespose) => {
