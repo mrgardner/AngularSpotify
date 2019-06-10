@@ -65,7 +65,7 @@ export class SpotifyService {
       - figure out logic to pull the next 100 tracks once you are at last track in last batch
       - same point as above but for previous tracks
   */
-  playSpotifyTrack(tracks,  offset, deviceID,) {
+  playSpotifyTrack(tracks,  offset, deviceID) {
     return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`,
     {uris: tracks, offset: {position: offset}});
   }
