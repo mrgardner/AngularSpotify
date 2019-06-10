@@ -90,10 +90,10 @@ export class SpotifyStatusBarComponent implements OnInit {
       }
     });
 
-    this.spotifyPlaybackService.currentSongState$.subscribe(state => {
-      this.state = state;
-      this.songCurrentProgress = (Math.round(state.position/1000) / Math.round(state.duration/1000)) * 100;
-      this.currentTrack = state.track_window.current_track;
+    this.spotifyPlaybackService.currentSongState$.subscribe(newState => {
+      this.state = newState;
+      this.songCurrentProgress = (Math.round(newState.position / 1000) / Math.round(newState.duration / 1000)) * 100;
+      this.currentTrack = newState.track_window.current_track;
     });
 
     this.spotifyPlaybackService.showPlayButton$.subscribe(value => this.showPlayButton = value);
@@ -206,9 +206,9 @@ export class SpotifyStatusBarComponent implements OnInit {
   }
 
   prettyMs(ms: number): string {
-    const tt = 1000*Math.round(ms/1000);
-    const d = new Date(tt);
-    const secs = d.getUTCSeconds() < 10 ? `0${d.getUTCSeconds()}`: d.getUTCSeconds()
-    return d.getUTCMinutes() + ':' + secs;
+    const roundedSeconds = 1000 * Math.round(ms / 1000);
+    const date = new Date(roundedSeconds);
+    const seconds = date.getUTCSeconds() < 10 ? `0${date.getUTCSeconds()}` : date.getUTCSeconds();
+    return date.getUTCMinutes() + ':' + seconds;
   }
 }

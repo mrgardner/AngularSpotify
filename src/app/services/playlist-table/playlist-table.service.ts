@@ -118,10 +118,10 @@ export class PlaylistTableService {
   playSpotifyTrack(tracks, track) {
     this.setCurrentTrack(track['track']);
     this.setTrack(track['track']);
-    const tt = tracks.map(ff => ff['uri']);
-    const offset = tt.indexOf(track['track']['uri']);   
+    const uris = tracks.map(ff => ff['uri']);
+    const offset = uris.indexOf(track['track']['uri']);
 
-    return this.spotifyService.playSpotifyTrack(tt, offset, localStorage.getItem('deviceId'));
+    return this.spotifyService.playSpotifyTrack(uris, offset, localStorage.getItem('deviceId'));
   }
 
   // TODO: FIX Without getAuthToken()
