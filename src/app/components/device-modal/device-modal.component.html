@@ -12,11 +12,11 @@
             <div>Listening On</div>
             <div class="spotifyConnectActive">
               <i class="fas fa-headphones"></i>
-              <span> {{shortenString(device.name)}}</span>
+              <span> {{utilService.shortenString(device.name, 23)}}</span>
             </div>
           </ng-template>
           <ng-template #inactiveDevice>
-            <div>{{shortenString(device.name)}}</div>
+            <div>{{utilService.shortenString(device.name, 23)}}</div>
             <div class="spotifyConnectInactive">
               <i class="fas fa-headphones"></i>
               <span> Spotify Connect</span>

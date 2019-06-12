@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {SpotifyService} from '../../services/spotify/spotify.service';
-import {DeviceModalService} from '../../services/deviceModal/device-modal.service';
+import { Component, OnInit } from '@angular/core';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
 import { SpotifyDevicesResponse } from 'src/app/interfaces/device/spotify-devices-response.interface';
 import { Device } from 'src/app/interfaces/device/device.interface';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-device-modal',
@@ -19,7 +20,8 @@ export class DeviceModalComponent implements OnInit {
   constructor(
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
-    public dialogRef: MatDialogRef<DeviceModalComponent>) { }
+    public dialogRef: MatDialogRef<DeviceModalComponent>,
+    public utilService: UtilService) { }
 
   ngOnInit() {
     this.spotifyService.getAvailableDevices().subscribe((data: SpotifyDevicesResponse) => this.devices = data.devices);
@@ -28,15 +30,6 @@ export class DeviceModalComponent implements OnInit {
 
   hideModal(): void {
     this.dialogRef.close();
-  }
-
-  shortenString(string: string): string {
-    const stringLength = 23;
-    if (string.length > stringLength) {
-      return string.substr(0, stringLength) + '...';
-    } else {
-      return string;
-    }
   }
 
   makeDeviceActive(device: Device): void {

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {switchMap} from 'rxjs/internal/operators';
-import {concat} from 'rxjs';
-import {SpotifyService} from '../../services/spotify/spotify.service';
-import {PlaylistService} from '../../services/playlist/playlist.service';
-import {StatusBarService} from '../../services/status-bar/status-bar.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { switchMap } from 'rxjs/internal/operators';
+import { concat } from 'rxjs';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { PlaylistService } from '../../services/playlist/playlist.service';
+import { StatusBarService } from '../../services/status-bar/status-bar.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {NewPlaylistDialogComponent} from '../new-playlist-dialog/new-playlist-dialog.component';
-import {Router} from '@angular/router';
+import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-dialog.component';
+import { Router } from '@angular/router';
 import { SpotifyPlaylistRespose } from 'src/app/interfaces/playlist/spotifyPlaylistResponse.interface';
 import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
 import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
@@ -45,7 +45,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private statusBarService: StatusBarService,
     private dialog: MatDialog,
     private router: Router,
-    private utilService: UtilService) {}
+    public utilService: UtilService) {}
 
   ngOnInit() {
     this.selectedPlaylist = '';
@@ -104,15 +104,6 @@ export class SpotifyNavigationMenuComponent implements OnInit {
 
   goToSavedAlbums(): void {
     this.router.navigate(['library/albums']);
-  }
-
-  shortenString(string: string): string {
-    const stringLength = 18;
-    if (string.length > stringLength) {
-      return string.substr(0, stringLength) + '...';
-    } else {
-      return string;
-    }
   }
 
   shrinkPicture(): void {

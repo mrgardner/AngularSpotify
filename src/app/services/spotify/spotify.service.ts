@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -105,18 +106,13 @@ export class SpotifyService {
   uploadPlaylistCover(image: File, owner: string, playlistID: string) {
     return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/images`, image);
   }
-  // TODO: fix function to not have to use token
-  // createNewPlaylist(body, image) {
-  //   let authToken = '';
-  //   return this.getAuthToken()
-  //     .pipe(
-  //       switchMap((token: string) => {
-  //         authToken = token['token'];
-  //         return this.createPlaylist(authToken, body);
-  //       }),
-  //       switchMap((data: Object) => this.uploadPlaylistCover(authToken, image, data['owner']['id'], data['id']))
-  //     );
-  // }
+
+  createNewPlaylist(body, image) {
+    return this.createPlaylist(body)
+      .pipe(
+        switchMap((data: Object) => this.uploadPlaylistCover(image, data['owner']['id'], data['id']))
+      );
+  }
 
   getUsersSavedAlbums(moreAlbums?) {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;

@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {SpotifyService} from '../../services/spotify/spotify.service';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {of} from 'rxjs';
-import {TrackService} from '../../services/track/track.service';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { Params } from 'src/app/interfaces/params/params.interface';
 import { Track } from 'src/app/interfaces/track/track.interface';
-import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-track',
@@ -19,40 +17,17 @@ export class TrackComponent implements OnInit {
   constructor(
     private spotifyService: SpotifyService,
     private route: ActivatedRoute,
-    private trackService: TrackService,
-    private location: Location) {}
+    public utilService: UtilService) {}
 
   ngOnInit() {
-    // let trackParams: Params  = {
-    //   playlistID: '',
-    //   trackID: ''
-    // };
-    // TODO: FIX without having to use getAuthToken()
-    // this.route.params.pipe(
-    //   switchMap((params: Params) => {
-    //     trackParams = params;
-    //     if (params) {
-    //       return this.spotifyService.getAuthToken();
-    //     } else {
-    //       return of();
-    //     }
-    //   }),
-    //   switchMap((token: SpotifyToken) => {
-    //     const isLoggedIn = !!token.token;
-    //     if (isLoggedIn) {
-    //       return this.spotifyService.getTrack(token.token, trackParams.trackID);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe((track: Track) => this.track = track);
-  }
-
-  displayArtist(artist: Array<Artist>): Array<string> {
-    return this.trackService.displayArtists(artist);
-  }
-
-  goBack(): void {
-    this.location.back();
+    this.route.params.pipe(
+      switchMap((params: Params) => {
+        if (params) {
+          return this.spotifyService.getTrack(params.trackID);
+        } else {
+          return of();
+        }
+      })
+    ).subscribe((track: Track) => this.track = track);
   }
 }

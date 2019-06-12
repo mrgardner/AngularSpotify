@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from 'src/app/services/spotify/spotify.service';
+import { User } from 'src/app/interfaces/user/user.interface';
 
 @Component({
   selector: 'app-display-user',
@@ -11,7 +12,6 @@ export class DisplayUserComponent implements OnInit {
   constructor(private spotifyService: SpotifyService) { }
 
   ngOnInit() {
-    this.spotifyService.getUser().subscribe(user => this.displayName = user['display_name']);
+    this.spotifyService.getUser().subscribe((user: User) => this.displayName = user.display_name);
   }
-
 }

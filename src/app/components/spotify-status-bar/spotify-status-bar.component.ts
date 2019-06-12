@@ -1,20 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {StatusBarService} from '../../services/status-bar/status-bar.service';
-import {trigger, state, style, transition, animate} from '@angular/animations';
-import parseMS from 'parse-ms';
-import {of} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
-import {SpotifyService} from '../../services/spotify/spotify.service';
-import {DeviceModalService} from '../../services/deviceModal/device-modal.service';
+import { Component, OnInit } from '@angular/core';
+import { StatusBarService } from '../../services/status-bar/status-bar.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {DeviceModalComponent} from '../device-modal/device-modal.component';
-import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { DeviceModalComponent } from '../device-modal/device-modal.component';
 import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
 import { Device } from 'src/app/interfaces/device/device.interface';
-import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 import { Track } from 'src/app/interfaces/track/track.interface';
-import { PlaylistTableService } from 'src/app/services/playlist-table/playlist-table.service';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -37,42 +34,31 @@ export class SpotifyStatusBarComponent implements OnInit {
   public currentTrack: Track;
   public imageEnlargeState: string;
   public isEnlargeIconShowing: boolean;
-  public currentTrackMinutes: number;
-  public currentTrackSeconds: number;
-  public trackDurationMinutes: number;
-  public trackDurationSeconds: number;
-  public aString: string;
   public volume: number;
   public currentDevice: Object;
   public currentDeviceId: string;
   public currentDeviceName: string;
   public appDevice: string;
-  private timer: any;
-  public songProgression: number;
-  public songTotalDuration: number;
   public songCurrentProgress: number;
   public showPlayButton: boolean;
-  public currentState: SpotifySongResponse;
   public isRepeatPlaylistShowing: boolean;
   public isRepeatTrackShowing: boolean;
   public isRepeatOffShowing: boolean;
-  public isLoggedIn: boolean;
   public state: any;
 
   constructor(
     private statusBarService: StatusBarService,
-    private playlistTableService: PlaylistTableService,
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
     private dialog: MatDialog,
-    private spotifyPlaybackService: SpotifyPlaybackService) {}
+    private spotifyPlaybackService: SpotifyPlaybackService,
+    public utilService: UtilService) {}
   ngOnInit() {
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
     this.isRepeatOffShowing = true;
     this.imageEnlargeState = 'inactive';
     this.volume = 100;
-    this.aString = '';
     this.isEnlargeIconShowing = false;
     this.statusBarService.enlargePicture$.subscribe((value: boolean) => this.imageEnlargeState = value ? 'active' : 'inactive');
     this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
@@ -99,34 +85,6 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.spotifyPlaybackService.showPlayButton$.subscribe(value => this.showPlayButton = value);
   }
 
-  shortenString(string: string): string {
-    const stringLength = 15;
-    if (string.length > stringLength) {
-      return string.substr(0, stringLength) + '...';
-    } else {
-      return string;
-    }
-  }
-
-  displayArtists(artists: Array<Artist>): Array<string> {
-    if (artists) {
-      const numberOfArtists = artists.length;
-      return artists.map((artist, i) => {
-        let artistString = '';
-        if (numberOfArtists > 1) {
-          if (numberOfArtists - 1 === i) {
-            artistString += artist.name;
-          } else {
-            artistString += `${artist.name}, `;
-          }
-        }  else {
-          artistString = artist.name;
-        }
-        return artistString;
-      });
-    }
-  }
-
   enlargePicture(): void {
     this.statusBarService.enlargePicture$.emit(true);
   }
@@ -139,15 +97,6 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.isEnlargeIconShowing = false;
   }
 
-  getMinutes(ms) {
-    const time = parseMS(ms);
-    return (time.days * (60 * 24)) + (time.hours * 60) + (time.minutes);
-  }
-
-  getSeconds(ms) {
-    const time = parseMS(ms);
-    return time.seconds;
-  }
   onVolumeChange(event): void {
     this.spotifyService.getCurrentPlayer().pipe(
       switchMap((device: SpotifyDeviceResponse) => {
@@ -203,12 +152,5 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
     this.spotifyService.setRepeatMode('off', localStorage.getItem('deviceId')).subscribe(() => {});
-  }
-
-  prettyMs(ms: number): string {
-    const roundedSeconds = 1000 * Math.round(ms / 1000);
-    const date = new Date(roundedSeconds);
-    const seconds = date.getUTCSeconds() < 10 ? `0${date.getUTCSeconds()}` : date.getUTCSeconds();
-    return date.getUTCMinutes() + ':' + seconds;
   }
 }

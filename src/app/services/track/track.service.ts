@@ -1,7 +1,5 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import { switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {PlaylistService} from '../playlist/playlist.service';
+import { EventEmitter, Injectable } from '@angular/core';
+import { PlaylistService } from '../playlist/playlist.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,6 @@ export class TrackService {
   public areTracksLoaded$: EventEmitter<any>;
   public currentTrack$: EventEmitter<any>;
   public trackTime$: EventEmitter<any>;
-  private isPlaylistsBeingDeleted: boolean;
   public currentlyPlaying$: EventEmitter<any>;
 
   constructor(private playlistService: PlaylistService) {
@@ -28,7 +25,6 @@ export class TrackService {
     this.currentTrack$ = new EventEmitter();
     this.trackTime$ = new EventEmitter();
     this.currentlyPlaying$ = new EventEmitter();
-    this.playlistService.deletingPlaylists$.subscribe(value => this.isPlaylistsBeingDeleted = value);
   }
 
   areTracksLoading(isLoading: boolean) {
@@ -62,23 +58,6 @@ export class TrackService {
   // updateTracks(tracks) {
   //   this.updateTracks$.emit(tracks);
   // }
-
-  displayArtists(artists) {
-    const numberOfArtists = artists.length;
-    return artists.map((artist, i) => {
-      let artistString = '';
-      if (numberOfArtists > 1) {
-        if (numberOfArtists - 1 === i) {
-          artistString += artist.name;
-        } else {
-          artistString += `${artist.name}, `;
-        }
-      }  else {
-        artistString = artist.name;
-      }
-      return artistString;
-    });
-  }
 
   // getAllTracksFromPlaylist(route) {
   //   let token = '';

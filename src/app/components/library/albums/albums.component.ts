@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {switchMap} from 'rxjs/internal/operators';
-import {concat, of} from 'rxjs';
-import {SpotifyService} from '../../../services/spotify/spotify.service';
+import { switchMap } from 'rxjs/internal/operators';
+import { concat, of } from 'rxjs';
+import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { Album } from 'src/app/interfaces/album/album.interface';
 import { SpotifyAlbumsResponse } from 'src/app/interfaces/album/spotify-albums-response.interface';
-import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { UtilService } from 'src/app/services/util/util.service';
 
 @Component({
   selector: 'app-albums',
@@ -18,7 +18,7 @@ export class AlbumsComponent implements OnInit {
   public isSearchBoxShowing: boolean;
   public name: string;
 
-  constructor(private spotifyService: SpotifyService) { }
+  constructor(private spotifyService: SpotifyService, public utilService: UtilService) { }
 
   ngOnInit() {
     let numberOfSavedAlbums = 0;
@@ -57,32 +57,6 @@ export class AlbumsComponent implements OnInit {
           this.albumsLoaded = true;
         }
       });
-  }
-
-  shortenString(string: string): string {
-    const stringLength = 27;
-    if (string.length > stringLength) {
-      return string.substr(0, stringLength) + '...';
-    } else {
-      return string;
-    }
-  }
-
-  displayArtists(artists: Array<Artist>): Array<string> {
-    const numberOfArtists = artists.length;
-    return artists.map((artist, i) => {
-      let artistString = '';
-      if (numberOfArtists > 1) {
-        if (numberOfArtists - 1 === i) {
-          artistString += artist.name;
-        } else {
-          artistString += `${artist.name}, `;
-        }
-      }  else {
-        artistString = artist.name;
-      }
-      return artistString;
-    });
   }
 
   showSearchBox(): void {
