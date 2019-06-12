@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { stringify } from 'querystring';
 import { SpotifyPlaybackService } from '../spotify-playback/spotify-playback.service';
 
 @Injectable({
@@ -13,13 +12,12 @@ export class AuthService {
   private readonly loginURI: string;
   constructor(private cookieService: CookieService, private router: Router, private spotifyPlaybackService: SpotifyPlaybackService) {
     this.state = this.generateRandomString(16);
-    const query = stringify({
-      response_type: environment.spotify.loginResponseType,
-      client_id: environment.spotify.clientID,
-      scope: environment.spotify.scope,
-      redirect_uri: environment.spotify.redirectURI,
-      state: this.state
-    });
+    const query =
+      `response_type=${environment.spotify.loginResponseType}` +
+      `&client_id=${environment.spotify.clientID}` +
+      `&scope=${environment.spotify.scope}` +
+      `&redirect_uri=${environment.spotify.redirectURI}` +
+      `&state=${this.state}`;
     this.loginURI = environment.spotify.authURI + query;
   }
 

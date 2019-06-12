@@ -10,8 +10,8 @@
   <div class="grid-container">
     <div *ngFor="let album of albums | filterAlbumName: name" class="album">
       <img class="albumCover" [src]="album['album']['images'][0]['url']">
-      <div class="albumName">{{shortenString(album['album']['name'])}}</div>
-      <div class="albumArtist">{{shortenString(displayArtists(album['album']['artists']).join(''))}}</div>
+      <div class="albumName">{{utilService.shortenString(album['album']['name'], 27)}}</div>
+      <div class="albumArtist">{{utilService.shortenString(utilService.displayArtists(album['album']['artists']).join(''), 27)}}</div>
     </div>
   </div>
 </div>

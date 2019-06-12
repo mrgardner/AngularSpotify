@@ -12,7 +12,7 @@ export class AppComponent {
     this.showDeviceModal = false;
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return !!this.authService.getSpotifyToken();
   }
 }

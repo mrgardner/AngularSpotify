@@ -6,7 +6,9 @@
     <div class="playlistInfoSection">
       <span>PLAYLIST</span>
       <h1>{{playlist?.name}}</h1>
-      <span>Created by {{playlist?.owner?.display_name}} * {{playlist?.tracks?.total}} <span *ngIf="playlist?.tracks?.total > 1 || playlist?.tracks?.total === 0">songs</span><span *ngIf="tracks.length === 1">song</span>, {{getPlaylistDuration()}}</span>
+      <span>Created by {{playlist?.owner?.display_name}} * {{playlist?.tracks?.total}} <span *ngIf="playlist?.tracks?.total > 1 || playlist?.tracks?.total === 0">songs</span><span *ngIf="tracks.length === 1">song</span>
+      <!-- , {{getPlaylistDuration()}} -->
+    </span>
     </div>
   </div>
   <!-- <div *ngIf="tracks.length === 0">
@@ -16,7 +18,7 @@
     <div>
       <!-- <app-track-filter [tracks]="source" [selectedTracks]="selection"></app-track-filter> -->
     </div>
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" matSortDisableClear>
       <ng-container matColumnDef="dupTrack" *ngIf="checkDuplicate">
         <th mat-header-cell *matHeaderCellDef class="dupliateTrackHeader">Dup</th>
         <td mat-cell *matCellDef="let row">
@@ -41,32 +43,32 @@
       </ng-container>
 
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef>Title</th>
-        <td mat-cell *matCellDef="let element"> {{shortenString(element.title, 20)}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+        <td mat-cell *matCellDef="let element"> {{utilService.shortenString(element.title, 20)}} </td>
       </ng-container>
     
       <ng-container matColumnDef="artist">
-        <th mat-header-cell *matHeaderCellDef>Artist</th>
-        <td mat-cell *matCellDef="let element"> {{shortenString(element.artist, 20)}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Artist</th>
+        <td mat-cell *matCellDef="let element"> {{utilService.shortenString(element.artist, 20)}} </td>
       </ng-container>
     
       <ng-container matColumnDef="album">
-        <th mat-header-cell *matHeaderCellDef>Album</th>
-        <td mat-cell *matCellDef="let element"> {{shortenString(element.album, 20)}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Album</th>
+        <td mat-cell *matCellDef="let element"> {{utilService.shortenString(element.album_name, 20)}} </td>
       </ng-container>
 
       <ng-container matColumnDef="addedAt">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
           <mat-icon>calendar_today</mat-icon>
         </th>
         <td mat-cell *matCellDef="let element"> {{element.addedAt}} </td>
       </ng-container>
     
       <ng-container matColumnDef="time">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
           <mat-icon>watch_later</mat-icon>
         </th>
-        <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+        <td mat-cell *matCellDef="let element"> {{utilService.prettyMs(element.time)}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>

@@ -112,9 +112,42 @@ export class PlaylistTableService {
   //         }
   //       })
   //     );
+  //   .subscribe((data: any) => {
+  //     this.tracks = this.tracks.concat(data.items);
+  //     if (!data['next']) {
+  //       this.loading = false;
+  //       this.tracksLoaded = true;
+  //       this.tracks.forEach((track: Track, index: number) => {
+  //         track.isPlayButtonShowing = false;
+  //         track.isPauseButtonShowing = false;
+  //       });
+  //        this.source = this.tracks.map((t: Track) => {
+  //         return {
+  //           title: t['track'].name,
+  //           artist: this.displayArtists(t['track'].artists).join(''),
+  //           album: t['track'].album.name,
+  //           addedAt: t['added_at'].split('T')[0],
+  //           time: this.convertMS(t['track'].duration_ms),
+  //           isPlayButtonShowing: t.isPlayButtonShowing,
+  //           isPauseButtonShowing: t.isPauseButtonShowing,
+  //           duration: t['track'].duration_ms,
+  //           uri: t['track'].uri,
+  //           track: t
+  //         };
+  //       });
+  //       this.dataSource = new MatTableDataSource(this.source);
+  //       // const numberOfLoops = Math.ceil(this.tracks.length / 50);
+  //       // const trackIDs = this.tracks.map(track => track['track']['id']);
+  //       // for (let i = 0; i < numberOfLoops; i++) {
+  //       //   this.spotifyService.checkSavedTrack(this.token, trackIDs.slice((i * 50), ((i + 1) * 50)).join(','))
+  //       //     .subscribe(trackData =>  {
+  //       //       this.tracks.forEach((track, index) => track['isSaved'] = trackData[index]);
+  //       //     });
+  //       // }
+  //     }
+  //   });
   // }
 
-  // TODO: FIX Without getAuthToken()
   playSpotifyTrack(tracks, track) {
     this.setCurrentTrack(track['track']);
     this.setTrack(track['track']);
@@ -123,32 +156,4 @@ export class PlaylistTableService {
 
     return this.spotifyService.playSpotifyTrack(uris, offset, localStorage.getItem('deviceId'));
   }
-
-  // TODO: FIX Without getAuthToken()
-  // pauseSpotifyTrack(currentTrack: Song) {
-  //   let token = '';
-  //   let deviceId = '';
-
-  //   return this.spotifyService.getAuthToken().pipe(
-  //     switchMap((spotifyToken: SpotifyToken) => {
-  //       token = spotifyToken.token;
-  //       if (token) {
-  //         return this.playlistService.getCurrentDevice();
-  //       } else {
-  //         return of();
-  //       }
-  //     }),
-  //     switchMap((deviceID: string) => {
-  //       deviceId = deviceID;
-  //       if (deviceId) {
-  //         currentTrack.isPlayButtonShowing = true;
-  //         currentTrack.isPauseButtonShowing = false;
-  //         this.setCurrentTrack({track: {name: ''}});
-  //         return this.spotifyService.pauseSpotifyTrack(token, deviceId);
-  //       } else {
-  //         return of();
-  //       }
-  //     })
-  //   );
-  // }
 }

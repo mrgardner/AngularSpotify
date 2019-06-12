@@ -23,4 +23,9 @@ export interface Track {
   isPlayButtonShowing: boolean;
   isPauseButtonShowing: boolean;
   remove: boolean;
+  album_name: string;
+  title: string;
+  artist: string;
+  time: string;
+  addedAt: string;
 }

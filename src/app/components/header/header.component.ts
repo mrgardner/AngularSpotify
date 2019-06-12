@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return !!this.authService.getSpotifyToken();
   }
 

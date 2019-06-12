@@ -2,17 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SpotifyService } from '../spotify/spotify.service';
 import { Track } from 'src/app/interfaces/track/track.interface';
-import PrettyMS from 'pretty-ms';
-import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { UtilService } from '../util/util.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaylistDataSourceService {
-  private tableSubject = new BehaviorSubject<any[]>([]);
+  public tableSubject = new BehaviorSubject<any[]>([]);
   public tableSubject$ = this.tableSubject.asObservable();
 
-  constructor(private spotifyService: SpotifyService) {}
+  constructor(private spotifyService: SpotifyService, private utilService: UtilService) {}
 
   connect(): Observable<any[]> {
     return this.tableSubject.asObservable();
@@ -27,10 +26,10 @@ export class PlaylistDataSourceService {
         const sortedTracks = tracks.items.map((t: Track) => {
           return {
             title: t['track'].name,
-            artist: this.displayArtists(t['track'].artists).join(''),
-            album: t['track'].album.name,
+            artist: this.utilService.displayArtists(t['track'].artists).join(''),
+            album_name: t['track'].album.name,
             addedAt: t['added_at'].split('T')[0],
-            time: this.convertMS(t['track'].duration_ms),
+            time: t['track'].duration_ms,
             isPlayButtonShowing: false,
             isPauseButtonShowing: false,
             duration: t['track'].duration_ms,
@@ -44,27 +43,5 @@ export class PlaylistDataSourceService {
         });
         this.tableSubject.next(sortedTracks);
     });
-  }
-
-  displayArtists(artists: Array<Artist>): Array<string> {
-    const numberOfArtists = artists.length;
-    return artists.map((artist, i) => {
-      let artistString = '';
-      if (numberOfArtists > 1) {
-        if (numberOfArtists - 1 === i) {
-          artistString += artist.name;
-        } else {
-          artistString += `${artist.name}, `;
-        }
-      }  else {
-        artistString = artist.name;
-      }
-      return artistString;
-    });
-  }
-
-  // TODO: Remove this function
-  convertMS(ms: number): number {
-    return PrettyMS(ms, { secDecimalDigits: 0 });
   }
 }
