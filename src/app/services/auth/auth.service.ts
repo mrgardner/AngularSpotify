@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { SpotifyPlaybackService } from '../spotify-playback/spotify-playback.service';
+import { UtilService } from '../util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { SpotifyPlaybackService } from '../spotify-playback/spotify-playback.ser
 export class AuthService {
   private readonly state: string;
   private readonly loginURI: string;
-  constructor(private cookieService: CookieService, private router: Router, private spotifyPlaybackService: SpotifyPlaybackService) {
+  constructor(private utilService: UtilService, private router: Router, private spotifyPlaybackService: SpotifyPlaybackService) {
     this.state = this.generateRandomString(16);
     const query =
       `response_type=${environment.spotify.loginResponseType}` +
@@ -30,6 +30,11 @@ export class AuthService {
     );
 
     window['spotifyCallback'] = () => {
+      const authToken = popup.location.hash.split('#access_token=')[1].split('&')[0];
+      const expiredDate = new Date();
+      expiredDate.setHours(expiredDate.getHours() + 1);
+      console.log(authToken);
+      this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
       popup.close();
       setTimeout(() => {
         that.router.navigate(['']);
@@ -39,12 +44,13 @@ export class AuthService {
   }
 
   logout(): void {
-    this.cookieService.deleteAll();
+    this.utilService.clearCookie('spotifyToken');
     this.router.navigate(['login']);
+    localStorage.clear();
   }
 
   getSpotifyToken(): string {
-    return this.cookieService.get('spotifyToken');
+    return this.utilService.getCookie('spotifyToken');
   }
 
   generateRandomString(length) {

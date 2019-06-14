@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,22 +13,22 @@ export class SpotifyService {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
   }
 
-  getUser() {
+  getUser(): Observable<any> {
     const url = this.spotifyApiBaseURI + '/me';
     return this._http.get(url);
   }
 
 
-  getAllPlaylists(morePlaylists?) {
+  getAllPlaylists(morePlaylists?): Observable<any> {
     const url = morePlaylists ? morePlaylists : this.spotifyApiBaseURI + '/me/playlists?limit=50';
     return this._http.get(url);
   }
 
-  getTrack(id) {
+  getTrack(id): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/tracks/${id}`);
   }
 
-  getTracksFromPlaylist(playlistID, offset, limit) {
+  getTracksFromPlaylist(playlistID, offset, limit): Observable<any> {
     const t = offset * limit;
     const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks`;
 
@@ -38,11 +39,11 @@ export class SpotifyService {
     });
   }
 
-  getPlaylist(id: string) {
+  getPlaylist(id: string): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`);
   }
 
-  shuffleTracks(tracks) {
+  shuffleTracks(tracks): Array<Object> {
     const array = tracks;
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -52,11 +53,11 @@ export class SpotifyService {
     return array;
   }
 
-  addTracksToPlaylist(owner, playlistID, tracks) {
+  addTracksToPlaylist(owner, playlistID, tracks): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, tracks);
   }
 
-  postTracksToPlaylist(owner, playlistID, tracks) {
+  postTracksToPlaylist(owner, playlistID, tracks): Observable<any> {
     return this._http.post(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, tracks);
   }
 
@@ -66,60 +67,60 @@ export class SpotifyService {
       - figure out logic to pull the next 100 tracks once you are at last track in last batch
       - same point as above but for previous tracks
   */
-  playSpotifyTrack(tracks,  offset, deviceID) {
-    return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${deviceID}`,
+
+  playSpotifyTrack(tracks, track): Observable<any> {
+    const uris = tracks.map(ff => ff['uri']);
+    const offset = uris.indexOf(track['track']['uri']);
+
+    return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${localStorage.getItem('deviceId')}`,
     {uris: tracks, offset: {position: offset}});
   }
 
-  pauseSpotifyTrack(deviceID) {
+  pauseSpotifyTrack(deviceID): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + `/me/player/pause?${deviceID}`, {});
   }
 
-  setRepeatMode(context, deviceID) {
+  setRepeatMode(context, deviceID): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + `/me/player/repeat?state=${context}&device_id${deviceID}`, {});
   }
 
-  changeSpotifyTrackVolume(deviceID, volume) {
-    return this._http.put(this.spotifyApiBaseURI + `/me/player/volume?volume_percent=${volume}&device_id=${deviceID}`, {});
-  }
-
-  getCurrentPlayer() {
+  getCurrentPlayer(): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/me/player`);
   }
 
-  makeDeviceActive(deviceID) {
+  makeDeviceActive(deviceID): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]});
   }
 
-  getAvailableDevices() {
+  getAvailableDevices(): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/me/player/devices`);
   }
 
-  getCurrentSong() {
+  getCurrentSong(): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/me/player/currently-playing`);
   }
 
-  createPlaylist(body) {
+  createPlaylist(body): Observable<any> {
     return this._http.post(this.spotifyApiBaseURI + `/me/playlists`, body);
   }
 
-  uploadPlaylistCover(image: File, owner: string, playlistID: string) {
+  uploadPlaylistCover(image: File, owner: string, playlistID: string): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/images`, image);
   }
 
-  createNewPlaylist(body, image) {
+  createNewPlaylist(body, image): Observable<any> {
     return this.createPlaylist(body)
       .pipe(
         switchMap((data: Object) => this.uploadPlaylistCover(image, data['owner']['id'], data['id']))
       );
   }
 
-  getUsersSavedAlbums(moreAlbums?) {
+  getUsersSavedAlbums(moreAlbums?): Observable<any> {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;
     return this._http.get(url);
   }
 
-  replaceTrack(owner: string, playlistID: string, startIndex: number, endIndex: number) {
+  replaceTrack(owner: string, playlistID: string, startIndex: number, endIndex: number): Observable<any> {
     const requestBody = {
       range_start: startIndex,
       insert_before: endIndex
@@ -128,11 +129,12 @@ export class SpotifyService {
     return this._http.put(url, requestBody);
   }
 
-  mapTrackURIs(tracks) {
+  mapTrackURIs(tracks): Array<string> {
     return tracks.map(track => {
       return track.track.uri;
     });
   }
+
   // TODO: fix function to not have to use token
   // shuffler(playlistID, tracks) {
   //   let authToken = '';
@@ -214,7 +216,7 @@ export class SpotifyService {
   //     );
   // }
 
-  removeTracks(owner, playlistID, tracks) {
+  removeTracks(owner, playlistID, tracks): Observable<any> {
     const options = {
       headers: new HttpHeaders({}),
       body: tracks
@@ -241,7 +243,7 @@ export class SpotifyService {
   //     ).subscribe(() => {});
   // }
 
-  checkSavedTrack(trackIDs) {
+  checkSavedTrack(trackIDs): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/me/tracks/contains?ids=${trackIDs}`);
   }
 }

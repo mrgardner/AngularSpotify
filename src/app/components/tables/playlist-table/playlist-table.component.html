@@ -36,7 +36,7 @@
             <mat-icon *ngIf="element.isPlayButtonShowing && currentTrack['name'] !== element.title" (click)="playSong(element.track)">play_circle_filled_white</mat-icon>
             <div *ngIf="(currentTrack['name'] === element.title)" (mouseleave)="hidePauseButton(element)" (mouseenter)="showPauseButton(element)">
               <mat-icon *ngIf="!element.isPauseButtonShowing">volume_up</mat-icon>
-              <mat-icon *ngIf="element.isPauseButtonShowing" (click)="pauseSong(element.track)">pause_circle_filled</mat-icon>
+              <mat-icon *ngIf="element.isPauseButtonShowing" (click)="pauseSong()">pause_circle_filled</mat-icon>
             </div>
           </div>         
         </td>

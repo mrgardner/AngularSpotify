@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SpotifyService} from '../../services/spotify/spotify.service';
 import {ActivatedRoute} from '@angular/router';
+import {SpotifyService} from '../../services/spotify/spotify.service';
 import {TrackService} from '../../services/track/track.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
-import { Track } from 'src/app/interfaces/track/track.interface';
+import { Track } from '../../interfaces/track/track.interface';
 
 @Component({
   selector: 'app-track-filter',

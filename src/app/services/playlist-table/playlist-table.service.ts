@@ -1,8 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { SpotifyService } from '../spotify/spotify.service';
 import { PlaylistService } from '../playlist/playlist.service';
-import { Playlist } from 'src/app/interfaces/playlist/playlist.interface';
-import { Track } from 'src/app/interfaces/track/track.interface';
+import { Playlist } from '../../interfaces/playlist/playlist.interface';
+import { Track } from '../../interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -147,13 +147,4 @@ export class PlaylistTableService {
   //     }
   //   });
   // }
-
-  playSpotifyTrack(tracks, track) {
-    this.setCurrentTrack(track['track']);
-    this.setTrack(track['track']);
-    const uris = tracks.map(ff => ff['uri']);
-    const offset = uris.indexOf(track['track']['uri']);
-
-    return this.spotifyService.playSpotifyTrack(uris, offset, localStorage.getItem('deviceId'));
-  }
 }

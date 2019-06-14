@@ -1,18 +1,18 @@
 import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { switchMap, filter } from 'rxjs/internal/operators';
+import { switchMap, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { Track } from 'src/app/interfaces/track/track.interface';
-import { Song } from 'src/app/interfaces/song/song.interface';
-import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import { Track } from '../../../interfaces/track/track.interface';
+import { Song } from '../../../interfaces/song/song.interface';
+import { SpotifyPlaybackService } from '../../../services/spotify-playback/spotify-playback.service';
 import { MatSort, MatPaginator, Sort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { PlaylistTableService } from 'src/app/services/playlist-table/playlist-table.service';
-import { Playlist } from 'src/app/interfaces/playlist/playlist.interface';
-import { PlaylistDataSourceService } from 'src/app/services/playlist-data-source/playlist-data-source.service';
-import { UtilService } from 'src/app/services/util/util.service';
-import { TrackService } from 'src/app/services/track/track.service';
+import { PlaylistTableService } from '../../../services/playlist-table/playlist-table.service';
+import { Playlist } from '../../../interfaces/playlist/playlist.interface';
+import { PlaylistDataSourceService } from '../../../services/playlist-data-source/playlist-data-source.service';
+import { UtilService } from '../../../services/util/util.service';
+import { TrackService } from '../../../services/track/track.service';
 
 @Component({
   selector: 'app-playlist-table',
@@ -128,10 +128,12 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   }
 
   playSong(track: Song): void {
+    this.playlistTableService.setCurrentTrack(track['track']);
+    this.playlistTableService.setTrack(track['track']);
     if (this.state.position > 0 && track['track']['name'] === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
-      this.playlistTableService.playSpotifyTrack(this.tracks, track).subscribe(() => {});
+      this.spotifyService.playSpotifyTrack(this.tracks, track).subscribe(() => {});
     }
   }
 

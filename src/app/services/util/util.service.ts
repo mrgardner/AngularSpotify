@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { Artist } from '../../interfaces/artist/artist.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +61,29 @@ export class UtilService {
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  setCookie(name, value, expires): void {
+    const tt = name + '=' + (value || '')  + '; expires=' + expires + '; path=/';
+    console.log(tt);
+    document.cookie = tt;
+  }
+  getCookie(name: string): string {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    // console.log(ca);
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+          c = c.substring(1, c.length);
+        }
+        if (c.indexOf(nameEQ) === 0) {
+          return c.substring(nameEQ.length, c.length);
+        }
+    }
+    return null;
+  }
+  clearCookie(name: string): void {
+    document.cookie = name + '=; Max-Age=-99999999;';
   }
 }
