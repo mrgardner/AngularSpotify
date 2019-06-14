@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { StatusBarService } from '../../services/status-bar/status-bar.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeviceModalComponent } from '../device-modal/device-modal.component';
-import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
-import { Device } from 'src/app/interfaces/device/device.interface';
-import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
-import { Track } from 'src/app/interfaces/track/track.interface';
-import { UtilService } from 'src/app/services/util/util.service';
+import { SpotifyDeviceResponse } from '../../interfaces/device/spotify-device-response.interface';
+import { Device } from '../../interfaces/device/device.interface';
+import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+import { Track } from '../../interfaces/track/track.interface';
+import { UtilService } from '../../services/util/util.service';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -97,24 +95,16 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.isEnlargeIconShowing = false;
   }
 
-  onVolumeChange(event): void {
-    this.spotifyService.getCurrentPlayer().pipe(
-      switchMap((device: SpotifyDeviceResponse) => {
-        if (device) {
-          return this.spotifyService.changeSpotifyTrackVolume(device.device.id, event.target.value);
-        } else {
-          return of();
-        }
-      })
-    ).subscribe(() => {});
-  }
-
   openDeviceModal(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'device-modal-panel';
     dialogConfig.height = '350px';
     dialogConfig.width = '300px';
     this.dialog.open(DeviceModalComponent, dialogConfig);
+  }
+
+  onVolumeChange(event): void {
+    this.spotifyPlaybackService.setVolume(event.target.value / 100);
   }
 
   playSong() {

@@ -28,7 +28,6 @@ import { MatTableModule } from '@angular/material/table';
 import { NewPlaylistDialogComponent } from './components/new-playlist-dialog/new-playlist-dialog.component';
 import { AlbumsComponent } from './components/library/albums/albums.component';
 import { FilterAlbumNamePipe } from './pipes/filterAlbumName/filter-album-name.pipe';
-import { CookieService } from 'ngx-cookie-service';
 import { DisplayUserComponent } from './components/display-user/display-user.component';
 import { SpotifyInterceptorService } from './services/spotify-interceptor/spotify-interceptor.service';
 import { MatToolbarModule, MatMenuModule, MatSidenavModule, MatListModule, MatPaginatorModule } from '@angular/material';
@@ -83,7 +82,6 @@ import { LoginComponent } from './components/login/login.component';
     BrowserAnimationsModule
   ],
   providers: [
-    CookieService,
     {
       provide: HTTP_INTERCEPTORS, useClass: SpotifyInterceptorService, multi: true
     }

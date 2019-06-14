@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/internal/operators';
+import { switchMap } from 'rxjs/operators';
 import { concat, of } from 'rxjs';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
-import { Album } from 'src/app/interfaces/album/album.interface';
-import { SpotifyAlbumsResponse } from 'src/app/interfaces/album/spotify-albums-response.interface';
-import { UtilService } from 'src/app/services/util/util.service';
+import { Album } from '../../../interfaces/album/album.interface';
+import { SpotifyAlbumsResponse } from '../../../interfaces/album/spotify-albums-response.interface';
+import { UtilService } from '../../../services/util/util.service';
 
 @Component({
   selector: 'app-albums',

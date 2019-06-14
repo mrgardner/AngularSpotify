@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SpotifyService } from 'src/app/services/spotify/spotify.service';
-import { User } from 'src/app/interfaces/user/user.interface';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { User } from '../../interfaces/user/user.interface';
 
 @Component({
   selector: 'app-display-user',

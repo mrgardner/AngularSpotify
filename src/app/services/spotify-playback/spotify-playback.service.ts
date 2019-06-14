@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { SpotifySongResponse } from 'src/app/interfaces/song/spotify-song-response.interface';
-import { CookieService } from 'ngx-cookie-service';
+import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
+import { UtilService } from '../util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,10 @@ export class SpotifyPlaybackService {
   public previousSong$: EventEmitter<any>;
   public showPlayButton$: EventEmitter<boolean>;
   public currentTrack$: EventEmitter<any>;
+  public setVolume$: EventEmitter<number>;
   private player: any;
   private statePollingInterval: any = null;
-  constructor(private cookieService: CookieService) {
+  constructor(private utilService: UtilService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
@@ -23,6 +24,7 @@ export class SpotifyPlaybackService {
     this.showPlayButton$ = new EventEmitter();
     this.previousSong$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
+    this.setVolume$ = new EventEmitter();
   }
 
   async waitForSpotifyWebPlaybackSDKToLoad () {
@@ -38,13 +40,19 @@ export class SpotifyPlaybackService {
   }
 
   setupPlayer() {
+    const body = document.getElementsByTagName('body')[0];
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://sdk.scdn.co/spotify-player.js';
+    body.appendChild(script);
+
     (async () => {
       const Player = await this.waitForSpotifyWebPlaybackSDKToLoad();
 
       // create a new player
       this.player = new Player['Player']({
         name: 'Testing123',
-        getOAuthToken: cb => { cb(this.cookieService.get('spotifyToken')); },
+        getOAuthToken: cb => { cb(this.utilService.getCookie('spotifyToken')); },
       });
       // // set up the player's event handlers
       this.createEventHandlers();
@@ -107,6 +115,7 @@ export class SpotifyPlaybackService {
     this.playSong$.subscribe(() => this.player.resume());
     this.nextSong$.subscribe(() => this.player.nextTrack());
     this.previousSong$.subscribe(() => this.player.previousTrack());
+    this.setVolume$.subscribe((value: number) => this.player.setVolume(value));
   }
 
   waitForDeviceToBeSelected() {
@@ -127,7 +136,7 @@ export class SpotifyPlaybackService {
     fetch('https://api.spotify.com/v1/me/player', {
       method: 'PUT',
       headers: {
-        authorization: `Bearer ${this.cookieService.get('spotifyToken')}`,
+        authorization: `Bearer ${this.utilService.getCookie('spotifyToken')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -165,5 +174,9 @@ export class SpotifyPlaybackService {
 
   currentTrack(value) {
     this.currentTrack$.emit(value);
+  }
+
+  setVolume(value: number) {
+    this.setVolume$.emit(value);
   }
 }

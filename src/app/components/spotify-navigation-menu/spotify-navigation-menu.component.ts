@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/internal/operators';
+import { switchMap } from 'rxjs/operators';
 import { concat } from 'rxjs';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { PlaylistService } from '../../services/playlist/playlist.service';
@@ -8,10 +8,10 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-dialog.component';
 import { Router } from '@angular/router';
-import { SpotifyPlaylistRespose } from 'src/app/interfaces/playlist/spotifyPlaylistResponse.interface';
-import { CurrentTrack } from 'src/app/interfaces/track/current-track.interface';
-import { PlaylistData } from 'src/app/interfaces/playlist/spotfiy-playlist-data.interface';
-import { UtilService } from 'src/app/services/util/util.service';
+import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylistResponse.interface';
+import { CurrentTrack } from '../../interfaces/track/current-track.interface';
+import { PlaylistData } from '../../interfaces/playlist/spotfiy-playlist-data.interface';
+import { UtilService } from '../../services/util/util.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SpotifyDeviceResponse } from 'src/app/interfaces/device/spotify-device-response.interface';
-import { SpotifyDevicesResponse } from 'src/app/interfaces/device/spotify-devices-response.interface';
-import { Device } from 'src/app/interfaces/device/device.interface';
-import { UtilService } from 'src/app/services/util/util.service';
+import { SpotifyDeviceResponse } from '../../interfaces/device/spotify-device-response.interface';
+import { SpotifyDevicesResponse } from '../../interfaces/device/spotify-devices-response.interface';
+import { Device } from '../../interfaces/device/device.interface';
+import { UtilService } from '../../services/util/util.service';
 
 @Component({
   selector: 'app-device-modal',

@@ -3,9 +3,9 @@ import { SpotifyService } from '../../services/spotify/spotify.service';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { Params } from 'src/app/interfaces/params/params.interface';
-import { Track } from 'src/app/interfaces/track/track.interface';
-import { UtilService } from 'src/app/services/util/util.service';
+import { Params } from '../../interfaces/params/params.interface';
+import { Track } from '../../interfaces/track/track.interface';
+import { UtilService } from '../../services/util/util.service';
 
 @Component({
   selector: 'app-track',

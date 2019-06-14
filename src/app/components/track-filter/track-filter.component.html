@@ -11,7 +11,8 @@
     <!--<label>Filter track by Artist: </label>-->
     <!--<input type="text"[ngModel]="artist" (ngModelChange)="filterArtist($event); artist = $event"/>-->
   <!--</div>-->
-  <div *ngIf="!checkForLocalTracks()">
+  <!-- <div *ngIf="!checkForLocalTracks()"> -->
+    <div>
     <button class="btn btn-primary" (click)="shuffleSongs()">Shuffle</button>
     <div>
       <label>Check for Duplicate Songs:</label>

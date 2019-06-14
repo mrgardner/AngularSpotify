@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
-import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -15,9 +13,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private spotifyPlaybackService: SpotifyPlaybackService,
-    private cookieService: CookieService,
-    private router: Router) {}
+    private spotifyPlaybackService: SpotifyPlaybackService) {}
 
   ngOnInit() {
     if (this.isLoggedIn()) {
@@ -26,13 +22,12 @@ export class HeaderComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
+    console.log(!!this.authService.getSpotifyToken())
     return !!this.authService.getSpotifyToken();
   }
 
   logout(): void {
-    this.cookieService.deleteAll();
-    localStorage.clear();
+    this.authService.logout();
     this.loggedIn = false;
-    this.router.navigate(['login']);
   }
 }
