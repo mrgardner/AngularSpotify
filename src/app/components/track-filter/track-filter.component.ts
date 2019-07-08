@@ -4,6 +4,7 @@ import {SpotifyService} from '../../services/spotify/spotify.service';
 import {TrackService} from '../../services/track/track.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import { Track } from '../../interfaces/track/track.interface';
+import { Params } from '../../interfaces/params/params.interface';
 
 @Component({
   selector: 'app-track-filter',
@@ -20,7 +21,8 @@ export class TrackFilterComponent implements OnInit {
   public artist: string;
   private originalTracks: Array<Object>;
   public isSearchBoxShowing: boolean;
-  private playlistID: string;
+  public playlistID: string;
+  public endOfChain: boolean;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -32,7 +34,13 @@ export class TrackFilterComponent implements OnInit {
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
-    this.route.params.subscribe(params => this.playlistID = params['playlistID']);
+    this.route.params.subscribe((params: Params) => {
+      if (params && params.playlistID) {
+        this.playlistID = params.playlistID;
+      } else {
+        this.endOfChain = true;
+      }
+    });
   }
 
   // TODO: FIX when input variables are fixed
@@ -71,7 +79,8 @@ export class TrackFilterComponent implements OnInit {
   //   });
   // }
 
-  shuffleSongs(): void {
+  // TODO: FIX when input variables are fixed
+  // shuffleSongs(): void {
     // const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
     // TODO: FIX without having to use getAuthToken()
     // this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
@@ -87,7 +96,7 @@ export class TrackFilterComponent implements OnInit {
     //   // const shuffledTracks = that.spotifyService.shuffleTracks(this.tracks);
     //   // that.spotifyService.shuffler(params['playlistID'], this.originalTracks);
     // });
-  }
+  // }
 
   filterName(name: string): void {
     this.trackService.filterByTrackName(name);
@@ -112,6 +121,8 @@ export class TrackFilterComponent implements OnInit {
   onLoseFocus(): void {
     if (this.name.length === 0) {
       this.hideSearchBox();
+    } else {
+      this.endOfChain = true;
     }
   }
 }

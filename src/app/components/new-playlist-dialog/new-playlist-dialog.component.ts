@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 
@@ -16,6 +16,7 @@ export class NewPlaylistDialogComponent implements OnInit {
   public currentImage: any;
   public imageFile: any;
   public showUserButtons: boolean;
+  public reader: any;
 
   constructor(
     public dialogRef: MatDialogRef<NewPlaylistDialogComponent>,
@@ -37,14 +38,14 @@ export class NewPlaylistDialogComponent implements OnInit {
 
   getFile(event): void {
     if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
+      this.reader = new FileReader();
 
-      reader.onload = (events: ProgressEvent) => {
+      this.reader.onload = (events: ProgressEvent) => {
         this.currentImage = (<FileReader>events.target).result;
         this.imageFile = this.currentImage.split(',')[1];
 
       };
-      reader.readAsDataURL(event.target.files[0]);
+      this.reader.readAsDataURL(event.target.files[0]);
     }
   }
 

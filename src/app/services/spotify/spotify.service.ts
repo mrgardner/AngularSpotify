@@ -89,7 +89,7 @@ export class SpotifyService {
   }
 
   makeDeviceActive(deviceID): Observable<any> {
-    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID]});
+    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID], play: true});
   }
 
   getAvailableDevices(): Observable<any> {

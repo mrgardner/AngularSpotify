@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { concat } from 'rxjs';
+import { concat, of } from 'rxjs';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { PlaylistService } from '../../services/playlist/playlist.service';
 import { StatusBarService } from '../../services/status-bar/status-bar.service';
@@ -10,8 +10,8 @@ import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-
 import { Router } from '@angular/router';
 import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylistResponse.interface';
 import { CurrentTrack } from '../../interfaces/track/current-track.interface';
-import { PlaylistData } from '../../interfaces/playlist/spotfiy-playlist-data.interface';
 import { UtilService } from '../../services/util/util.service';
+import { Playlist } from '../../interfaces/playlist/playlist.interface';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -31,10 +31,10 @@ import { UtilService } from '../../services/util/util.service';
   ]
 })
 export class SpotifyNavigationMenuComponent implements OnInit {
-  public playlists: Array<SpotifyPlaylistRespose> = [];
+  public playlists: Array<Playlist> = [];
   public loading: boolean;
   public playlistsLoaded: boolean;
-  private selectedPlaylist: string;
+  public selectedPlaylist: string;
   public isPictureEnlarged: boolean;
   public currentTrack: CurrentTrack;
   public imageEnlargeState: string;
@@ -43,7 +43,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private spotifyService: SpotifyService,
     private playlistService: PlaylistService,
     private statusBarService: StatusBarService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private router: Router,
     public utilService: UtilService) {}
 
@@ -55,13 +55,15 @@ export class SpotifyNavigationMenuComponent implements OnInit {
       this.isPictureEnlarged = value;
       this.imageEnlargeState = value ? 'active' : 'inactive';
     });
-    this.statusBarService.currenttrack$.subscribe(value => this.currentTrack = value);
+    this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
+    this.playlistService.selectPlaylist$.subscribe((playlist: string) => this.selectedPlaylist = playlist);
     this.spotifyService.getAllPlaylists()
       .pipe(
         switchMap((playlistInfo: SpotifyPlaylistRespose) => {
           this.loading = true;
           this.playlistsLoaded = false;
-          const tempList = [];
+          if (playlistInfo.items.length > 0) {
+            const tempList = [];
             const playlistsLength = playlistInfo.total;
             const owner = String(playlistInfo.next).split('users/')[1].split('/playlists')[0];
             const numberOfTimesToLoop = Math.ceil(playlistsLength / 50);
@@ -70,32 +72,32 @@ export class SpotifyNavigationMenuComponent implements OnInit {
               tempList.push(this.spotifyService.getAllPlaylists(baseURI));
             }
             return concat(...tempList);
+          } else {
+            this.loading = false;
+            this.playlistsLoaded = true;
+            return of();
+          }
         })
       )
-      .subscribe((data: any) => {
-        data.items.forEach((playlist: PlaylistData) => {
+      .subscribe((data: SpotifyPlaylistRespose) => {
+        data.items.forEach((playlist: Playlist) => {
           if (playlist.name === this.selectedPlaylist) {
             playlist.selected = true;
           } else {
             playlist.selected = false;
           }
         });
-        if (!data.next) {
+        if (data.testing || !data.next) {
           this.loading = false;
           this.playlistsLoaded = true;
         }
         this.playlists = this.playlists.concat(data.items);
       });
-
-    this.playlistService.selectPlaylist$.subscribe((playlist: string) => {
-      this.selectedPlaylist = playlist;
-    });
   }
 
   goToTracks(playlist): void {
     this.playlists.forEach(tt => tt['selected'] = false);
     playlist['selected'] = true;
-    // this.playlistService.savePlaylist(playlist);
     const playlistName = encodeURI(playlist.name.toLowerCase());
     const playlistId = encodeURI(playlist.id);
     const url = this.utilService.encodeSpecialSymbols(`/playlist/${playlistName}/${playlistId}`);

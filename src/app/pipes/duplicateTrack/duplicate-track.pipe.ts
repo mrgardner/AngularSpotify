@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DuplicateTrackPipe implements PipeTransform {
 
-  transform(tracks: any, args?: any): any {
+  transform(tracks: any, args?: boolean): any {
     const getNotUnique = (array) => {
       const map = new Map();
       const map2 = new Map();

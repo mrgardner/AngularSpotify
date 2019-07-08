@@ -29,20 +29,14 @@ export class AlbumsComponent implements OnInit {
           this.albumsLoaded = false;
           this.albums = [];
           const tempList = [];
-          if (savedAlbums) {
-            numberOfSavedAlbums = savedAlbums.total;
-            const numberOfTimesToLoop = Math.ceil(numberOfSavedAlbums / 50);
-            if (numberOfSavedAlbums > 0) {
-              for (let i = 0; i < numberOfTimesToLoop; i++) {
-                const baseURI = `https://api.spotify.com/v1/me/albums?offset=${i * 50}&limit=50`;
-                tempList.push(this.spotifyService.getUsersSavedAlbums(baseURI));
-              }
-              return concat(...tempList);
-            } else {
-              this.loading = false;
-              this.albumsLoaded = true;
-              return of();
+          numberOfSavedAlbums = savedAlbums.total;
+          const numberOfTimesToLoop = Math.ceil(numberOfSavedAlbums / 50);
+          if (numberOfSavedAlbums > 0) {
+            for (let i = 0; i < numberOfTimesToLoop; i++) {
+              const baseURI = `https://api.spotify.com/v1/me/albums?offset=${i * 50}&limit=50`;
+              tempList.push(this.spotifyService.getUsersSavedAlbums(baseURI));
             }
+            return concat(...tempList);
           } else {
             this.loading = false;
             this.albumsLoaded = true;
@@ -65,7 +59,6 @@ export class AlbumsComponent implements OnInit {
 
   hideSearchBox(): void {
     this.name = '';
-    this.name  = '';
     this.isSearchBoxShowing = false;
   }
 

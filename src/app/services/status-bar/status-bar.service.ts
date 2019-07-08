@@ -1,22 +1,23 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { CurrentTrack } from '../../interfaces/track/current-track.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatusBarService {
-  public currenttrack$: EventEmitter<any>;
+  public currentTrack$: EventEmitter<any>;
   public enlargePicture$: EventEmitter<any>;
 
   constructor() {
-    this.currenttrack$ = new EventEmitter();
+    this.currentTrack$ = new EventEmitter();
     this.enlargePicture$ = new EventEmitter();
   }
 
-  setCurrentTrack(track) {
-    this.currenttrack$.emit(track);
+  setCurrentTrack(track: CurrentTrack) {
+    this.currentTrack$.emit(track);
   }
 
-  enlargePicture(value) {
+  enlargePicture(value: boolean) {
     this.enlargePicture$.emit(value);
   }
 }
