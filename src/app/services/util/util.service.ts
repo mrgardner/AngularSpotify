@@ -65,13 +65,11 @@ export class UtilService {
 
   setCookie(name, value, expires): void {
     const tt = name + '=' + (value || '')  + '; expires=' + expires + '; path=/';
-    console.log(tt);
     document.cookie = tt;
   }
   getCookie(name: string): string {
     const nameEQ = name + '=';
     const ca = document.cookie.split(';');
-    // console.log(ca);
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) === ' ') {

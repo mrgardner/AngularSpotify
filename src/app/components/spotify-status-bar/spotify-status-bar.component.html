@@ -63,7 +63,7 @@
           <ng-template #showMute>
             <i class="material-icons">volume_off</i>
           </ng-template>
-          <input type="range" min="0" max="100" [value]="volume" [(ngModel)]="volume" (change)="onVolumeChange($event)"/>
+          <input type="range" min="0" max="100" [value]="volume" [(ngModel)]="volume" (change)="onVolumeChange($event.target.value)"/>
         </div>
   </div>
   

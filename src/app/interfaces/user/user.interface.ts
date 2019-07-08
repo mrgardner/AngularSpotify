@@ -1,6 +1,7 @@
 import { UserExternalUrls } from './user-external-urls.interface';
 import { UserFollowers } from './user-followers.interface';
 import { UserExplicitContent } from './user-explicit-content.interface';
+import { Image } from '../image/image.interface';
 
 export interface User {
   birthdate: string;
@@ -12,7 +13,7 @@ export interface User {
   followers: UserFollowers;
   href: string;
   id: string;
-  images: Array<Object>;
+  images: Array<Image>;
   product: string;
   type: string;
   uri: string;

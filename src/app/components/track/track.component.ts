@@ -14,6 +14,7 @@ import { UtilService } from '../../services/util/util.service';
 })
 export class TrackComponent implements OnInit {
   public track: Object;
+  public endOfChain: boolean;
   constructor(
     private spotifyService: SpotifyService,
     private route: ActivatedRoute,
@@ -22,9 +23,10 @@ export class TrackComponent implements OnInit {
   ngOnInit() {
     this.route.params.pipe(
       switchMap((params: Params) => {
-        if (params) {
+        if (params && params.trackID) {
           return this.spotifyService.getTrack(params.trackID);
         } else {
+          this.endOfChain = true;
           return of();
         }
       })

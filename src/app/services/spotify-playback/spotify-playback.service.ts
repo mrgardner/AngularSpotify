@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
 import { UtilService } from '../util/util.service';
+import { SpotifyService } from '../spotify/spotify.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SpotifyPlaybackService {
   public setVolume$: EventEmitter<number>;
   private player: any;
   private statePollingInterval: any = null;
-  constructor(private utilService: UtilService) {
+  constructor(private utilService: UtilService, private spotifyService: SpotifyService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
@@ -108,7 +109,7 @@ export class SpotifyPlaybackService {
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
-      this.transferPlaybackHere();
+      // this.spotifyService.makeDeviceActive(device_id).subscribe((t) => console.log(t));
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());
@@ -128,23 +129,6 @@ export class SpotifyPlaybackService {
           }
         });
       }
-    });
-  }
-
-  transferPlaybackHere() {
-    // https://beta.developer.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/
-    fetch('https://api.spotify.com/v1/me/player', {
-      method: 'PUT',
-      headers: {
-        authorization: `Bearer ${this.utilService.getCookie('spotifyToken')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        'device_ids': [localStorage.getItem('deviceId')],
-        // true: start playing music if it was paused on the other device
-        // false: paused if paused on other device, start playing music otherwise
-        'play': true,
-      }),
     });
   }
 

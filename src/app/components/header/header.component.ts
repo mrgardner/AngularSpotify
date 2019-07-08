@@ -22,7 +22,6 @@ export class HeaderComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    console.log(!!this.authService.getSpotifyToken())
     return !!this.authService.getSpotifyToken();
   }
 

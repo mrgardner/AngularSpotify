@@ -7,7 +7,6 @@
       <span>PLAYLIST</span>
       <h1>{{playlist?.name}}</h1>
       <span>Created by {{playlist?.owner?.display_name}} * {{playlist?.tracks?.total}} <span *ngIf="playlist?.tracks?.total > 1 || playlist?.tracks?.total === 0">songs</span><span *ngIf="tracks.length === 1">song</span>
-      <!-- , {{getPlaylistDuration()}} -->
     </span>
     </div>
   </div>

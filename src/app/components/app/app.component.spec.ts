@@ -1,27 +1,54 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { LoginComponent } from '../login/login.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../services/auth/auth.service';
+
+
+
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let authService: AuthService;
+  const routes: Routes = [
+    {path: 'login', component: LoginComponent},
+  ];
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
+      imports: [
+        RouterTestingModule.withRoutes(routes),
+        HttpClientModule
+      ]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    authService = TestBed.get(AuthService);
   }));
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+
+  afterEach(() => {
+    authService = null;
+  });
+
+  it('should create the app component', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  }));
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
-  }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to angular-spotify!');
-  }));
+  });
+
+  it('should check the isLoggedIn method and return true', () => {
+    spyOn(authService, 'getSpotifyToken').and.returnValue('testCookie123');
+    const isLoggedIn = component.isLoggedIn();
+    expect(isLoggedIn).toBeTruthy();
+  });
+
+  it('should check the isLoggedIn method and return false', () => {
+    spyOn(authService, 'getSpotifyToken').and.returnValue('');
+    const isLoggedIn = component.isLoggedIn();
+    expect(isLoggedIn).toBeFalsy();
+  });
 });

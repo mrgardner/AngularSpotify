@@ -13,7 +13,6 @@ export class SpotifyInterceptorService implements HttpInterceptor {
     const spotifyUrl = req.url.split('https://api.spotify.com/v1/');
     // TODO: Add check for content-type of images
     if (spotifyUrl.length > 1) {
-      console.log(this.utilService.getCookie('spotifyToken'))
       req = req.clone({
         setHeaders: {
           Authorization: 'Bearer ' + this.utilService.getCookie('spotifyToken'),

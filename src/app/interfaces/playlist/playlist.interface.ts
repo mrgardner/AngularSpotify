@@ -18,4 +18,5 @@ export interface Playlist {
   tracks: Tracks;
   type: string;
   uri: string;
+  selected: boolean;
 }

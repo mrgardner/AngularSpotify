@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
-import { Router, NavigationEnd } from '@angular/router';
-import { switchMap, filter } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Track } from '../../../interfaces/track/track.interface';
 import { Song } from '../../../interfaces/song/song.interface';
@@ -13,6 +13,7 @@ import { Playlist } from '../../../interfaces/playlist/playlist.interface';
 import { PlaylistDataSourceService } from '../../../services/playlist-data-source/playlist-data-source.service';
 import { UtilService } from '../../../services/util/util.service';
 import { TrackService } from '../../../services/track/track.service';
+import { SpotifySongResponse } from '../../../interfaces/song/spotify-song-response.interface';
 
 @Component({
   selector: 'app-playlist-table',
@@ -31,7 +32,8 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   public selection = new SelectionModel<Object>(true, []);
   public itemCount: number;
   public pageSize: number;
-  public state: any;
+  public state: SpotifySongResponse;
+  public endOfChain: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -42,7 +44,8 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
     private spotifyPlaybackService: SpotifyPlaybackService,
     private playlistTableService: PlaylistTableService,
     public utilService: UtilService,
-    private trackService: TrackService) {}
+    private trackService: TrackService,
+    private route: ActivatedRoute) {}
 
   ngAfterContentInit() {
     if (this.dataSource) {
@@ -55,36 +58,25 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
           this.itemCount = 0;
         }
       });
+    } else {
+      this.endOfChain = true;
     }
   }
 
   ngOnInit() {
     this.dataSource = new PlaylistDataSourceService(this.spotifyService, this.utilService);
 
-    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => {
-      this.checkDuplicate = isDuplicate;
-    });
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      switchMap(() => {
-        const tt = this.router.url.split('/');
-        if (tt.length === 4) {
-          this.dataSource.loadTracks(tt[3]);
-          return this.spotifyService.getPlaylist(tt[3]);
-        } else {
-          return of();
-        }
-      })
-    ).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
-
-    const breadcrumbs = this.router.url.split('/');
-    if (breadcrumbs.length === 4) {
-      this.dataSource.loadTracks(breadcrumbs[3]);
-      this.spotifyService.getPlaylist(breadcrumbs[3]).subscribe((playlistInfo: Playlist) => {
-        this.playlist = playlistInfo;
-      });
-    }
-
+    this.route.url.pipe(switchMap((tt) => {
+      if (tt.length === 3) {
+        this.dataSource.loadTracks(tt[2].path);
+        this.endOfChain = false;
+        return this.spotifyService.getPlaylist(tt[2].path);
+      } else {
+        this.endOfChain = true;
+        return of();
+      }
+    })).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
+    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
     this.spotifyPlaybackService.currentSongState$.subscribe(state => this.state = state);
     this.spotifyPlaybackService.currentTrack$.subscribe((track: Track) => this.currentTrack = track);
   }
@@ -128,9 +120,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   }
 
   playSong(track: Song): void {
-    this.playlistTableService.setCurrentTrack(track['track']);
-    this.playlistTableService.setTrack(track['track']);
-    if (this.state.position > 0 && track['track']['name'] === this.state.track_window.current_track.name) {
+    this.playlistTableService.setCurrentTrack(track.track);
+    this.playlistTableService.setTrack(track.track);
+    if (this.state.position > 0 && track.track.name === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
       this.spotifyService.playSpotifyTrack(this.tracks, track).subscribe(() => {});
@@ -139,25 +131,6 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
 
   pauseSong(): void {
     this.spotifyPlaybackService.pauseSong();
-  }
-
-  toBeRemoved(track: Track): void {
-    track.remove = !track.remove;
-  }
-
-  goToTrack(track): void {
-    this.router.navigate(['/track', track.track.id]);
-  }
-
-  getPlaylistDuration(): (number | string) {
-    let totalDuration = 0;
-    this.tracks.forEach(track => totalDuration += track['track']['track']['duration_ms']);
-
-    if (totalDuration === 0) {
-      return '0 sec';
-    } else {
-      return this.utilService.totalDurationPrettyMs(totalDuration);
-    }
   }
 
   showPlayButton(track: Track): void {

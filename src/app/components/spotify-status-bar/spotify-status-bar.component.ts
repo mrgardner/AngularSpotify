@@ -10,6 +10,7 @@ import { Device } from '../../interfaces/device/device.interface';
 import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
 import { Track } from '../../interfaces/track/track.interface';
 import { UtilService } from '../../services/util/util.service';
+import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -42,13 +43,13 @@ export class SpotifyStatusBarComponent implements OnInit {
   public isRepeatPlaylistShowing: boolean;
   public isRepeatTrackShowing: boolean;
   public isRepeatOffShowing: boolean;
-  public state: any;
+  public state: SpotifySongResponse;
 
   constructor(
     private statusBarService: StatusBarService,
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private spotifyPlaybackService: SpotifyPlaybackService,
     public utilService: UtilService) {}
   ngOnInit() {
@@ -74,17 +75,17 @@ export class SpotifyStatusBarComponent implements OnInit {
       }
     });
 
-    this.spotifyPlaybackService.currentSongState$.subscribe(newState => {
+    this.spotifyPlaybackService.currentSongState$.subscribe((newState: SpotifySongResponse) => {
       this.state = newState;
       this.songCurrentProgress = (Math.round(newState.position / 1000) / Math.round(newState.duration / 1000)) * 100;
       this.currentTrack = newState.track_window.current_track;
     });
 
-    this.spotifyPlaybackService.showPlayButton$.subscribe(value => this.showPlayButton = value);
+    this.spotifyPlaybackService.showPlayButton$.subscribe((value: boolean) => this.showPlayButton = value);
   }
 
   enlargePicture(): void {
-    this.statusBarService.enlargePicture$.emit(true);
+    this.statusBarService.enlargePicture(true);
   }
 
   showEnlargeIcon(): void {
@@ -103,8 +104,8 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.dialog.open(DeviceModalComponent, dialogConfig);
   }
 
-  onVolumeChange(event): void {
-    this.spotifyPlaybackService.setVolume(event.target.value / 100);
+  onVolumeChange(volume: number): void {
+    this.spotifyPlaybackService.setVolume(volume / 100);
   }
 
   playSong() {
