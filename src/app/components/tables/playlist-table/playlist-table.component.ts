@@ -8,7 +8,6 @@ import { Song } from '../../../interfaces/song/song.interface';
 import { SpotifyPlaybackService } from '../../../services/spotify-playback/spotify-playback.service';
 import { MatSort, MatPaginator, Sort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { PlaylistTableService } from '../../../services/playlist-table/playlist-table.service';
 import { Playlist } from '../../../interfaces/playlist/playlist.interface';
 import { PlaylistDataSourceService } from '../../../services/playlist-data-source/playlist-data-source.service';
 import { UtilService } from '../../../services/util/util.service';
@@ -42,7 +41,6 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
     private spotifyService: SpotifyService,
     private router: Router,
     private spotifyPlaybackService: SpotifyPlaybackService,
-    private playlistTableService: PlaylistTableService,
     public utilService: UtilService,
     private trackService: TrackService,
     private route: ActivatedRoute) {}
@@ -119,13 +117,11 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
     this.dataSource.tableSubject.next(this.tracks);
   }
 
-  playSong(track: Song): void {
-    this.playlistTableService.setCurrentTrack(track.track);
-    this.playlistTableService.setTrack(track.track);
-    if (this.state.position > 0 && track.track.name === this.state.track_window.current_track.name) {
+  playSong(song: Song): void {
+    if (this.state.position > 0 && song.track.name === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
-      this.spotifyService.playSpotifyTrack(this.tracks, track).subscribe(() => {});
+      this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => {});
     }
   }
 

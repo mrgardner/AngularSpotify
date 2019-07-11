@@ -36,36 +36,34 @@ export class UtilService {
     const roundedSeconds = 1000 * Math.round(ms / 1000);
     const date = new Date(roundedSeconds);
     const minutes = date.getUTCMinutes() ? `${date.getUTCMinutes()} min` : '';
-    const hours = date.getUTCHours() ? `${date.getUTCHours()} hr` : '';
-    return hours + ' ' + minutes;
+    const hours = date.getUTCHours() ? `${date.getUTCHours()} hr ` : '';
+    return hours + minutes;
   }
 
   displayArtists(artists: Array<Artist>): Array<string> {
-    if (artists) {
-      const numberOfArtists = artists.length;
-      return artists.map((artist, i) => {
-        let artistString = '';
-        if (numberOfArtists > 1) {
-          if (numberOfArtists - 1 === i) {
-            artistString += artist.name;
-          } else {
-            artistString += `${artist.name}, `;
-          }
-        }  else {
-          artistString = artist.name;
+    const numberOfArtists = artists.length;
+    return artists.map((artist, i) => {
+      let artistString = '';
+      if (numberOfArtists > 1) {
+        if (numberOfArtists - 1 === i) {
+          artistString += artist.name;
+        } else {
+          artistString += `${artist.name}, `;
         }
-        return artistString;
-      });
-    }
+      }  else {
+        artistString = artist.name;
+      }
+      return artistString;
+    });
   }
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  setCookie(name, value, expires): void {
-    const tt = name + '=' + (value || '')  + '; expires=' + expires + '; path=/';
-    document.cookie = tt;
+  setCookie(name: string, value: string, expires: string): void {
+    const cookie = name + '=' + (value || '')  + '; expires=' + expires + '; path=/';
+    document.cookie = cookie;
   }
   getCookie(name: string): string {
     const nameEQ = name + '=';

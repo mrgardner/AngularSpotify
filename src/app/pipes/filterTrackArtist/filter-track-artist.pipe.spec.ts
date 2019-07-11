@@ -106,7 +106,8 @@ describe('FilterTrackArtistPipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     const pipe = new FilterTrackArtistPipe();
@@ -175,7 +176,8 @@ describe('FilterTrackArtistPipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     const pipe = new FilterTrackArtistPipe();

@@ -148,6 +148,7 @@ describe('DeviceModalComponent', () => {
         artist: 'string',
         time: 'string',
         addedAt: 'string',
+        duration: 0
       },
       progress_ms: 1,
       repeat_state: 'string',
@@ -249,6 +250,7 @@ describe('DeviceModalComponent', () => {
         artist: 'string',
         time: 'string',
         addedAt: 'string',
+        duration: 0
       },
       progress_ms: 1,
       repeat_state: 'string',

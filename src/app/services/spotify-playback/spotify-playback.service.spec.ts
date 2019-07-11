@@ -1,12 +1,29 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SpotifyPlaybackService } from './spotify-playback.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SpotifyPlaybackService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  let spotifyPlaybackService: SpotifyPlaybackService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule
+      ],
+      providers: [
+        SpotifyPlaybackService
+      ]
+    });
+
+    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+  });
+
+  afterEach(() => {
+    spotifyPlaybackService = null;
+  });
 
   it('should be created', () => {
-    const service: SpotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
-    expect(service).toBeTruthy();
+    expect(spotifyPlaybackService).toBeTruthy();
   });
 });

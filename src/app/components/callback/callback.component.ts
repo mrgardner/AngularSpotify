@@ -21,7 +21,7 @@ export class CallbackComponent implements OnInit {
         const authToken = fragment.split('access_token=')[1].split('&')[0];
         const expiredDate = new Date();
         expiredDate.setHours(expiredDate.getHours() + 1);
-        this.utilService.setCookie('spotifyToken', authToken, expiredDate);
+        this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
         this._window.opener.spotifyCallback(authToken);
       }
     });

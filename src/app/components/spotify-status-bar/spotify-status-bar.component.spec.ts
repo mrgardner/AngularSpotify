@@ -230,7 +230,8 @@ describe('SpotifyStatusBarComponent', () => {
           title: '',
           artist: '',
           time: '',
-          addedAt: ''
+          addedAt: '',
+          duration: 0
         },
         next_tracks: [],
         previous_tracks: []

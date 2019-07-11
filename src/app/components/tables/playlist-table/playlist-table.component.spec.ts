@@ -7,7 +7,6 @@ import { Routes, Router, ActivatedRoute } from '@angular/router';
 import { PlaylistDataSourceService } from '../../../services/playlist-data-source/playlist-data-source.service';
 import { TrackService } from '../../../services/track/track.service';
 import { SpotifyPlaybackService } from '../../../services/spotify-playback/spotify-playback.service';
-import { PlaylistTableService } from '../../../services/playlist-table/playlist-table.service';
 import { Song } from '../../../interfaces/song/song.interface';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { of } from 'rxjs';
@@ -20,7 +19,6 @@ describe('PlaylistTableComponent', () => {
   let dataSource: PlaylistDataSourceService;
   let trackService: TrackService;
   let spotifyPlaybackService: SpotifyPlaybackService;
-  let playlistTableService: PlaylistTableService;
   let router: Router;
   let spotifyService: SpotifyService;
   let changeDetectorRef: ChangeDetectorRef;
@@ -51,7 +49,6 @@ describe('PlaylistTableComponent', () => {
     dataSource = TestBed.get(PlaylistDataSourceService);
     trackService = TestBed.get(TrackService);
     spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
-    playlistTableService = TestBed.get(PlaylistTableService);
     router = TestBed.get(Router);
     spotifyService = TestBed.get(SpotifyService);
     changeDetectorRef = TestBed.get(ChangeDetectorRef as Type<ChangeDetectorRef>);
@@ -61,7 +58,6 @@ describe('PlaylistTableComponent', () => {
     dataSource = null;
     trackService = null;
     spotifyPlaybackService = null;
-    playlistTableService = null;
     router = null;
     spotifyService = null;
     changeDetectorRef = null;
@@ -146,7 +142,8 @@ describe('PlaylistTableComponent', () => {
             title: '',
             artist: '',
             time: '',
-            addedAt: ''
+            addedAt: '',
+            duration: 0
           },
           video_thumbnail: {
             url: ''
@@ -291,7 +288,8 @@ describe('PlaylistTableComponent', () => {
           title: '',
           artist: '',
           time: '',
-          addedAt: ''
+          addedAt: '',
+          duration: 0
         },
         next_tracks: [],
         previous_tracks: []
@@ -347,7 +345,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.ngOnInit();
     spotifyPlaybackService.currentTrack(mockTrack);
@@ -485,7 +484,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -531,7 +531,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.ngOnInit();
@@ -585,7 +586,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -631,7 +633,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.ngOnInit();
@@ -685,7 +688,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -731,7 +735,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.ngOnInit();
@@ -785,7 +790,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -831,7 +837,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.ngOnInit();
@@ -885,7 +892,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -931,7 +939,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.ngOnInit();
@@ -985,7 +994,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -1031,7 +1041,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.ngOnInit();
@@ -1111,7 +1122,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       video_thumbnail: {
         url: ''
@@ -1208,7 +1220,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       video_thumbnail: {
         url: ''
@@ -1296,7 +1309,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.tracks = [
       mockTrack
@@ -1350,7 +1364,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.tracks = [
       {
@@ -1397,7 +1412,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.showPlayButton(mockTrack);
@@ -1449,7 +1465,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.tracks = [
       mockTrack
@@ -1503,7 +1520,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.tracks = [
       {
@@ -1550,7 +1568,8 @@ describe('PlaylistTableComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     component.hidePlayButton(mockTrack);
@@ -1602,7 +1621,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.showPauseButton(mockTrack);
     expect(mockTrack.isPauseButtonShowing).toBeTruthy();
@@ -1653,7 +1673,8 @@ describe('PlaylistTableComponent', () => {
       title: '',
       artist: '',
       time: '',
-      addedAt: ''
+      addedAt: '',
+      duration: 0
     };
     component.hidePauseButton(mockTrack);
     expect(mockTrack.isPauseButtonShowing).toBeFalsy();
