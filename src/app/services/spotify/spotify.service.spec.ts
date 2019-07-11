@@ -3,7 +3,7 @@ import { SpotifyService } from './spotify.service';
 import { HttpClientModule, HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
  // TODO: Add cases for what the http call returns for response and test it.
 fdescribe('SpotifyService', () => {
@@ -34,12 +34,6 @@ fdescribe('SpotifyService', () => {
 
   it('should be created', () => {
     expect(SpotifyService).toBeTruthy();
-  });
-
-  it('should check getUser method', () => {
-    const spy = spyOn(http, 'get');
-    spotifyService.getUser();
-    expect(spy).toHaveBeenCalledWith('https://api.spotify.com/v1/me');
   });
 
   fit('should check getUser method', () => {
