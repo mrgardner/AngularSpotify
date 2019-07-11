@@ -28,4 +28,5 @@ export interface Track {
   artist: string;
   time: string;
   addedAt: string;
+  duration: number;
 }

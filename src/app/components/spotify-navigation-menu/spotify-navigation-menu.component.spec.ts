@@ -164,7 +164,8 @@ describe('SpotifyNavigationMenuComponent', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       video_thumbnail: {
         url: ''

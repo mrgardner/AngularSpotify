@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UtilService } from '../util/util.service';
 
-fdescribe('AuthService', () => {
+describe('AuthService', () => {
   let authService: AuthService;
   let utilService: UtilService;
   let router: Router;
@@ -39,7 +39,7 @@ fdescribe('AuthService', () => {
     expect(authService).toBeTruthy();
   });
 
-  it('should check login method', () => {
+  xit('should check login method', () => {
     const mockWindow = {
       open: (t) => ({location: {hash: ''}, t}),
       spotifyCallback: () => {}

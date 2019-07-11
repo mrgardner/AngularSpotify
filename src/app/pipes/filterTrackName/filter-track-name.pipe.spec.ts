@@ -53,7 +53,8 @@ describe('FilterTrackNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -99,7 +100,8 @@ describe('FilterTrackNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     const pipe = new FilterTrackNamePipe();
@@ -153,7 +155,8 @@ describe('FilterTrackNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -199,7 +202,8 @@ describe('FilterTrackNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ];
     const pipe = new FilterTrackNamePipe();

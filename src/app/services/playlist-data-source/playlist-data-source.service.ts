@@ -27,7 +27,6 @@ export class PlaylistDataSourceService {
 
   loadTracks(playlistId: string, page = 0, size = 100): void {
     this.spotifyService.getTracksFromPlaylist(playlistId, page, size).subscribe((tracks: TrackSpotifyReponse) => {
-      console.log(tracks);
       const sortedTracks: Array<SortedTracks> = tracks.items.map((t: SortedTrack) => {
         return {
           title: t.track.name,

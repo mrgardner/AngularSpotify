@@ -1,12 +1,20 @@
 import { TestBed } from '@angular/core/testing';
-
 import { SpotifyInterceptorService } from './spotify-interceptor.service';
 
 describe('SpotifyInterceptorService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  let spotifyInterceptorService: SpotifyInterceptorService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        SpotifyInterceptorService
+      ]
+    });
+
+    spotifyInterceptorService = TestBed.get(SpotifyInterceptorService);
+  });
 
   it('should be created', () => {
-    const service: SpotifyInterceptorService = TestBed.get(SpotifyInterceptorService);
-    expect(service).toBeTruthy();
+    expect(spotifyInterceptorService).toBeTruthy();
   });
 });

@@ -53,7 +53,8 @@ describe('FilterAlbumNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ]);
     expect(albums.length).toEqual(1);
@@ -106,7 +107,8 @@ describe('FilterAlbumNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       },
       {
         album: {
@@ -152,7 +154,8 @@ describe('FilterAlbumNamePipe', () => {
         title: '',
         artist: '',
         time: '',
-        addedAt: ''
+        addedAt: '',
+        duration: 0
       }
     ], 'tes');
     expect(albums.length).toEqual(1);

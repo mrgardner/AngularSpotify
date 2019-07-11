@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { PlaylistService } from '../playlist/playlist.service';
+import { Track } from '../../interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -8,105 +8,28 @@ export class TrackService {
   public checkDuplicate$: EventEmitter<any>;
   public filterTrackName$: EventEmitter<any>;
   public filterTrackArtist$: EventEmitter<any>;
-  public updateTracks$: EventEmitter<any>;
-  public areTracksLoading$: EventEmitter<any>;
-  public areTracksLoaded$: EventEmitter<any>;
   public currentTrack$: EventEmitter<any>;
-  public trackTime$: EventEmitter<any>;
-  public currentlyPlaying$: EventEmitter<any>;
 
-  constructor(private playlistService: PlaylistService) {
+  constructor() {
     this.checkDuplicate$ = new EventEmitter();
     this.filterTrackName$ = new EventEmitter();
     this.filterTrackArtist$ = new EventEmitter();
-    this.updateTracks$ = new EventEmitter();
-    this.areTracksLoading$ = new EventEmitter();
-    this.areTracksLoaded$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
-    this.trackTime$ = new EventEmitter();
-    this.currentlyPlaying$ = new EventEmitter();
-  }
-
-  areTracksLoading(isLoading: boolean) {
-    this.areTracksLoading$.emit(isLoading);
-  }
-
-  areTracksLoaded(areTracksLoaded: boolean) {
-    this.areTracksLoaded$.emit(areTracksLoaded);
-  }
-
-  setCurrentTrack(track: Object) {
-    this.currentTrack$.emit(track);
-  }
-
-  setTrackTime(value: boolean) {
-    this.trackTime$.emit(value);
   }
 
   checkDuplicate(value: boolean) {
     this.checkDuplicate$.emit(value);
   }
 
-  filterByTrackName(trackNameString) {
+  filterByTrackName(trackNameString: string) {
     this.filterTrackName$.emit(trackNameString);
   }
 
-  filterByTrackArtist(trackArtistString) {
+  filterByTrackArtist(trackArtistString: string) {
     this.filterTrackArtist$.emit(trackArtistString);
   }
 
-  // updateTracks(tracks) {
-  //   this.updateTracks$.emit(tracks);
-  // }
-
-  // getAllTracksFromPlaylist(route) {
-  //   let token = '';
-  //   let loggedIn = false;
-  //   let playlist = {};
-  //   return this.spotifyService.getAuthToken()
-  //     .pipe(
-  //       switchMap(spotifyToken => {
-  //         token = spotifyToken['token'];
-  //         loggedIn = !!token;
-  //         if (loggedIn) {
-  //           return route.params;
-  //         } else {
-  //           this.areTracksLoading(false);
-  //           return of();
-  //         }
-  //
-  //       }),
-  //       switchMap(params => {
-  //         return this.playlistService.getSavedPlaylist(params['playlistID']);
-  //       }),
-  //       switchMap(playlistInfo => {
-  //         this.areTracksLoading(true);
-  //         this.areTracksLoaded(false);
-  //         playlist = playlistInfo;
-  //         const tempList = [];
-  //         if (playlist && loggedIn) {
-  //           const owner = playlist['owner'];
-  //           const playlistID = playlist['playlistID'];
-  //           const playlistLength = playlist['playlistLength'];
-  //           const numberOfTimesToLoop = Math.ceil(playlistLength / 100);
-  //           for (let i = 0; i < numberOfTimesToLoop; i++) {
-  //             const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
-  //             tempList.push(this.spotifyService.getAllTracksFromPlaylist(owner, playlistID, token, baseURI));
-  //           }
-  //           return concat(...tempList);
-  //         } else {
-  //           this.areTracksLoading(false);
-  //           return of();
-  //         }
-  //       })
-  //     );
-  // }
-
-  currentlyPlaying(state: any) {
-    this.currentlyPlaying$.emit(state);
-  }
-
-  filterDuplicateTracks(tracks, args) {
+  filterDuplicateTracks(tracks: Array<Track>, args: boolean) {
     const getNotUnique = (array) => {
       const map = new Map();
       const map2 = new Map();
