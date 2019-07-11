@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
 import { UtilService } from '../util/util.service';
 import { SpotifyService } from '../spotify/spotify.service';
+import { Track } from '../../interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +73,53 @@ export class SpotifyPlaybackService {
       } else {
         this.clearStatePolling();
         this.showPlayButton(true);
-        this.currentTrack({track: {name: ''}});
+        this.currentTrack({
+          album: {
+            album_type: '',
+            artists: [],
+            available_markets: [],
+            external_urls: {
+              spotify: ''
+            },
+            href: '',
+            id: '',
+            images: [],
+            name: '',
+            release_date: '',
+            release_date_precision: '',
+            total_track: 0,
+            type: '',
+            uri: ''
+          },
+          artists: [],
+          available_markets: [],
+          disc_number: 0,
+          duration_ms: 0,
+          explicit: true,
+          external_ids: {
+            isrc: ''
+          },
+          external_urls: {
+            spotify: ''
+          },
+          href: '',
+          id: '',
+          name: '',
+          popularity: 0,
+          preview_url: '',
+          track_number: 0,
+          type: '',
+          uri: '',
+          isPlayButtonShowing: false,
+          isPauseButtonShowing: false,
+          remove: false,
+          album_name: '',
+          title: '',
+          artist: '',
+          time: '',
+          addedAt: '',
+          duration: 0
+        });
         await this.waitForDeviceToBeSelected();
       }
     }
@@ -156,7 +203,7 @@ export class SpotifyPlaybackService {
     this.showPlayButton$.emit(value);
   }
 
-  currentTrack(value) {
+  currentTrack(value: Track) {
     this.currentTrack$.emit(value);
   }
 

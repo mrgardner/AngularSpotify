@@ -1,16 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { SpotifyService } from './spotify.service';
 import { HttpClientModule, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Type } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
  // TODO: Add cases for what the http call returns for response and test it.
-describe('SpotifyService', () => {
+fdescribe('SpotifyService', () => {
   let spotifyService: SpotifyService;
   let http: HttpClient;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule
+        HttpClientModule,
+        HttpClientTestingModule
       ],
       providers: [
         SpotifyService
@@ -19,6 +24,7 @@ describe('SpotifyService', () => {
 
     spotifyService = TestBed.get(SpotifyService);
     http = TestBed.get(HttpClient);
+    httpMock = TestBed.get(HttpTestingController as Type<HttpTestingController>);
   });
 
   afterEach(() => {
@@ -33,6 +39,14 @@ describe('SpotifyService', () => {
   it('should check getUser method', () => {
     const spy = spyOn(http, 'get');
     spotifyService.getUser();
+    expect(spy).toHaveBeenCalledWith('https://api.spotify.com/v1/me');
+  });
+
+  fit('should check getUser method', () => {
+    const spy = spyOn(http, 'get').and.returnValue(of('test'));
+    spotifyService.getUser().subscribe(user => {
+      expect(user).toEqual('test');
+    });
     expect(spy).toHaveBeenCalledWith('https://api.spotify.com/v1/me');
   });
 
