@@ -3,7 +3,59 @@
 }
 
 .imageNotEnlarged {
-  height: 68vh;
+  height: 72vh;
+}
+
+.menuContainer {
+  overflow-y: scroll;
+  padding: 0 0 0 10px;
+
+  .playlistContainer {
+    .playlist {
+      padding-bottom: 0.5em;
+      font-size: 14px;
+    
+      .playlist-selected {
+        border-left: 5px solid #57d05a;
+      }
+      
+      // .playlistName {
+      //   margin-left: 35px;
+      // }
+    
+      span:nth-child(2) {
+        margin-left: 30px;
+        color: white;
+      }
+    
+      &:hover {
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #1b1919;
+    padding-right: 5px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: #1b1919;
+  }
+
+  &::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    background-color: #555;
+    border: 5px solid rgba(0, 0, 0, 0);
+  }
+
+  .libraryContainer, .playlistContainer {
+    color: #999999;
+  }
 }
 
 .trackImageContainer {
@@ -40,64 +92,17 @@
   }
 }
 
-.menuContainer {
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar-track {
-    border-radius: 5px;
-    background-color: black;
-    padding-right: 5px;
-  }
-
-  &::-webkit-scrollbar {
-    width: 10px;
-    background-color: black;
-  }
-
-  &::-webkit-scrollbar-thumb
-  {
-    border-radius: 10px;
-    background-color: #555;
-    border: 5px solid rgba(0, 0, 0, 0);
-  }
-}
-
-.libraryContainer, .playlistContainer {
-  color: #999999;
-}
-
-.playlist {
-  padding-bottom: 0.5em;
-  font-size: 14px;
-
-  .playlistName {
-    margin-left: 35px;
-  }
-
-  span:nth-child(2) {
-    margin-left: 30px;
-    color: white;
-  }
-
-  &:hover {
-    color: white;
-    cursor: pointer;
-  }
-}
-
-.playlist-selected {
-  border-left: 5px solid #57d05a;
-}
-
 .newPlaylistContainer {
   font-size: 25px;
   color: #999999;
   border-top: 1px solid #3e3e3e;
 
-  i {
-    text-indent: 1em;
-    text-align: center;
-    padding: 1em 0.5em 0 0;
+  .mat-icon {
+    font-size: 30px;
+    position: relative;
+    top: 6px;
+    left: 5px;
+    margin: 0 0.5em 0 0;
   }
 
   &:hover {
@@ -106,17 +111,19 @@
   }
 }
 
+.loadingContainer {
+  position: absolute;
+  top: 40%;
+  left: 25%;
+}
+
 @media screen and (min-width: 1920px) {
   .imageNotEnlarged {
-    height: 73vh;
+    height: 73vh
   }
 
   .imageEnlarged {
     height: 45vh;
-  }
-
-  .newPlaylistContainer {
-    padding-bottom: 0.5em;
   }
 
   .trackImageContainer {
@@ -125,4 +132,12 @@
       width: 305px;
     }
   }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  color: white;
 }

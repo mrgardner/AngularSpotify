@@ -1,59 +1,82 @@
-<div class="statusBarContainer row">
-  <div class="trackInfo col-sm-3">
-    <div *ngIf="currentTrack" class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState">
-      <div class="test" (mouseenter)="showEnlargeIcon()" (mouseleave)="hideEnlargeIcon()"></div>
-        <img class="trackImage" [src]="currentTrack['album'].images[0].url">
-        <div (click)="enlargePicture()" class="test2">
-          <i class="fas fa-angle-up"></i>
-          <i class="fas fa-circle"></i>
+<mat-toolbar class="status-bar">
+  <div class="status-bar-container">
+      <div *ngIf="currentTrack" class="track-image-container" [@trackAlbumImage]="imageEnlargeState">
+          <div class="test3">
+            <div class="test" (mouseenter)="showEnlargeIcon()" (mouseleave)="hideEnlargeIcon()"></div>
+            <img class="track-image" [src]="currentTrack.album.images[0].url">
+            <div (click)="enlargePicture()" class="test2">
+              <i class="fas fa-angle-up"></i>
+              <i class="fas fa-circle"></i>
+            </div>
+          </div>
+          <div [className]="imageEnlargeState === 'active' ? 'test4-a test4' : 'test4'">
+            <div class="track-title">
+              {{currentTrack.name}}
+            </div>
+            <div class="track-artists">
+              {{utilService.displayArtists(currentTrack.artists).join('')}}
+            </div>
+          </div>
         </div>
-        <div [className]="imageEnlargeState === 'active' ? 'titleShifted trackTitle' : 'titleNormal trackTitle'">
-          {{currentTrack['name']}}
+        <div class="player-container" *ngIf="state">
+            <div class="player-buttons">
+                <button mat-icon-button color="warn">
+                  <mat-icon>shuffle</mat-icon>
+                </button>
+                <button mat-icon-button [disabled]="state?.track_window?.previous_tracks?.length === 0">
+                  <mat-icon (click)="previousSong()">skip_previous</mat-icon>
+                </button>
+                <button mat-icon-button>
+                  <mat-icon *ngIf="showPlayButton" class="play-button" (click)="playSong()">play_circle_outline</mat-icon>
+                  <mat-icon *ngIf="!showPlayButton" class="pause-button" (click)="pauseSong()">pause_circle_outline</mat-icon>
+                </button>
+                <button mat-icon-button [disabled]="state?.track_window?.next_tracks?.length === 0" (click)="nextSong()">
+                  <mat-icon>skip_next</mat-icon>
+                </button>
+                <button mat-icon-button>
+                  <mat-icon *ngIf="isRepeatOffShowing" (click)="repeatPlaylist()">repeat</mat-icon>
+                  <mat-icon *ngIf="isRepeatPlaylistShowing" (click)="repeatTrack()" class="repeat-selected">repeat</mat-icon>
+                  <mat-icon *ngIf="isRepeatTrackShowing" (click)="repeatOff()" class="repeat-selected">repeat_one</mat-icon>
+                </button>
+              </div>
+              <div class="player-progress-bar">
+                <div class="current-time">
+                  <span>{{utilService.prettyMs(state.position)}}</span>
+                </div>
+                <mat-progress-bar [value]="songCurrentProgress"></mat-progress-bar>
+                <div class="total-time">
+                  <span>{{utilService.prettyMs(state.duration)}}</span>
+                </div>
+              </div>
         </div>
-        <div [className]="imageEnlargeState === 'active' ? 'artistsShifted trackArtists' : 'artistsNormal trackArtists'">
-          {{displayArtists(currentTrack['artists']).join('')}}
+        <div class="volume-container" *ngIf="state">
+          <i class="material-icons show-cursor">
+            playlist_play
+          </i>
+          <i [className]="currentDevice && appDevice !== currentDeviceId ? 'material-icons different-device show-cursor' : 'material-icons show-cursor'" (click)="openDeviceModal()">
+            stay_current_portrait
+          </i>
+          <ng-container *ngIf="volume > 0; then showSound; else showMute"></ng-container>
+          <ng-template #showSound>
+            <i class="material-icons">volume_up</i>
+          </ng-template>
+          <ng-template #showMute>
+            <i class="material-icons">volume_off</i>
+          </ng-template>
+          <input type="range" min="0" max="100" [value]="volume" [(ngModel)]="volume" (change)="onVolumeChange($event.target.value)"/>
         </div>
+  </div>
+  
+  <div *ngIf="(currentDevice) && (appDevice !== currentDeviceId)" class="external-device">
+    <div class="external-device-message">
+      <div class="device-message">
+        <i class="fas fa-headphones"></i>
+        <span> Listening on</span>
+        <span class="bold"> {{currentDeviceName}}</span>
+      </div>
+    </div>
+    <div class="triangle-container">
+      <div class="triangle-down"></div>
     </div>
   </div>
-  <div class="playerContainer col-sm-7">
-    <!--<div class="playerButtons">-->
-      <!--<button class="btn">-->
-        <!--<i class="fas fa-random"></i>-->
-      <!--</button>-->
-      <!--<button class="btn">-->
-        <!--<i class="fas fa-step-backward"></i>-->
-      <!--</button>-->
-      <!--<button class="btn">-->
-        <!--<i class="fas fa-play-circle"></i>-->
-      <!--</button>-->
-      <!--<button class="btn">-->
-        <!--<i class="fas fa-step-forward"></i>-->
-      <!--</button>-->
-    <!--</div>-->
-    <!--<div class="playerProgressBar">-->
-      <!--<div>-->
-        <!--<ng-container *ngIf="currentTrackSeconds < 10; then showCurrentSimiplfiedSeconds; else showCurrentNormalSeconds"></ng-container>-->
-        <!--<ng-template #showCurrentSimiplfiedSeconds> <span>{{currentTrackMinutes}}:</span><span>0{{currentTrackSeconds}}</span></ng-template>-->
-        <!--<ng-template #showCurrentNormalSeconds> <span>{{currentTrackMinutes}}:</span><span>{{currentTrackSeconds}}</span></ng-template>-->
-      <!--</div>-->
-      <!--<div>-->
-        <!--<ng-container *ngIf="trackDurationSeconds < 10; then showDurationSimiplfiedSeconds; else showDurationNormalSeconds"></ng-container>-->
-        <!--<ng-template #showDurationSimiplfiedSeconds> <span>{{trackDurationMinutes}}:</span><span>0{{trackDurationSeconds}}</span></ng-template>-->
-        <!--<ng-template #showDurationNormalSeconds> <span>{{trackDurationMinutes}}:</span><span>{{trackDurationSeconds}}</span></ng-template>-->
-      <!--</div>-->
-    <!--</div>-->
-  </div>
-  <div class="col-sm-2">
-    <div class="volumeContainer">
-      <i class="fas fa-desktop" (click)="checkPlaybackDevices()"></i>
-      <ng-container *ngIf="volume > 0; then showSound; else showMute"></ng-container>
-      <ng-template #showSound>
-        <i class="fas fa-volume-up"></i>
-      </ng-template>
-      <ng-template #showMute>
-        <i class="fas fa-volume-off"></i>
-      </ng-template>
-      <input type="range" min="0" max="100" [value]="volume" [(ngModel)]="volume" (change)="onVolumeChange($event)"/>
-    </div>
-  </div>
-</div>
+</mat-toolbar>

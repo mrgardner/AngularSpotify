@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Location} from '@angular/common';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +7,12 @@ import {Location} from '@angular/common';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private location: Location) {
-    this.location.subscribe(data => {
-      if (data.url.indexOf('callback') !== -1) {
-        this.location.go('/');
-      }
-    });
+  public showDeviceModal: boolean;
+  constructor(private authService: AuthService) {
+    this.showDeviceModal = false;
   }
 
-  goBack() {
-    this.location.back();
-  }
-
-  goForward() {
-    this.location.forward();
+  isLoggedIn(): boolean {
+    return !!this.authService.getSpotifyToken();
   }
 }

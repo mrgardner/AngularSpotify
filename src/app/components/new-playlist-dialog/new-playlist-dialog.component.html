@@ -1,0 +1,48 @@
+<div class="modalContainer">
+  <div class="modalHeader">
+    <h6>Create a Playlist</h6>
+  </div>
+  <form (ngSubmit)="onSubmit($event)">
+    <div class="titleContainer">
+      <label>Name</label>
+      <input class="title" [value]="playlistName" [(ngModel)]="playlistName" [maxLength]="playlistNameMaxLength" name="playlistName">
+      <div class="badge">{{playlistName.length}} / {{playlistNameMaxLength}}</div>
+    </div>
+    <div class="imageContainer">
+      <label>Image</label>
+      <div>
+        <div *ngIf="!currentImage" class="default-image">
+          <img  src="/assets/blank_album.png"/>
+          <label for="file" class="custom-file-upload">Choose Image</label>
+          <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
+        </div>
+        <div *ngIf="currentImage" class="user-image" (mouseenter)="showUserButtons = true" (mouseleave)="showUserButtons = false">
+          <img [src]="currentImage">
+          <div *ngIf="showUserButtons">
+            <button mat-button (click)="currentImage = null; imageFile = null;">Remove Image</button>
+            <label for="file2" class="custom-file-upload">Replace Image</label>
+          </div>
+          <input type="file" name="file2" id="file2" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
+        </div>
+      </div>
+    </div>
+    <div class="descriptionContainer">
+      <div>
+        <label>Description</label>
+        <div class="badge">{{playlistDescription.length}} / {{playlistDescriptionMaxLength}}</div>
+      </div>
+      <textarea class="description" [(ngModel)]="playlistDescription" [maxLength]="playlistDescriptionMaxLength" [placeholder]="playlistDescriptionPlaceholder" name="playlistDescription"></textarea>
+    </div>
+    <div *ngIf="currentImage" class="image-disclaimer">
+      <p>
+        By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure you have the right to upload the image.  We'll only use your image for playlist cover art.
+      </p>
+    </div>
+    <div [className]="currentImage ? 'button-container user-image-button-container' : 'button-container'">
+      <button mat-stroked-button class="cancel-button" (click)="closeModal()">Cancel</button>
+      <button mat-flat-button type="submit" class="create-button">
+        Create
+      </button>
+    </div>
+  </form>
+</div>

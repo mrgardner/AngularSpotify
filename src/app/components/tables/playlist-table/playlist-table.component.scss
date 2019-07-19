@@ -1,23 +1,47 @@
 .loadingContainer {
   position: absolute;
-  top: 50%;
-  left: 45%;
-  font-size: 100px;
+  top: 42%;
+  left: 47%;
 }
 
 .playlist {
   height: 76.99vh;
   overflow-y: scroll;
-  background-color: #211b1b;
+  background-color: #2d2929;
+
+  .playlistHeader {
+    margin-bottom: 1em;
+    height: 200px;
+    color: white;
+  
+    .playlistCoverImage {
+      height: 200px;
+      width: 200px;
+    }
+  
+    .playlistCoverSection {
+      float: left;
+    }
+  
+    .playlistInfoSection {
+      float: left;
+      margin-top: 4em;
+      margin-left: 2em;
+  
+      span {
+        font-size: 12px;
+      }
+    }
+  }
 
   &::-webkit-scrollbar-track {
     border-radius: 5px;
-    background-color: #211b1b;
+    background-color: #2d2929;
   }
 
   &::-webkit-scrollbar {
     width: 10px;
-    background-color: #211b1b;
+    background-color: #2d2929;
   }
 
   &::-webkit-scrollbar-thumb
@@ -29,100 +53,65 @@
 
 table {
   width: 100%;
+  background-color: #2d2929;
 
-  tbody td {
-    padding: 0.5em 2em 0.5em 0;
-    border-bottom: 1px solid #3e3e3e;
-    position: relative;
+  .trackPlayingHeader {
+    width: 35px;
   }
 
-  .tableHeaders {
-    border-bottom: 1px solid #3e3e3e;
+  .dupliateTrackHeader {
+    width: 25px;
   }
 
-  thead th {
-    padding-bottom: 0.5em;
-    color: #929292;
-    font-size: 12px;
-  }
+  .trackPlayIcons {
+    width: 45px;
+    color: white !important;
 
-  .trackRow {
-    padding-bottom: 0.5em;
-    padding-top: 0.5em;
-
-    &:hover {
-      background-color: rgba(31, 31, 31, 0.8);
+    .material-icons {
+      font-size: 40px;
+    }
+  
+    .mat-icon {
+      position: relative;
+      top: 3px;
+      cursor: pointer;
     }
   }
 
-  .trackImage {
-    height: 150px;
-    width: 150px;
-  }
-}
-
-.playlistHeader {
-  margin-bottom: 1em;
-  height: 200px;
-
-  .playlistCoverImage {
-    height: 200px;
-    width: 200px;
-  }
-
-  .playlistCoverSection {
-    float: left;
-  }
-
-  .playlistInfoSection {
-    float: left;
-    margin-top: 4em;
-    margin-left: 2em;
-
-    span {
-      font-size: 12px;
+  .trackPlaying {
+    .mat-cell {
+      color: green;
     }
   }
+
+  .mat-cell,
+  .mat-header-cell {
+    color: white;
+    border-color: #424242;
+  }
 }
 
-.fa-play-circle,
-.fa-pause-circle {
-  font-size: 36px;
-  position: absolute;
-  top: 2px;
-  color: white;
+::ng-deep td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+  padding-left: 0 !important;
 }
 
-.fa-music {
-  position: absolute;
-  font-size: 24px;
-  top: 6px;
-  left: 5px;
-  color: black;
+::ng-deep td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:last-of-type {
+  padding-right: 0 !important;
 }
 
-.fa-circle {
-  font-size: 36px;
-  position: absolute;
-  top: 2px;
-  color: white;
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border-color: white;
 }
 
-.fa-check {
-  color: white;
-}
-
-.trackPlaying {
-  color: green;
-}
-
-.trackPlayIcons {
-  width: 45px;
+::ng-deep .mat-checkbox .mat-checkbox-inner-container {
+  top: 4px;
+  width: 15px;
+  height: 15px;
 }
 
 @media screen and (min-width: 1920px) {
   .playlist {
-    height: 80.9vh;
+    height: 75.9vh;
   }
 }
 

@@ -2,19 +2,24 @@
   <div class="libraryContainer">
     <h6>YOUR LIBRARY</h6>
     <div>Songs</div>
-    <div>Albums</div>
+    <div (click)="goToSavedAlbums()">Albums</div>
     <div>Artists</div>
   </div>
   <div class="playlistContainer">
     <h3>PLAYLISTS</h3>
-    <div *ngFor="let playlist of playlists" class="playlist">
+    <mat-list>
+      <mat-list-item *ngFor="let playlist of playlists" (click)="goToTracks(playlist)" class="clickable">
+        {{utilService.shortenString(playlist['name'], 18)}}
+      </mat-list-item>
+    </mat-list>
+    <!-- <div *ngFor="let playlist of playlists" class="playlist">
       <span *ngIf="playlist['selected']" class="playlist-selected"> </span>
       <span class="playlistName" (click)="goToTracks(playlist)">{{shortenString(playlist['name'])}}</span>
-    </div>
+    </div> -->
   </div>
 </div>
-<div *ngIf="playlistsLoaded" class="newPlaylistContainer">
-  <i class="fas fa-plus-circle"></i>
+<div *ngIf="playlistsLoaded" class="newPlaylistContainer" (click)="openNewPlaylistModal()">
+  <mat-icon>add_circle_outline</mat-icon>
   <span>New Playlist</span>
 </div>
 <div *ngIf="currentTrack" class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState">
@@ -24,6 +29,4 @@
     <i class="fas fa-circle"></i>
   </div>
 </div>
-<div class="loadingContainer" *ngIf="loading">
-  <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
-</div>
+<mat-spinner class="loadingContainer" *ngIf="loading"></mat-spinner>

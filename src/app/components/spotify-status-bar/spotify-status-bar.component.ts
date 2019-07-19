@@ -1,11 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {StatusBarService} from '../../services/status-bar/status-bar.service';
-import {trigger, state, style, transition, animate} from '@angular/animations';
-import {TrackService} from '../../services/track/track.service';
-import parseMS from 'parse-ms';
-import {of} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
-import {SpotifyService} from '../../services/spotify/spotify.service';
+import { Component, OnInit } from '@angular/core';
+import { StatusBarService } from '../../services/status-bar/status-bar.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DeviceModalComponent } from '../device-modal/device-modal.component';
+import { SpotifyDeviceResponse } from '../../interfaces/device/spotify-device-response.interface';
+import { Device } from '../../interfaces/device/device.interface';
+import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+import { Track } from '../../interfaces/track/track.interface';
+import { UtilService } from '../../services/util/util.service';
+import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -25,161 +30,118 @@ import {SpotifyService} from '../../services/spotify/spotify.service';
   ]
 })
 export class SpotifyStatusBarComponent implements OnInit {
-  public currentTrack: Object;
+  public currentTrack: Track;
   public imageEnlargeState: string;
   public isEnlargeIconShowing: boolean;
-  public currentTrackMinutes: number;
-  public currentTrackSeconds: number;
-  public trackDurationMinutes: number;
-  public trackDurationSeconds: number;
-  public aString: string;
-  public isSongPaused: boolean;
   public volume: number;
-  public availableDevices: any;
+  public currentDevice: Object;
+  public currentDeviceId: string;
+  public currentDeviceName: string;
+  public appDevice: string;
+  public songCurrentProgress: number;
+  public showPlayButton: boolean;
+  public isRepeatPlaylistShowing: boolean;
+  public isRepeatTrackShowing: boolean;
+  public isRepeatOffShowing: boolean;
+  public state: SpotifySongResponse;
 
-  constructor(private statusBarService: StatusBarService, private trackService: TrackService, private spotifyService: SpotifyService) {
+  constructor(
+    private statusBarService: StatusBarService,
+    private spotifyService: SpotifyService,
+    private deviceModalService: DeviceModalService,
+    public dialog: MatDialog,
+    private spotifyPlaybackService: SpotifyPlaybackService,
+    public utilService: UtilService) {}
+  ngOnInit() {
+    this.isRepeatPlaylistShowing = false;
+    this.isRepeatTrackShowing = false;
+    this.isRepeatOffShowing = true;
     this.imageEnlargeState = 'inactive';
     this.volume = 100;
-    this.aString = '';
     this.isEnlargeIconShowing = false;
-    this.trackService.trackTime$.subscribe(data => {
+    this.statusBarService.enlargePicture$.subscribe((value: boolean) => this.imageEnlargeState = value ? 'active' : 'inactive');
+    this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
+      this.currentDeviceId = device.id;
+      this.currentDeviceName = device.name;
+      this.currentDevice = device;
+      this.appDevice = localStorage.getItem('deviceId');
+    });
+    this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => {
       if (data) {
-        console.log(data);
-
-
+        this.currentDevice = data.device;
+        this.currentDeviceId = data.device.id;
+        this.currentDeviceName = data.device.name;
+        this.appDevice = localStorage.getItem('deviceId');
       }
     });
-    this.statusBarService.enlargePicture$.subscribe(value => this.imageEnlargeState = value ? 'active' : 'inactive');
 
-  }
-  ngOnInit() {
-    // interval(1000).pipe(startWith(this.currentTrackSeconds)).subscribe(data => console.log(data));
-    this.trackService.getNowPlaying().subscribe(song => {
-      console.log(this.currentTrack)
-      if (this.currentTrack !== song['track_window']['current_track']) {
-        if (!song['paused']) {
-          console.log(song);
-          this.currentTrack = song['track_window']['current_track'];
-          this.isSongPaused = song['paused'];
-          this.currentTrackMinutes = this.getMinutes(song['position']);
-          this.currentTrackSeconds = this.getSeconds(song['position']);
-          this.trackDurationMinutes = this.getMinutes(song['duration']);
-          this.trackDurationSeconds = this.getSeconds(song['duration']);
-        }
-        // timer(0, 1000).subscribe(data => console.log(data));
-      } else {
-        console.log('please don not show');
-      }
-      // setInterval(this.test2, 1000);
-      // timer(6, 1000).subscribe(data => console.log(data));
-
-      // if (this.isSongPaused) {
-      //   console.log('sfsdf');
-      //   window.clearInterval(this.tt);
-      // }
+    this.spotifyPlaybackService.currentSongState$.subscribe((newState: SpotifySongResponse) => {
+      this.state = newState;
+      this.songCurrentProgress = (Math.round(newState.position / 1000) / Math.round(newState.duration / 1000)) * 100;
+      this.currentTrack = newState.track_window.current_track;
     });
-    // that.trackService.currentTrack$.subscribe(song => {
-    //   // that.currentTrack = null;
-    //   if (song['track_window']['current_track']) {
-    //     that.currentTrack = song['track_window']['current_track'];
-    //     // that.test = Observable.create()
-    //   }
-    //   // that.currentTrackMinutes = that.getMinutes(song['position']);
-    //   // that.currentTrackSeconds = that.getSeconds(song['position']);
-    //   // that.trackDurationMinutes = that.getMinutes(song['duration']);
-    //   // that.trackDurationSeconds = that.getSeconds(song['duration']);
-    // });
+
+    this.spotifyPlaybackService.showPlayButton$.subscribe((value: boolean) => this.showPlayButton = value);
   }
 
-  test(event) {
-    console.log(event, 'df');
-    // if (that.isSongPaused) {
-    //   window.clearInterval(that.tt);
-    // } else {
-    //   console.log(that.currentTrackSeconds);
-    //   if (that.currentTrackSeconds > 59) {
-    //     that.currentTrackMinutes += 1;
-    //     that.currentTrackSeconds = 0;
-    //   }
-    //   that.currentTrackSeconds += 1;
-    // }
+  enlargePicture(): void {
+    this.statusBarService.enlargePicture(true);
   }
 
-  displayArtists(artists) {
-    const numberOfArtists = artists.length;
-    return artists.map((artist, i) => {
-      let artistString = '';
-      if (numberOfArtists > 1) {
-        if (numberOfArtists - 1 === i) {
-          artistString += artist.name;
-        } else {
-          artistString += `${artist.name}, `;
-        }
-      }  else {
-        artistString = artist.name;
-      }
-      return artistString;
-    });
-  }
-
-  enlargePicture() {
-    this.statusBarService.enlargePicture$.emit(true);
-  }
-
-  showEnlargeIcon() {
+  showEnlargeIcon(): void {
     this.isEnlargeIconShowing = true;
   }
 
-  hideEnlargeIcon() {
+  hideEnlargeIcon(): void {
     this.isEnlargeIconShowing = false;
   }
 
-  getMinutes(ms) {
-    const time = parseMS(ms);
-    return (time.days * (60 * 24)) + (time.hours * 60) + (time.minutes);
+  openDeviceModal(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'device-modal-panel';
+    dialogConfig.height = '350px';
+    dialogConfig.width = '300px';
+    this.dialog.open(DeviceModalComponent, dialogConfig);
   }
 
-  getSeconds(ms) {
-    const time = parseMS(ms);
-    return time.seconds;
+  onVolumeChange(volume: number): void {
+    this.spotifyPlaybackService.setVolume(volume / 100);
   }
 
-  onVolumeChange(event) {
-    let spotifyToken = '';
-    this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        const authToken = !!token['token'];
-        spotifyToken = token['token'];
-        if (authToken) {
-          return this.spotifyService.getCurrentPlayer(token['token']);
-        } else {
-          return of();
-        }
-      }),
-      switchMap(deviceID => {
-        if (deviceID) {
-          return this.spotifyService.changeSpotifyTrackVolume(spotifyToken, deviceID['device']['id'], event.target.value);
-        } else {
-          return of();
-        }
-      })
-    ).subscribe(() => {});
+  playSong() {
+    this.spotifyPlaybackService.playSong();
   }
 
-  checkPlaybackDevices() {
-    console.log('test')
-    this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        const authToken = !!token['token'];
-        if (authToken) {
-          return this.spotifyService.getAvailableDevices(token['token']);
-        } else {
-          return of();
-        }
-      }),
-    ).subscribe(data => {
-      console.log(data);
-      this.availableDevices = data;
-    });
+  pauseSong() {
+    this.spotifyPlaybackService.pauseSong();
+  }
+
+  nextSong() {
+    this.spotifyPlaybackService.nextSong();
+  }
+
+  previousSong() {
+    this.spotifyPlaybackService.previousSong();
+  }
+
+  repeatPlaylist() {
+    this.isRepeatOffShowing = false;
+    this.isRepeatPlaylistShowing = true;
+    this.isRepeatTrackShowing = false;
+    this.spotifyService.setRepeatMode('context', localStorage.getItem('deviceId')).subscribe(() => {});
+  }
+
+  repeatTrack() {
+    this.isRepeatOffShowing = false;
+    this.isRepeatPlaylistShowing = false;
+    this.isRepeatTrackShowing = true;
+    this.spotifyService.setRepeatMode('track', localStorage.getItem('deviceId')).subscribe(() => {});
+  }
+
+  repeatOff() {
+    this.isRepeatOffShowing = true;
+    this.isRepeatPlaylistShowing = false;
+    this.isRepeatTrackShowing = false;
+    this.spotifyService.setRepeatMode('off', localStorage.getItem('deviceId')).subscribe(() => {});
   }
 }

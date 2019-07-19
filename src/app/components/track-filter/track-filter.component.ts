@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SpotifyService} from '../../services/spotify/spotify.service';
 import {ActivatedRoute} from '@angular/router';
+import {SpotifyService} from '../../services/spotify/spotify.service';
 import {TrackService} from '../../services/track/track.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
-import {switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import { Track } from '../../interfaces/track/track.interface';
+import { Params } from '../../interfaces/params/params.interface';
 
 @Component({
   selector: 'app-track-filter',
@@ -12,111 +12,117 @@ import {of} from 'rxjs';
   styleUrls: ['./track-filter.component.scss']
 })
 
-export class TrackFilterComponent implements OnInit{
-  @Input('tracks') tracks: Array<Object>;
+export class TrackFilterComponent implements OnInit {
+  // TODO: FIX
+  // @Input('tracks') tracks: Array<Object>;
+  // @Input('selectedTracks') selectedTracks: Array<Object>;
   public isDuplicateTrack: boolean;
   public name: string;
   public artist: string;
   private originalTracks: Array<Object>;
   public isSearchBoxShowing: boolean;
-  private playlistID: string;
+  public playlistID: string;
+  public endOfChain: boolean;
 
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, private trackService: TrackService, private playlistService: PlaylistService) {
-    // const that = this;
-    // that.trackService.updateTracks$.subscribe(data => {this.tracks = data; console.log(data); });
-    this.isSearchBoxShowing = false;
-    this.name = '';
-  }
+  constructor(
+    private spotifyService: SpotifyService,
+    private route: ActivatedRoute,
+    private trackService: TrackService,
+    private playlistService: PlaylistService) {}
 
   ngOnInit() {
+    this.isSearchBoxShowing = false;
+    this.name = '';
     this.playlistID = '';
-    this.route.params.subscribe(params => this.playlistID = params['playlistID']);
+    this.route.params.subscribe((params: Params) => {
+      if (params && params.playlistID) {
+        this.playlistID = params.playlistID;
+      } else {
+        this.endOfChain = true;
+      }
+    });
   }
 
-  checkForLocalTracks() {
-    const that = this;
-    const localTracks = that.tracks.filter(track => track['track']['is_local']);
-    return localTracks.length > 0;
-  }
+  // TODO: FIX when input variables are fixed
+  // checkForLocalTracks(): boolean {
+  //   const that = this;
+  //   const localTracks = that.tracks.filter(track => track['track']['is_local']);
+  //   return localTracks.length > 0;
+  // }
 
-  checkForDuplicateTrack(e) {
+  checkForDuplicateTrack(e: any): void {
     this.isDuplicateTrack = e.target.checked;
     this.trackService.checkDuplicate(e.target.checked);
   }
 
-  removeDuplicates() {
-    const that = this;
-    that.isDuplicateTrack = false;
-    that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
-    const tracksToRemove = [];
-    const t = that.tracks.filter(a => a['remove']);
-    const tt = t.map(a => {
-      const index = that.tracks.indexOf(a);
-      tracksToRemove.push(a);
-      return {
-        uri: a['track']['uri'],
-        positions: [index]
-      };
-    });
+  // TODO: FIX when input variables are fixed
+  // removeDuplicates(): void {
+  //   const that = this;
+  //   that.isDuplicateTrack = false;
+  //   that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
+  //   const tracksToRemove = Array.from(this.selectedTracks['_selection']);
+  //   const tt = tracksToRemove.map((a: Track) => {
+  //     const index = that.tracks.indexOf(a);
+  //     return {
+  //       uri: a.uri,
+  //       positions: [index]
+  //     };
+  //   });
 
-    tracksToRemove.forEach(a => that.tracks.splice(that.tracks.indexOf(a), 1));
+  //   tracksToRemove.forEach(a => that.tracks.splice(that.tracks.indexOf(a), 1));
 
-    that.route.params.subscribe(params => {
-      that.spotifyService.removeDuplicateTracks(params['playlistID'], tt);
-      that.isDuplicateTrack = false;
-      this.trackService.checkDuplicate(false);
-    });
-  }
+  //   that.route.params.subscribe(params => {
+  //     // TODO: FIX without having to use getAuthToken()
+  //     // that.spotifyService.removeDuplicateTracks(params['playlistID'], tt);
+  //     that.isDuplicateTrack = false;
+  //     this.trackService.checkDuplicate(false);
+  //   });
+  // }
 
-  shuffleSongs() {
-    console.log(this.playlistID);
-    const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
-    this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
+  // TODO: FIX when input variables are fixed
+  // shuffleSongs(): void {
+    // const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
+    // TODO: FIX without having to use getAuthToken()
+    // this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
     //
     // this.route.params.pipe(switchMap(params => {
-    //   console.log(params)
     //   return of();
     //
     // })).subscribe(() => {});
     // const that = this;
     // this.route.params.subscribe(params => {
     //   // this.originalTracks = this.tracks;
-    //   // console.log(this.originalTracks[0]['track']['name']);
     //   this.trackService.addTrackToPlaylist(params['playlistID']);
     //   // const shuffledTracks = that.spotifyService.shuffleTracks(this.tracks);
-    //   // console.log(shuffledTracks[0]['track']['name']);
     //   // that.spotifyService.shuffler(params['playlistID'], this.originalTracks);
     // });
-  }
+  // }
 
-  filterName(name) {
+  filterName(name: string): void {
     this.trackService.filterByTrackName(name);
   }
 
-  filterArtist(artist) {
+  filterArtist(artist: string): void {
     this.trackService.filterByTrackArtist(artist);
   }
 
-  showSearchBox() {
-    console.log('SHOULD NOT SHOW')
+  showSearchBox(): void {
     this.isSearchBoxShowing = true;
   }
 
-  hideSearchBox() {
+  hideSearchBox(): void {
     // if (this.isSearchBoxShowing) {
-      console.log('sdff')
       this.name = '';
       this.filterName('');
       this.isSearchBoxShowing = false;
-      console.log(this.isSearchBoxShowing)
     // }
   }
 
-  onLoseFocus() {
-    console.log(this.name)
-    console.log(this.name.length)
-    if (this.name.length === 0){
+  onLoseFocus(): void {
+    if (this.name.length === 0) {
       this.hideSearchBox();
+    } else {
+      this.endOfChain = true;
     }
   }
 }

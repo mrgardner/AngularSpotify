@@ -1,324 +1,155 @@
-import {Component, OnInit} from '@angular/core';
-import {SpotifyService} from '../../../services/spotify/spotify.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TrackService} from '../../../services/track/track.service';
-import PrettyMS from 'pretty-ms';
-import {PlaylistService} from '../../../services/playlist/playlist.service';
-import {switchMap} from 'rxjs/internal/operators';
-import {concat, of} from 'rxjs';
-import {StatusBarService} from '../../../services/status-bar/status-bar.service';
+import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
+import { SpotifyService } from '../../../services/spotify/spotify.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { Track } from '../../../interfaces/track/track.interface';
+import { Song } from '../../../interfaces/song/song.interface';
+import { SpotifyPlaybackService } from '../../../services/spotify-playback/spotify-playback.service';
+import { MatSort, MatPaginator, Sort } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Playlist } from '../../../interfaces/playlist/playlist.interface';
+import { PlaylistDataSourceService } from '../../../services/playlist-data-source/playlist-data-source.service';
+import { UtilService } from '../../../services/util/util.service';
+import { TrackService } from '../../../services/track/track.service';
+import { SpotifySongResponse } from '../../../interfaces/song/spotify-song-response.interface';
 
 @Component({
   selector: 'app-playlist-table',
   templateUrl: './playlist-table.component.html',
   styleUrls: ['./playlist-table.component.scss']
 })
-export class PlaylistTableComponent implements OnInit {
-  public tracks: Array<Object> = [];
+export class PlaylistTableComponent implements OnInit, AfterContentInit {
+  public tracks: Array<Track> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
   public checkDuplicate: boolean;
-  public filterTrackName: string;
-  public filterTrackArtist: string;
-  public playlistName: string;
-  public headers: Array<Object>;
-  public playlistCover: string;
-  public playlistOwner: string;
-  public isPlayButtonShowing: boolean;
-  public isPauseButtonShowing: boolean;
-  private token: string;
-  private deviceID: string;
-  private playlistID: string;
-  currentTrack: Object;
+  public playlist: Playlist;
+  public currentTrack: Track;
+  public displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'addedAt', 'time'];
+  public dataSource: PlaylistDataSourceService;
+  public selection = new SelectionModel<Object>(true, []);
+  public itemCount: number;
+  public pageSize: number;
+  public state: SpotifySongResponse;
+  public endOfChain: boolean;
 
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute,
-      private trackService: TrackService, private router: Router, private playlistService: PlaylistService, private statusBarService: StatusBarService) {
-    this.checkDuplicate = false;
-    this.filterTrackName = '';
-    this.filterTrackArtist = '';
-    this.playlistName = '';
-    this.playlistCover = '';
-    this.playlistOwner = '';
-    this.playlistID = '';
-    this.deviceID = '';
-    this.currentTrack = {track: {name: ''}};
-    this.trackService.checkDuplicate$
-      .subscribe(isDuplicate => {this.checkDuplicate = isDuplicate; this.headers[0]['show'] = isDuplicate; });
-    this.trackService.filterTrackName$.subscribe(name => this.filterTrackName = name);
-    this.trackService.filterTrackArtist$.subscribe(artist => this.filterTrackArtist = artist);
-    this.isPlayButtonShowing = false;
-    this.isPauseButtonShowing = false;
-    // this.trackService.areTracksLoading$.subscribe(isLoading => this.loading = isLoading);
-    // this.trackService.areTracksLoaded$.subscribe(isLoading => this.tracksLoaded = isLoading);
-    this.headers = [
-      {
-        name: 'X',
-        show: this.checkDuplicate
-      },
-      {
-        name: '',
-        show: true
-      },
-      // {
-      //   name: '',
-      //   show: true
-      // },
-      {
-        name: 'TITLE',
-        show: true
-      },
-      {
-        name: 'ARTIST',
-        show: true
-      },
-      {
-        name: 'ALBUM',
-        show: true
-      },
-      {
-        name: 'TIME',
-        show: true
-      }
-    ];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  constructor(
+    private spotifyService: SpotifyService,
+    private router: Router,
+    private spotifyPlaybackService: SpotifyPlaybackService,
+    public utilService: UtilService,
+    private trackService: TrackService,
+    private route: ActivatedRoute) {}
+
+  ngAfterContentInit() {
+    if (this.dataSource) {
+      this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
+        this.tracks = v;
+        if (v.length > 0) {
+          this.pageSize = v[0].size;
+          this.itemCount = v[0].total;
+        } else {
+          this.itemCount = 0;
+        }
+      });
+    } else {
+      this.endOfChain = true;
+    }
   }
 
   ngOnInit() {
-    let loggedIn = false;
-    let playlist = {};
-    this.trackService.currentTrack$.subscribe(track => {
-      if (track['paused']) {
-        this.currentTrack = {track: {name: ''}};
+    this.dataSource = new PlaylistDataSourceService(this.spotifyService, this.utilService);
+
+    this.route.url.pipe(switchMap((tt) => {
+      if (tt.length === 3) {
+        this.dataSource.loadTracks(tt[2].path);
+        this.endOfChain = false;
+        return this.spotifyService.getPlaylist(tt[2].path);
       } else {
-        this.currentTrack = track['track_window']['current_track'];
+        this.endOfChain = true;
+        return of();
       }
-    });
-    this.spotifyService.getAuthToken()
-      .pipe(
-        switchMap(spotifyToken => {
-          this.token = spotifyToken['token'];
-          loggedIn = !!this.token;
-          if (loggedIn) {
-            return this.route.params;
-          } else {
-            this.loading = false;
-            return of();
-          }
+    })).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
+    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
+    this.spotifyPlaybackService.currentSongState$.subscribe(state => this.state = state);
+    this.spotifyPlaybackService.currentTrack$.subscribe((track: Track) => this.currentTrack = track);
+  }
 
-        }),
-        switchMap(params => {
-          return this.playlistService.getSavedPlaylist(params['playlistID']);
-        }),
-        switchMap(playlistInfo => {
-          this.loading = true;
-          this.tracksLoaded = false;
-          this.tracks = [];
-          playlist = playlistInfo;
-          const tempList = [];
-          if (playlist && loggedIn) {
-            const owner = playlist['owner'];
-            const playlistID = playlist['playlistID'];
-            const playlistLength = playlist['playlistLength'];
-            const numberOfTimesToLoop = Math.ceil(playlistLength / 100);
-            this.playlistName = playlist['name'];
-            this.playlistCover = playlist['playlistCoverURL'];
-            this.playlistOwner = playlist['owner'];
-            this.playlistService.selectPlaylist(this.playlistName);
-            if (playlistInfo['playlistLength'] > 0) {
-              for (let i = 0; i < numberOfTimesToLoop; i++) {
-                const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists/${playlistID}/tracks?offset=${i * 100}&limit=100`;
-                tempList.push(this.spotifyService.getAllTracksFromPlaylist(owner, playlistID, this.token, baseURI));
-              }
-              return concat(...tempList);
-            } else {
-              this.loading = false;
-              this.tracksLoaded = true;
-              return of();
-            }
-          } else {
-            this.loading = false;
-            this.tracksLoaded = true;
-            return of();
-          }
-        })
-      )
-      .subscribe(data => {
-        this.tracks = this.tracks.concat(data['items']);
-        if (!data['next']) {
-          this.loading = false;
-          this.tracksLoaded = true;
-          this.tracks.forEach((track, index) => {
-            this.trackService.saveTrack(playlist['playlistID'], track, index);
-            track['isPlayButtonShowing'] = false;
-            track['isPauseButtonShowing'] = false;
-          });
-          // const numberOfLoops = Math.ceil(this.tracks.length / 50);
-          // const trackIDs = this.tracks.map(track => track['track']['id']);
-          // for (let i = 0; i < numberOfLoops; i++) {
-          //   this.spotifyService.checkSavedTrack(this.token, trackIDs.slice((i * 50), ((i + 1) * 50)).join(','))
-          //     .subscribe(trackData =>  {
-          //       console.log('test')
-          //       this.tracks.forEach((track, index) => track['isSaved'] = trackData[index]);
-          //     });
-          // }
-        }
+  loadTracks() {
+    const breadcrumbs = this.router.url.split('/');
+    this.dataSource.loadTracks(breadcrumbs[3], this.paginator.pageIndex, this.paginator.pageSize);
+  }
+
+  getDisplayedColumns() {
+    let columns = this.displayedColumns;
+
+    if (!this.checkDuplicate) {
+      columns = columns.filter(col => {
+        return col !== 'dupTrack';
       });
-
-    // this.route.params.pipe(
-    //   switchMap(params => {
-    //     if (params['playlistID']) {
-    //       return this.playlistService.getCurrentPlaylistTracksChange(params['playlistID']);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe(() => {});
-
-    this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        this.token = token['token'];
-        if (this.token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap(deviceID => {
-        this.deviceID = deviceID;
-        if (this.deviceID) {
-          return this.playlistService.test$;
-        } else {
-          return of();
-        }
-      }),
-      switchMap(track => {
-        this.currentTrack = track['track'];
-        return this.spotifyService.playSpotifyTrack(this.token, track['track']['uri'], this.deviceID);
-      })
-    ).subscribe(() => {});
-
-    this.spotifyService.getAuthToken().pipe(
-      switchMap(token => {
-        this.token = token['token'];
-        if (this.token) {
-          return this.playlistService.getCurrentDevice();
-        } else {
-          return of();
-        }
-      }),
-      switchMap(deviceID => {
-        this.deviceID = deviceID;
-        if (this.deviceID) {
-          return this.playlistService.test2$;
-        } else {
-          return of();
-        }
-      }),
-      switchMap(track => {
-        track['isPlayButtonShowing'] = true;
-        track['isPauseButtonShowing'] = false;
-        this.currentTrack = {track: {name: ''}};
-        return this.spotifyService.pauseSpotifyTrack(this.token, this.deviceID);
-      })
-    ).subscribe(() => {});
-  }
-
-  testing(track) {
-    console.log('play');
-    console.log(track)
-    // this.spotifyService.getAuthToken().pipe(
-    //   switchMap(token => {
-    //     this.token = token['token'];
-    //     if (this.token) {
-    //       return this.spotifyService.getCurrentSong(this.token);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe(data => {console.log('player', data); this.statusBarService.setCurrentTrack(data); });
-    this.playlistService.test(track);
-    // this.statusBarService.setCurrentTrack(track);
-  }
-
-  pauseSong(track) {
-    console.log('pause');
-    this.playlistService.test2(track);
-    // this.spotifyService.getAuthToken().pipe(
-    //   switchMap(token => {
-    //     this.token = token['token'];
-    //     if (this.token) {
-    //       return this.spotifyService.getCurrentSong(this.token);
-    //     } else {
-    //       return of();
-    //     }
-    //   })
-    // ).subscribe(data => {console.log('player', data); ; });
-    // this.statusBarService.setCurrentTrack(track);
-  }
-
-  convertMS(ms) {
-    return PrettyMS(ms, { secDecimalDigits: 0 });
-  }
-
-  shortenString(string) {
-    const stringLength = 25;
-    if (string.length > stringLength) {
-      return string.substr(0, stringLength) + '...';
-    } else {
-      return string;
     }
+
+    return columns;
   }
 
-  displayArtists(artists) {
-    const numberOfArtists = artists.length;
-    return artists.map((artist, i) => {
-      let artistString = '';
-      if (numberOfArtists > 1) {
-        if (numberOfArtists - 1 === i) {
-          artistString += artist.name;
-        } else {
-          artistString += `${artist.name}, `;
-        }
-      }  else {
-        artistString = artist.name;
+  sortData(sort: Sort) {
+    const data = this.tracks.slice();
+    if (!sort.active || sort.direction === '') {
+      this.tracks = data;
+      return;
+    }
+
+    this.tracks = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'title': return this.utilService.compare(a.title, b.title, isAsc);
+        case 'artist': return this.utilService.compare(a.artist, b.artist, isAsc);
+        case 'album': return this.utilService.compare(a.album_name, b.album_name, isAsc);
+        case 'addedAt': return this.utilService.compare(a.addedAt, b.addedAt, isAsc);
+        case 'time': return this.utilService.compare(a.time, b.time, isAsc);
+        default: return 0;
       }
-      return artistString;
     });
+    this.dataSource.tableSubject.next(this.tracks);
   }
 
-  toBeRemoved(track) {
-    track['remove'] = !track['remove'];
-  }
-
-  goToTrack(track) {
-    this.router.navigate(['/track', track.track.id]);
-  }
-
-  getPlaylistDuration() {
-    let totalDuration = 0;
-    this.tracks.forEach(track => {
-      totalDuration += track['track']['duration_ms'];
-    });
-
-    if (totalDuration === 0) {
-      return '0 sec';
+  playSong(song: Song): void {
+    if (this.state.position > 0 && song.track.name === this.state.track_window.current_track.name) {
+      this.spotifyPlaybackService.playSong();
     } else {
-      return this.convertMS(totalDuration);
+      this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => {});
     }
   }
 
-  showPlayButton(track) {
-    track.isPlayButtonShowing = true;
+  pauseSong(): void {
+    this.spotifyPlaybackService.pauseSong();
   }
 
-  hidePlayButton(track) {
-    track.isPlayButtonShowing = false;
+  showPlayButton(track: Track): void {
+    this.tracks.forEach(t => {
+      if (t === track) {
+        t.isPlayButtonShowing = true;
+      }
+    });
   }
 
-  showPauseButton(track) {
+  hidePlayButton(track: Track): void {
+    this.tracks.forEach(t => {
+      if (t === track) {
+        t.isPlayButtonShowing = false;
+      }
+    });
+  }
+
+  showPauseButton(track: Track): void {
     track.isPauseButtonShowing = true;
   }
 
-  hidePauseButton(track) {
+  hidePauseButton(track: Track): void {
     track.isPauseButtonShowing = false;
   }
 }

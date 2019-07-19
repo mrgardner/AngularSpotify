@@ -1,0 +1,77 @@
+.deviceModalContainer {
+  position: relative;
+
+  .deviceModal {
+    position: absolute;
+    padding: 1em;
+    width: 300px;
+    height: 350px;
+    overflow-y: scroll;
+    background-color: grey;
+  
+    .nowPlaying {
+      color: green;
+    }
+  
+    .device {
+      margin-bottom: 1em;
+    }
+  
+    .fa-desktop {
+      float: left;
+      position: relative;
+      font-size: 25px;
+      margin-right: 1em;
+      top: 10px;
+    }
+  
+    .fa-times {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-size: 20px;
+    }
+  
+    .spotifyConnect {
+      color: white;
+      font-size: 13px;
+    }
+  
+    .spotifyConnectActive {
+      color: green;
+      font-size: 13px;
+    }
+  
+    .spotifyConnectInactive {
+      color: darkgrey;
+      font-size: 13px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: grey;
+      padding-right: 5px;
+    }
+  
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: grey;
+    }
+  
+    &::-webkit-scrollbar-thumb
+    {
+      border-radius: 10px;
+      background-color: #555;
+      border: 5px solid rgba(0, 0, 0, 0);
+    }
+  }
+
+  .triangle-down {
+    position: fixed;
+    right: 203px;
+    top: 89.5%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid grey;
+  }
+}

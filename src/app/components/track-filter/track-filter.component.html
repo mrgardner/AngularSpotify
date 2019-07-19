@@ -11,12 +11,13 @@
     <!--<label>Filter track by Artist: </label>-->
     <!--<input type="text"[ngModel]="artist" (ngModelChange)="filterArtist($event); artist = $event"/>-->
   <!--</div>-->
-  <div *ngIf="!checkForLocalTracks()">
+  <!-- <div *ngIf="!checkForLocalTracks()"> -->
+    <div>
     <button class="btn btn-primary" (click)="shuffleSongs()">Shuffle</button>
     <div>
       <label>Check for Duplicate Songs:</label>
       <input type="checkbox" (change)="checkForDuplicateTrack($event)" [(ngModel)]="isDuplicateTrack">
     </div>
   </div>
-  <button class="btn btn-primary" *ngIf="isDuplicateTrack" (click)="removeDuplicates()">Remove Duplicate Songs</button>
+  <!-- <button class="btn btn-primary" *ngIf="isDuplicateTrack" (click)="removeDuplicates()">Remove Duplicate Songs</button> -->
 </div>

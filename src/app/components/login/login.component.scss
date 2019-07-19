@@ -1,35 +1,6 @@
-.validation-error {
-  color:red
-}
-
-h3 {
-  text-align: center;
-}
-
-.loginFormContainer {
-  margin: auto;
-  width: 50%;
-  padding-top: 5em;
-}
-
-.invalidCredentials {
-  margin-bottom: 1em;
-}
-
-label {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.submitButton {
-  margin: auto;
-  width: 50%;
-
-  button {
-    width: 100%;
-  }
-}
-
-.loginForm {
-  padding-bottom: 1em;
+.login-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 }

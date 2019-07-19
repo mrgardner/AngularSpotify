@@ -1,7 +1,5 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../services/auth/auth.service';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,21 +7,9 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  wrongCredentials: boolean;
+  constructor(private authService: AuthService) {}
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
-    this.loginForm = this.formBuilder.group({
-      'email': ['', [
-        Validators.required
-      ]],
-      'password': ['', [
-        Validators.required
-      ]]
-    });
-  }
-
-  onSubmit() {
-    this.wrongCredentials = !!this.authService.login(this.loginForm.value);
+  login(): void {
+    this.authService.login(window);
   }
 }

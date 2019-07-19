@@ -1,47 +1,35 @@
-import { Component } from '@angular/core';
-import {SpotifyService} from '../../services/spotify/spotify.service';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {of} from 'rxjs';
-import {TrackService} from '../../services/track/track.service';
-import {PreviousRouteService} from '../../services/previous-route/previous-route.service';
+import { Component, OnInit } from '@angular/core';
+import { SpotifyService } from '../../services/spotify/spotify.service';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { Params } from '../../interfaces/params/params.interface';
+import { Track } from '../../interfaces/track/track.interface';
+import { UtilService } from '../../services/util/util.service';
 
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
   styleUrls: ['./track.component.scss']
 })
-export class TrackComponent {
+export class TrackComponent implements OnInit {
   public track: Object;
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, private trackService: TrackService, private previousRouteService: PreviousRouteService, private location: Location) {
-    const that = this;
-    let trackParams = {};
-    that.route.params.pipe(
-      switchMap(params => {
-        trackParams = params;
-        if (params) {
-          return that.spotifyService.getAuthToken();
+  public endOfChain: boolean;
+  constructor(
+    private spotifyService: SpotifyService,
+    private route: ActivatedRoute,
+    public utilService: UtilService) {}
+
+  ngOnInit() {
+    this.route.params.pipe(
+      switchMap((params: Params) => {
+        if (params && params.trackID) {
+          return this.spotifyService.getTrack(params.trackID);
         } else {
-          return of();
-        }
-      }),
-      switchMap(token => {
-        const isLoggedIn = !!token['token'];
-        if (isLoggedIn) {
-          return that.spotifyService.getTrack(token['token'], trackParams['trackID']);
-        } else {
+          this.endOfChain = true;
           return of();
         }
       })
-    ).subscribe(data => that.track = data);
-  }
-
-  displayArtist(artist) {
-    return this.trackService.displayArtists(artist);
-  }
-
-  goBack() {
-    this.location.back();
+    ).subscribe((track: Track) => this.track = track);
   }
 }

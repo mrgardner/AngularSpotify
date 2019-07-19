@@ -1,0 +1,31 @@
+<div class="deviceModalContainer">
+  <div class="deviceModal">
+    <i class="fas fa-times" (click)="hideModal()"></i>
+    <h5>Connect to a device</h5>
+
+    <div *ngFor="let device of devices" [className]="currentDevice === device.id ? 'nowPlaying' : 'spotifyConnect'">
+      <div class="device" (click)="makeDeviceActive(device)">
+        <i class="fas fa-desktop"></i>
+        <div>
+          <ng-container *ngIf="currentDevice === device.id; then activeDevice; else inactiveDevice"></ng-container>
+          <ng-template #activeDevice>
+            <div>Listening On</div>
+            <div class="spotifyConnectActive">
+              <i class="fas fa-headphones"></i>
+              <span> {{utilService.shortenString(device.name, 23)}}</span>
+            </div>
+          </ng-template>
+          <ng-template #inactiveDevice>
+            <div>{{utilService.shortenString(device.name, 23)}}</div>
+            <div class="spotifyConnectInactive">
+              <i class="fas fa-headphones"></i>
+              <span> Spotify Connect</span>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="triangle-down"></div>
+  </div>
+</div>
+

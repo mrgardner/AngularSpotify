@@ -1,16 +1,17 @@
-<div class="headerContainer" *ngIf="isLoggedIn">
-  <div class="headerSection">
-    Angular Spotify
-  </div>
+<mat-toolbar class="header-container">
+  <a href="">
+    <span class="angular-text">Angular</span>
+    <span>&nbsp;Spotify</span>
+  </a>
   <div class="signInSection">
-    <button class="btn btn-primary" *ngIf="!loggedIn" (click)="loginSpotify()">
-      Login to Spotify
+    <app-display-user></app-display-user>
+    <button (click)="logout()" mat-menu-item>LOGOUT</button>
+    <!-- TODO: DISABLING unitl mat menu is fixed with ivy -->
+    <!-- <button mat-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn()">
+      <app-display-user></app-display-user> <mat-icon>arrow_drop_down</mat-icon>
     </button>
-    <button class="btn btn-primary" *ngIf="loggedIn" (click)="logoutOfSpotify()">
-      Log out of Spotify
-    </button>
-    <button class="btn btn-primary" *ngIf="isLoggedIn" (click)="logout()">
-      Log out of App
-    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button (click)="logout()" mat-menu-item>LOGOUT</button> 
+    </mat-menu> -->
   </div>
-</div>
+</mat-toolbar>
