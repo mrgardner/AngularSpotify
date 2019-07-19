@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Routes, Router } from '@angular/router';
 import { LoginComponent } from '../../components/login/login.component';
@@ -41,14 +41,18 @@ describe('AuthService', () => {
 
   xit('should check login method', () => {
     const mockWindow = {
-      open: (t) => ({location: {hash: ''}, t}),
-      spotifyCallback: () => {}
+      ...window,
+      spotifyCallback: (token) => {},
+      opener: {
+        spotifyCallback: (token) => {},
+      }
     };
-    const spy = spyOn(mockWindow, 'open');
-    spyOn(mockWindow, 'spotifyCallback').and.returnValue(null);
-    authService.login(mockWindow);
-    mockWindow.spotifyCallback();
-    console.log(spy);
+    // const spy = spyOn(mockWindow, 'open');
+    // spyOn(mockWindow, 'spotifyCallback').and.returnValue('test');
+    authService.login(window);
+    // mockWindow.close();
+    mockWindow.spotifyCallback('test');
+    mockWindow.opener.spotifyCallback('authToken');
     expect(authService).toBeTruthy();
   });
 
