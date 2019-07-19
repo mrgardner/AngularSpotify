@@ -31,7 +31,6 @@ export class AuthService {
     );
 
     _window['spotifyCallback'] = () => {
-      console.log(popup);
       const authToken = popup.location.hash.split('#access_token=')[1].split('&')[0];
       const expiredDate = new Date();
       expiredDate.setHours(expiredDate.getHours() + 1);

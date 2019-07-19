@@ -75,15 +75,11 @@ export class SpotifyService {
     const offset = uris.indexOf(song.track.uri);
 
     return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${localStorage.getItem('deviceId')}`,
-    {uris: tracks, offset: {position: offset}});
-  }
-
-  pauseSpotifyTrack(deviceID: string): Observable<any> {
-    return this._http.put(this.spotifyApiBaseURI + `/me/player/pause?${deviceID}`, {});
+    {uris, offset: {position: offset}});
   }
 
   setRepeatMode(context: string, deviceID: string): Observable<any> {
-    return this._http.put(this.spotifyApiBaseURI + `/me/player/repeat?state=${context}&device_id${deviceID}`, {});
+    return this._http.put(this.spotifyApiBaseURI + `/me/player/repeat?state=${context}&device_id=${deviceID}`, {});
   }
 
   getCurrentPlayer(): Observable<any> {
@@ -96,10 +92,6 @@ export class SpotifyService {
 
   getAvailableDevices(): Observable<any> {
     return this._http.get(this.spotifyApiBaseURI + `/me/player/devices`);
-  }
-
-  getCurrentSong(): Observable<any> {
-    return this._http.get(this.spotifyApiBaseURI + `/me/player/currently-playing`);
   }
 
   createPlaylist(body: any): Observable<any> {
@@ -119,6 +111,7 @@ export class SpotifyService {
 
   getUsersSavedAlbums(moreAlbums?: string): Observable<any> {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;
+    console.log(url);
     return this._http.get(url);
   }
 
@@ -220,7 +213,7 @@ export class SpotifyService {
 
   removeTracks(owner: string, playlistID: string, tracks: Array<Track>): Observable<any> {
     const options = {
-      headers: new HttpHeaders({}),
+      headers: null,
       body: tracks
     };
     return this._http.delete(
