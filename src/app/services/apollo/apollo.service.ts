@@ -17,9 +17,9 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: USER_DISPLAY_NAME,
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'network-only'
     })
-    .valueChanges.pipe(map((result: any) => result.data.User));
+    .valueChanges.pipe(map((result: any) => result.data.user));
   }
 
   getPlaylists(morePlaylists?: string) {
@@ -27,7 +27,7 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_NAME,
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'network-only',
       variables: {
         url
       }
