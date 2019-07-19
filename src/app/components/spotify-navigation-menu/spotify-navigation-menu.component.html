@@ -9,7 +9,7 @@
     <h3>PLAYLISTS</h3>
     <mat-list>
       <mat-list-item *ngFor="let playlist of playlists" (click)="goToTracks(playlist)" class="clickable">
-        {{utilService.shortenString(playlist['name'], 18)}}
+        {{utilService.shortenString(playlist.name, 18)}}
       </mat-list-item>
     </mat-list>
     <!-- <div *ngFor="let playlist of playlists" class="playlist">

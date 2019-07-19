@@ -12,6 +12,7 @@ import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylis
 import { CurrentTrack } from '../../interfaces/track/current-track.interface';
 import { UtilService } from '../../services/util/util.service';
 import { Playlist } from '../../interfaces/playlist/playlist.interface';
+import { ApolloService } from '../../services/apollo/apollo.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -45,7 +46,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private statusBarService: StatusBarService,
     public dialog: MatDialog,
     private router: Router,
-    public utilService: UtilService) {}
+    public utilService: UtilService,
+    public apolloService: ApolloService) {}
 
   ngOnInit() {
     this.selectedPlaylist = '';
@@ -57,29 +59,32 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     });
     this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
     this.playlistService.selectPlaylist$.subscribe((playlist: string) => this.selectedPlaylist = playlist);
-    this.spotifyService.getAllPlaylists()
-      .pipe(
-        switchMap((playlistInfo: SpotifyPlaylistRespose) => {
-          this.loading = true;
-          this.playlistsLoaded = false;
-          if (playlistInfo.items.length > 0) {
-            const tempList = [];
-            const playlistsLength = playlistInfo.total;
-            const owner = String(playlistInfo.next).split('users/')[1].split('/playlists')[0];
-            const numberOfTimesToLoop = Math.ceil(playlistsLength / 50);
-            for (let i = 0; i < numberOfTimesToLoop; i++) {
-              const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${i * 50}&limit=50`;
-              tempList.push(this.spotifyService.getAllPlaylists(baseURI));
-            }
-            return concat(...tempList);
-          } else {
-            this.loading = false;
-            this.playlistsLoaded = true;
-            return of();
-          }
-        })
-      )
+    this.apolloService.getPlaylists()
+      // .pipe(
+      //   switchMap((playlistInfo: SpotifyPlaylistRespose) => {
+      //     this.loading = true;
+      //     this.playlistsLoaded = false;
+      //     if (playlistInfo.total > 0) {
+      //       const tempList = [];
+      //       const playlistsLength = playlistInfo.total;
+      //       const owner = String(playlistInfo.next).split('users/')[1].split('/playlists')[0];
+      //       const numberOfTimesToLoop = Math.ceil(playlistsLength / 50);
+      //       console.log(numberOfTimesToLoop);
+      //       for (let i = 0; i < numberOfTimesToLoop; i++) {
+      //         const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${i * 50}&limit=50`;
+      //         tempList.push(this.apolloService.getPlaylists(baseURI));
+      //       }
+      //       console.log();
+      //       return concat(...tempList);
+      //     } else {
+      //       this.loading = false;
+      //       this.playlistsLoaded = true;
+      //       return of();
+      //     }
+      //   })
+      // )
       .subscribe((data: SpotifyPlaylistRespose) => {
+        console.log(data);
         data.items.forEach((playlist: Playlist) => {
           if (playlist.name === this.selectedPlaylist) {
             playlist.selected = true;
@@ -91,7 +96,10 @@ export class SpotifyNavigationMenuComponent implements OnInit {
           this.loading = false;
           this.playlistsLoaded = true;
         }
+        this.loading = false;
+        this.playlistsLoaded = true;
         this.playlists = this.playlists.concat(data.items);
+        console.log(this.playlists);
       });
   }
 
