@@ -96,7 +96,7 @@ import { UtilService } from './services/util/util.service';
 })
 export class AppModule {
   constructor(private apollo: Apollo, private httpLink: HttpLink, private utilService: UtilService) {
-    const uri = 'https://p04ycejgth.execute-api.us-east-1.amazonaws.com/dev/graphql'; // <-- add the URL of the GraphQL server here
+    const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
     const http = this.httpLink.create({uri});
     const authMiddleware = new ApolloLink((operation, forward) => {
       // add the authorization to the headers

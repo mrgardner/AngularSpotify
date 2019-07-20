@@ -12,6 +12,7 @@
         {{utilService.shortenString(playlist.name, 18)}}
       </mat-list-item>
     </mat-list>
+    <button *ngIf="playlists.length < playlistTotal" (click)="loadMorePlaylists(playlists.length)">Load More</button>
     <!-- <div *ngFor="let playlist of playlists" class="playlist">
       <span *ngIf="playlist['selected']" class="playlist-selected"> </span>
       <span class="playlistName" (click)="goToTracks(playlist)">{{shortenString(playlist['name'])}}</span>

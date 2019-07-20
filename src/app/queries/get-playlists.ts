@@ -6,6 +6,7 @@ export const PLAYLIST_NAME = gql`
       total
       items {
         name
+        id
       }
       next
     }
