@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 import { USER_DISPLAY_NAME } from '../../queries/get-user';
-import { PLAYLIST_NAME } from '../../queries/get-playlists';
+import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO} from '../../queries/get-playlists';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,33 @@ export class ApolloService {
       }
     })
     .valueChanges.pipe(map((result: any) => result.data.playlists));
+  }
+
+  getPlaylist(playlistID: string) {
+    const url = `${this.spotifyApiBaseURI}/playlists/${playlistID}`;
+    return this.apollo
+    .watchQuery({
+      query: PLAYLIST_INFO,
+      fetchPolicy: 'network-only',
+      variables: {
+        url
+      }
+    })
+    .valueChanges.pipe(map((result: any) => result.data.playlist));
+  }
+
+  getTracksFromPlaylist(playlistID: string, offset: number, limit: number) {
+    const trackOffset = offset * limit;
+    const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks?offset=${trackOffset.toString()}&limit=${limit.toString()}`;
+
+    return this.apollo
+    .watchQuery({
+      query: PLAYLIST_TRACKS,
+      fetchPolicy: 'network-only',
+      variables: {
+        url
+      }
+    })
+    .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
   }
 }

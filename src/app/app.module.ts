@@ -37,6 +37,7 @@ import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { concat, ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { UtilService } from './services/util/util.service';
+import { ApolloService } from './services/apollo/apollo.service';
 
 @NgModule({
   entryComponents: [

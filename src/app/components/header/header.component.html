@@ -3,10 +3,10 @@
     <span class="angular-text">Angular</span>
     <span>&nbsp;Spotify</span>
   </a>
-  <div class="signInSection">
+  <div class="signInSection" *ngIf="isLoggedIn()">
     <app-display-user></app-display-user>
     <button (click)="logout()" mat-menu-item>LOGOUT</button>
-    <!-- TODO: DISABLING unitl mat menu is fixed with ivy -->
+    <!-- TODO: DISABLING until mat menu is fixed with ivy -->
     <!-- <button mat-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn()">
       <app-display-user></app-display-user> <mat-icon>arrow_drop_down</mat-icon>
     </button>

@@ -2,11 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { PlaylistDataSourceService } from './playlist-data-source.service';
 import { HttpClientModule } from '@angular/common/http';
 import { of, isObservable } from 'rxjs';
-import { SpotifyService } from '../spotify/spotify.service';
+import { Apollo } from 'apollo-angular';
+import { ApolloService } from '../apollo/apollo.service';
 
 describe('PlaylistDataSourceService', () => {
   let playlistDataSourceService: PlaylistDataSourceService;
-  let spotifyService: SpotifyService;
+  let apolloService: ApolloService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,17 +15,18 @@ describe('PlaylistDataSourceService', () => {
         HttpClientModule
       ],
       providers: [
-        PlaylistDataSourceService
+        PlaylistDataSourceService,
+        Apollo
       ]
     });
 
     playlistDataSourceService = TestBed.get(PlaylistDataSourceService);
-    spotifyService = TestBed.get(SpotifyService);
+    apolloService = TestBed.get(ApolloService);
   });
 
   afterEach(() => {
     playlistDataSourceService = null;
-    spotifyService = null;
+    apolloService = null;
   });
 
   it('should be created', () => {
@@ -43,7 +45,7 @@ describe('PlaylistDataSourceService', () => {
   });
 
   it('should check loadTracks method with no tracks', () => {
-    const spy = spyOn(spotifyService, 'getTracksFromPlaylist').and.returnValue(of({
+    const spy = spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of({
       href: '',
       items: [],
       limit: 100,
@@ -59,7 +61,7 @@ describe('PlaylistDataSourceService', () => {
   });
 
   it('should check loadTracks method with one track', () => {
-    const spy = spyOn(spotifyService, 'getTracksFromPlaylist').and.returnValue(of({
+    const spy = spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of({
       href: '',
       items: [
         {

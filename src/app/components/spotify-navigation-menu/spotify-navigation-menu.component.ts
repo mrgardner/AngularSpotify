@@ -39,6 +39,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   public imageEnlargeState: string;
   public playlistTotal: Number;
   public nextPlaylist: String;
+  public loadMorePlaylist: Boolean;
 
   constructor(
     private playlistService: PlaylistService,
@@ -49,6 +50,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     public apolloService: ApolloService) {}
 
   ngOnInit() {
+    this.loading = true;
+    this.playlistsLoaded = false;
     this.selectedPlaylist = '';
     this.imageEnlargeState = 'inactive';
     this.isPictureEnlarged = false;
@@ -60,18 +63,20 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     this.playlistService.selectPlaylist$.subscribe((playlist: string) => this.selectedPlaylist = playlist);
     this.apolloService.getPlaylists().pipe(first())
       .subscribe((data: SpotifyPlaylistRespose) => {
-        data.items.forEach((playlist: Playlist) => {
-          if (playlist.name === this.selectedPlaylist) {
-            playlist.selected = true;
-          } else {
-            playlist.selected = false;
-          }
-        });
-        this.loading = false;
-        this.playlistsLoaded = true;
-        this.playlists = data.items;
-        this.playlistTotal = data.total;
-        this.nextPlaylist = data.next;
+        if (data.items) {
+          data.items.forEach((playlist: Playlist) => {
+            if (playlist.name === this.selectedPlaylist) {
+              playlist.selected = true;
+            } else {
+              playlist.selected = false;
+            }
+          });
+          this.loading = false;
+          this.playlistsLoaded = true;
+          this.playlists = data.items;
+          this.playlistTotal = data.total;
+          this.nextPlaylist = data.next;
+        }
       });
   }
 
@@ -103,21 +108,21 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   loadMorePlaylists(playlistLength: Number): void {
     const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
     const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
-    this.loading = true;
-    this.playlistsLoaded = false;
-    this.apolloService.getPlaylists(baseURI).pipe(first()).subscribe((data: SpotifyPlaylistRespose) => {
-      data.items.forEach((playlist: Playlist) => {
-        if (playlist.name === this.selectedPlaylist) {
-          playlist.selected = true;
-        } else {
-          playlist.selected = false;
-        }
+    this.loadMorePlaylist = true;
+    this.apolloService.getPlaylists(baseURI).pipe(first())
+      .subscribe((data: SpotifyPlaylistRespose) => {
+        data.items.forEach((playlist: Playlist) => {
+          if (playlist.name === this.selectedPlaylist) {
+            playlist.selected = true;
+          } else {
+            playlist.selected = false;
+          }
+        });
+        this.loadMorePlaylist = false;
+        this.playlists = this.playlists.concat(data.items);
+        console.log(data);
+        this.playlistTotal = data.total;
+        this.nextPlaylist = data.next;
       });
-      this.loading = false;
-      this.playlistsLoaded = true;
-      this.playlists = this.playlists.concat(data.items);
-      this.playlistTotal = data.total;
-      this.nextPlaylist = data.next;
-    });
   }
 }

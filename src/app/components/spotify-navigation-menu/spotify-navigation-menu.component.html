@@ -1,4 +1,4 @@
-<div *ngIf="playlistsLoaded" [className]="isPictureEnlarged ? 'menuContainer imageEnlarged' : 'menuContainer imageNotEnlarged'">
+<div *ngIf="playlistsLoaded" [className]="isPictureEnlarged ? 'menuContainer imageEnlarged' : 'menuContainer imageNotEnlarged'" #scrollMe>
   <div class="libraryContainer">
     <h6>YOUR LIBRARY</h6>
     <div>Songs</div>
@@ -12,6 +12,7 @@
         {{utilService.shortenString(playlist.name, 18)}}
       </mat-list-item>
     </mat-list>
+    <mat-spinner *ngIf="loadMorePlaylist"></mat-spinner>
     <button *ngIf="playlists.length < playlistTotal" (click)="loadMorePlaylists(playlists.length)">Load More</button>
     <!-- <div *ngFor="let playlist of playlists" class="playlist">
       <span *ngIf="playlist['selected']" class="playlist-selected"> </span>
