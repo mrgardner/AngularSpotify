@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const USER_DISPLAY_NAME = gql`
-  {
-    user {
+  query User($url: String!) {
+    user(url: $url) {
       display_name
     }
   }

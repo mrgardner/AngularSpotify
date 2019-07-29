@@ -17,7 +17,10 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: USER_DISPLAY_NAME,
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'cache-first',
+      variables: {
+        url: `${this.spotifyApiBaseURI}/me`
+      }
     })
     .valueChanges.pipe(map((result: any) => result.data.user));
   }
@@ -27,7 +30,7 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_NAME,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         url
       }
@@ -40,7 +43,7 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_INFO,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         url
       }
@@ -55,7 +58,7 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_TRACKS,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         url
       }

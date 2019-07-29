@@ -1,5 +1,12 @@
 <div class="app-container">
   <app-header></app-header>
+  <button id="increment" (click)="increment()">Increment</button>
+
+  <div>Current Count: {{ count$ | async }}</div>
+
+  <button id="decrement" (click)="decrement()">Decrement</button>
+
+  <button id="reset" (click)="reset()">Reset Counter</button>
   <div class="router-container">
     <mat-sidenav-container>
         <mat-sidenav mode="side" position="start" opened *ngIf="isLoggedIn()">
