@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpHeaders } from '@angular/common/http';
 import { AppComponent } from './components/app/app.component';
 import { AppRoutingModule } from './app.routes';
 import { PlaylistTableComponent } from './components/tables/playlist-table/playlist-table.component';
@@ -32,6 +32,12 @@ import { DisplayUserComponent } from './components/display-user/display-user.com
 import { SpotifyInterceptorService } from './services/spotify-interceptor/spotify-interceptor.service';
 import { MatToolbarModule, MatMenuModule, MatSidenavModule, MatListModule, MatPaginatorModule } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
+import { Apollo, ApolloModule } from 'apollo-angular';
+import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
+import { concat, ApolloLink } from 'apollo-link';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { UtilService } from './services/util/util.service';
+import { ApolloService } from './services/apollo/apollo.service';
 
 @NgModule({
   entryComponents: [
@@ -78,7 +84,9 @@ import { LoginComponent } from './components/login/login.component';
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ApolloModule,
+    HttpLinkModule
   ],
   providers: [
     {
@@ -87,4 +95,21 @@ import { LoginComponent } from './components/login/login.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private apollo: Apollo, private httpLink: HttpLink, private utilService: UtilService) {
+    const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
+    const http = this.httpLink.create({uri});
+    const authMiddleware = new ApolloLink((operation, forward) => {
+      // add the authorization to the headers
+      operation.setContext({
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.utilService.getCookie('spotifyToken')}` || null)
+      });
+
+      return forward(operation);
+    });
+    this.apollo.create({
+      link: concat(authMiddleware, http),
+      cache: new InMemoryCache()
+    });
+  }
+}

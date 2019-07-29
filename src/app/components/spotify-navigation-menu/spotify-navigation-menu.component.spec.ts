@@ -9,6 +9,8 @@ import { StatusBarService } from '../../services/status-bar/status-bar.service';
 import { of } from 'rxjs';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { PlaylistService } from '../../services/playlist/playlist.service';
+import { ApolloService } from '../../services/apollo/apollo.service';
+import { Apollo } from 'apollo-angular';
 
 describe('SpotifyNavigationMenuComponent', () => {
   let component: SpotifyNavigationMenuComponent;
@@ -16,6 +18,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   let router: Router;
   let statusBarService: StatusBarService;
   let spotifyService: SpotifyService;
+  let apolloService: ApolloService;
   let playlistService: PlaylistService;
   const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -30,6 +33,9 @@ describe('SpotifyNavigationMenuComponent', () => {
         HttpClientModule,
         MatDialogModule,
         RouterTestingModule.withRoutes(routes)
+      ],
+      providers: [
+        Apollo
       ]
     })
     .compileComponents();
@@ -42,6 +48,7 @@ describe('SpotifyNavigationMenuComponent', () => {
     statusBarService = TestBed.get(StatusBarService);
     spotifyService = TestBed.get(SpotifyService);
     playlistService = TestBed.get(PlaylistService);
+    apolloService = TestBed.get(ApolloService);
   });
 
   afterEach(() => {
@@ -49,6 +56,7 @@ describe('SpotifyNavigationMenuComponent', () => {
     statusBarService = null;
     spotifyService = null;
     playlistService = null;
+    apolloService = null;
   });
 
   it('should create spotify navigation component', () => {
@@ -56,9 +64,9 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check ngOnInit method', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: 'string',
-      items: [],
+      items: null,
       limit: 1,
       next: 'string',
       offset: 0,
@@ -72,7 +80,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check ngOnInit method statusBarService enlargePicture when returned false', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: 'string',
       items: [],
       limit: 1,
@@ -88,7 +96,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check ngOnInit method statusBarService enlargePicture when returned true', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: 'string',
       items: [],
       limit: 1,
@@ -171,7 +179,7 @@ describe('SpotifyNavigationMenuComponent', () => {
         url: ''
       }
     };
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: '',
       items: [],
       limit: 0,
@@ -186,7 +194,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check ngOnInit method playlistService selectPlaylist', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: 'string',
       items: [],
       limit: 1,
@@ -200,8 +208,8 @@ describe('SpotifyNavigationMenuComponent', () => {
     expect(component.selectedPlaylist).toEqual('test');
   });
 
-  it('should check ngOnInit method spotifyService getAllPlaylists when no playlists returned', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+  it('should check ngOnInit method spotifyService getPlaylists when no playlists returned', () => {
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: '',
       items: [],
       limit: 1,
@@ -215,8 +223,8 @@ describe('SpotifyNavigationMenuComponent', () => {
     expect(component.playlistsLoaded).toEqual(true);
   });
 
-  it('should check ngOnInit method spotifyService getAllPlaylists when 1 playlist returned', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+  it('should check ngOnInit method spotifyService getPlaylists when 1 playlist returned', () => {
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: '',
       items: [
         {
@@ -259,9 +267,9 @@ describe('SpotifyNavigationMenuComponent', () => {
     expect(component.playlists.length).toEqual(1);
   });
 
-  it('should check ngOnInit method spotifyService getAllPlaylists when 1 playlist is equal to selected playlist', () => {
+  it('should check ngOnInit method spotifyService getPlaylists when 1 playlist is equal to selected playlist', () => {
     component.selectedPlaylist = 'test1';
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: '',
       items: [
         {
@@ -304,8 +312,8 @@ describe('SpotifyNavigationMenuComponent', () => {
     expect(component.playlists.length).toEqual(1);
   });
 
-  it('should check ngOnInit method spotifyService getAllPlaylists when 1 playlist when no more next playlists', () => {
-    spyOn(spotifyService, 'getAllPlaylists').and.returnValue(of({
+  it('should check ngOnInit method spotifyService getPlaylists when 1 playlist when no more next playlists', () => {
+    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
       href: '',
       items: [
         {
@@ -403,5 +411,19 @@ describe('SpotifyNavigationMenuComponent', () => {
     const spy = spyOn(component.dialog, 'open');
     component.openNewPlaylistModal();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should check the loadMorePlaylists method', () => {
+    const playlists = {
+      href: '',
+      items: [],
+      limit: 1,
+      next: '',
+      offset: 0,
+      previous: '',
+      total: 1,
+      testing: true
+    };
+    const spy = spyOn(apolloService, 'getPlaylists').and.returnValue(of());
   });
 });

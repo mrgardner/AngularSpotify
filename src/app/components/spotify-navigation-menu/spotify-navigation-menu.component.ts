@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
-import { concat, of } from 'rxjs';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+import { first } from 'rxjs/operators';
 import { PlaylistService } from '../../services/playlist/playlist.service';
 import { StatusBarService } from '../../services/status-bar/status-bar.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -12,6 +10,7 @@ import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylis
 import { CurrentTrack } from '../../interfaces/track/current-track.interface';
 import { UtilService } from '../../services/util/util.service';
 import { Playlist } from '../../interfaces/playlist/playlist.interface';
+import { ApolloService } from '../../services/apollo/apollo.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -38,16 +37,21 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   public isPictureEnlarged: boolean;
   public currentTrack: CurrentTrack;
   public imageEnlargeState: string;
+  public playlistTotal: Number;
+  public nextPlaylist: String;
+  public loadMorePlaylist: Boolean;
 
   constructor(
-    private spotifyService: SpotifyService,
     private playlistService: PlaylistService,
     private statusBarService: StatusBarService,
     public dialog: MatDialog,
     private router: Router,
-    public utilService: UtilService) {}
+    public utilService: UtilService,
+    public apolloService: ApolloService) {}
 
   ngOnInit() {
+    this.loading = true;
+    this.playlistsLoaded = false;
     this.selectedPlaylist = '';
     this.imageEnlargeState = 'inactive';
     this.isPictureEnlarged = false;
@@ -57,41 +61,22 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     });
     this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
     this.playlistService.selectPlaylist$.subscribe((playlist: string) => this.selectedPlaylist = playlist);
-    this.spotifyService.getAllPlaylists()
-      .pipe(
-        switchMap((playlistInfo: SpotifyPlaylistRespose) => {
-          this.loading = true;
-          this.playlistsLoaded = false;
-          if (playlistInfo.items.length > 0) {
-            const tempList = [];
-            const playlistsLength = playlistInfo.total;
-            const owner = String(playlistInfo.next).split('users/')[1].split('/playlists')[0];
-            const numberOfTimesToLoop = Math.ceil(playlistsLength / 50);
-            for (let i = 0; i < numberOfTimesToLoop; i++) {
-              const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${i * 50}&limit=50`;
-              tempList.push(this.spotifyService.getAllPlaylists(baseURI));
-            }
-            return concat(...tempList);
-          } else {
-            this.loading = false;
-            this.playlistsLoaded = true;
-            return of();
-          }
-        })
-      )
+    this.apolloService.getPlaylists().pipe(first())
       .subscribe((data: SpotifyPlaylistRespose) => {
-        data.items.forEach((playlist: Playlist) => {
-          if (playlist.name === this.selectedPlaylist) {
-            playlist.selected = true;
-          } else {
-            playlist.selected = false;
-          }
-        });
-        if (data.testing || !data.next) {
+        if (data.items) {
+          data.items.forEach((playlist: Playlist) => {
+            if (playlist.name === this.selectedPlaylist) {
+              playlist.selected = true;
+            } else {
+              playlist.selected = false;
+            }
+          });
           this.loading = false;
           this.playlistsLoaded = true;
+          this.playlists = data.items;
+          this.playlistTotal = data.total;
+          this.nextPlaylist = data.next;
         }
-        this.playlists = this.playlists.concat(data.items);
       });
   }
 
@@ -118,5 +103,26 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     dialogConfig.height = '480px';
     dialogConfig.width = '800px';
     this.dialog.open(NewPlaylistDialogComponent, dialogConfig);
+  }
+
+  loadMorePlaylists(playlistLength: Number): void {
+    const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
+    const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
+    this.loadMorePlaylist = true;
+    this.apolloService.getPlaylists(baseURI).pipe(first())
+      .subscribe((data: SpotifyPlaylistRespose) => {
+        data.items.forEach((playlist: Playlist) => {
+          if (playlist.name === this.selectedPlaylist) {
+            playlist.selected = true;
+          } else {
+            playlist.selected = false;
+          }
+        });
+        this.loadMorePlaylist = false;
+        this.playlists = this.playlists.concat(data.items);
+        console.log(data);
+        this.playlistTotal = data.total;
+        this.nextPlaylist = data.next;
+      });
   }
 }
