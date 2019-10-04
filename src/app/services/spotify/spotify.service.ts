@@ -111,7 +111,6 @@ export class SpotifyService {
 
   getUsersSavedAlbums(moreAlbums?: string): Observable<any> {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums`;
-    console.log(url);
     return this._http.get(url);
   }
 

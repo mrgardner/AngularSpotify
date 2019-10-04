@@ -24,11 +24,8 @@
   <mat-icon>add_circle_outline</mat-icon>
   <span>New Playlist</span>
 </div>
-<div *ngIf="currentTrack" class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState">
-  <img class="trackImage" [src]="currentTrack['album'].images[0].url">
-  <div (click)="shrinkPicture()">
-    <i class="fas fa-angle-down"></i>
-    <i class="fas fa-circle"></i>
-  </div>
+<div class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState" *ngIf="isPictureEnlarged">
+  <img class="trackImage" [src]="url">
+  <mat-icon class="album-icon" (click)="shrinkPicture(url)">keyboard_arrow_up</mat-icon>
 </div>
 <mat-spinner class="loadingContainer" *ngIf="loading"></mat-spinner>

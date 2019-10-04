@@ -40,6 +40,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   public playlistTotal: Number;
   public nextPlaylist: String;
   public loadMorePlaylist: Boolean;
+  public url: string;
 
   constructor(
     private playlistService: PlaylistService,
@@ -55,9 +56,10 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     this.selectedPlaylist = '';
     this.imageEnlargeState = 'inactive';
     this.isPictureEnlarged = false;
-    this.statusBarService.enlargePicture$.subscribe((value: boolean) => {
-      this.isPictureEnlarged = value;
-      this.imageEnlargeState = value ? 'active' : 'inactive';
+    this.statusBarService.enlargePicture$.subscribe((value: Object) => {
+      this.isPictureEnlarged = value['value'];
+      this.imageEnlargeState = value['value'] ? 'active' : 'inactive';
+      this.url = value['url'];
     });
     this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
     this.playlistService.selectPlaylist$.subscribe((playlist: string) => this.selectedPlaylist = playlist);
@@ -93,8 +95,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     this.router.navigate(['library/albums']);
   }
 
-  shrinkPicture(): void {
-    this.statusBarService.enlargePicture(false);
+  shrinkPicture(url): void {
+    this.statusBarService.enlargePicture(false, url);
   }
 
   openNewPlaylistModal(): void {
@@ -120,7 +122,6 @@ export class SpotifyNavigationMenuComponent implements OnInit {
         });
         this.loadMorePlaylist = false;
         this.playlists = this.playlists.concat(data.items);
-        console.log(data);
         this.playlistTotal = data.total;
         this.nextPlaylist = data.next;
       });

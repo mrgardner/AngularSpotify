@@ -359,7 +359,7 @@ describe('PlaylistTableComponent', () => {
     expect(component.currentTrack).toEqual(mockTrack);
   });
 
-  xit('should check loadTracks', () => {
+  it('should check loadTracks in ngAfterContentInit with more than 1 track', () => {
     const mockTracks = {
       href: '',
       items: [
@@ -430,6 +430,26 @@ describe('PlaylistTableComponent', () => {
     component.loadTracks();
     component.ngAfterContentInit();
     expect(component.tracks.length).toEqual(1);
+  });
+
+  it('should check loadTracks in ngAfterContentInit with no tracks', () => {
+    const mockTracks = {
+      href: '',
+      items: [],
+      limit: 0,
+      next: '',
+      offset: 0,
+      previous: '',
+      total: 0
+    };
+    component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
+    spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    component.ngOnInit();
+    component.loadTracks();
+    component.ngAfterContentInit();
+    expect(component.tracks.length).toEqual(0);
+    expect(component.itemCount).toEqual(0);
   });
 
   it('should check getDisplayedColumns method with checkDuplicate true', () => {

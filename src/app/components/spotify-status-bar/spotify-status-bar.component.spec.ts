@@ -63,14 +63,14 @@ describe('SpotifyStatusBarComponent', () => {
   it('should check ngOnInit method enlargePicture when return true', () => {
     spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(null));
     component.ngOnInit();
-    statusBarService.enlargePicture(true);
+    statusBarService.enlargePicture(true, 'test');
     expect(component.imageEnlargeState).toEqual('active');
   });
 
   it('should check ngOnInit method enlargePicture when return false', () => {
     spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(null));
     component.ngOnInit();
-    statusBarService.enlargePicture(false);
+    statusBarService.enlargePicture(false, 'test');
     expect(component.imageEnlargeState).toEqual('inactive');
   });
 
@@ -254,7 +254,7 @@ describe('SpotifyStatusBarComponent', () => {
 
   it('should check enlargePicture method', () => {
     const spy = spyOn(statusBarService, 'enlargePicture');
-    component.enlargePicture();
+    component.enlargePicture('test');
     expect(spy).toHaveBeenCalled();
   });
 

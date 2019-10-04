@@ -59,7 +59,9 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.imageEnlargeState = 'inactive';
     this.volume = 100;
     this.isEnlargeIconShowing = false;
-    this.statusBarService.enlargePicture$.subscribe((value: boolean) => this.imageEnlargeState = value ? 'active' : 'inactive');
+    this.statusBarService.enlargePicture$.subscribe((value: boolean) => {
+      this.imageEnlargeState = value['value'] ? 'active' : 'inactive';
+    });
     this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
       this.currentDeviceId = device.id;
       this.currentDeviceName = device.name;
@@ -84,8 +86,8 @@ export class SpotifyStatusBarComponent implements OnInit {
     this.spotifyPlaybackService.showPlayButton$.subscribe((value: boolean) => this.showPlayButton = value);
   }
 
-  enlargePicture(): void {
-    this.statusBarService.enlargePicture(true);
+  enlargePicture(url: string): void {
+    this.statusBarService.enlargePicture(true, url);
   }
 
   showEnlargeIcon(): void {

@@ -98,7 +98,7 @@ describe('StatusBarService', () => {
 
   it('should check enlargePicture', () => {
     const spy = spyOn(statusBarService.enlargePicture$, 'emit');
-    statusBarService.enlargePicture(true);
-    expect(spy).toHaveBeenCalledWith(true);
+    statusBarService.enlargePicture(true, 'test');
+    expect(spy).toHaveBeenCalledWith({value: true, url: 'test'});
   });
 });

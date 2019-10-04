@@ -46,6 +46,7 @@ export const PLAYLIST_TRACKS = gql`
           }
           name
           duration_ms
+          uri
         }
       }
     }

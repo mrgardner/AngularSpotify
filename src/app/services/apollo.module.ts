@@ -5,16 +5,15 @@ import { concat, ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { UtilService } from './util/util.service';
 import { HttpHeaders } from '@angular/common/http';
-import { NgrxCache } from 'apollo-angular-cache-ngrx';
 
 @NgModule({
   imports: [
-    ApolloModule,
-    HttpLinkModule
+    HttpLinkModule,
+    ApolloModule
   ]
 })
 export class SpotifyApolloModule {
-  constructor(private apollo: Apollo, private httpLink: HttpLink, private utilService: UtilService, private ngrxCache: NgrxCache) {
+  constructor(private apollo: Apollo, private httpLink: HttpLink, private utilService: UtilService) {
     const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
     const http = this.httpLink.create({uri});
     const authMiddleware = new ApolloLink((operation, forward) => {
@@ -27,7 +26,7 @@ export class SpotifyApolloModule {
     });
     this.apollo.create({
       link: concat(authMiddleware, http),
-      cache: this.ngrxCache.create({})
+      cache: new InMemoryCache()
     });
   }
 }

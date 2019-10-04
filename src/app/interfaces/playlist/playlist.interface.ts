@@ -5,18 +5,18 @@ import { Owner } from '../misc/owner.interface';
 
 
 export interface Playlist {
-  collaborative: boolean;
-  external_urls: ExternalUrls;
-  href: string;
+  // collaborative: boolean;
+  // external_urls: ExternalUrls;
+  // href: string;
   id: string;
-  images: Array<Image>;
+  // images: Array<Image>;
   name: string;
-  owner: Owner;
-  primary_color: string;
-  public: boolean;
-  snapshot_id: string;
-  tracks: Tracks;
-  type: string;
-  uri: string;
+  // owner: Owner;
+  // primary_color: string;
+  // public: boolean;
+  // snapshot_id: string;
+  // tracks: Tracks;
+  // type: string;
+  // uri: string;
   selected: boolean;
 }

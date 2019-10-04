@@ -2,11 +2,9 @@
   <div class="status-bar-container">
       <div *ngIf="currentTrack" class="track-image-container" [@trackAlbumImage]="imageEnlargeState">
           <div class="test3">
-            <div class="test" (mouseenter)="showEnlargeIcon()" (mouseleave)="hideEnlargeIcon()"></div>
-            <img class="track-image" [src]="currentTrack.album.images[0].url">
-            <div (click)="enlargePicture()" class="test2">
-              <i class="fas fa-angle-up"></i>
-              <i class="fas fa-circle"></i>
+            <div class="test" (mouseenter)="showEnlargeIcon()" (mouseleave)="hideEnlargeIcon()">
+              <img class="track-image" [src]="currentTrack.album.images[0].url">
+              <mat-icon class="album-icon" (click)="enlargePicture(currentTrack.album.images[0].url)">keyboard_arrow_up</mat-icon>
             </div>
           </div>
           <div [className]="imageEnlargeState === 'active' ? 'test4-a test4' : 'test4'">
