@@ -174,15 +174,75 @@ describe('SpotifyPlaybackService', () => {
     expect(spy).toHaveBeenCalledWith(1);
   }));
 
-  xit('should check createEventHandlers method', fakeAsync(async () => {
-    // const spy = spyOn(window, 'clearInterval');
+  it('should check createEventHandlers method pauseSong', (() => {
     spotifyPlaybackService.player = {
-      on: ((t, tt) => console.log(tt))
+      on: () => {},
+      pause: () => {}
     };
-    // spotifyPlaybackService.statePollingInterval = 1;
-    spotifyPlaybackService.player.on('initialization_error');
+    const spy = spyOn(spotifyPlaybackService.player, 'pause');
+
     spotifyPlaybackService.createEventHandlers();
-    // expect(spy).toHaveBeenCalledWith(1);
+    spotifyPlaybackService.pauseSong$.emit();
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should check createEventHandlers method playSong', (() => {
+    spotifyPlaybackService.player = {
+      on: () => {},
+      resume: () => {}
+    };
+    const spy = spyOn(spotifyPlaybackService.player, 'resume');
+
+    spotifyPlaybackService.createEventHandlers();
+    spotifyPlaybackService.playSong$.emit();
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should check createEventHandlers method nextSong', (() => {
+    spotifyPlaybackService.player = {
+      on: () => {},
+      nextTrack: () => {}
+    };
+    const spy = spyOn(spotifyPlaybackService.player, 'nextTrack');
+
+    spotifyPlaybackService.createEventHandlers();
+    spotifyPlaybackService.nextSong$.emit();
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should check createEventHandlers method previousSong', (() => {
+    spotifyPlaybackService.player = {
+      on: () => {},
+      previousTrack: () => {}
+    };
+    const spy = spyOn(spotifyPlaybackService.player, 'previousTrack');
+
+    spotifyPlaybackService.createEventHandlers();
+    spotifyPlaybackService.previousSong$.emit();
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should check createEventHandlers method setVolume', (() => {
+    spotifyPlaybackService.player = {
+      on: () => {},
+      setVolume: () => {}
+    };
+    const spy = spyOn(spotifyPlaybackService.player, 'setVolume');
+
+    spotifyPlaybackService.createEventHandlers();
+    spotifyPlaybackService.setVolume$.emit();
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  fit('should check createEventHandlers method player.on initialization_error', (() => {
+    spotifyPlaybackService.player = {
+      on: () => {},
+    };
+    const spy = spyOn(spotifyPlaybackService.player, 'on');
+
+    spotifyPlaybackService.createEventHandlers();
+    spotifyPlaybackService.player.on('initialization_error', c => console.log(c));
+    expect(spy).toHaveBeenCalled();
   }));
 
   it('should check waitForDeviceToBeSelected method with player and state', (() => {

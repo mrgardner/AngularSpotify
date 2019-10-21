@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { first, filter } from 'rxjs/operators';
 import { PlaylistService } from '../../services/playlist/playlist.service';
 import { StatusBarService } from '../../services/status-bar/status-bar.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-dialog.component';
-import { Router } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylistResponse.interface';
 import { CurrentTrack } from '../../interfaces/track/current-track.interface';
 import { UtilService } from '../../services/util/util.service';
 import { Playlist } from '../../interfaces/playlist/playlist.interface';
 import { ApolloService } from '../../services/apollo/apollo.service';
+import { RouteService } from '../../services/route/route.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -48,7 +49,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     public utilService: UtilService,
-    public apolloService: ApolloService) {}
+    public apolloService: ApolloService,
+    private routeService: RouteService) {}
 
   ngOnInit() {
     this.loading = true;
@@ -79,6 +81,11 @@ export class SpotifyNavigationMenuComponent implements OnInit {
           this.playlistTotal = data.total;
           this.nextPlaylist = data.next;
         }
+      });
+      this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
+        console.log(event);
+        // TODO: finish logic for parsing the url
+        this.routeService.parseUrl(event.url);
       });
   }
 

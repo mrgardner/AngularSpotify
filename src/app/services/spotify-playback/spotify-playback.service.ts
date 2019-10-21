@@ -65,7 +65,6 @@ export class SpotifyPlaybackService {
   }
 
   async handleState(state) {
-    console.log(state);
     if (state) {
       if (!state.paused) {
         this.sendCurrentState(state);
@@ -159,7 +158,7 @@ export class SpotifyPlaybackService {
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
-      this.spotifyService.makeDeviceActive(device_id).subscribe((t) => console.log(t));
+      // this.spotifyService.makeDeviceActive(device_id).subscribe((t) => console.log(t));
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());

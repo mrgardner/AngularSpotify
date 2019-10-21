@@ -1,12 +1,25 @@
 <div *ngIf="playlistsLoaded" [className]="isPictureEnlarged ? 'menuContainer imageEnlarged' : 'menuContainer imageNotEnlarged'" #scrollMe>
   <div class="libraryContainer">
-    <h6>YOUR LIBRARY</h6>
-    <div>Songs</div>
-    <div (click)="goToSavedAlbums()">Albums</div>
-    <div>Artists</div>
+    <div class="clickable">
+      <div class="test"></div>
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </div>
+    <div class="clickable">
+        <div class="test"></div>
+      <mat-icon>search</mat-icon>
+      <span>Search</span>
+    </div>
+    <div class="clickable">
+        <div class="test"></div>
+      <mat-icon>library_books</mat-icon>
+      <span>Your Library</span>
+    </div>
+    <!-- <div (click)="goToSavedAlbums()">Search</div>
+    <div>Your Library</div> -->
   </div>
   <div class="playlistContainer">
-    <h3>PLAYLISTS</h3>
+    <h2 class="playlistHeading">PLAYLISTS</h2>
     <mat-list>
       <mat-list-item *ngFor="let playlist of playlists" (click)="goToTracks(playlist)" class="clickable">
         {{utilService.shortenString(playlist.name, 18)}}
@@ -14,10 +27,6 @@
     </mat-list>
     <mat-spinner *ngIf="loadMorePlaylist"></mat-spinner>
     <button *ngIf="playlists.length < playlistTotal" (click)="loadMorePlaylists(playlists.length)">Load More</button>
-    <!-- <div *ngFor="let playlist of playlists" class="playlist">
-      <span *ngIf="playlist['selected']" class="playlist-selected"> </span>
-      <span class="playlistName" (click)="goToTracks(playlist)">{{shortenString(playlist['name'])}}</span>
-    </div> -->
   </div>
 </div>
 <div *ngIf="playlistsLoaded" class="newPlaylistContainer" (click)="openNewPlaylistModal()">
