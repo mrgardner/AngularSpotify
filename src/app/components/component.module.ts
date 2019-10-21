@@ -20,6 +20,7 @@ import { DisplayUserComponent } from './display-user/display-user.component';
 import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from '../angular-material.module';
 import { AppRoutingModule } from '../app.routes';
+import { LibraryComponent } from './library/library.component';
 
 @NgModule({
   entryComponents: [
@@ -44,7 +45,8 @@ import { AppRoutingModule } from '../app.routes';
     AlbumsComponent,
     FilterAlbumNamePipe,
     DisplayUserComponent,
-    LoginComponent
+    LoginComponent,
+    LibraryComponent
   ],
   imports: [
     CommonModule,

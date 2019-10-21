@@ -5,6 +5,7 @@ import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { Album } from '../../../interfaces/album/album.interface';
 import { SpotifyAlbumsResponse } from '../../../interfaces/album/spotify-albums-response.interface';
 import { UtilService } from '../../../services/util/util.service';
+import { ApolloService } from '../../../services/apollo/apollo.service';
 
 @Component({
   selector: 'app-albums',
@@ -18,11 +19,11 @@ export class AlbumsComponent implements OnInit {
   public isSearchBoxShowing: boolean;
   public name: string;
 
-  constructor(private spotifyService: SpotifyService, public utilService: UtilService) { }
+  constructor(private apolloService: ApolloService, public utilService: UtilService, private spotifyService: SpotifyService) { }
 
   ngOnInit() {
     let numberOfSavedAlbums = 0;
-    this.spotifyService.getUsersSavedAlbums()
+    this.apolloService.getAlbums()
       .pipe(
         switchMap((savedAlbums: SpotifyAlbumsResponse) => {
           this.loading = true;
@@ -34,7 +35,7 @@ export class AlbumsComponent implements OnInit {
           if (numberOfSavedAlbums > 0) {
             for (let i = 0; i < numberOfTimesToLoop; i++) {
               const baseURI = `https://api.spotify.com/v1/me/albums?offset=${i * 50}&limit=50`;
-              tempList.push(this.spotifyService.getUsersSavedAlbums(baseURI));
+              tempList.push(this.apolloService.getAlbums(baseURI));
             }
             return concat(...tempList);
           } else {

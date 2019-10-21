@@ -98,8 +98,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 
-  goToSavedAlbums(): void {
-    this.router.navigate(['library/albums']);
+  goToLibrary(): void {
+    this.router.navigate(['library']);
   }
 
   shrinkPicture(url): void {
