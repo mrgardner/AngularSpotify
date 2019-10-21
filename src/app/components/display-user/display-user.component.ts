@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { User } from '../../interfaces/user/user.interface';
+import { ApolloService } from '../../services/apollo/apollo.service';
+import { UserDisplayName } from '../../interfaces/user/user-display-name';
 
 @Component({
   selector: 'app-display-user',
@@ -9,9 +9,9 @@ import { User } from '../../interfaces/user/user.interface';
 })
 export class DisplayUserComponent implements OnInit {
   public displayName: string;
-  constructor(private spotifyService: SpotifyService) { }
+  constructor(private apolloService: ApolloService) { }
 
   ngOnInit() {
-    this.spotifyService.getUser().subscribe((user: User) => this.displayName = user.display_name);
+    this.apolloService.getUserDisplayName().subscribe((user: UserDisplayName) => this.displayName = user.display_name);
   }
 }

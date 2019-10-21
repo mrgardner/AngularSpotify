@@ -4,11 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { User } from '../../interfaces/user/user.interface';
 import { of } from 'rxjs';
+import { ApolloService } from '../../services/apollo/apollo.service';
+import { UserDisplayName } from '../../interfaces/user/user-display-name';
+import { Apollo } from 'apollo-angular';
 
 describe('DisplayUserComponent', () => {
   let component: DisplayUserComponent;
   let fixture: ComponentFixture<DisplayUserComponent>;
-  let spotifyService: SpotifyService;
+  let apolloService: ApolloService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,6 +20,9 @@ describe('DisplayUserComponent', () => {
       ],
       imports: [
         HttpClientModule
+      ],
+      providers: [
+        Apollo
       ]
     })
     .compileComponents();
@@ -25,11 +31,11 @@ describe('DisplayUserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DisplayUserComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
+    apolloService = TestBed.get(ApolloService);
   });
 
   afterEach(() => {
-    spotifyService = null;
+    apolloService = null;
   });
 
   it('should create display user component', () => {
@@ -37,36 +43,10 @@ describe('DisplayUserComponent', () => {
   });
 
   it('should check ngOnInit getUser method from spotifyService', () => {
-    const user: User = {
-      birthdate: 'string',
-      country: 'string',
-      display_name: 'string',
-      email: 'string',
-      explicit_content: {
-        filter_enabled: true,
-        filter_locked: true
-      },
-      external_urls: {
-        spotify: ''
-      },
-      followers: {
-        href: 'string',
-        total: 1
-      },
-      href: 'string',
-      id: 'string',
-      images: [
-        {
-          width: 1,
-          url: '',
-          height: 1
-        }
-      ],
-      product: 'string',
-      type: 'string',
-      uri: 'string',
+    const user: UserDisplayName = {
+      display_name: 'string'
     };
-    spyOn(spotifyService, 'getUser').and.returnValue(of(user));
+    spyOn(apolloService, 'getUserDisplayName').and.returnValue(of(user));
     component.ngOnInit();
     expect(component.displayName).toEqual(user.display_name);
   });

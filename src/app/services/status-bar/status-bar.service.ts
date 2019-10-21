@@ -17,7 +17,7 @@ export class StatusBarService {
     this.currentTrack$.emit(track);
   }
 
-  enlargePicture(value: boolean) {
-    this.enlargePicture$.emit(value);
+  enlargePicture(value: boolean, url: string) {
+    this.enlargePicture$.emit({value, url});
   }
 }

@@ -16,8 +16,9 @@ export class SpotifyPlaybackService {
   public showPlayButton$: EventEmitter<boolean>;
   public currentTrack$: EventEmitter<any>;
   public setVolume$: EventEmitter<number>;
-  private player: any;
-  private statePollingInterval: any = null;
+  public player: any;
+  public statePollingInterval: any = null;
+  public endOfChain: boolean;
   constructor(private utilService: UtilService, private spotifyService: SpotifyService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
@@ -47,7 +48,6 @@ export class SpotifyPlaybackService {
     script.type = 'text/javascript';
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     body.appendChild(script);
-
     (async () => {
       const Player = await this.waitForSpotifyWebPlaybackSDKToLoad();
 
@@ -122,18 +122,20 @@ export class SpotifyPlaybackService {
         });
         await this.waitForDeviceToBeSelected();
       }
+    } else {
+      this.endOfChain = true;
     }
   }
 
   startStatePolling() {
-    this.statePollingInterval = setInterval(async () => {
+    this.statePollingInterval = window.setInterval(async () => {
       const state = await this.player.getCurrentState();
       await this.handleState(state);
     }, 1000);
   }
 
   clearStatePolling() {
-    clearInterval(this.statePollingInterval);
+    window.clearInterval(this.statePollingInterval);
   }
 
   createEventHandlers() {
@@ -156,7 +158,7 @@ export class SpotifyPlaybackService {
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
-      this.spotifyService.makeDeviceActive(device_id).subscribe((t) => console.log(t));
+      // this.spotifyService.makeDeviceActive(device_id).subscribe((t) => console.log(t));
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());
@@ -167,14 +169,18 @@ export class SpotifyPlaybackService {
   }
 
   waitForDeviceToBeSelected() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (this.player) {
         this.player.getCurrentState().then(state => {
           if (state !== null) {
             this.startStatePolling();
             resolve(state);
+          } else {
+            reject('No device state');
           }
         });
+      } else {
+        reject('No Player');
       }
     });
   }

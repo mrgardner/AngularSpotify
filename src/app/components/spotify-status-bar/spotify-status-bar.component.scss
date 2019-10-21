@@ -1,5 +1,13 @@
 @import "~src/app/styles/variables.scss";
 
+.album-icon {
+  position: absolute;
+  left: 0;
+  font-size: 65px;
+  color: green;
+  cursor: pointer;
+}
+
 .status-bar {
   padding: 0;
   height: 14vh;
@@ -21,6 +29,10 @@
 
       .test3 {
         padding: 15px;
+
+        .test {
+          position: relative;
+        }
 
         i {
           color: #3e3e3e;

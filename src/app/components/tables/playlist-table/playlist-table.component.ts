@@ -13,6 +13,7 @@ import { PlaylistDataSourceService } from '../../../services/playlist-data-sourc
 import { UtilService } from '../../../services/util/util.service';
 import { TrackService } from '../../../services/track/track.service';
 import { SpotifySongResponse } from '../../../interfaces/song/spotify-song-response.interface';
+import { ApolloService } from '../../../services/apollo/apollo.service';
 
 @Component({
   selector: 'app-playlist-table',
@@ -38,6 +39,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
+    private apolloService: ApolloService,
     private spotifyService: SpotifyService,
     private router: Router,
     private spotifyPlaybackService: SpotifyPlaybackService,
@@ -62,13 +64,13 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.dataSource = new PlaylistDataSourceService(this.spotifyService, this.utilService);
+    this.dataSource = new PlaylistDataSourceService(this.apolloService, this.utilService);
 
     this.route.url.pipe(switchMap((tt) => {
       if (tt.length === 3) {
         this.dataSource.loadTracks(tt[2].path);
         this.endOfChain = false;
-        return this.spotifyService.getPlaylist(tt[2].path);
+        return this.apolloService.getPlaylist(tt[2].path);
       } else {
         this.endOfChain = true;
         return of();

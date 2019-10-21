@@ -10,6 +10,7 @@ describe('AuthService', () => {
   let authService: AuthService;
   let utilService: UtilService;
   let router: Router;
+
   const routes: Routes = [
     {path: 'login', component: LoginComponent},
   ];
@@ -39,21 +40,19 @@ describe('AuthService', () => {
     expect(authService).toBeTruthy();
   });
 
-  xit('should check login method', () => {
-    const mockWindow = {
-      ...window,
-      spotifyCallback: (token) => {},
-      opener: {
-        spotifyCallback: (token) => {},
+  it('should check login method', () => {
+    spyOn(window, 'open').and.returnValue(
+      {
+        location: {
+          hash: '#access_token=123&expire_in=233'
+        },
+        close: () => {}
       }
-    };
-    // const spy = spyOn(mockWindow, 'open');
-    // spyOn(mockWindow, 'spotifyCallback').and.returnValue('test');
-    authService.login(window);
-    // mockWindow.close();
-    mockWindow.spotifyCallback('test');
-    mockWindow.opener.spotifyCallback('authToken');
-    expect(authService).toBeTruthy();
+    );
+    const spy = spyOn(utilService, 'setCookie');
+    authService.login();
+    window['spotifyCallback']('test');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should check logout method', () => {

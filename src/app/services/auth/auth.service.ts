@@ -21,16 +21,15 @@ export class AuthService {
     this.loginURI = environment.spotify.authURI + query;
   }
 
-  login(_window): void {
-    _window = window;
+  login(): void {
     const that = this;
-    const popup = _window.open(
+    const popup = window.open(
       this.loginURI,
       'Login with Spotify',
       'width=800, height=800'
     );
 
-    _window['spotifyCallback'] = () => {
+    window['spotifyCallback'] = () => {
       const authToken = popup.location.hash.split('#access_token=')[1].split('&')[0];
       const expiredDate = new Date();
       expiredDate.setHours(expiredDate.getHours() + 1);

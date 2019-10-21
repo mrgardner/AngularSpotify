@@ -6,11 +6,26 @@
   height: 72vh;
 }
 
+.album-icon {
+  position: absolute;
+  left: 20%;
+  top: 15%;
+  font-size: 145px;
+  color: green;
+  cursor: pointer;
+}
+
 .menuContainer {
   overflow-y: scroll;
-  padding: 0 0 0 10px;
 
   .playlistContainer {
+    margin-top: 1rem;
+
+    .playlistHeading {
+      font-size: 11px;
+      margin-bottom: 1rem;
+      letter-spacing: .16rem;
+    }
     .playlist {
       padding-bottom: 0.5em;
       font-size: 14px;
@@ -53,6 +68,16 @@
     border: 5px solid rgba(0, 0, 0, 0);
   }
 
+  .libraryContainer {
+    .mat-icon {
+      font-size: 30px;
+      position: relative;
+      top: 8px;
+      left: 5px;
+      margin: 0 1em 0.5em 0;
+    }
+  }
+
   .libraryContainer, .playlistContainer {
     color: #999999;
   }
@@ -62,8 +87,8 @@
   position: relative;
 
   .trackImage {
-    height: 210px;
-    width: 225px;
+    height: 228px;
+    width: 100%;
   }
 
   i {
@@ -136,8 +161,18 @@
 
 .clickable {
   cursor: pointer;
+  padding: 0 0 0 25px;
+  position: relative;
 }
 
 .clickable:hover {
   color: white;
+}
+
+.test {
+  position: absolute;
+    left: 0;
+    height: 100%;
+    width: 5px;
+    background: green;
 }

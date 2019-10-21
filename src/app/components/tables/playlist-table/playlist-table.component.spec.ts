@@ -12,6 +12,8 @@ import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { of } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material';
 import { ChangeDetectorRef, Type } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { ApolloService } from '../../../services/apollo/apollo.service';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -21,6 +23,7 @@ describe('PlaylistTableComponent', () => {
   let spotifyPlaybackService: SpotifyPlaybackService;
   let router: Router;
   let spotifyService: SpotifyService;
+  let apolloService: ApolloService;
   let changeDetectorRef: ChangeDetectorRef;
   const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -37,7 +40,8 @@ describe('PlaylistTableComponent', () => {
         RouterTestingModule.withRoutes(routes)
       ],
       providers: [
-        ChangeDetectorRef
+        ChangeDetectorRef,
+        Apollo
       ]
     })
     .compileComponents();
@@ -52,6 +56,7 @@ describe('PlaylistTableComponent', () => {
     router = TestBed.get(Router);
     spotifyService = TestBed.get(SpotifyService);
     changeDetectorRef = TestBed.get(ChangeDetectorRef as Type<ChangeDetectorRef>);
+    apolloService = TestBed.get(ApolloService);
   });
 
   afterEach(() => {
@@ -61,6 +66,7 @@ describe('PlaylistTableComponent', () => {
     router = null;
     spotifyService = null;
     changeDetectorRef = null;
+    apolloService = null;
   });
 
   it('should create playlist table component', () => {
@@ -79,7 +85,7 @@ describe('PlaylistTableComponent', () => {
     };
     component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(spotifyService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
@@ -186,8 +192,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       selected: true,
     };
-    spyOn(spotifyService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
-    spyOn(spotifyService, 'getPlaylist').and.returnValue(of(mockPlaylist));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getPlaylist').and.returnValue(of(mockPlaylist));
     TestBed.get(ActivatedRoute).url = of([
       {
         path: 'playlist'
@@ -353,7 +359,7 @@ describe('PlaylistTableComponent', () => {
     expect(component.currentTrack).toEqual(mockTrack);
   });
 
-  xit('should check loadTracks', () => {
+  it('should check loadTracks in ngAfterContentInit with more than 1 track', () => {
     const mockTracks = {
       href: '',
       items: [
@@ -419,11 +425,31 @@ describe('PlaylistTableComponent', () => {
     };
     component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(spotifyService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
     expect(component.tracks.length).toEqual(1);
+  });
+
+  it('should check loadTracks in ngAfterContentInit with no tracks', () => {
+    const mockTracks = {
+      href: '',
+      items: [],
+      limit: 0,
+      next: '',
+      offset: 0,
+      previous: '',
+      total: 0
+    };
+    component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
+    spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    component.ngOnInit();
+    component.loadTracks();
+    component.ngAfterContentInit();
+    expect(component.tracks.length).toEqual(0);
+    expect(component.itemCount).toEqual(0);
   });
 
   it('should check getDisplayedColumns method with checkDuplicate true', () => {
