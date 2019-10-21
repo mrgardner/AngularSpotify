@@ -3,6 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 import { USER_DISPLAY_NAME } from '../../queries/get-user';
 import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO} from '../../queries/get-playlists';
+import { ALBUM_INFO } from '../../queries/get-albums';
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +65,19 @@ export class ApolloService {
       }
     })
     .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
+  }
+
+  getAlbums(moreAlbums?: string) {
+    const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums?limit=50`;
+
+    return this.apollo
+    .watchQuery({
+      query: ALBUM_INFO,
+      fetchPolicy: 'cache-first',
+      variables: {
+        url
+      }
+    })
+    .valueChanges.pipe(map((result: any) => result.data.albums));
   }
 }
