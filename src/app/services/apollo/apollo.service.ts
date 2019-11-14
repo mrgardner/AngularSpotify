@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { USER_DISPLAY_NAME } from '../../queries/get-user';
 import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO} from '../../queries/get-playlists';
 import { ALBUM_INFO } from '../../queries/get-albums';
+import { FOLLOWED_ARTISTS } from '../../queries/get-artists';
 
 @Injectable({
   providedIn: 'root'
@@ -80,4 +81,18 @@ export class ApolloService {
     })
     .valueChanges.pipe(map((result: any) => result.data.albums));
   }
+
+  getFollowedArtists() {
+    const url = this.spotifyApiBaseURI + `/me/following?type=artist`;
+    return this.apollo
+      .watchQuery({
+        query: FOLLOWED_ARTISTS,
+        fetchPolicy: 'cache-first',
+        variables: {
+          url
+        }
+      })
+      .valueChanges.pipe(map((result: any) => result.data.followedArtists));
+  }
 }
+

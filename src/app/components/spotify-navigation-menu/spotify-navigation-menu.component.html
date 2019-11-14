@@ -1,38 +1,33 @@
 <div *ngIf="playlistsLoaded" [className]="isPictureEnlarged ? 'menuContainer imageEnlarged' : 'menuContainer imageNotEnlarged'" #scrollMe>
   <div class="libraryContainer">
-    <div class="clickable">
-      <div class="test"></div>
-      <mat-icon>home</mat-icon>
-      <span>Home</span>
+    <div *ngFor="let section of sections" (click)="goToSection(section.url)" [ngClass]="{'selected': selectedRoute.parent === section.url, 'clickable': true, 'padding': true}">
+        <div class="selected-section" *ngIf="selectedRoute.parent === section.url"></div>
+        <mat-icon>{{section.iconName}}</mat-icon>
+        <span>{{section.label}}</span>
     </div>
-    <div class="clickable">
-        <div class="test"></div>
-      <mat-icon>search</mat-icon>
-      <span>Search</span>
-    </div>
-    <div class="clickable" (click)="goToLibrary()">
-        <div class="test"></div>
-      <mat-icon>library_books</mat-icon>
-      <span>Your Library</span>
-    </div>
-    <!-- <div (click)="goToSavedAlbums()">Search</div>
-    <div>Your Library</div> -->
   </div>
   <div class="playlistContainer">
     <h2 class="playlistHeading">PLAYLISTS</h2>
-    <mat-list>
-      <mat-list-item *ngFor="let playlist of playlists" (click)="goToTracks(playlist)" class="clickable">
-        {{utilService.shortenString(playlist.name, 18)}}
-      </mat-list-item>
-    </mat-list>
-    <mat-spinner *ngIf="loadMorePlaylist"></mat-spinner>
-    <button *ngIf="playlists.length < playlistTotal" (click)="loadMorePlaylists(playlists.length)">Load More</button>
+    <div *ngIf="playlistsLoaded" class="newPlaylistContainer clickable padding" (click)="openNewPlaylistModal()">
+        <mat-icon>add_box</mat-icon>
+        <div>Create Playlist</div>
+      </div>
+      <div class="playlist-list">
+          <mat-list>
+              <div *ngFor="let playlist of playlists">
+                <div class="selected-playlist" *ngIf="selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl"></div>
+                <mat-list-item (click)="goToTracks(playlist)" [ngClass]="{'selected': selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl, 'clickable': true}">
+                    {{utilService.shortenString(playlist.name, 18)}}
+                  </mat-list-item>
+              </div>
+              
+            </mat-list>
+            <mat-spinner *ngIf="loadMorePlaylist"></mat-spinner>
+            <button *ngIf="playlists.length < playlistTotal" (click)="loadMorePlaylists(playlists.length)">Load More</button>
+      </div>
   </div>
 </div>
-<div *ngIf="playlistsLoaded" class="newPlaylistContainer" (click)="openNewPlaylistModal()">
-  <mat-icon>add_circle_outline</mat-icon>
-  <span>New Playlist</span>
-</div>
+
 <div class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState" *ngIf="isPictureEnlarged">
   <img class="trackImage" [src]="url">
   <mat-icon class="album-icon" (click)="shrinkPicture(url)">keyboard_arrow_up</mat-icon>

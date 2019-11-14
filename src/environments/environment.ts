@@ -28,6 +28,7 @@ export const environment = {
       'user-read-email ' +
       'user-read-private ' +
       'user-library-read ' +
+      'user-follow-read ' +
       'ugc-image-upload',
     redirectURI: 'http://localhost:4200/callback'
   }

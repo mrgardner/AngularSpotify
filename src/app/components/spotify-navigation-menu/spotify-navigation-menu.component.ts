@@ -42,7 +42,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   public nextPlaylist: String;
   public loadMorePlaylist: Boolean;
   public url: string;
-
+  public sections: Array<Object>;
+  public selectedRoute: Object;
   constructor(
     private playlistService: PlaylistService,
     private statusBarService: StatusBarService,
@@ -53,6 +54,23 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     private routeService: RouteService) {}
 
   ngOnInit() {
+    this.sections = [
+      {
+        label: 'Home',
+        iconName: 'home',
+        url: 'home'
+      },
+      {
+        label: 'Search',
+        iconName: 'search',
+        url: 'search'
+      },
+      {
+        label: 'Your Library',
+        iconName: 'library_books',
+        url: 'collection'
+      }
+    ];
     this.loading = true;
     this.playlistsLoaded = false;
     this.selectedPlaylist = '';
@@ -74,6 +92,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
             } else {
               playlist.selected = false;
             }
+            playlist.selectedUrl = playlist.name.toLowerCase();
           });
           this.loading = false;
           this.playlistsLoaded = true;
@@ -83,9 +102,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
         }
       });
       this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
-        console.log(event);
-        // TODO: finish logic for parsing the url
-        this.routeService.parseUrl(event.url);
+        this.selectedRoute = this.routeService.parseUrl(event.url);
       });
   }
 
@@ -98,8 +115,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 
-  goToLibrary(): void {
-    this.router.navigate(['library']);
+  goToSection(url: string): void {
+    this.router.navigate([url]);
   }
 
   shrinkPicture(url): void {
@@ -126,6 +143,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
           } else {
             playlist.selected = false;
           }
+          playlist.selectedUrl = playlist.name.toLowerCase();
         });
         this.loadMorePlaylist = false;
         this.playlists = this.playlists.concat(data.items);
