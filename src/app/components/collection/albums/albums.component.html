@@ -1,0 +1,19 @@
+<div *ngIf="albumsLoaded" class="albums">
+  <!-- <div>
+    <div class="filterContainer" (click)="showSearchBox()" [className]="isSearchBoxShowing ? 'filterContainerSelected' : 'filterContainer'">
+      <i class="fas fa-search"></i>
+      <input type="text" [(ngModel)]="name" placeholder="Filter" class="filter" (blur)="onLoseFocus()"/>
+      <i *ngIf="isSearchBoxShowing" class="fas fa-times" (click)="hideSearchBox()"></i>
+    </div>
+  </div> -->
+  <div class="grid-container">
+    <div *ngFor="let album of albums | filterAlbumName: name" class="album">
+      <img class="albumCover" [src]="album['album']['images'][0]['url']">
+      <div class="albumName">{{utilService.shortenString(album['album']['name'], 27)}}</div>
+      <div class="albumArtist">{{utilService.shortenString(utilService.displayArtists(album['album']['artists']).join(''), 27)}}</div>
+    </div>
+  </div>
+</div>
+<div class="loadingContainer" *ngIf="loading">
+  <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+</div>
