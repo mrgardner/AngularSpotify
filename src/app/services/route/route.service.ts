@@ -1,20 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
-  constructor(private router: Router) {}
+  constructor() {}
 
   // TODO: Finish logic for parsing the URL
   parseUrl(route: string) {
-    console.log(route);
-    console.log(this.router.config);
     const splitRoute = route.split('/').filter(function (el) {
       return el !== '';
-    })[0];
-    const selectedRoute = '';
-    console.log(splitRoute);
+    });
+    const selectedRoute = {
+      parent: null,
+      child: null
+    };
+    for (let i = 0; i < splitRoute.length; i++) {
+      if (i === 0) {
+        selectedRoute.parent = splitRoute[0].replace(/%20/g, ' ');
+      }
+      if (i === 1) {
+        selectedRoute.child = splitRoute[1].replace(/%20/g, ' ');
+      }
+    }
+    return selectedRoute;
   }
 }

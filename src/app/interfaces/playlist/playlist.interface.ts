@@ -19,4 +19,5 @@ export interface Playlist {
   // type: string;
   // uri: string;
   selected: boolean;
+  selectedUrl: string;
 }

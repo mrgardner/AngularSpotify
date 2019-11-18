@@ -17,8 +17,7 @@ body {
 }
 
 .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
-  height: 0 !important;
-  padding: 0 0 0 5px !important;
+  padding: 0 !important;
 }
 
 .mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
@@ -83,6 +82,14 @@ body {
 
 .mat-sort-header-arrow {
   color: green;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: green;
+}
+
+.mat-tab-header, .mat-tab-nav-bar {
+  border-bottom: none;
 }
 
 @media (min-width: 1920px) {

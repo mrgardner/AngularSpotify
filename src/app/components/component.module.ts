@@ -14,13 +14,18 @@ import { SpotifyStatusBarComponent } from './spotify-status-bar/spotify-status-b
 import { LoginComponent } from './login/login.component';
 import { DeviceModalComponent } from './device-modal/device-modal.component';
 import { NewPlaylistDialogComponent } from './new-playlist-dialog/new-playlist-dialog.component';
-import { AlbumsComponent } from './library/albums/albums.component';
+import { AlbumsComponent } from './collection/albums/albums.component';
 import { FilterAlbumNamePipe } from '../pipes/filterAlbumName/filter-album-name.pipe';
 import { DisplayUserComponent } from './display-user/display-user.component';
 import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from '../angular-material.module';
 import { AppRoutingModule } from '../app.routes';
-import { LibraryComponent } from './library/library.component';
+import { CollectionComponent } from './collection/collection.component';
+import { ArtistsComponent } from './collection/artists/artists.component';
+import { PlaylistsComponent } from './collection/playlists/playlists.component';
+import { MadeForYouComponent } from './collection/made-for-you/made-for-you.component';
+import { LikedSongsComponent } from './collection/liked-songs/liked-songs.component';
+import { PodcastsComponent } from './collection/podcasts/podcasts.component';
 
 @NgModule({
   entryComponents: [
@@ -46,7 +51,12 @@ import { LibraryComponent } from './library/library.component';
     FilterAlbumNamePipe,
     DisplayUserComponent,
     LoginComponent,
-    LibraryComponent
+    CollectionComponent,
+    ArtistsComponent,
+    PlaylistsComponent,
+    MadeForYouComponent,
+    LikedSongsComponent,
+    PodcastsComponent
   ],
   imports: [
     CommonModule,
