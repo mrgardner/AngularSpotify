@@ -10,7 +10,7 @@ import { SpotifyPlaybackService } from '../../../services/spotify-playback/spoti
 import { Song } from '../../../interfaces/song/song.interface';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { of } from 'rxjs';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { ChangeDetectorRef, Type } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApolloService } from '../../../services/apollo/apollo.service';

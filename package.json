@@ -12,12 +12,12 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.0-rc.2",
-    "@angular/cdk": "~8.0.0",
+    "@angular/cdk": "~9.0.0-rc.2",
     "@angular/common": "~9.0.0-rc.2",
     "@angular/compiler": "~9.0.0-rc.2",
     "@angular/core": "~9.0.0-rc.2",
     "@angular/forms": "~9.0.0-rc.2",
-    "@angular/material": "~8.0.0",
+    "@angular/material": "~9.0.0-rc.2",
     "@angular/platform-browser": "~9.0.0-rc.2",
     "@angular/platform-browser-dynamic": "~9.0.0-rc.2",
     "@angular/router": "~9.0.0-rc.2",
@@ -29,7 +29,6 @@
     "core-js": "^2.5.4",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
-    "hammerjs": "^2.0.8",
     "rxjs": "~6.5.3",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
