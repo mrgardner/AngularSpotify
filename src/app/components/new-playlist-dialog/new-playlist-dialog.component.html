@@ -5,7 +5,8 @@
   <form (ngSubmit)="onSubmit($event)">
     <div class="titleContainer">
       <label>Name</label>
-      <input class="title" [value]="playlistName" [(ngModel)]="playlistName" [maxLength]="playlistNameMaxLength" name="playlistName">
+      <!-- TODO: Fix input field -->
+      <!-- <input class="title" [value]="playlistName" [(ngModel)]="playlistName" [maxLength]="playlistNameMaxLength" name="playlistName"> -->
       <div class="badge">{{playlistName.length}} / {{playlistNameMaxLength}}</div>
     </div>
     <div class="imageContainer">
@@ -29,9 +30,10 @@
     <div class="descriptionContainer">
       <div>
         <label>Description</label>
+        <!-- TODO: Fix textarea field -->
         <div class="badge">{{playlistDescription.length}} / {{playlistDescriptionMaxLength}}</div>
       </div>
-      <textarea class="description" [(ngModel)]="playlistDescription" [maxLength]="playlistDescriptionMaxLength" [placeholder]="playlistDescriptionPlaceholder" name="playlistDescription"></textarea>
+      <!-- <textarea class="description" [(ngModel)]="playlistDescription" [maxLength]="playlistDescriptionMaxLength" [placeholder]="playlistDescriptionPlaceholder" name="playlistDescription"></textarea> -->
     </div>
     <div *ngIf="currentImage" class="image-disclaimer">
       <p>

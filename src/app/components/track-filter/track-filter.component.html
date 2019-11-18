@@ -3,7 +3,8 @@
     <!--<label>Filter track by Name: </label>-->
     <div class="filterContainer" (click)="showSearchBox()" [className]="isSearchBoxShowing ? 'filterContainerSelected' : 'filterContainer'">
       <i class="fas fa-search"></i>
-      <input type="text" [ngModel]="name" (ngModelChange)="filterName($event); name = $event" placeholder="Filter" class="filter" (blur)="onLoseFocus()"/>
+      <!-- TODO: Fix input field -->
+      <!-- <input type="text" [ngModel]="name" (ngModelChange)="filterName($event); name = $event" placeholder="Filter" class="filter" (blur)="onLoseFocus()"/> -->
       <i *ngIf="isSearchBoxShowing" class="fas fa-times" (click)="hideSearchBox()"></i>
     </div>
   </div>
@@ -13,10 +14,10 @@
   <!--</div>-->
   <!-- <div *ngIf="!checkForLocalTracks()"> -->
     <div>
-    <button class="btn btn-primary" (click)="shuffleSongs()">Shuffle</button>
+    <!-- <button class="btn btn-primary" (click)="shuffleSongs()">Shuffle</button> -->
     <div>
-      <label>Check for Duplicate Songs:</label>
-      <input type="checkbox" (change)="checkForDuplicateTrack($event)" [(ngModel)]="isDuplicateTrack">
+      <!-- <label>Check for Duplicate Songs:</label> -->
+      <!-- <input type="checkbox" (change)="checkForDuplicateTrack($event)" [(ngModel)]="isDuplicateTrack"> -->
     </div>
   </div>
   <!-- <button class="btn btn-primary" *ngIf="isDuplicateTrack" (click)="removeDuplicates()">Remove Duplicate Songs</button> -->
