@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -12,10 +12,12 @@ import { UtilService } from '../../services/util/util.service';
   templateUrl: './device-modal.component.html',
   styleUrls: ['./device-modal.component.scss']
 })
-export class DeviceModalComponent implements OnInit {
+export class DeviceModalComponent implements OnInit, OnDestroy {
   public devices: Array<Device>;
   public currentDevice: string;
   public appDevice: string;
+  public availableDevicesSubscription: any;
+  public playerSubscription: any;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -24,8 +26,15 @@ export class DeviceModalComponent implements OnInit {
     public utilService: UtilService) { }
 
   ngOnInit() {
-    this.spotifyService.getAvailableDevices().subscribe((data: SpotifyDevicesResponse) => this.devices = data.devices);
-    this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => this.currentDevice = data.device.id);
+    this.availableDevicesSubscription = this.spotifyService.getAvailableDevices()
+      .subscribe((data: SpotifyDevicesResponse) => this.devices = data.devices);
+    this.playerSubscription = this.spotifyService.getCurrentPlayer()
+      .subscribe((data: SpotifyDeviceResponse) => this.currentDevice = data.device.id);
+  }
+
+  ngOnDestroy() {
+    this.availableDevicesSubscription.unsubscribe();
+    this.playerSubscription.unsubscribe();
   }
 
   hideModal(): void {

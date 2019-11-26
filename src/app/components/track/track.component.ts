@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -12,16 +12,17 @@ import { UtilService } from '../../services/util/util.service';
   templateUrl: './track.component.html',
   styleUrls: ['./track.component.scss']
 })
-export class TrackComponent implements OnInit {
+export class TrackComponent implements OnInit, OnDestroy {
   public track: Object;
   public endOfChain: boolean;
+  public routeSubscription: any;
   constructor(
     private spotifyService: SpotifyService,
     private route: ActivatedRoute,
     public utilService: UtilService) {}
 
   ngOnInit() {
-    this.route.params.pipe(
+    this.routeSubscription = this.route.params.pipe(
       switchMap((params: Params) => {
         if (params && params.trackID) {
           return this.spotifyService.getTrack(params.trackID);
@@ -31,5 +32,9 @@ export class TrackComponent implements OnInit {
         }
       })
     ).subscribe((track: Track) => this.track = track);
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 }

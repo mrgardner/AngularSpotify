@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UtilService } from '../../services/util/util.service';
 
@@ -7,8 +7,9 @@ import { UtilService } from '../../services/util/util.service';
   templateUrl: './callback.component.html',
   styleUrls: ['./callback.component.scss']
 })
-export class CallbackComponent implements OnInit {
+export class CallbackComponent implements OnInit, OnDestroy {
   public _window: any;
+  public routeSubscrition: any;
   constructor(
     private route: ActivatedRoute,
     private utilService: UtilService) {
@@ -16,7 +17,7 @@ export class CallbackComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.route.fragment.subscribe((fragment: string) => {
+    this.routeSubscrition = this.route.fragment.subscribe((fragment: string) => {
       if (fragment.split('access_token=').length === 2 && fragment.split('access_token=')[1].split('&').length === 4) {
         const authToken = fragment.split('access_token=')[1].split('&')[0];
         const expiredDate = new Date();
@@ -25,5 +26,9 @@ export class CallbackComponent implements OnInit {
         this._window.opener.spotifyCallback(authToken);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscrition.unsubsribe();
   }
 }

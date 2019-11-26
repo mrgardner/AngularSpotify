@@ -2,49 +2,52 @@
   <div class="modalHeader">
     <h6>Create a Playlist</h6>
   </div>
-  <form (ngSubmit)="onSubmit($event)">
-    <div class="titleContainer">
-      <label>Name</label>
-      <!-- TODO: Fix input field -->
-      <!-- <input class="title" [value]="playlistName" [(ngModel)]="playlistName" [maxLength]="playlistNameMaxLength" name="playlistName"> -->
-      <div class="badge">{{playlistName.length}} / {{playlistNameMaxLength}}</div>
-    </div>
-    <div class="imageContainer">
-      <label>Image</label>
-      <div>
-        <div *ngIf="!currentImage" class="default-image">
-          <img  src="/assets/blank_album.png"/>
-          <label for="file" class="custom-file-upload">Choose Image</label>
-          <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
-        </div>
-        <div *ngIf="currentImage" class="user-image" (mouseenter)="showUserButtons = true" (mouseleave)="showUserButtons = false">
-          <img [src]="currentImage">
-          <div *ngIf="showUserButtons">
-            <button mat-button (click)="currentImage = null; imageFile = null;">Remove Image</button>
-            <label for="file2" class="custom-file-upload">Replace Image</label>
+  <div class="">
+    <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+      <div class="imageContainer">
+        <div>
+          <div *ngIf="!currentImage" class="default-image" (click)="triggerFile()">
+            <img  src="/assets/blank_album.png"/>
+            <div>Choose image</div>
+            <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
           </div>
-          <input type="file" name="file2" id="file2" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
+          <div *ngIf="currentImage" class="user-image" (mouseenter)="showUserButtons = true" (mouseleave)="showUserButtons = false">
+            <img [src]="currentImage">
+            <mat-icon class="icon md-light md-48">more_horiz</mat-icon>
+            <!-- <div *ngIf="showUserButtons">
+              <button mat-button (click)="resetImage()">Remove Image</button>
+              <label for="file2" class="custom-file-upload">Replace Image</label>
+            </div> -->
+            <input type="file" name="file2" id="file2" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="descriptionContainer">
-      <div>
-        <label>Description</label>
-        <!-- TODO: Fix textarea field -->
-        <div class="badge">{{playlistDescription.length}} / {{playlistDescriptionMaxLength}}</div>
+      <div class="formContainer">
+        <div class="nameContainer">
+          <div class="nameLabel">
+            <label>Name</label>
+            <span *ngIf="playlistNameLength >= (playlistNameMaxLength - 70)" class="form-badge">{{playlistNameLength}} / {{playlistNameMaxLength}}</span>
+          </div>
+          <input placeholder="New Playlist" formControlName="playlistName" [maxLength]="playlistNameMaxLength" class="example-full-width">
+        </div>
+        <div class="descriptionContainer">
+          <div class="descriptionLabel">
+            <label>Description</label>
+            <span *ngIf="playlistDescriptionLength >= (playlistDescriptionMaxLength - 70)" class="form-badge">{{playlistDescriptionLength}} / {{playlistDescriptionMaxLength}}</span>
+          </div>
+          <textarea placeholder="Test" formControlName="playlistDescription" [maxLength]="playlistDescriptionMaxLength" class="example-full-width"></textarea> 
+        </div>
       </div>
-      <!-- <textarea class="description" [(ngModel)]="playlistDescription" [maxLength]="playlistDescriptionMaxLength" [placeholder]="playlistDescriptionPlaceholder" name="playlistDescription"></textarea> -->
-    </div>
-    <div *ngIf="currentImage" class="image-disclaimer">
-      <p>
-        By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure you have the right to upload the image.  We'll only use your image for playlist cover art.
-      </p>
-    </div>
-    <div [className]="currentImage ? 'button-container user-image-button-container' : 'button-container'">
-      <button mat-stroked-button class="cancel-button" (click)="closeModal()">Cancel</button>
-      <button mat-flat-button type="submit" class="create-button">
-        Create
-      </button>
-    </div>
-  </form>
+      <div *ngIf="currentImage" class="image-disclaimer">
+        <p>
+          By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure you have the right to upload the image.  We'll only use your image for playlist cover art.
+        </p>
+      </div>
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit" class="create-button" [disabled]="!form.valid">
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

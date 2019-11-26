@@ -24,7 +24,7 @@ describe('AlbumsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlbumsComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
+    spotifyService = TestBed.inject(SpotifyService);
   });
 
   afterEach(() => {

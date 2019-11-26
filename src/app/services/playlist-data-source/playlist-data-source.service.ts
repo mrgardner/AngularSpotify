@@ -12,6 +12,8 @@ import { ApolloService } from '../apollo/apollo.service';
 export class PlaylistDataSourceService {
   public tableSubject = new BehaviorSubject<any[]>([]);
   public tableSubject$ = this.tableSubject.asObservable();
+  public backupSubject = new BehaviorSubject<any[]>([]);
+  public backupSubject$ = this.backupSubject.asObservable();
 
   constructor(private apolloService: ApolloService, private utilService: UtilService) {}
 
@@ -38,10 +40,22 @@ export class PlaylistDataSourceService {
           uri: t.track.uri,
           track: t,
           total: tracks.total,
-          size: tracks.limit
+          size: tracks.limit,
+          filterText: `${t.track.name.trim().toLowerCase()}
+            ${this.utilService.displayArtists(t.track.artists).join('').toLowerCase().trim()}
+            ${t.track.album.name.trim().toLowerCase()}`
         };
       });
       this.tableSubject.next(sortedTracks);
+      this.backupSubject.next(sortedTracks);
     });
+  }
+
+  filter(text: string) {
+    console.log(this.tableSubject.value);
+    console.log(this.backupSubject.value);
+    const tt = this.backupSubject.value.filter(track => track.filterText.includes(text.toLowerCase().trim()));
+    console.log(tt);
+    this.tableSubject.next(tt);
   }
 }

@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
   constructor() {}
 
-  // TODO: Finish logic for parsing the URL
   parseUrl(route: string) {
     const splitRoute = route.split('/').filter(function (el) {
       return el !== '';

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ViewChild, OnDestroy } from '@angular/core';
 import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { ApolloService } from '../../../services/apollo/apollo.service';
   templateUrl: './playlist-table.component.html',
   styleUrls: ['./playlist-table.component.scss']
 })
-export class PlaylistTableComponent implements OnInit, AfterContentInit {
+export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestroy {
   public tracks: Array<Track> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
@@ -35,9 +35,15 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
   public pageSize: number;
   public state: SpotifySongResponse;
   public endOfChain: boolean;
+  public routerSubscription: any;
+  public checkDuplicateSubscription: any;
+  public currentSongStateSubscription: any;
+  public currentTrackSubscription: any;
+  public test: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  public filterSubscription: any;
 
   constructor(
     private apolloService: ApolloService,
@@ -66,8 +72,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
 
   ngOnInit() {
     this.dataSource = new PlaylistDataSourceService(this.apolloService, this.utilService);
+    this.test = '';
 
-    this.route.url.pipe(switchMap((tt) => {
+    this.routerSubscription = this.route.url.pipe(switchMap((tt) => {
       if (tt.length === 3) {
         this.dataSource.loadTracks(tt[2].path);
         this.endOfChain = false;
@@ -77,9 +84,25 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit {
         return of();
       }
     })).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
-    this.trackService.checkDuplicate$.subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
-    this.spotifyPlaybackService.currentSongState$.subscribe(state => this.state = state);
-    this.spotifyPlaybackService.currentTrack$.subscribe((track: Track) => this.currentTrack = track);
+    this.checkDuplicateSubscription = this.trackService.checkDuplicate$
+      .subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
+    this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
+      .subscribe(state => this.state = state);
+    this.currentTrackSubscription = this.spotifyPlaybackService.currentTrack$
+      .subscribe((track: Track) => this.currentTrack = track);
+
+    this.filterSubscription = this.trackService.filterTrack$.subscribe(track => {
+      console.log(track);
+      this.dataSource.filter(track)
+    });
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
+    this.checkDuplicateSubscription.unsubscribe();
+    this.currentSongStateSubscription.unsubscribe();
+    this.currentTrackSubscription.unsubscribe();
+    this.filterSubscription.unsubscribe();
   }
 
   loadTracks() {

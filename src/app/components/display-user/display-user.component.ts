@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApolloService } from '../../services/apollo/apollo.service';
 import { UserDisplayName } from '../../interfaces/user/user-display-name';
 
@@ -7,11 +7,17 @@ import { UserDisplayName } from '../../interfaces/user/user-display-name';
   templateUrl: './display-user.component.html',
   styleUrls: ['./display-user.component.scss']
 })
-export class DisplayUserComponent implements OnInit {
+export class DisplayUserComponent implements OnInit, OnDestroy {
   public displayName: string;
+  public displayNameSubscription: any;
   constructor(private apolloService: ApolloService) { }
 
   ngOnInit() {
-    this.apolloService.getUserDisplayName().subscribe((user: UserDisplayName) => this.displayName = user.display_name);
+    this.displayNameSubscription = this.apolloService.getUserDisplayName()
+      .subscribe((user: UserDisplayName) => this.displayName = user.display_name);
+  }
+
+  ngOnDestroy() {
+    this.displayNameSubscription.unsubscribe();
   }
 }

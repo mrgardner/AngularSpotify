@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app/app.component';
 import { PlaylistTableComponent } from './tables/playlist-table/playlist-table.component';
 import { HeaderComponent } from './header/header.component';
@@ -26,6 +27,7 @@ import { PlaylistsComponent } from './collection/playlists/playlists.component';
 import { MadeForYouComponent } from './collection/made-for-you/made-for-you.component';
 import { LikedSongsComponent } from './collection/liked-songs/liked-songs.component';
 import { PodcastsComponent } from './collection/podcasts/podcasts.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   entryComponents: [
@@ -56,12 +58,15 @@ import { PodcastsComponent } from './collection/podcasts/podcasts.component';
     PlaylistsComponent,
     MadeForYouComponent,
     LikedSongsComponent,
-    PodcastsComponent
+    PodcastsComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,
     AngularMaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ComponentModule {}

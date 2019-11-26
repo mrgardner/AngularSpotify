@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
 import { concat, of } from 'rxjs';
-import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { Album } from '../../../interfaces/album/album.interface';
 import { SpotifyAlbumsResponse } from '../../../interfaces/album/spotify-albums-response.interface';
 import { UtilService } from '../../../services/util/util.service';
@@ -12,18 +11,19 @@ import { ApolloService } from '../../../services/apollo/apollo.service';
   templateUrl: './albums.component.html',
   styleUrls: ['./albums.component.scss']
 })
-export class AlbumsComponent implements OnInit {
+export class AlbumsComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public albumsLoaded: boolean;
   public albums: Array<Album> = [];
   public isSearchBoxShowing: boolean;
   public name: string;
+  public albumsSubscription: any;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService, private spotifyService: SpotifyService) { }
+  constructor(private apolloService: ApolloService, public utilService: UtilService) { }
 
   ngOnInit() {
     let numberOfSavedAlbums = 0;
-    this.apolloService.getAlbums()
+    this.albumsSubscription = this.apolloService.getAlbums()
       .pipe(
         switchMap((savedAlbums: SpotifyAlbumsResponse) => {
           this.loading = true;
@@ -52,6 +52,10 @@ export class AlbumsComponent implements OnInit {
           this.albumsLoaded = true;
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.albumsSubscription.unsubscribe();
   }
 
   showSearchBox(): void {

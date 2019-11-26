@@ -9,16 +9,22 @@ export class TrackService {
   public filterTrackName$: EventEmitter<any>;
   public filterTrackArtist$: EventEmitter<any>;
   public currentTrack$: EventEmitter<any>;
+  public filterTrack$: EventEmitter<string>;
 
   constructor() {
     this.checkDuplicate$ = new EventEmitter();
     this.filterTrackName$ = new EventEmitter();
     this.filterTrackArtist$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
+    this.filterTrack$ = new EventEmitter();
   }
 
   checkDuplicate(value: boolean) {
     this.checkDuplicate$.emit(value);
+  }
+
+  filterTrack(text: string) {
+    this.filterTrack$.emit(text);
   }
 
   filterByTrackName(trackNameString: string) {

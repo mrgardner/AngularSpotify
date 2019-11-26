@@ -1,11 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~src/app/styles/variables.scss";
 
 body {
   background-color: black;
   color: white;
   overflow: hidden;
+}
+
+button:focus {
+  outline: none;
 }
 
 *:focus {
@@ -23,10 +26,11 @@ body {
 .mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
   height: 25px !important;
 }
-
-.new-playlist-panel .mat-dialog-container {
-  background-color: #282828;
-  padding: 15px;
+.new-playlist-panel {
+  .mat-dialog-container {
+    background-color: #282828;
+    padding: 15px;
+  }
 }
 
 .device-modal-panel {
@@ -90,6 +94,10 @@ body {
 
 .mat-tab-header, .mat-tab-nav-bar {
   border-bottom: none;
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  color: white;
 }
 
 @media (min-width: 1920px) {

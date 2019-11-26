@@ -15,8 +15,9 @@
   </div> -->
   <div class="trackData">
     <div>
-      <!-- <app-track-filter [tracks]="source" [selectedTracks]="selection"></app-track-filter> -->
+      <app-track-filter></app-track-filter>
     </div>
+    
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" matSortDisableClear>
       <ng-container matColumnDef="dupTrack" *ngIf="checkDuplicate">
         <th mat-header-cell *matHeaderCellDef class="dupliateTrackHeader">Dup</th>

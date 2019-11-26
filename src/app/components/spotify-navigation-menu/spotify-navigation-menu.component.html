@@ -1,4 +1,4 @@
-<div *ngIf="playlistsLoaded" [className]="isPictureEnlarged ? 'menuContainer imageEnlarged' : 'menuContainer imageNotEnlarged'" #scrollMe>
+<div *ngIf="playlistsLoaded" class="menuContainer">
   <div class="libraryContainer">
     <div *ngFor="let section of sections" (click)="goToSection(section.url)" [ngClass]="{'selected': selectedRoute.parent === section.url, 'clickable': true, 'padding': true}">
         <div class="selected-section" *ngIf="selectedRoute.parent === section.url"></div>
@@ -15,7 +15,7 @@
       <div class="playlist-list">
           <mat-list>
               <div *ngFor="let playlist of playlists">
-                <div class="selected-playlist" *ngIf="selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl"></div>
+                <div class="selected-playlist" *ngIf="selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl" color="primary"></div>
                 <mat-list-item (click)="goToTracks(playlist)" [ngClass]="{'selected': selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl, 'clickable': true}">
                     {{utilService.shortenString(playlist.name, 18)}}
                   </mat-list-item>
@@ -26,10 +26,5 @@
             <button *ngIf="playlists.length < playlistTotal" (click)="loadMorePlaylists(playlists.length)">Load More</button>
       </div>
   </div>
-</div>
-
-<div class="trackImageContainer" [@trackAlbumImage]="imageEnlargeState" *ngIf="isPictureEnlarged">
-  <img class="trackImage" [src]="url">
-  <mat-icon class="album-icon" (click)="shrinkPicture(url)">keyboard_arrow_up</mat-icon>
 </div>
 <mat-spinner class="loadingContainer" *ngIf="loading"></mat-spinner>

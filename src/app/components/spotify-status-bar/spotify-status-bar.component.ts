@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StatusBarService } from '../../services/status-bar/status-bar.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -15,24 +14,10 @@ import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response
 @Component({
   selector: 'app-spotify-status-bar',
   templateUrl: './spotify-status-bar.component.html',
-  styleUrls: ['./spotify-status-bar.component.scss'],
-  animations: [
-    trigger('trackAlbumImage', [
-      state('active', style({
-        transform: 'translateX(-100px)'
-      })),
-      state('inactive', style({
-        transform: 'translateX(0)'
-      })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
-    ])
-  ]
+  styleUrls: ['./spotify-status-bar.component.scss']
 })
-export class SpotifyStatusBarComponent implements OnInit {
+export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   public currentTrack: Track;
-  public imageEnlargeState: string;
-  public isEnlargeIconShowing: boolean;
   public volume: number;
   public currentDevice: Object;
   public currentDeviceId: string;
@@ -44,31 +29,30 @@ export class SpotifyStatusBarComponent implements OnInit {
   public isRepeatTrackShowing: boolean;
   public isRepeatOffShowing: boolean;
   public state: SpotifySongResponse;
+  public activeDeviceSubscription: any;
+  public currentPlayerSubscription: any;
+  public currentSongStateSubscription: any;
+  public showPlayButtonSubscription: any;
 
   constructor(
-    private statusBarService: StatusBarService,
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
     public dialog: MatDialog,
     private spotifyPlaybackService: SpotifyPlaybackService,
     public utilService: UtilService) {}
+
   ngOnInit() {
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
     this.isRepeatOffShowing = true;
-    this.imageEnlargeState = 'inactive';
     this.volume = 100;
-    this.isEnlargeIconShowing = false;
-    this.statusBarService.enlargePicture$.subscribe((value: boolean) => {
-      this.imageEnlargeState = value['value'] ? 'active' : 'inactive';
-    });
-    this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
+    this.activeDeviceSubscription = this.deviceModalService.changeActiveDevice$.subscribe((device: Device) => {
       this.currentDeviceId = device.id;
       this.currentDeviceName = device.name;
       this.currentDevice = device;
       this.appDevice = localStorage.getItem('deviceId');
     });
-    this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => {
+    this.currentPlayerSubscription = this.spotifyService.getCurrentPlayer().subscribe((data: SpotifyDeviceResponse) => {
       if (data) {
         this.currentDevice = data.device;
         this.currentDeviceId = data.device.id;
@@ -77,25 +61,21 @@ export class SpotifyStatusBarComponent implements OnInit {
       }
     });
 
-    this.spotifyPlaybackService.currentSongState$.subscribe((newState: SpotifySongResponse) => {
+    this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$.subscribe((newState: SpotifySongResponse) => {
       this.state = newState;
       this.songCurrentProgress = (Math.round(newState.position / 1000) / Math.round(newState.duration / 1000)) * 100;
       this.currentTrack = newState.track_window.current_track;
     });
 
-    this.spotifyPlaybackService.showPlayButton$.subscribe((value: boolean) => this.showPlayButton = value);
+    this.showPlayButtonSubscription = this.spotifyPlaybackService.showPlayButton$
+      .subscribe((value: boolean) => this.showPlayButton = value);
   }
 
-  enlargePicture(url: string): void {
-    this.statusBarService.enlargePicture(true, url);
-  }
-
-  showEnlargeIcon(): void {
-    this.isEnlargeIconShowing = true;
-  }
-
-  hideEnlargeIcon(): void {
-    this.isEnlargeIconShowing = false;
+  ngOnDestroy() {
+    this.activeDeviceSubscription.unsubscribe();
+    this.currentPlayerSubscription.unsubscribe();
+    this.currentSongStateSubscription.unsubscribe();
+    this.showPlayButtonSubscription.unsubscribe();
   }
 
   openDeviceModal(): void {

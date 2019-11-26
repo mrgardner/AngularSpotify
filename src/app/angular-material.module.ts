@@ -13,6 +13,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatBadgeModule } from '@angular/material/badge';
+
 
 @NgModule({
   exports: [
@@ -30,7 +33,9 @@ import { MatTableModule } from '@angular/material/table';
     MatSidenavModule,
     MatListModule,
     MatPaginatorModule,
-    MatTabsModule
+    MatTabsModule,
+    MatInputModule,
+    MatBadgeModule
   ]
 })
 export class AngularMaterialModule {}

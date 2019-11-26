@@ -65,6 +65,7 @@ export class UtilService {
     const cookie = name + '=' + (value || '')  + '; expires=' + expires + '; path=/';
     document.cookie = cookie;
   }
+
   getCookie(name: string): string {
     const nameEQ = name + '=';
     const ca = document.cookie.split(';');
@@ -79,6 +80,7 @@ export class UtilService {
     }
     return null;
   }
+
   clearCookie(name: string): void {
     document.cookie = name + '=; Max-Age=-99999999;';
   }

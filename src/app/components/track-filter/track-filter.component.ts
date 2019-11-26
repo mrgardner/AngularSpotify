@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Output, OnInit, OnDestroy, EventEmitter} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SpotifyService} from '../../services/spotify/spotify.service';
 import {TrackService} from '../../services/track/track.service';
 import {PlaylistService} from '../../services/playlist/playlist.service';
 import { Track } from '../../interfaces/track/track.interface';
 import { Params } from '../../interfaces/params/params.interface';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-track-filter',
@@ -12,10 +13,7 @@ import { Params } from '../../interfaces/params/params.interface';
   styleUrls: ['./track-filter.component.scss']
 })
 
-export class TrackFilterComponent implements OnInit {
-  // TODO: FIX
-  // @Input('tracks') tracks: Array<Object>;
-  // @Input('selectedTracks') selectedTracks: Array<Object>;
+export class TrackFilterComponent implements OnInit, OnDestroy {
   public isDuplicateTrack: boolean;
   public name: string;
   public artist: string;
@@ -23,6 +21,10 @@ export class TrackFilterComponent implements OnInit {
   public isSearchBoxShowing: boolean;
   public playlistID: string;
   public endOfChain: boolean;
+  public routeSubscription: any;
+  public form = new FormGroup({
+    artist: new FormControl('')
+  });
 
   constructor(
     private spotifyService: SpotifyService,
@@ -34,13 +36,17 @@ export class TrackFilterComponent implements OnInit {
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
-    this.route.params.subscribe((params: Params) => {
+    this.routeSubscription = this.route.params.subscribe((params: Params) => {
       if (params && params.playlistID) {
         this.playlistID = params.playlistID;
       } else {
         this.endOfChain = true;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 
   // TODO: FIX when input variables are fixed
@@ -98,31 +104,36 @@ export class TrackFilterComponent implements OnInit {
     // });
   // }
 
-  filterName(name: string): void {
-    this.trackService.filterByTrackName(name);
-  }
+  // filterName(name: string): void {
+  //   this.trackService.filterByTrackName(name);
+  // }
 
   filterArtist(artist: string): void {
-    this.trackService.filterByTrackArtist(artist);
+    console.log(artist);
+    // console.log(this.tracks)
+    // const tt = this.tracks.filter(track => track.artist.toLowerCase().includes(artist.toLowerCase()));
+    // console.log(tt);
+    this.trackService.filterTrack(artist);
+    // this.trackService.filterByTrackArtist(artist);
   }
 
-  showSearchBox(): void {
-    this.isSearchBoxShowing = true;
-  }
+  // showSearchBox(): void {
+  //   this.isSearchBoxShowing = true;
+  // }
 
-  hideSearchBox(): void {
-    // if (this.isSearchBoxShowing) {
-      this.name = '';
-      this.filterName('');
-      this.isSearchBoxShowing = false;
-    // }
-  }
+  // hideSearchBox(): void {
+  //   // if (this.isSearchBoxShowing) {
+  //     this.name = '';
+  //     this.filterName('');
+  //     this.isSearchBoxShowing = false;
+  //   // }
+  // }
 
-  onLoseFocus(): void {
-    if (this.name.length === 0) {
-      this.hideSearchBox();
-    } else {
-      this.endOfChain = true;
-    }
-  }
+  // onLoseFocus(): void {
+  //   if (this.name.length === 0) {
+  //     this.hideSearchBox();
+  //   } else {
+  //     this.endOfChain = true;
+  //   }
+  // }
 }

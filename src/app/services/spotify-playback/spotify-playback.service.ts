@@ -158,7 +158,7 @@ export class SpotifyPlaybackService {
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
-      this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
+      // this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());

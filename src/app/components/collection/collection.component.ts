@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { RouteService } from '../../services/route/route.service';
 import { filter } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
+export class CollectionComponent implements OnInit, OnDestroy {
   public links = [
     {
       path: 'collection/playlists',
@@ -46,6 +46,7 @@ export class CollectionComponent implements OnInit {
     child: string
   };
   public activeLink: any;
+  public routerSubscription: any;
 
   constructor(private router: Router, private routeService: RouteService) { }
 
@@ -62,9 +63,15 @@ export class CollectionComponent implements OnInit {
       this.activeLink = this.links[0];
       this.navigateTo(this.links[0].path);
     }
-    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
-      this.selectedRoute = this.routeService.parseUrl(event.url);
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationStart))
+      .subscribe((event: NavigationStart) => {
+        this.selectedRoute = this.routeService.parseUrl(event.url);
     });
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
   }
 
   navigateTo(path: string) {

@@ -36,7 +36,7 @@ export class AuthService {
       this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
       popup.close();
       setTimeout(() => {
-        that.router.navigate(['']);
+        that.router.navigate(['home']);
         that.spotifyPlaybackService.setupPlayer();
       }, 100);
     };

@@ -13,9 +13,11 @@ import { MadeForYouComponent } from './components/collection/made-for-you/made-f
 import { LikedSongsComponent } from './components/collection/liked-songs/liked-songs.component';
 import { PodcastsComponent } from './components/collection/podcasts/podcasts.component';
 import { PlaylistsComponent } from './components/collection/playlists/playlists.component';
+import { SearchComponent } from './components/search/search.component';
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent, canActivate: [SpotifyGuard]},
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'home', component: HomeComponent, canActivate: [SpotifyGuard]},
   { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [SpotifyGuard]},
   { path: 'callback', component: CallbackComponent},
   { path: 'login', component: LoginComponent},
@@ -28,6 +30,7 @@ const APP_ROUTES: Routes = [
     { path: 'artists', component: ArtistsComponent, canActivate: [SpotifyGuard]},
     { path: 'podcasts', component: PodcastsComponent, canActivate: [SpotifyGuard]}
   ]},
+  { path: 'search', component: SearchComponent, canActivate: [SpotifyGuard]},
 ];
 
 @NgModule({
