@@ -44,17 +44,23 @@
 
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
-        <td mat-cell *matCellDef="let element"> {{utilService.shortenString(element.title, 20)}} </td>
+        <td mat-cell *matCellDef="let element" >
+            <app-highlight-search [text]="utilService.shortenString(element.title, 40)" [searchText]="filterText"></app-highlight-search>
+          </td>
       </ng-container>
     
       <ng-container matColumnDef="artist">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Artist</th>
-        <td mat-cell *matCellDef="let element"> {{utilService.shortenString(element.artist, 20)}} </td>
+        <td mat-cell *matCellDef="let element">
+            <app-highlight-search [text]="utilService.shortenString(element.artist, 20)" [searchText]="filterText"></app-highlight-search>
+        </td>
       </ng-container>
     
       <ng-container matColumnDef="album">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Album</th>
-        <td mat-cell *matCellDef="let element"> {{utilService.shortenString(element.album_name, 20)}} </td>
+        <td mat-cell *matCellDef="let element">
+            <app-highlight-search [text]="utilService.shortenString(element.album_name, 20)" [searchText]="filterText"></app-highlight-search>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="addedAt">

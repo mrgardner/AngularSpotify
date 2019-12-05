@@ -40,6 +40,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public currentSongStateSubscription: any;
   public currentTrackSubscription: any;
   public test: string;
+  public filterText: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -71,6 +72,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   }
 
   ngOnInit() {
+    this.filterText = '';
     this.dataSource = new PlaylistDataSourceService(this.apolloService, this.utilService);
     this.test = '';
 
@@ -93,6 +95,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
 
     this.filterSubscription = this.trackService.filterTrack$.subscribe(track => {
       console.log(track);
+      this.filterText = track;
       this.dataSource.filter(track);
     });
   }

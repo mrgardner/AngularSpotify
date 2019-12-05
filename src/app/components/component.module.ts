@@ -28,6 +28,7 @@ import { MadeForYouComponent } from './collection/made-for-you/made-for-you.comp
 import { LikedSongsComponent } from './collection/liked-songs/liked-songs.component';
 import { PodcastsComponent } from './collection/podcasts/podcasts.component';
 import { SearchComponent } from './search/search.component';
+import { HighlightSearchComponent } from './highlight-search/highlight-search.component';
 
 @NgModule({
   entryComponents: [
@@ -59,7 +60,8 @@ import { SearchComponent } from './search/search.component';
     MadeForYouComponent,
     LikedSongsComponent,
     PodcastsComponent,
-    SearchComponent
+    SearchComponent,
+    HighlightSearchComponent
   ],
   imports: [
     CommonModule,
