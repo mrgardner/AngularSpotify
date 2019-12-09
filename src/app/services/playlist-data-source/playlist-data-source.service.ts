@@ -52,10 +52,6 @@ export class PlaylistDataSourceService {
   }
 
   filter(text: string) {
-    console.log(this.tableSubject.value);
-    console.log(this.backupSubject.value);
-    const tt = this.backupSubject.value.filter(track => track.filterText.includes(text.toLowerCase().trim()));
-    console.log(tt);
-    this.tableSubject.next(tt);
+    this.tableSubject.next(this.backupSubject.value.filter(track => track.filterText.includes(text.toLowerCase().trim())));
   }
 }

@@ -1,62 +1,51 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-highlight-search',
   templateUrl: './highlight-search.component.html',
-  styleUrls: ['./highlight-search.component.scss'],
-  providers: [TitleCasePipe]
+  styleUrls: ['./highlight-search.component.scss']
 })
 export class HighlightSearchComponent implements OnInit, OnChanges {
   @Input() text: string;
   @Input() searchText: string;
   public finalText: string;
 
-  constructor(private titleCasePipe: TitleCasePipe) { }
+  constructor() { }
 
   ngOnInit() {
     this.finalText = this.text;
   }
 
   ngOnChanges() {
-    // TODO: Figure out how to preserve camel case with Title, Artists, Album when highlighting search text
     if (this.searchText.length > 0) {
-      const tt = new RegExp(this.searchText.toLowerCase(), 'g');
-      // const tttt = this.getAllIndexes(this.text, this.searchText);
-      // console.log(tttt);
-      // let t = this.text;
-      // const l = [];
-      // for (let i = 0; i < tttt.length; i++) {
-      //   console.log(tttt[i])
-      //   console.log(this.searchText.length);
-      //   const lala = this.text.toLowerCase().substring(tttt[i], tttt[i] + this.searchText.length);
-      //   const tt = new RegExp(lala, 'g');
-      //   // const tt = new RegExp('^(' + lala + ')((?!<span>))', 'g');
-      //   console.log(lala)
-      //   l.push(this.text.toLowerCase().replace(tt, `~~~~${lala}====`));
-      //   t = t.replace(tt, `~~~${lala}~~~~`);
-      //   console.log(t)
-      //   // t = t.replace(tt, `<span class="highlight">${this.searchText}</span>`);
-      //   console.log(l)
-      // }
-
-      // if (l.length > 0) {
-      //   console.log(l[l.length - 1]);
-      //   const openingTag = new RegExp('~~~~', 'g');
-      //   const closingTag = new RegExp('====', 'g');
-      //   const hhh = l[l.length - 1].replace(openingTag, '<span class="highlight">').replace(closingTag, '</span>');
-      //   console.log(hhh);
-      //   this.finalText = this.titleCasePipe.transform(hhh);
-      //   // const laala = this.text.substring()
-      //   console.log(this.finalText);
-      // } else {
-      //   this.finalText = this.text;
-      // }
-      this.finalText = this.text.toLowerCase().replace(tt, `<span class="highlight">${this.searchText}</span>`);
-      // console.log(document.getElementsByClassName('highlight'));
+      // TODO: Look into why when search string length > 1 it shifts position of highlighted text (something to do with first position).
+      const indices = this.getAllIndexes(this.text, this.searchText);
+      let result = this.text;
+      const l = [];
+      for (let i = 0; i < indices.length; i++) {
+        const spanStartLength = '<span class="highlight">'.length;
+        const spanEndLength = '</span>'.length;
+        const firstPos = indices[i] + (((spanStartLength + spanEndLength + this.searchText.length) * i) - (i));
+        console.log(this.text);
+        console.log(firstPos);
+        const lastPos = firstPos + this.searchText.length + spanStartLength;
+        const firstPass = this.insert(result, '<span class="highlight">', firstPos);
+        result = this.insert(firstPass, '</span>', lastPos);
+      }
+      this.finalText = result;
     } else {
       this.finalText = this.text;
     }
+  }
+
+  insert(main_string, ins_string, pos) {
+    if (typeof(pos) === 'undefined') {
+      pos = 0;
+    }
+    if (typeof(ins_string) === 'undefined') {
+      ins_string = '';
+    }
+    return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
   }
 
   getAllIndexes(arr, val) {
@@ -68,4 +57,3 @@ export class HighlightSearchComponent implements OnInit, OnChanges {
     return indexes;
   }
 }
-

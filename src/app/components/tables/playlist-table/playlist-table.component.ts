@@ -94,7 +94,6 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
       .subscribe((track: Track) => this.currentTrack = track);
 
     this.filterSubscription = this.trackService.filterTrack$.subscribe(track => {
-      console.log(track);
       this.filterText = track;
       this.dataSource.filter(track);
     });

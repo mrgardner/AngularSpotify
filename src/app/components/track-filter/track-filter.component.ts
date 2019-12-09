@@ -23,7 +23,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   public endOfChain: boolean;
   public routeSubscription: any;
   public form = new FormGroup({
-    artist: new FormControl('')
+    track: new FormControl('')
   });
 
   constructor(
@@ -108,13 +108,8 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   //   this.trackService.filterByTrackName(name);
   // }
 
-  filterArtist(artist: string): void {
-    console.log(artist);
-    // console.log(this.tracks)
-    // const tt = this.tracks.filter(track => track.artist.toLowerCase().includes(artist.toLowerCase()));
-    // console.log(tt);
+  filterTrack(artist: string): void {
     this.trackService.filterTrack(artist);
-    // this.trackService.filterByTrackArtist(artist);
   }
 
   // showSearchBox(): void {

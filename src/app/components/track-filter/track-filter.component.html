@@ -11,7 +11,7 @@
   <form [formGroup]="form">
     <div>
       <label>Filter track by Artist: </label>
-      <input type="text"formControlName="artist" (ngModelChange)="filterArtist($event); artist = $event"/>
+      <input type="text"formControlName="track" (ngModelChange)="filterTrack($event); track = $event"/>
     </div>
   </form>
   <!-- <div *ngIf="!checkForLocalTracks()">
