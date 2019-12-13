@@ -15,6 +15,8 @@ import { UtilService } from '../../../services/util/util.service';
 import { TrackService } from '../../../services/track/track.service';
 import { SpotifySongResponse } from '../../../interfaces/song/spotify-song-response.interface';
 import { ApolloService } from '../../../services/apollo/apollo.service';
+import { moveItemInArray, CdkDropList} from '@angular/cdk/drag-drop';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-playlist-table',
@@ -41,9 +43,12 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public currentTrackSubscription: any;
   public test: string;
   public filterText: string;
+  public draggedString: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatTable, {static: true}) table: MatTable<any>;
+  @ViewChild(CdkDropList) _dropList: any;
   public filterSubscription: any;
 
   constructor(
@@ -54,6 +59,30 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     public utilService: UtilService,
     private trackService: TrackService,
     private route: ActivatedRoute) {}
+
+    // TODO: Add functionality to save drag and drop to spotify endpoint
+  dropTable(event: any) {
+    if (this.dataSource) {
+      this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
+        const prevIndex = v.findIndex((d) => d === event.item.data);
+        moveItemInArray(v, prevIndex, event.currentIndex);
+        this.tracks = v;
+        if (v.length > 0) {
+          this.pageSize = v[0].size;
+          this.itemCount = v[0].total;
+        } else {
+          this.itemCount = 0;
+        }
+        this.table.renderRows();
+      });
+    } else {
+      this.endOfChain = true;
+    }
+  }
+
+  dragStart(e) {
+    this.draggedString = `${e.source.data.title} - ${e.source.data.artist}`;
+  }
 
   ngAfterContentInit() {
     if (this.dataSource) {

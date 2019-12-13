@@ -15,6 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatPaginatorModule,
     MatTabsModule,
     MatInputModule,
-    MatBadgeModule
+    MatBadgeModule,
+    DragDropModule
   ]
 })
 export class AngularMaterialModule {}
