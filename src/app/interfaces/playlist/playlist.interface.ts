@@ -7,6 +7,10 @@ import { Owner } from '../misc/owner.interface';
 export interface Playlist {
   collaborative: boolean;
   external_urls: ExternalUrls;
+  followers: {
+    href: string;
+    total: number;
+  };
   href: string;
   id: string;
   images: Array<Image>;
