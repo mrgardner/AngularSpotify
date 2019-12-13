@@ -45,12 +45,8 @@
       width: 25%;
 
       button {
-        color: white;
-        border-radius: 40px;
-        width: 89%;
         background-color: #282828;
-        line-height: 27px;
-        font-size: 14px;
+        opacity: 0.75;
   
         label {
           position: absolute;
@@ -72,24 +68,10 @@
   
       .user-image {
         position: relative;
-
-        .icon {
-          position: absolute;
-          right: 0%;
-          font-size: 35px;
-          color: white;
-          opacity: 0.75;
-          background-color: black;
-          border-radius: 30px;
-          height: 35px;
-          width: 35px;
-        }
   
         button {
-          border: 1px solid white;
           position: absolute;
-          left: 0;
-          top: 130px;
+          right: 0;
         }
   
         label {

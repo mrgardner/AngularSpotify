@@ -72,8 +72,11 @@ export class NewPlaylistDialogComponent implements OnInit {
     document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '300px';
   }
 
+  replaceImage() {
+    document.getElementById('file2').click();
+  }
+
   onSubmit(event): void {
-    console.log('sdfsf');
     const playlistName = event.target[0].value;
     const playlistDescription = event.target[2].value;
     const playlistImage = this.imageFile;

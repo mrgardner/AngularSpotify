@@ -13,11 +13,13 @@
           </div>
           <div *ngIf="currentImage" class="user-image" (mouseenter)="showUserButtons = true" (mouseleave)="showUserButtons = false">
             <img [src]="currentImage">
-            <mat-icon class="icon md-light md-48">more_horiz</mat-icon>
-            <!-- <div *ngIf="showUserButtons">
-              <button mat-button (click)="resetImage()">Remove Image</button>
-              <label for="file2" class="custom-file-upload">Replace Image</label>
-            </div> -->
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon class="md-light md-48">more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button (click)="resetImage()" mat-menu-item>Remove image</button>
+              <button (click)="replaceImage()" mat-menu-item>Replace image</button>
+            </mat-menu>
             <input type="file" name="file2" id="file2" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
           </div>
         </div>
