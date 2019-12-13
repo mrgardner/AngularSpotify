@@ -16,7 +16,7 @@
             <button mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon class="md-light md-48">more_horiz</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before">
+            <mat-menu #menu="matMenu" xPosition="after">
               <button (click)="resetImage()" mat-menu-item>Remove image</button>
               <button (click)="replaceImage()" mat-menu-item>Replace image</button>
             </mat-menu>

@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import {PlaylistTableComponent} from './components/tables/playlist-table/playlist-table.component';
+import {PlaylistTableComponent} from './components/playlist-table/playlist-table.component';
 import {HomeComponent} from './components/home/home.component';
 import {CallbackComponent} from './components/callback/callback.component';
 import {SpotifyGuard} from './guards/spotify/spotify.guard';

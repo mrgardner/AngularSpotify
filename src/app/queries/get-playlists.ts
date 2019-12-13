@@ -26,6 +26,9 @@ export const PLAYLIST_INFO = gql`
       images {
         url
       }
+      followers {
+        total
+      }
     }
   }
 `;
