@@ -41,9 +41,9 @@ export class PlaylistDataSourceService {
           track: t,
           total: tracks.total,
           size: tracks.limit,
-          filterText: `${t.track.name.trim().toLowerCase()}
-            ${this.utilService.displayArtists(t.track.artists).join('').toLowerCase().trim()}
-            ${t.track.album.name.trim().toLowerCase()}`
+          filterText: `${t.track.name.toLowerCase()}
+            ${this.utilService.displayArtists(t.track.artists).join('').toLowerCase()}
+            ${t.track.album.name.toLowerCase()}`.replace(/\s/g, '').trim()
         };
       });
       this.tableSubject.next(sortedTracks);
@@ -52,6 +52,7 @@ export class PlaylistDataSourceService {
   }
 
   filter(text: string) {
-    this.tableSubject.next(this.backupSubject.value.filter(track => track.filterText.includes(text.toLowerCase().trim())));
+    this.tableSubject.next(this.backupSubject.value.filter(track =>
+      track.filterText.includes(text.toLowerCase().trim().replace(/\s/g, ''))));
   }
 }

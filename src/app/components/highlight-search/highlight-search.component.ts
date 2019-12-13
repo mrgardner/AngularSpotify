@@ -1,38 +1,32 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-highlight-search',
   templateUrl: './highlight-search.component.html',
   styleUrls: ['./highlight-search.component.scss']
 })
-export class HighlightSearchComponent implements OnInit, OnChanges {
+export class HighlightSearchComponent implements OnChanges {
   @Input() text: string;
   @Input() searchText: string;
   public finalText: string;
 
   constructor() { }
 
-  ngOnInit() {
-    this.finalText = this.text;
-  }
-
   ngOnChanges() {
     if (this.searchText.length > 0) {
-      // TODO: Look into why when search string length > 1 it shifts position of highlighted text (something to do with first position).
       const indices = this.getAllIndexes(this.text, this.searchText);
       let result = this.text;
-      const l = [];
       for (let i = 0; i < indices.length; i++) {
-        const spanStartLength = '<span class="highlight">'.length;
-        const spanEndLength = '</span>'.length;
-        const firstPos = indices[i] + (((spanStartLength + spanEndLength + this.searchText.length) * i) - (i));
-        console.log(this.text);
-        console.log(firstPos);
-        const lastPos = firstPos + this.searchText.length + spanStartLength;
-        const firstPass = this.insert(result, '<span class="highlight">', firstPos);
-        result = this.insert(firstPass, '</span>', lastPos);
+        const updatedIndices = this.getAllIndexes(result, this.searchText);
+        const spanEndLength = '===='.length;
+        const firstPos = updatedIndices[i];
+        const lastPos = firstPos + this.searchText.length + spanEndLength;
+        const firstPass = this.insert(result, '~~~~', firstPos);
+        result = this.insert(firstPass, '====', lastPos);
       }
-      this.finalText = result;
+      const spanStart = new RegExp('~~~~', 'g');
+      const spanEnd = new RegExp('====', 'g');
+      this.finalText = result.replace(spanStart, '<span class="highlight">').replace(spanEnd, '</span>');
     } else {
       this.finalText = this.text;
     }

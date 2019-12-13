@@ -16,7 +16,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class TrackFilterComponent implements OnInit, OnDestroy {
   public isDuplicateTrack: boolean;
   public name: string;
-  public artist: string;
+  public track: string;
   private originalTracks: Array<Object>;
   public isSearchBoxShowing: boolean;
   public playlistID: string;
