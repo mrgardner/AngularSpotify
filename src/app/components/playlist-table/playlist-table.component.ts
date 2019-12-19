@@ -188,6 +188,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     return this.showPlayButtonText ? this.playSongGlobal() : this.pauseSong();
   }
 
+  // TODO: Fix logic playling and pausing should only be per playlist
   playSongGlobal(): void {
     this.spotifyPlaybackService.currentPlaylistPlaying(this.playlist.id);
     if (this.state.position > 0 && this.state.track_window.current_track.name
