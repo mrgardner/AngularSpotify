@@ -120,7 +120,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.checkDuplicateSubscription = this.trackService.checkDuplicate$
       .subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
     this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
-      .subscribe(state => { this.state = state; console.log(this.state);});
+      .subscribe(state => this.state = state);
     this.currentTrackSubscription = this.spotifyPlaybackService.currentTrack$
       .subscribe((track: Track) => this.currentTrack = track);
 
