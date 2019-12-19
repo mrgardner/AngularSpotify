@@ -12,7 +12,8 @@ export class RouteService {
     });
     const selectedRoute = {
       parent: null,
-      child: null
+      child: null,
+      id: null
     };
     for (let i = 0; i < splitRoute.length; i++) {
       if (i === 0) {
@@ -20,6 +21,9 @@ export class RouteService {
       }
       if (i === 1) {
         selectedRoute.child = splitRoute[1].replace(/%20/g, ' ');
+      }
+      if (i === 2) {
+        selectedRoute.id = splitRoute[2].replace(/%20/g, ' ');
       }
     }
     return selectedRoute;

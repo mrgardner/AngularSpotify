@@ -41,9 +41,11 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public checkDuplicateSubscription: any;
   public currentSongStateSubscription: any;
   public currentTrackSubscription: any;
+  public showPlayButtonSubscription: any;
   public test: string;
   public filterText: string;
   public draggedString: string;
+  public showPlayButtonText: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -118,7 +120,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.checkDuplicateSubscription = this.trackService.checkDuplicate$
       .subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
     this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
-      .subscribe(state => this.state = state);
+      .subscribe(state => { this.state = state; console.log(this.state);});
     this.currentTrackSubscription = this.spotifyPlaybackService.currentTrack$
       .subscribe((track: Track) => this.currentTrack = track);
 
@@ -126,6 +128,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
       this.filterText = track;
       this.dataSource.filter(track);
     });
+
+    this.showPlayButtonSubscription = this.spotifyPlaybackService.showPlayButton$
+      .subscribe((value: boolean) => this.showPlayButtonText = value);
   }
 
   ngOnDestroy() {
@@ -134,6 +139,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.currentSongStateSubscription.unsubscribe();
     this.currentTrackSubscription.unsubscribe();
     this.filterSubscription.unsubscribe();
+    this.showPlayButtonSubscription.unsubscribe();
   }
 
   loadTracks() {
@@ -174,7 +180,26 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.dataSource.tableSubject.next(this.tracks);
   }
 
+  startListeningText(): string {
+    return this.showPlayButtonText ? 'PLAY' : 'PAUSE';
+  }
+
+  startListening(): void {
+    return this.showPlayButtonText ? this.playSongGlobal() : this.pauseSong();
+  }
+
+  playSongGlobal(): void {
+    this.spotifyPlaybackService.currentPlaylistPlaying(this.playlist.id);
+    if (this.state.position > 0 && this.state.track_window.current_track.name
+      && this.state.repeat_mode === 0 && this.state.track_window.next_tracks.length > 0) {
+      this.spotifyPlaybackService.playSong();
+    } else {
+      this.spotifyService.playSpotifyTrack(this.tracks, this.tracks[0]['track']).subscribe(() => {});
+    }
+  }
+
   playSong(song: Song): void {
+    this.spotifyPlaybackService.currentPlaylistPlaying(this.playlist.id);
     if (this.state.position > 0 && song.track.name === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
@@ -183,6 +208,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   }
 
   pauseSong(): void {
+    this.spotifyPlaybackService.currentPlaylistPlaying(this.playlist.id);
     this.spotifyPlaybackService.pauseSong();
   }
 

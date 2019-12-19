@@ -10,7 +10,7 @@
       <!-- TODO: Improve logic for these buttons-->
       <div class="button-and-follower-section">
         <div class="button-container">
-          <button mat-flat-button color="primary">PAUSE</button>
+          <button mat-flat-button color="primary" [disabled]="!currentTrack" (click)="startListening()">{{startListeningText()}}</button>
           <button mat-icon-button [matMenuTriggerFor]="menu" class="more-options-button">
             <mat-icon class="md-light md-48">more_horiz</mat-icon>
           </button>

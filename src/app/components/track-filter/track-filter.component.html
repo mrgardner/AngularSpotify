@@ -1,7 +1,7 @@
 <div class="trackFilterContainer">
   <form [formGroup]="form">
     <mat-form-field>
-      <input matInput placeholder="Filter" type="text"formControlName="track" (ngModelChange)="filterTrack($event); track = $event">
+      <input matInput placeholder="Filter" type="text"formControlName="track" (ngModelChange)="filterTrack($event); track = $event" autocomplete="off">
       <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
   </form>

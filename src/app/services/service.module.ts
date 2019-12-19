@@ -6,6 +6,7 @@ import { ApolloService } from './apollo/apollo.service';
 import { DeviceModalService } from './deviceModal/device-modal.service';
 import { PlaylistService } from './playlist/playlist.service';
 import { PlaylistDataSourceService } from './playlist-data-source/playlist-data-source.service';
+import { RouteService } from './route/route.service';
 import { SpotifyService } from './spotify/spotify.service';
 import { SpotifyPlaybackService } from './spotify-playback/spotify-playback.service';
 import { StatusBarService } from './status-bar/status-bar.service';
@@ -19,6 +20,7 @@ import { UtilService } from './util/util.service';
     DeviceModalService,
     PlaylistService,
     PlaylistDataSourceService,
+    RouteService,
     SpotifyService,
     SpotifyPlaybackService,
     StatusBarService,

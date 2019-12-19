@@ -83,7 +83,7 @@
   .playlistContainer {
     .playlist-list {
       overflow-y: scroll;
-      height: 75%;
+      height: 84%;
       padding: 0 0 0 25px;
 
       .selected-playlist {
@@ -92,6 +92,14 @@
         height: 25px;
         width: 5px;
         background: green;
+        float: left;
+      }
+
+      .playlist-playing {
+        position: relative;
+        right: 25px;
+        width: 0;
+        top: 5px;
         float: left;
       }
 

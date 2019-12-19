@@ -16,6 +16,7 @@ export class SpotifyPlaybackService {
   public showPlayButton$: EventEmitter<boolean>;
   public currentTrack$: EventEmitter<any>;
   public setVolume$: EventEmitter<number>;
+  public currentPlaylistPlaying$: EventEmitter<string>;
   public player: any;
   public statePollingInterval: any = null;
   public endOfChain: boolean;
@@ -28,6 +29,7 @@ export class SpotifyPlaybackService {
     this.previousSong$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
     this.setVolume$ = new EventEmitter();
+    this.currentPlaylistPlaying$ = new EventEmitter();
   }
 
   async waitForSpotifyWebPlaybackSDKToLoad () {
@@ -154,12 +156,13 @@ export class SpotifyPlaybackService {
     // Ready
     this.player.on('ready', async data => {
       const { device_id } = data;
+      console.log(data);
       this.startStatePolling();
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
       // TODO: Make sure to eventually enable the line below
-      // this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
+      this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());
@@ -188,6 +191,10 @@ export class SpotifyPlaybackService {
 
   sendCurrentState(state: SpotifySongResponse) {
     this.currentSongState$.emit(state);
+  }
+
+  currentPlaylistPlaying(playlistId: string) {
+    this.currentPlaylistPlaying$.emit(playlistId);
   }
 
   playSong() {

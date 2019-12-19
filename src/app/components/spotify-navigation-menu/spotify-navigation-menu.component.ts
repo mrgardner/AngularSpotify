@@ -11,6 +11,7 @@ import { UtilService } from '../../services/util/util.service';
 import { Playlist } from '../../interfaces/playlist/playlist.interface';
 import { ApolloService } from '../../services/apollo/apollo.service';
 import { RouteService } from '../../services/route/route.service';
+import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -33,7 +34,10 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public currentTrackSubscription: any;
   public selectPlaylistSubscription: any;
   public getPlaylistsSubscription: any;
+  public getPlaylistIdSubscription: any;
   public routerSubscription: any;
+  public currentPlaylist: string;
+
   constructor(
     private playlistService: PlaylistService,
     private statusBarService: StatusBarService,
@@ -41,7 +45,8 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     private router: Router,
     public utilService: UtilService,
     public apolloService: ApolloService,
-    private routeService: RouteService) {}
+    private routeService: RouteService,
+    private spotifyPlaybackService: SpotifyPlaybackService) {}
 
   ngOnInit() {
     this.sections = [
@@ -77,6 +82,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
               playlist.selected = false;
             }
             playlist.selectedUrl = playlist.name.toLowerCase();
+            playlist.id = playlist.id;
           });
           this.loading = false;
           this.playlistsLoaded = true;
@@ -90,6 +96,9 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       .subscribe((event: NavigationStart) => {
         this.selectedRoute = this.routeService.parseUrl(event.url);
     });
+
+    this.getPlaylistIdSubscription = this.spotifyPlaybackService.currentPlaylistPlaying$
+      .subscribe((id: string) => this.currentPlaylist = id);
 
     this.dialogConfig = new MatDialogConfig();
     this.dialogConfig.panelClass = 'new-playlist-panel';

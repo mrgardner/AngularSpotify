@@ -15,6 +15,8 @@
       <div class="playlist-list">
           <mat-list>
               <div *ngFor="let playlist of playlists">
+                <!-- TODO: improve logic for showing this icon -->
+                <mat-icon *ngIf="selectedRoute.parent === 'playlist' && selectedRoute.child !== playlist.selectedUrl && currentPlaylist === playlist.id" class="playlist-playing">volume_up</mat-icon>
                 <div class="selected-playlist" *ngIf="selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl" color="primary"></div>
                 <mat-list-item (click)="goToTracks(playlist)" [ngClass]="{'selected': selectedRoute.parent === 'playlist' && selectedRoute.child === playlist.selectedUrl, 'clickable': true}">
                     {{utilService.shortenString(playlist.name, 18)}}
