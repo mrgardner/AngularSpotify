@@ -12,6 +12,8 @@ import { Playlist } from '../../interfaces/playlist/playlist.interface';
 import { ApolloService } from '../../services/apollo/apollo.service';
 import { RouteService } from '../../services/route/route.service';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
+import { SelectedRoute } from 'src/app/interfaces/route/selectedRoute.interface';
+import { Section } from 'src/app/interfaces/section/section.interface';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -28,8 +30,8 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public nextPlaylist: String;
   public loadMorePlaylist: Boolean;
   public url: string;
-  public sections: Array<Object>;
-  public selectedRoute: Object;
+  public sections: Array<Section>;
+  public selectedRoute: SelectedRoute;
   public dialogConfig: any;
   public currentTrackSubscription: any;
   public selectPlaylistSubscription: any;
@@ -48,7 +50,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     private routeService: RouteService,
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sections = [
       {
         label: 'Home',
@@ -106,7 +108,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.dialogConfig.width = '800px';
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.currentTrackSubscription.unsubscribe();
     this.selectPlaylistSubscription.unsubscribe();
     this.getPlaylistsSubscription.unsubscribe();

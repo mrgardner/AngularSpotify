@@ -41,7 +41,7 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     private spotifyPlaybackService: SpotifyPlaybackService,
     public utilService: UtilService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
     this.isRepeatOffShowing = true;
@@ -71,7 +71,7 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
       .subscribe((value: boolean) => this.showPlayButton = value);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.activeDeviceSubscription.unsubscribe();
     this.currentPlayerSubscription.unsubscribe();
     this.currentSongStateSubscription.unsubscribe();
@@ -86,41 +86,42 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     this.dialog.open(DeviceModalComponent, dialogConfig);
   }
 
-  onVolumeChange(volume: number): void {
+  onVolumeChange(event: Event): void {
+    const volume: number = +(<HTMLInputElement>event.target).value;
     this.spotifyPlaybackService.setVolume(volume / 100);
   }
 
-  playSong() {
+  playSong(): void {
     this.spotifyPlaybackService.playSong();
   }
 
-  pauseSong() {
+  pauseSong(): void  {
     this.spotifyPlaybackService.pauseSong();
   }
 
-  nextSong() {
+  nextSong(): void {
     this.spotifyPlaybackService.nextSong();
   }
 
-  previousSong() {
+  previousSong(): void {
     this.spotifyPlaybackService.previousSong();
   }
 
-  repeatPlaylist() {
+  repeatPlaylist(): void {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = true;
     this.isRepeatTrackShowing = false;
     this.spotifyService.setRepeatMode('context', localStorage.getItem('deviceId')).subscribe(() => {});
   }
 
-  repeatTrack() {
+  repeatTrack(): void {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = true;
     this.spotifyService.setRepeatMode('track', localStorage.getItem('deviceId')).subscribe(() => {});
   }
 
-  repeatOff() {
+  repeatOff(): void {
     this.isRepeatOffShowing = true;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
