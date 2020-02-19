@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Track } from '../../interfaces/track/track.interface';
-import { Song } from '../../interfaces/song/song.interface';
+import { SortedTrack } from '../../interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +45,7 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`);
   }
 
-  shuffleTracks(tracks: Array<Track>): Array<Object> {
+  shuffleTracks(tracks: Array<SortedTrack>): Array<Object> {
     const array = tracks;
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -71,9 +70,9 @@ export class SpotifyService {
       - same point as above but for previous tracks
   */
 
-  playSpotifyTrack(tracks: Array<Track>, song: Song): Observable<any> {
-    const uris = tracks.map((track: Track)  => track.uri);
-    const offset = uris.indexOf(song.track.uri);
+  playSpotifyTrack(tracks: Array<SortedTrack>, song: SortedTrack): Observable<any> {
+    const uris = tracks.map((track: SortedTrack)  => track.uri);
+    const offset = uris.indexOf(song.uri);
 
     return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${localStorage.getItem('deviceId')}`,
     {uris, offset: {position: offset}});
@@ -124,8 +123,8 @@ export class SpotifyService {
     return this._http.put(url, requestBody);
   }
 
-  mapTrackURIs(tracks: Array<Track>): Array<string> {
-    return tracks.map((track: Track) => {
+  mapTrackURIs(tracks: Array<SortedTrack>): Array<string> {
+    return tracks.map((track: SortedTrack) => {
       return track.uri;
     });
   }
@@ -211,7 +210,7 @@ export class SpotifyService {
   //     );
   // }
 
-  removeTracks(owner: string, playlistID: string, tracks: Array<Track>): Observable<any> {
+  removeTracks(owner: string, playlistID: string, tracks: Array<SortedTrack>): Observable<any> {
     const options = {
       headers: null,
       body: tracks

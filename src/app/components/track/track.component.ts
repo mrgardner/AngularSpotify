@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { Params } from '../../interfaces/params/params.interface';
-import { Track } from '../../interfaces/track/track.interface';
+import { SortedTrack } from '../../interfaces/track/track.interface';
 import { UtilService } from '../../services/util/util.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { UtilService } from '../../services/util/util.service';
   styleUrls: ['./track.component.scss']
 })
 export class TrackComponent implements OnInit, OnDestroy {
-  public track: Track;
+  public track: SortedTrack;
   public endOfChain: boolean;
   public routeSubscription: Subscription;
 
@@ -32,7 +32,7 @@ export class TrackComponent implements OnInit, OnDestroy {
           return of();
         }
       })
-    ).subscribe((track: Track) => this.track = track);
+    ).subscribe((track: SortedTrack) => this.track = track);
   }
 
   ngOnDestroy() {

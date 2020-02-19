@@ -1,7 +1,40 @@
 import { Artist } from '../artist/artist.interface';
 import { Album } from '../album/album.interface';
-import { ExternalUrls } from '../misc/external-urls.interface';
-import { ExternalIds } from '../misc/external-ids.interface';
+import { AddedBy, ExternalUrls, ExternalIds, VideoThumbnail } from '../misc/misc.interface';
+
+export interface TrackResponse {
+  total: number;
+  limit: number;
+  items: Array<any>;
+}
+
+export interface Trrack {
+  added_at: string;
+  track: {
+    album: {
+      name: string;
+    };
+    artists: [Artist];
+    name: string;
+    duration_ms: number;
+    uri: string;
+  };
+}
+
+export interface SortedTrack {
+  title: string;
+  artist: string;
+  album_name: string;
+  added_at: string;
+  time: number;
+  showPlayButton: boolean;
+  showPauseButton: boolean;
+  duration: number;
+  uri: string;
+  total: number;
+  size: number;
+  filterText: string;
+}
 
 export interface Track {
   album: Album;
@@ -26,7 +59,62 @@ export interface Track {
   album_name: string;
   title: string;
   artist: string;
-  time: string;
+  time: number;
   addedAt: string;
   duration: number;
+  filterText: string;
+  added_at: string;
+  total: number;
+  size: number;
+  showPlayButton: boolean;
+  showPauseButton: boolean;
+}
+
+export interface Tracks {
+  href: string;
+  total: number;
+}
+
+export interface TrackWindow {
+  current_track: Track;
+  next_tracks: Array<Track>;
+  previous_tracks: Array<Track>;
+}
+
+export interface CurrentTrack {
+  added_at: string;
+  added_by: AddedBy;
+  highlight: boolean;
+  isPauseButtonShowing: boolean;
+  isPlayButtonShowing: boolean;
+  is_local: boolean;
+  primary_color: string;
+  track: SortedTrack;
+  video_thumbnail: VideoThumbnail;
+}
+
+export interface TrackSpotifyReponse {
+  href: string;
+  items: Array<Track>;
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string;
+  total: number;
+}
+
+export interface SortedTracks {
+  title: string;
+  artist: string;
+  album_name: string;
+  addedAt: string;
+  time: number;
+  isPlayButtonShowing: boolean;
+  isPauseButtonShowing: boolean;
+  duration: number;
+  uri: string;
+  track: SortedTrack;
+  total: number;
+  size: number;
+  filterText: string;
 }

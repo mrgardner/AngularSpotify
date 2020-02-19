@@ -7,13 +7,13 @@ import { Routes, Router, ActivatedRoute } from '@angular/router';
 import { PlaylistDataSourceService } from '../../services/playlist-data-source/playlist-data-source.service';
 import { TrackService } from '../../services/track/track.service';
 import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
-import { Song } from '../../interfaces/song/song.interface';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { of } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { ChangeDetectorRef, Type } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApolloService } from '../../services/apollo/apollo.service';
+import { SortedTrack } from 'src/app/interfaces/track/track.interface';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -309,52 +309,19 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check ngOnInit method spotifyPlaybackService currentTrack', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
-      artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+        artist: '',
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
     };
     component.ngOnInit();
     spotifyPlaybackService.currentTrack(mockTrack);
@@ -469,98 +436,32 @@ describe('PlaylistTableComponent', () => {
   it('should check the sortData method title col case', () => {
     component.tracks = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.ngOnInit();
@@ -571,98 +472,32 @@ describe('PlaylistTableComponent', () => {
   it('should check the sortData method artist col case', () => {
     component.tracks = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.ngOnInit();
@@ -673,98 +508,32 @@ describe('PlaylistTableComponent', () => {
   it('should check the sortData method album col case', () => {
     component.tracks = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.ngOnInit();
@@ -775,98 +544,32 @@ describe('PlaylistTableComponent', () => {
   it('should check the sortData method addedAt col case', () => {
     component.tracks = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.ngOnInit();
@@ -877,98 +580,32 @@ describe('PlaylistTableComponent', () => {
   it('should check the sortData method time col case', () => {
     component.tracks = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.ngOnInit();
@@ -979,98 +616,32 @@ describe('PlaylistTableComponent', () => {
   it('should check the sortData method test col case', () => {
     component.tracks = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.ngOnInit();
@@ -1091,71 +662,19 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check playSong method', () => {
-    const song: Song = {
+    const song: SortedTrack = {
+      title: '',
+      artist: '',
       added_at: '',
-      added_by: {
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        type: '',
-        uri: ''
-      },
-      isPauseButtonShowing: true,
-      isPlayButtonShowing: true,
-      is_local: true,
-      primary_color: true,
-      track: {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
-        title: '',
-        artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
-      },
-      video_thumbnail: {
-        url: ''
-      },
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.state = {
       bitrate: 1,
@@ -1178,7 +697,7 @@ describe('PlaylistTableComponent', () => {
       shuffle: true,
       timestamp: 0,
       track_window: {
-        current_track: song.track,
+        current_track: null,
         next_tracks: [],
         previous_tracks: []
       }
@@ -1189,71 +708,19 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check playSong method else case', () => {
-    const song: Song = {
+    const song: SortedTrack = {
+      title: '',
+      artist: '',
       added_at: '',
-      added_by: {
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        type: '',
-        uri: ''
-      },
-      isPauseButtonShowing: true,
-      isPlayButtonShowing: true,
-      is_local: true,
-      primary_color: true,
-      track: {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
-        title: '',
-        artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
-      },
-      video_thumbnail: {
-        url: ''
-      },
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.state = {
       bitrate: 1,
@@ -1276,7 +743,7 @@ describe('PlaylistTableComponent', () => {
       shuffle: true,
       timestamp: 0,
       track_window: {
-        current_track: song.track,
+        current_track: null,
         next_tracks: [],
         previous_tracks: []
       }
@@ -1293,418 +760,154 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check showPlayButton method', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.tracks = [
       mockTrack
     ];
     component.showPlayButton(mockTrack);
-    expect(component.tracks[0].isPlayButtonShowing).toBeTruthy();
+    expect(component.tracks[0].showPlayButton).toBeTruthy();
   });
 
   it('should check showPlayButton method else case', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.tracks = [
       {
-        album: {
-          album_type: 'tset',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.showPlayButton(mockTrack);
-    expect(component.tracks[0].isPlayButtonShowing).toBeTruthy();
+    expect(component.tracks[0].showPlayButton).toBeTruthy();
   });
 
   it('should check hidePlayButton method', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.tracks = [
       mockTrack
     ];
     component.hidePlayButton(mockTrack);
-    expect(component.tracks[0].isPlayButtonShowing).toBeFalsy();
+    expect(component.tracks[0].showPlayButton).toBeFalsy();
   });
 
   it('should check hidePlayButton method else case', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.tracks = [
       {
-        album: {
-          album_type: 'test',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
-        artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+      artist: '',
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
       }
     ];
     component.hidePlayButton(mockTrack);
-    expect(component.tracks[0].isPlayButtonShowing).toBeTruthy();
+    expect(component.tracks[0].showPlayButton).toBeTruthy();
   });
 
   it('should check showPauseButton method', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.showPauseButton(mockTrack);
-    expect(mockTrack.isPauseButtonShowing).toBeTruthy();
+    expect(mockTrack.showPauseButton).toBeTruthy();
   });
 
   it('should check hidePauseButton method', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.hidePauseButton(mockTrack);
-    expect(mockTrack.isPauseButtonShowing).toBeFalsy();
+    expect(mockTrack.showPauseButton).toBeFalsy();
   });
 });

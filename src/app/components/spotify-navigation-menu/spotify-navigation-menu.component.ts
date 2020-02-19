@@ -5,14 +5,14 @@ import { StatusBarService } from '../../services/status-bar/status-bar.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-dialog.component';
 import { Router, NavigationStart } from '@angular/router';
-import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylistResponse.interface';
-import { CurrentTrack } from '../../interfaces/track/current-track.interface';
+import { SpotifyPlaylistRespose } from '../../interfaces/playlist/playlist.interface';
+import { CurrentTrack } from '../../interfaces/track/track.interface';
 import { UtilService } from '../../services/util/util.service';
 import { Playlist } from '../../interfaces/playlist/playlist.interface';
 import { ApolloService } from '../../services/apollo/apollo.service';
 import { RouteService } from '../../services/route/route.service';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
-import { SelectedRoute } from 'src/app/interfaces/route/selectedRoute.interface';
+import { SelectedRoute } from 'src/app/interfaces/route/route.interface';
 import { Section } from 'src/app/interfaces/section/section.interface';
 import { Subscription } from 'rxjs';
 
@@ -27,7 +27,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public playlistsLoaded: boolean;
   public selectedPlaylist: string;
   public currentTrack: CurrentTrack;
-  public playlistTotal: Number;
+  public playlistTotal: number;
   public nextPlaylist: string;
   public loadMorePlaylist: boolean;
   public url: string;
@@ -52,7 +52,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
   ngOnInit(): void {
-    // TODO: Add interface
     this.sections = [
       {
         label: 'Home',
@@ -73,6 +72,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.playlistsLoaded = false;
     this.selectedPlaylist = '';
+    // TODO: Not used
     this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
     this.selectPlaylistSubscription = this.playlistService.selectPlaylist$
       .subscribe((playlist: string) => this.selectedPlaylist = playlist);

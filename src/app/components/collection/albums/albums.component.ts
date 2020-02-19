@@ -13,8 +13,7 @@ import { ApolloAlbumResult, AlbumApollo } from 'src/app/interfaces/apollo/apollo
 export class AlbumsComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public albumsLoaded: boolean;
-  // TODO: Fix type
-  public albums: Array<any> = [];
+  public albums: Array<AlbumApollo> = [];
   public isSearchBoxShowing: boolean;
   public name: string;
   public albumsSubscription: Subscription;

@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Track } from '../../interfaces/track/track.interface';
+import { SortedTrack } from '../../interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class TrackService {
     this.filterTrack$.emit(text);
   }
 
-  filterDuplicateTracks(tracks: Array<Track>, args: boolean) {
+  filterDuplicateTracks(tracks: Array<SortedTrack>, args: boolean) {
     const getNotUnique = (array) => {
       const map = new Map();
       const map2 = new Map();

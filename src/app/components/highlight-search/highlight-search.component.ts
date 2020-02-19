@@ -10,9 +10,8 @@ export class HighlightSearchComponent implements OnChanges {
   @Input() searchText: string;
   public finalText: string;
 
-  constructor() { }
+  constructor() {}
 
-  // TODO: Fix typescript parameters
   ngOnChanges(): void {
     if (this.searchText.length > 0) {
       const indices = this.getAllIndexes(this.text, this.searchText);
@@ -33,20 +32,20 @@ export class HighlightSearchComponent implements OnChanges {
     }
   }
 
-  insert(main_string, ins_string, pos) {
-    if (typeof(pos) === 'undefined') {
-      pos = 0;
+  insert(fullString: string, stringToInsert: string, position: number): string {
+    if (typeof(position) === 'undefined') {
+      position = 0;
     }
-    if (typeof(ins_string) === 'undefined') {
-      ins_string = '';
+    if (typeof(stringToInsert) === 'undefined') {
+      stringToInsert = '';
     }
-    return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
+    return fullString.slice(0, position) + stringToInsert + fullString.slice(position);
   }
 
-  getAllIndexes(arr, val) {
+  getAllIndexes(text: string, searchText: string): Array<number> {
     const indexes = [];
     let i = -1;
-    while ((i = arr.toLowerCase().indexOf(val.toLowerCase(), i + 1)) !== -1) {
+    while ((i = text.toLowerCase().indexOf(searchText.toLowerCase(), i + 1)) !== -1) {
       indexes.push(i);
     }
     return indexes;

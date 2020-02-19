@@ -4,12 +4,12 @@ import { SpotifyService } from '../../services/spotify/spotify.service';
 import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeviceModalComponent } from '../device-modal/device-modal.component';
-import { SpotifyDeviceResponse } from '../../interfaces/device/spotify-device-response.interface';
+import { SpotifyDeviceResponse } from '../../interfaces/device/device.interface';
 import { Device } from '../../interfaces/device/device.interface';
 import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
 import { Track } from '../../interfaces/track/track.interface';
 import { UtilService } from '../../services/util/util.service';
-import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
+import { SpotifySongResponse } from '../../interfaces/song/song.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,8 +20,7 @@ import { Subscription } from 'rxjs';
 export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   public currentTrack: Track;
   public volume: number;
-  // TODO: Add interface
-  public currentDevice: Object;
+  public currentDevice: Device;
   public currentDeviceId: string;
   public currentDeviceName: string;
   public appDevice: string;

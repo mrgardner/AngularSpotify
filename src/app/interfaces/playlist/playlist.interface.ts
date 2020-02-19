@@ -1,8 +1,6 @@
-import { ExternalUrls } from '../misc/external-urls.interface';
+import { ExternalUrls, Owner } from '../misc/misc.interface';
 import { Image } from '../image/image.interface';
-import { Tracks } from '../track/tracks.interface';
-import { Owner } from '../misc/owner.interface';
-
+import { Tracks } from '../track/track.interface';
 
 export interface Playlist {
   collaborative: boolean;
@@ -24,4 +22,10 @@ export interface Playlist {
   uri: string;
   selected: boolean;
   selectedUrl: string;
+}
+
+export interface SpotifyPlaylistRespose {
+  items: Array<Playlist>;
+  next: string;
+  total: number;
 }

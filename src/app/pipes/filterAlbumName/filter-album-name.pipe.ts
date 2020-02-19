@@ -1,18 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Track } from '../../interfaces/track/track.interface';
+import { AlbumApollo } from 'src/app/interfaces/apollo/apollo.inerface';
 
 @Pipe({
   name: 'filterAlbumName'
 })
 export class FilterAlbumNamePipe implements PipeTransform {
-
-  transform(tracks: Array<Track>, args?: string): any {
+  // TODO: Fix type / return type
+  transform(albums: Array<AlbumApollo>, args?: string): any {
     if (args) {
-      return tracks.filter((track: Track) => {
-        return track.album.name.toLowerCase().includes(args.toLowerCase());
+      return albums.filter((album: AlbumApollo) => {
+        return album.name.toLowerCase().includes(args.toLowerCase());
       });
     } else {
-      return tracks;
+      return albums;
     }
   }
 }

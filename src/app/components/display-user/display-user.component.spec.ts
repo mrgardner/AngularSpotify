@@ -1,11 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DisplayUserComponent } from './display-user.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { User } from '../../interfaces/user/user.interface';
 import { of } from 'rxjs';
 import { ApolloService } from '../../services/apollo/apollo.service';
-import { UserDisplayName } from '../../interfaces/user/user-display-name';
+import { UserDisplayName } from '../../interfaces/user/user.interface';
 import { Apollo } from 'apollo-angular';
 
 describe('DisplayUserComponent', () => {

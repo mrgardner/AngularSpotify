@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApolloService } from '../../services/apollo/apollo.service';
-import { UserDisplayName } from '../../interfaces/user/user-display-name';
+import { UserDisplayName } from '../../interfaces/user/user.interface';
 import { Subscription } from 'rxjs';
 
 @Component({

@@ -1,12 +1,11 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { CurrentTrack } from '../../interfaces/track/current-track.interface';
+import { CurrentTrack } from '../../interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatusBarService {
-  // TODO: Fix types
-  public currentTrack$: EventEmitter<any>;
+  public currentTrack$: EventEmitter<CurrentTrack>;
 
   constructor() {
     this.currentTrack$ = new EventEmitter();

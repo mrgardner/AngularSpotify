@@ -3,8 +3,7 @@ import { SpotifyService } from '../../services/spotify/spotify.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
-import { Track } from '../../interfaces/track/track.interface';
-import { Song } from '../../interfaces/song/song.interface';
+import { SortedTrack } from '../../interfaces/track/track.interface';
 import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -13,10 +12,11 @@ import { Playlist } from '../../interfaces/playlist/playlist.interface';
 import { PlaylistDataSourceService } from '../../services/playlist-data-source/playlist-data-source.service';
 import { UtilService } from '../../services/util/util.service';
 import { TrackService } from '../../services/track/track.service';
-import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
+import { SpotifySongResponse } from '../../interfaces/song/song.interface';
 import { ApolloService } from '../../services/apollo/apollo.service';
-import { moveItemInArray, CdkDropList} from '@angular/cdk/drag-drop';
+import { moveItemInArray, CdkDropList, CdkDrag} from '@angular/cdk/drag-drop';
 import { MatTable } from '@angular/material/table';
+import { DragSource, DropData } from 'src/app/interfaces/drag-and-drop/drag-and-drop.interface';
 
 @Component({
   selector: 'app-playlist-table',
@@ -24,15 +24,15 @@ import { MatTable } from '@angular/material/table';
   styleUrls: ['./playlist-table.component.scss']
 })
 export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestroy {
-  public tracks: Array<Track> = [];
+  public tracks: Array<SortedTrack> = [];
   public loading: boolean;
   public tracksLoaded: boolean;
   public checkDuplicate: boolean;
   public playlist: Playlist;
-  public currentTrack: Track;
-  public displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'addedAt', 'time'];
+  public currentTrack: SortedTrack;
+  public displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'added_at', 'time'];
   public dataSource: PlaylistDataSourceService;
-  public selection = new SelectionModel<Object>(true, []);
+  public selection = new SelectionModel<SortedTrack>(true, []);
   public itemCount: number;
   public pageSize: number;
   public state: SpotifySongResponse;
@@ -48,10 +48,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public draggedString: string;
   public showPlayButtonText: boolean;
 
-  // TODO: Fix types
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatTable, {static: true}) table: MatTable<any>;
+  @ViewChild(MatTable, {static: true}) table: MatTable<Array<SortedTrack>>;
   @ViewChild(CdkDropList) _dropList: CdkDropList;
 
   constructor(
@@ -64,7 +63,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     private route: ActivatedRoute) {}
 
   // TODO: Add functionality to save drag and drop to spotify endpoint
-  dropTable(event: any) {
+  dropTable(event: DropData) {
     if (this.dataSource) {
       this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
         const prevIndex = v.findIndex((d) => d === event.item.data);
@@ -83,7 +82,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     }
   }
 
-  dragStart(e): void {
+  dragStart(e: DragSource): void {
     this.draggedString = `${e.source.data.title} - ${e.source.data.artist}`;
   }
 
@@ -123,7 +122,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
       .subscribe(state => this.state = state);
     this.currentTrackSubscription = this.spotifyPlaybackService.currentTrack$
-      .subscribe((track: Track) => this.currentTrack = track);
+      .subscribe((track: SortedTrack) => this.currentTrack = track);
 
     this.filterSubscription = this.trackService.filterTrack$.subscribe(track => {
       this.filterText = track;
@@ -173,7 +172,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
         case 'title': return this.utilService.compare(a.title, b.title, isAsc);
         case 'artist': return this.utilService.compare(a.artist, b.artist, isAsc);
         case 'album': return this.utilService.compare(a.album_name, b.album_name, isAsc);
-        case 'addedAt': return this.utilService.compare(a.addedAt, b.addedAt, isAsc);
+        case 'added_at': return this.utilService.compare(a.added_at, b.added_at, isAsc);
         case 'time': return this.utilService.compare(a.time, b.time, isAsc);
         default: return 0;
       }
@@ -200,9 +199,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     }
   }
 
-  playSong(song: Song): void {
+  playSong(song: SortedTrack): void {
     this.spotifyPlaybackService.currentPlaylistPlaying(this.playlist.id);
-    if (this.state.position > 0 && song.track.name === this.state.track_window.current_track.name) {
+    if (this.state.position > 0 && song.title === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
       this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => {});
@@ -214,27 +213,27 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.spotifyPlaybackService.pauseSong();
   }
 
-  showPlayButton(track: Track): void {
+  showPlayButton(track: SortedTrack): void {
     this.tracks.forEach(t => {
       if (t === track) {
-        t.isPlayButtonShowing = true;
+        t.showPlayButton = true;
       }
     });
   }
 
-  hidePlayButton(track: Track): void {
+  hidePlayButton(track: SortedTrack): void {
     this.tracks.forEach(t => {
       if (t === track) {
-        t.isPlayButtonShowing = false;
+        t.showPlayButton = false;
       }
     });
   }
 
-  showPauseButton(track: Track): void {
-    track.isPauseButtonShowing = true;
+  showPauseButton(track: SortedTrack): void {
+    track.showPauseButton = true;
   }
 
-  hidePauseButton(track: Track): void {
-    track.isPauseButtonShowing = false;
+  hidePauseButton(track: SortedTrack): void {
+    track.showPauseButton = false;
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SelectedRoute } from 'src/app/interfaces/route/route.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -6,8 +7,7 @@ import { Injectable } from '@angular/core';
 export class RouteService {
   constructor() {}
 
-  // TODO: Fix return type
-  parseUrl(route: string) {
+  parseUrl(route: string): SelectedRoute {
     const splitRoute = route.split('/').filter(function (el) {
       return el !== '';
     });

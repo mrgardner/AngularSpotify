@@ -11,6 +11,7 @@ import { SpotifyService } from '../../services/spotify/spotify.service';
 import { PlaylistService } from '../../services/playlist/playlist.service';
 import { ApolloService } from '../../services/apollo/apollo.service';
 import { Apollo } from 'apollo-angular';
+import { CurrentTrack } from 'src/app/interfaces/track/track.interface';
 
 describe('SpotifyNavigationMenuComponent', () => {
   let component: SpotifyNavigationMenuComponent;
@@ -74,7 +75,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check ngOnInit method statusBarService currentTrack', () => {
-    const mockCurrentTrack = {
+    const mockCurrentTrack: CurrentTrack = {
       added_at: '',
       added_by: {
         external_urls: {
@@ -85,57 +86,24 @@ describe('SpotifyNavigationMenuComponent', () => {
         type: '',
         uri: ''
       },
-      highlight: true,
-      isPauseButtonShowing: true,
-      isPlayButtonShowing: true,
-      is_local: true,
+      highlight: false,
+      isPauseButtonShowing: false,
+      isPlayButtonShowing: false,
+      is_local: false,
       primary_color: '',
       track: {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
+        album_name: '',
+        added_at: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       video_thumbnail: {
         url: ''
@@ -224,12 +192,29 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check goToTracks method', () => {
-    // TODO: Fix type / add folder for test data
     component.playlists = [
       {
+        collaborative: false,
+        external_urls: {
+          spotify: ''
+        },
+        followers: {
+          href: '',
+          total: 0
+        },
+        href: '',
         id: '',
+        images: null,
         name: '',
-        selected: true,
+        owner: null,
+        primary_color: '',
+        public: false,
+        snapshot_id: '',
+        tracks: null,
+        type: '',
+        uri: '',
+        selected: false,
+        selectedUrl: ''
       }
     ];
     const spy = spyOn(router, 'navigateByUrl');

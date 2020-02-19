@@ -3,6 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { RouteService } from '../../services/route/route.service';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { SelectedRoute, Link, ActiveLink } from 'src/app/interfaces/route/route.interface';
 
 @Component({
   selector: 'app-collection',
@@ -10,12 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent implements OnInit, OnDestroy {
-  // TODO: Add interfaces
-  public links: Array<{
-    path: string;
-    label: string;
-    url: string;
-  }> = [
+  public links: Array<Link> = [
     {
       path: 'collection/playlists',
       label: 'Playlists',
@@ -47,15 +43,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
       url: 'podcasts'
     }
   ];
-  public selectedRoute: {
-    parent: string,
-    child: string
-  };
-  public activeLink: {
-    path: string;
-    label: string;
-    url: string;
-  };
+  public selectedRoute: SelectedRoute;
+  public activeLink: ActiveLink;
   public routerSubscription: Subscription;
 
   constructor(private router: Router, private routeService: RouteService) {}
