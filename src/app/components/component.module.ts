@@ -7,8 +7,6 @@ import { HomeComponent } from './home/home.component';
 import { CallbackComponent } from './callback/callback.component';
 import { DuplicateTrackPipe } from '../pipes/duplicateTrack/duplicate-track.pipe';
 import { TrackFilterComponent } from './track-filter/track-filter.component';
-import { FilterTrackNamePipe } from '../pipes/filterTrackName/filter-track-name.pipe';
-import { FilterTrackArtistPipe } from '../pipes/filterTrackArtist/filter-track-artist.pipe';
 import { TrackComponent } from './track/track.component';
 import { SpotifyNavigationMenuComponent } from './spotify-navigation-menu/spotify-navigation-menu.component';
 import { SpotifyStatusBarComponent } from './spotify-status-bar/spotify-status-bar.component';
@@ -43,8 +41,6 @@ import { HighlightSearchComponent } from './highlight-search/highlight-search.co
     CallbackComponent,
     DuplicateTrackPipe,
     TrackFilterComponent,
-    FilterTrackNamePipe,
-    FilterTrackArtistPipe,
     TrackComponent,
     SpotifyNavigationMenuComponent,
     SpotifyStatusBarComponent,

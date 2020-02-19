@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { concat, of } from 'rxjs';
-import { Album } from '../../../interfaces/album/album.interface';
-import { SpotifyAlbumsResponse } from '../../../interfaces/album/spotify-albums-response.interface';
+import { concat, of, Subscription } from 'rxjs';
 import { UtilService } from '../../../services/util/util.service';
 import { ApolloService } from '../../../services/apollo/apollo.service';
+import { ApolloAlbumResult, AlbumApollo } from 'src/app/interfaces/apollo/apollo.inerface';
 
 @Component({
   selector: 'app-albums',
@@ -14,18 +13,19 @@ import { ApolloService } from '../../../services/apollo/apollo.service';
 export class AlbumsComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public albumsLoaded: boolean;
-  public albums: Array<Album> = [];
+  // TODO: Fix type
+  public albums: Array<any> = [];
   public isSearchBoxShowing: boolean;
   public name: string;
-  public albumsSubscription: any;
+  public albumsSubscription: Subscription;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService) { }
+  constructor(private apolloService: ApolloService, public utilService: UtilService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     let numberOfSavedAlbums = 0;
     this.albumsSubscription = this.apolloService.getAlbums()
       .pipe(
-        switchMap((savedAlbums: SpotifyAlbumsResponse) => {
+        switchMap((savedAlbums: ApolloAlbumResult) => {
           this.loading = true;
           this.albumsLoaded = false;
           this.albums = [];
@@ -45,7 +45,7 @@ export class AlbumsComponent implements OnInit, OnDestroy {
           }
         })
       )
-      .subscribe((data: SpotifyAlbumsResponse) => {
+      .subscribe((data: ApolloAlbumResult) => {
         this.albums = this.albums.concat(data.items);
         if (!data.next) {
           this.loading = false;
@@ -54,7 +54,7 @@ export class AlbumsComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.albumsSubscription.unsubscribe();
   }
 

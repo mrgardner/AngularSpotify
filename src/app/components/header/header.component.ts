@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.isLoggedIn()) {
       this.spotifyPlaybackService.setupPlayer();
     }

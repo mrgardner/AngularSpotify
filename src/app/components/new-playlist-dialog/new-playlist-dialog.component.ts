@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./new-playlist-dialog.component.scss']
 })
 export class NewPlaylistDialogComponent implements OnInit {
+  // TODO: Fix types
   public playlistName: string;
   public playlistDescription: string;
   public playlistNameMaxLength: number;
@@ -28,15 +29,15 @@ export class NewPlaylistDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Object,
     private spotifyService: SpotifyService) {}
 
-  get playlistNameLength(): any {
+  get playlistNameLength(): number {
     return this.form.get('playlistName').value.length;
   }
 
-  get playlistDescriptionLength(): any {
+  get playlistDescriptionLength(): number {
     return this.form.get('playlistDescription').value.length;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.playlistName = 'New Playlist';
     this.playlistDescription = '';
     this.playlistNameMaxLength = 100;
@@ -45,7 +46,7 @@ export class NewPlaylistDialogComponent implements OnInit {
     this.showUserButtons = false;
   }
 
-  triggerFile() {
+  triggerFile(): void {
     document.getElementById('file').click();
   }
 
@@ -66,13 +67,13 @@ export class NewPlaylistDialogComponent implements OnInit {
     }
   }
 
-  resetImage() {
+  resetImage(): void {
     this.currentImage = null;
     this.imageFile = null;
     document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '300px';
   }
 
-  replaceImage() {
+  replaceImage(): void {
     document.getElementById('file2').click();
   }
 

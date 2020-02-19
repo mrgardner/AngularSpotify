@@ -44,11 +44,11 @@ describe('SpotifyNavigationMenuComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SpotifyNavigationMenuComponent);
     component = fixture.componentInstance;
-    router = TestBed.get(Router);
-    statusBarService = TestBed.get(StatusBarService);
-    spotifyService = TestBed.get(SpotifyService);
-    playlistService = TestBed.get(PlaylistService);
-    apolloService = TestBed.get(ApolloService);
+    router = TestBed.inject(Router);
+    statusBarService = TestBed.inject(StatusBarService);
+    spotifyService = TestBed.inject(SpotifyService);
+    playlistService = TestBed.inject(PlaylistService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {
@@ -71,32 +71,6 @@ describe('SpotifyNavigationMenuComponent', () => {
     }));
     component.ngOnInit();
     expect(component.selectedPlaylist).toEqual('');
-    expect(component.imageEnlargeState).toEqual('inactive');
-    expect(component.isPictureEnlarged).toEqual(false);
-  });
-
-  it('should check ngOnInit method statusBarService enlargePicture when returned false', () => {
-    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
-      items: [],
-      next: 'string',
-      total: 0
-    }));
-    component.ngOnInit();
-    statusBarService.enlargePicture$.emit({value: false, url: ''});
-    expect(component.imageEnlargeState).toEqual('inactive');
-    expect(component.isPictureEnlarged).toEqual(false);
-  });
-
-  it('should check ngOnInit method statusBarService enlargePicture when returned true', () => {
-    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
-      items: [],
-      next: 'string',
-      total: 0
-    }));
-    component.ngOnInit();
-    statusBarService.enlargePicture$.emit({value: true, url: ''});
-    expect(component.imageEnlargeState).toEqual('active');
-    expect(component.isPictureEnlarged).toEqual(true);
   });
 
   it('should check ngOnInit method statusBarService currentTrack', () => {
@@ -250,6 +224,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   });
 
   it('should check goToTracks method', () => {
+    // TODO: Fix type / add folder for test data
     component.playlists = [
       {
         id: '',
@@ -259,18 +234,6 @@ describe('SpotifyNavigationMenuComponent', () => {
     ];
     const spy = spyOn(router, 'navigateByUrl');
     component.goToTracks({name: 'test', id: 'test'});
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check goToSavedAlbums method', () => {
-    const spy = spyOn(router, 'navigate');
-    component.goToSavedAlbums();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check shrinkPicture method', () => {
-    const spy = spyOn(statusBarService, 'enlargePicture');
-    component.shrinkPicture('test');
     expect(spy).toHaveBeenCalled();
   });
 

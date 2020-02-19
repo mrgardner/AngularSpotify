@@ -6,6 +6,7 @@ import { SpotifyDeviceResponse } from '../../interfaces/device/spotify-device-re
 import { SpotifyDevicesResponse } from '../../interfaces/device/spotify-devices-response.interface';
 import { Device } from '../../interfaces/device/device.interface';
 import { UtilService } from '../../services/util/util.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-device-modal',
@@ -16,23 +17,23 @@ export class DeviceModalComponent implements OnInit, OnDestroy {
   public devices: Array<Device>;
   public currentDevice: string;
   public appDevice: string;
-  public availableDevicesSubscription: any;
-  public playerSubscription: any;
+  public availableDevicesSubscription: Subscription;
+  public playerSubscription: Subscription;
 
   constructor(
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
     public dialogRef: MatDialogRef<DeviceModalComponent>,
-    public utilService: UtilService) { }
+    public utilService: UtilService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.availableDevicesSubscription = this.spotifyService.getAvailableDevices()
       .subscribe((data: SpotifyDevicesResponse) => this.devices = data.devices);
     this.playerSubscription = this.spotifyService.getCurrentPlayer()
       .subscribe((data: SpotifyDeviceResponse) => this.currentDevice = data.device.id);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.availableDevicesSubscription.unsubscribe();
     this.playerSubscription.unsubscribe();
   }

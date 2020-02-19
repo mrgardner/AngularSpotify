@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { RouteService } from '../../services/route/route.service';
 import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-collection',
@@ -9,7 +10,12 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent implements OnInit, OnDestroy {
-  public links = [
+  // TODO: Add interfaces
+  public links: Array<{
+    path: string;
+    label: string;
+    url: string;
+  }> = [
     {
       path: 'collection/playlists',
       label: 'Playlists',
@@ -45,12 +51,16 @@ export class CollectionComponent implements OnInit, OnDestroy {
     parent: string,
     child: string
   };
-  public activeLink: any;
-  public routerSubscription: any;
+  public activeLink: {
+    path: string;
+    label: string;
+    url: string;
+  };
+  public routerSubscription: Subscription;
 
-  constructor(private router: Router, private routeService: RouteService) { }
+  constructor(private router: Router, private routeService: RouteService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.selectedRoute = this.routeService.parseUrl(this.router.url);
     if (this.selectedRoute.child) {
       for (let i = 0; i < this.links.length; i++) {
@@ -70,11 +80,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
   }
 
-  navigateTo(path: string) {
+  navigateTo(path: string): void {
     this.router.navigate([path]);
   }
 }

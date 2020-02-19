@@ -20,8 +20,8 @@ describe('PlaylistDataSourceService', () => {
       ]
     });
 
-    playlistDataSourceService = TestBed.get(PlaylistDataSourceService);
-    apolloService = TestBed.get(ApolloService);
+    playlistDataSourceService = TestBed.inject(PlaylistDataSourceService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {

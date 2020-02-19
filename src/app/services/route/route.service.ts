@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class RouteService {
   constructor() {}
 
+  // TODO: Fix return type
   parseUrl(route: string) {
     const splitRoute = route.split('/').filter(function (el) {
       return el !== '';

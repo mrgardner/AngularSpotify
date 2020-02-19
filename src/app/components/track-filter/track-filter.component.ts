@@ -6,6 +6,7 @@ import {PlaylistService} from '../../services/playlist/playlist.service';
 import { Track } from '../../interfaces/track/track.interface';
 import { Params } from '../../interfaces/params/params.interface';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-track-filter',
@@ -17,11 +18,12 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   public isDuplicateTrack: boolean;
   public name: string;
   public track: string;
+  // TODO: Fix type
   private originalTracks: Array<Object>;
   public isSearchBoxShowing: boolean;
   public playlistID: string;
   public endOfChain: boolean;
-  public routeSubscription: any;
+  public routeSubscription: Subscription;
   public form = new FormGroup({
     track: new FormControl('')
   });
@@ -32,7 +34,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
     private trackService: TrackService,
     private playlistService: PlaylistService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
@@ -45,7 +47,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
   }
 
@@ -56,6 +58,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   //   return localTracks.length > 0;
   // }
 
+  // TODO: Fix type
   checkForDuplicateTrack(e: any): void {
     this.isDuplicateTrack = e.target.checked;
     this.trackService.checkDuplicate(e.target.checked);
@@ -104,31 +107,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
     // });
   // }
 
-  // filterName(name: string): void {
-  //   this.trackService.filterByTrackName(name);
-  // }
-
-  filterTrack(artist: string): void {
-    this.trackService.filterTrack(artist);
+  filterTrack(track: string): void {
+    this.trackService.filterTrack(track);
   }
-
-  // showSearchBox(): void {
-  //   this.isSearchBoxShowing = true;
-  // }
-
-  // hideSearchBox(): void {
-  //   // if (this.isSearchBoxShowing) {
-  //     this.name = '';
-  //     this.filterName('');
-  //     this.isSearchBoxShowing = false;
-  //   // }
-  // }
-
-  // onLoseFocus(): void {
-  //   if (this.name.length === 0) {
-  //     this.hideSearchBox();
-  //   } else {
-  //     this.endOfChain = true;
-  //   }
-  // }
 }

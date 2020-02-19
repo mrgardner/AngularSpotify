@@ -2,18 +2,18 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlaylistTableComponent } from './playlist-table.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LoginComponent } from '../../login/login.component';
+import { LoginComponent } from '../login/login.component';
 import { Routes, Router, ActivatedRoute } from '@angular/router';
-import { PlaylistDataSourceService } from '../../../services/playlist-data-source/playlist-data-source.service';
-import { TrackService } from '../../../services/track/track.service';
-import { SpotifyPlaybackService } from '../../../services/spotify-playback/spotify-playback.service';
-import { Song } from '../../../interfaces/song/song.interface';
-import { SpotifyService } from '../../../services/spotify/spotify.service';
+import { PlaylistDataSourceService } from '../../services/playlist-data-source/playlist-data-source.service';
+import { TrackService } from '../../services/track/track.service';
+import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+import { Song } from '../../interfaces/song/song.interface';
+import { SpotifyService } from '../../services/spotify/spotify.service';
 import { of } from 'rxjs';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { ChangeDetectorRef, Type } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { ApolloService } from '../../../services/apollo/apollo.service';
+import { ApolloService } from '../../services/apollo/apollo.service';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -50,13 +50,13 @@ describe('PlaylistTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlaylistTableComponent);
     component = fixture.componentInstance;
-    dataSource = TestBed.get(PlaylistDataSourceService);
-    trackService = TestBed.get(TrackService);
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
-    router = TestBed.get(Router);
-    spotifyService = TestBed.get(SpotifyService);
-    changeDetectorRef = TestBed.get(ChangeDetectorRef as Type<ChangeDetectorRef>);
-    apolloService = TestBed.get(ApolloService);
+    dataSource = TestBed.inject(PlaylistDataSourceService);
+    trackService = TestBed.inject(TrackService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
+    router = TestBed.inject(Router);
+    spotifyService = TestBed.inject(SpotifyService);
+    changeDetectorRef = TestBed.inject(ChangeDetectorRef as Type<ChangeDetectorRef>);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {
@@ -192,6 +192,7 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       selected: true,
     };
+    // TODO: Fix depration get -> inject
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     spyOn(apolloService, 'getPlaylist').and.returnValue(of(mockPlaylist));
     TestBed.get(ActivatedRoute).url = of([
@@ -210,6 +211,7 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check ngOnInit method router events else case', () => {
+    // TODO: Fix depration get -> inject
     TestBed.get(ActivatedRoute).url = of([
       {
         path: 'playlist'

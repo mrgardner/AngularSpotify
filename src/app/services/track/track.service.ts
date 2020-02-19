@@ -6,15 +6,11 @@ import { Track } from '../../interfaces/track/track.interface';
 })
 export class TrackService {
   public checkDuplicate$: EventEmitter<any>;
-  public filterTrackName$: EventEmitter<any>;
-  public filterTrackArtist$: EventEmitter<any>;
   public currentTrack$: EventEmitter<any>;
   public filterTrack$: EventEmitter<string>;
 
   constructor() {
     this.checkDuplicate$ = new EventEmitter();
-    this.filterTrackName$ = new EventEmitter();
-    this.filterTrackArtist$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
     this.filterTrack$ = new EventEmitter();
   }
@@ -25,14 +21,6 @@ export class TrackService {
 
   filterTrack(text: string) {
     this.filterTrack$.emit(text);
-  }
-
-  filterByTrackName(trackNameString: string) {
-    this.filterTrackName$.emit(trackNameString);
-  }
-
-  filterByTrackArtist(trackArtistString: string) {
-    this.filterTrackArtist$.emit(trackArtistString);
   }
 
   filterDuplicateTracks(tracks: Array<Track>, args: boolean) {

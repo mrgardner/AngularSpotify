@@ -2,7 +2,7 @@ import { Component, OnInit, AfterContentInit, ViewChild, OnDestroy } from '@angu
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { Track } from '../../interfaces/track/track.interface';
 import { Song } from '../../interfaces/song/song.interface';
 import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
@@ -37,21 +37,22 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public pageSize: number;
   public state: SpotifySongResponse;
   public endOfChain: boolean;
-  public routerSubscription: any;
-  public checkDuplicateSubscription: any;
-  public currentSongStateSubscription: any;
-  public currentTrackSubscription: any;
-  public showPlayButtonSubscription: any;
+  public routerSubscription: Subscription;
+  public checkDuplicateSubscription: Subscription;
+  public currentSongStateSubscription: Subscription;
+  public currentTrackSubscription: Subscription;
+  public showPlayButtonSubscription: Subscription;
+  public filterSubscription: Subscription;
   public test: string;
   public filterText: string;
   public draggedString: string;
   public showPlayButtonText: boolean;
 
+  // TODO: Fix types
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<any>;
-  @ViewChild(CdkDropList) _dropList: any;
-  public filterSubscription: any;
+  @ViewChild(CdkDropList) _dropList: CdkDropList;
 
   constructor(
     private apolloService: ApolloService,
@@ -62,7 +63,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     private trackService: TrackService,
     private route: ActivatedRoute) {}
 
-    // TODO: Add functionality to save drag and drop to spotify endpoint
+  // TODO: Add functionality to save drag and drop to spotify endpoint
   dropTable(event: any) {
     if (this.dataSource) {
       this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
@@ -82,11 +83,11 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     }
   }
 
-  dragStart(e) {
+  dragStart(e): void {
     this.draggedString = `${e.source.data.title} - ${e.source.data.artist}`;
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     if (this.dataSource) {
       this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
         this.tracks = v;
@@ -102,7 +103,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.filterText = '';
     this.dataSource = new PlaylistDataSourceService(this.apolloService, this.utilService);
     this.test = '';
@@ -133,7 +134,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
       .subscribe((value: boolean) => this.showPlayButtonText = value);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
     this.checkDuplicateSubscription.unsubscribe();
     this.currentSongStateSubscription.unsubscribe();
@@ -142,12 +143,12 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.showPlayButtonSubscription.unsubscribe();
   }
 
-  loadTracks() {
+  loadTracks(): void {
     const breadcrumbs = this.router.url.split('/');
     this.dataSource.loadTracks(breadcrumbs[3], this.paginator.pageIndex, this.paginator.pageSize);
   }
 
-  getDisplayedColumns() {
+  getDisplayedColumns(): string[] {
     let columns = this.displayedColumns;
 
     if (!this.checkDuplicate) {
@@ -159,7 +160,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     return columns;
   }
 
-  sortData(sort: Sort) {
+  sortData(sort: Sort): void {
     const data = this.tracks.slice();
     if (!sort.active || sort.direction === '') {
       this.tracks = data;

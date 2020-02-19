@@ -14,6 +14,7 @@ import { RouteService } from '../../services/route/route.service';
 import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
 import { SelectedRoute } from 'src/app/interfaces/route/selectedRoute.interface';
 import { Section } from 'src/app/interfaces/section/section.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -27,17 +28,17 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public selectedPlaylist: string;
   public currentTrack: CurrentTrack;
   public playlistTotal: Number;
-  public nextPlaylist: String;
-  public loadMorePlaylist: Boolean;
+  public nextPlaylist: string;
+  public loadMorePlaylist: boolean;
   public url: string;
   public sections: Array<Section>;
   public selectedRoute: SelectedRoute;
-  public dialogConfig: any;
-  public currentTrackSubscription: any;
-  public selectPlaylistSubscription: any;
-  public getPlaylistsSubscription: any;
-  public getPlaylistIdSubscription: any;
-  public routerSubscription: any;
+  public dialogConfig: MatDialogConfig;
+  public currentTrackSubscription: Subscription;
+  public selectPlaylistSubscription: Subscription;
+  public getPlaylistsSubscription: Subscription;
+  public getPlaylistIdSubscription: Subscription;
+  public routerSubscription: Subscription;
   public currentPlaylist: string;
 
   constructor(
@@ -51,6 +52,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
   ngOnInit(): void {
+    // TODO: Add interface
     this.sections = [
       {
         label: 'Home',
@@ -132,7 +134,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.dialog.open(NewPlaylistDialogComponent, this.dialogConfig);
   }
 
-  loadMorePlaylists(playlistLength: Number): void {
+  loadMorePlaylists(playlistLength: number): void {
     const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
     const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
     this.loadMorePlaylist = true;

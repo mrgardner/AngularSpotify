@@ -25,9 +25,9 @@ describe('AuthService', () => {
       ]
     });
 
-    authService = TestBed.get(AuthService);
-    router = TestBed.get(Router);
-    utilService = TestBed.get(UtilService);
+    authService = TestBed.inject(AuthService);
+    router = TestBed.inject(Router);
+    utilService = TestBed.inject(UtilService);
   });
 
   afterEach(() => {

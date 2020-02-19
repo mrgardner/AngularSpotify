@@ -10,7 +10,7 @@ describe('PlaylistService', () => {
       ]
     });
 
-    playlistService = TestBed.get(PlaylistService);
+    playlistService = TestBed.inject(PlaylistService);
   });
 
   afterEach(() => {

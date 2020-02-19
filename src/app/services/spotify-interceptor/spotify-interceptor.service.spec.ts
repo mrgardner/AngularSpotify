@@ -27,10 +27,10 @@ describe('SpotifyInterceptorService', () => {
       ]
     });
 
-    spotifyInterceptorService = TestBed.get(SpotifyInterceptorService);
-    httpMock = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    http = TestBed.get(HttpClient);
-    utilService = TestBed.get(UtilService);
+    spotifyInterceptorService = TestBed.inject(SpotifyInterceptorService);
+    httpMock = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    http = TestBed.inject(HttpClient);
+    utilService = TestBed.inject(UtilService);
   });
 
   afterEach(() => {

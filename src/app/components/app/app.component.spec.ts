@@ -6,8 +6,6 @@ import { LoginComponent } from '../login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
 
-
-
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -28,7 +26,7 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
+    authService = TestBed.inject(AuthService);
   }));
 
   afterEach(() => {

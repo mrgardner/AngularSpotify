@@ -32,8 +32,8 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+    authService = TestBed.inject(AuthService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {

@@ -52,7 +52,7 @@ export class AuthService {
     return this.utilService.getCookie('spotifyToken');
   }
 
-  generateRandomString(length) {
+  generateRandomString(length): string {
     let text = '';
     const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
 

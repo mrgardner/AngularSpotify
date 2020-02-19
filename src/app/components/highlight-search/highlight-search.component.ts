@@ -12,7 +12,8 @@ export class HighlightSearchComponent implements OnChanges {
 
   constructor() { }
 
-  ngOnChanges() {
+  // TODO: Fix typescript parameters
+  ngOnChanges(): void {
     if (this.searchText.length > 0) {
       const indices = this.getAllIndexes(this.text, this.searchText);
       let result = this.text;

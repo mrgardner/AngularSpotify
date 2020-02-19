@@ -5,6 +5,7 @@ import { CurrentTrack } from '../../interfaces/track/current-track.interface';
   providedIn: 'root'
 })
 export class StatusBarService {
+  // TODO: Fix types
   public currentTrack$: EventEmitter<any>;
 
   constructor() {

@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApolloService } from '../../../services/apollo/apollo.service';
 import { UtilService } from '../../../services/util/util.service';
+import { Artist } from 'src/app/interfaces/artist/artist.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-artists',
@@ -8,16 +10,16 @@ import { UtilService } from '../../../services/util/util.service';
   styleUrls: ['./artists.component.scss']
 })
 export class ArtistsComponent implements OnInit, OnDestroy {
-  public artists: Array<Object>;
-  public artistsSubscription: any;
+  public artists: Array<Artist>;
+  public artistsSubscription: Subscription;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService) { }
+  constructor(private apolloService: ApolloService, public utilService: UtilService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.artistsSubscription = this.apolloService.getFollowedArtists().subscribe(data => this.artists = data.artists.items);
   }
 
-  ngOnDestroy () {
+  ngOnDestroy(): void {
     this.artistsSubscription.unsubscribe();
   }
 }

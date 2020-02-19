@@ -31,7 +31,7 @@ describe('DisplayUserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DisplayUserComponent);
     component = fixture.componentInstance;
-    apolloService = TestBed.get(ApolloService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {

@@ -22,8 +22,8 @@ describe('ApolloService', () => {
       ]
     });
 
-    apolloService = TestBed.get(ApolloService);
-    controller = TestBed.get(ApolloTestingController);
+    apolloService = TestBed.inject(ApolloService);
+    controller = TestBed.inject(ApolloTestingController);
   });
 
   afterEach(() => {

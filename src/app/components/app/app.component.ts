@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class AppComponent {
   public showDeviceModal: boolean;
+
   constructor(private authService: AuthService) {
     this.showDeviceModal = false;
   }

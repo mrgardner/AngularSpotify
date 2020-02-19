@@ -1,10 +1,10 @@
 import { RouterModule, Routes } from '@angular/router';
-import {PlaylistTableComponent} from './components/playlist-table/playlist-table.component';
-import {HomeComponent} from './components/home/home.component';
-import {CallbackComponent} from './components/callback/callback.component';
-import {SpotifyGuard} from './guards/spotify/spotify.guard';
-import {TrackComponent} from './components/track/track.component';
-import {AlbumsComponent} from './components/collection/albums/albums.component';
+import { PlaylistTableComponent } from './components/playlist-table/playlist-table.component';
+import { HomeComponent } from './components/home/home.component';
+import { CallbackComponent } from './components/callback/callback.component';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { TrackComponent } from './components/track/track.component';
+import { AlbumsComponent } from './components/collection/albums/albums.component';
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './components/login/login.component';
 import { CollectionComponent } from './components/collection/collection.component';
@@ -17,20 +17,20 @@ import { SearchComponent } from './components/search/search.component';
 
 const APP_ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: 'home', component: HomeComponent, canActivate: [SpotifyGuard]},
-  { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [SpotifyGuard]},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [AuthGuard]},
   { path: 'callback', component: CallbackComponent},
   { path: 'login', component: LoginComponent},
-  { path: 'track/:name/:id', component: TrackComponent, canActivate: [SpotifyGuard]},
-  { path: 'collection', component: CollectionComponent, canActivate: [SpotifyGuard], children: [
-    { path: 'playlists', component: PlaylistsComponent, canActivate: [SpotifyGuard]},
-    { path: 'made-for-you', component: MadeForYouComponent, canActivate: [SpotifyGuard]},
-    { path: 'liked-songs', component: LikedSongsComponent, canActivate: [SpotifyGuard]},
-    { path: 'albums', component: AlbumsComponent, canActivate: [SpotifyGuard]},
-    { path: 'artists', component: ArtistsComponent, canActivate: [SpotifyGuard]},
-    { path: 'podcasts', component: PodcastsComponent, canActivate: [SpotifyGuard]}
+  { path: 'track/:name/:id', component: TrackComponent, canActivate: [AuthGuard]},
+  { path: 'collection', component: CollectionComponent, canActivate: [AuthGuard], children: [
+    { path: 'playlists', component: PlaylistsComponent, canActivate: [AuthGuard]},
+    { path: 'made-for-you', component: MadeForYouComponent, canActivate: [AuthGuard]},
+    { path: 'liked-songs', component: LikedSongsComponent, canActivate: [AuthGuard]},
+    { path: 'albums', component: AlbumsComponent, canActivate: [AuthGuard]},
+    { path: 'artists', component: ArtistsComponent, canActivate: [AuthGuard]},
+    { path: 'podcasts', component: PodcastsComponent, canActivate: [AuthGuard]}
   ]},
-  { path: 'search', component: SearchComponent, canActivate: [SpotifyGuard]},
+  { path: 'search', component: SearchComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

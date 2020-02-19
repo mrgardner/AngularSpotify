@@ -32,8 +32,8 @@ describe('DeviceModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeviceModalComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
-    deviceModalService = TestBed.get(DeviceModalService);
+    spotifyService = TestBed.inject(SpotifyService);
+    deviceModalService = TestBed.inject(DeviceModalService);
   });
 
   afterEach(() => {

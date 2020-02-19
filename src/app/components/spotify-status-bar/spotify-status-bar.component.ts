@@ -10,6 +10,7 @@ import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-
 import { Track } from '../../interfaces/track/track.interface';
 import { UtilService } from '../../services/util/util.service';
 import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -19,6 +20,7 @@ import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response
 export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   public currentTrack: Track;
   public volume: number;
+  // TODO: Add interface
   public currentDevice: Object;
   public currentDeviceId: string;
   public currentDeviceName: string;
@@ -29,10 +31,10 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   public isRepeatTrackShowing: boolean;
   public isRepeatOffShowing: boolean;
   public state: SpotifySongResponse;
-  public activeDeviceSubscription: any;
-  public currentPlayerSubscription: any;
-  public currentSongStateSubscription: any;
-  public showPlayButtonSubscription: any;
+  public activeDeviceSubscription: Subscription;
+  public currentPlayerSubscription: Subscription;
+  public currentSongStateSubscription: Subscription;
+  public showPlayButtonSubscription: Subscription;
 
   constructor(
     private spotifyService: SpotifyService,

@@ -12,7 +12,7 @@ describe('StatusBarService', () => {
       ]
     });
 
-    statusBarService = TestBed.get(StatusBarService);
+    statusBarService = TestBed.inject(StatusBarService);
   });
 
   afterEach(() => {
@@ -94,11 +94,5 @@ describe('StatusBarService', () => {
     const spy = spyOn(statusBarService.currentTrack$, 'emit');
     statusBarService.setCurrentTrack(currentTrack);
     expect(spy).toHaveBeenCalledWith(currentTrack);
-  });
-
-  it('should check enlargePicture', () => {
-    const spy = spyOn(statusBarService.enlargePicture$, 'emit');
-    statusBarService.enlargePicture(true, 'test');
-    expect(spy).toHaveBeenCalledWith({value: true, url: 'test'});
   });
 });

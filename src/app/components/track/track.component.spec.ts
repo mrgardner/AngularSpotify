@@ -30,7 +30,7 @@ describe('TrackComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TrackComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
+    spotifyService = TestBed.inject(SpotifyService);
   });
 
   afterEach(() => {
@@ -88,7 +88,7 @@ describe('TrackComponent', () => {
       time: '',
       addedAt: ''
     };
-    TestBed.get(ActivatedRoute).params = of({
+    TestBed.inject(ActivatedRoute).params = of({
       trackID: 'test'
     });
     spyOn(spotifyService, 'getTrack').and.returnValue(of(mockTrack));
@@ -97,7 +97,7 @@ describe('TrackComponent', () => {
   });
 
   it('should should check ngOnInit method without params', () => {
-    TestBed.get(ActivatedRoute).params = of(null);
+    TestBed.inject(ActivatedRoute).params = of(null);
     component.ngOnInit();
     expect(component.endOfChain).toBeTruthy();
   });

@@ -5,7 +5,6 @@ import { Artist } from '../../interfaces/artist/artist.interface';
   providedIn: 'root'
 })
 export class UtilService {
-
   constructor() {}
 
   encodeSpecialSymbols(url: string): string {
@@ -57,8 +56,8 @@ export class UtilService {
     });
   }
 
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  compare(array1: number | string, array2: number | string, isAsc: boolean) {
+    return (array1 < array2 ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   setCookie(name: string, value: string, expires: string): void {

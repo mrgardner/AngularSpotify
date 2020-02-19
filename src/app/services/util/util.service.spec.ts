@@ -11,7 +11,7 @@ describe('UtilServiceService', () => {
       ]
     });
 
-    utilService = TestBed.get(UtilService);
+    utilService = TestBed.inject(UtilService);
   });
 
   afterEach(() => {

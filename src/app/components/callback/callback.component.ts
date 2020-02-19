@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UtilService } from '../../services/util/util.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-callback',
@@ -9,7 +10,8 @@ import { UtilService } from '../../services/util/util.service';
 })
 export class CallbackComponent implements OnInit, OnDestroy {
   public _window: any;
-  public routeSubscrition: any;
+  public routeSubscrition: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private utilService: UtilService) {
@@ -29,6 +31,6 @@ export class CallbackComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routeSubscrition.unsubsribe();
+    this.routeSubscrition.unsubscribe();
   }
 }

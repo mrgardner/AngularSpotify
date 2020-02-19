@@ -11,7 +11,7 @@ describe('DeviceModalService', () => {
       ]
     });
 
-    deviceModalService = TestBed.get(DeviceModalService);
+    deviceModalService = TestBed.inject(DeviceModalService);
   });
 
   afterEach(() => {

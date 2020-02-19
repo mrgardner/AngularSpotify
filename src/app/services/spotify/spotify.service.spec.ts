@@ -23,9 +23,9 @@ describe('SpotifyService', () => {
       ]
     });
 
-    spotifyService = TestBed.get(SpotifyService);
-    http = TestBed.get(HttpClient);
-    httpMock = TestBed.get(HttpTestingController as Type<HttpTestingController>);
+    spotifyService = TestBed.inject(SpotifyService);
+    http = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
   });
 
   afterEach(() => {

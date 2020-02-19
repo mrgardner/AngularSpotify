@@ -12,7 +12,7 @@ describe('TrackService', () => {
       ]
     });
 
-    trackService = TestBed.get(TrackService);
+    trackService = TestBed.inject(TrackService);
   });
 
   afterEach(() => {
@@ -27,18 +27,6 @@ describe('TrackService', () => {
     const spy = spyOn(trackService.checkDuplicate$, 'emit');
     trackService.checkDuplicate(true);
     expect(spy).toHaveBeenCalledWith(true);
-  });
-
-  it('should check the filterByTrackName method', () => {
-    const spy = spyOn(trackService.filterTrackName$, 'emit');
-    trackService.filterByTrackName('test');
-    expect(spy).toHaveBeenCalledWith('test');
-  });
-
-  it('should check the filterByTrackArtist method', () => {
-    const spy = spyOn(trackService.filterTrackArtist$, 'emit');
-    trackService.filterByTrackArtist('test');
-    expect(spy).toHaveBeenCalledWith('test');
   });
 
   it('should check the filterDuplicateTrack method with args set to false', () => {
@@ -92,7 +80,6 @@ describe('TrackService', () => {
       }
     ];
     const result = trackService.filterDuplicateTracks(tracks, false);
-    trackService.filterByTrackArtist('test');
     expect(result).toEqual(tracks);
   });
 
@@ -337,7 +324,6 @@ describe('TrackService', () => {
       }
     ];
     const result = trackService.filterDuplicateTracks(tracks, true);
-    trackService.filterByTrackArtist('test');
 
     expect(result.length).toEqual(2);
     expect(result).toEqual(expectTracks);
@@ -772,7 +758,6 @@ describe('TrackService', () => {
       }
     ];
     const result = trackService.filterDuplicateTracks(tracks, true);
-    trackService.filterByTrackArtist('test');
 
     expect(result.length).toEqual(4);
     expect(result).toEqual(expectTracks);
@@ -1207,7 +1192,6 @@ describe('TrackService', () => {
       }
     ];
     const result = trackService.filterDuplicateTracks(tracks, true);
-    trackService.filterByTrackArtist('test');
 
     expect(result.length).toEqual(4);
     expect(result).toEqual(expectTracks);

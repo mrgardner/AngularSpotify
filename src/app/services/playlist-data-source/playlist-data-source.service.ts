@@ -10,6 +10,7 @@ import { ApolloService } from '../apollo/apollo.service';
   providedIn: 'root'
 })
 export class PlaylistDataSourceService {
+  // TODO: Fix types
   public tableSubject = new BehaviorSubject<any[]>([]);
   public tableSubject$ = this.tableSubject.asObservable();
   public backupSubject = new BehaviorSubject<any[]>([]);

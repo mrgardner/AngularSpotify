@@ -18,12 +18,13 @@ describe('SpotifyPlaybackService', () => {
       ]
     });
 
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {
     spotifyPlaybackService = null;
-    TestBed.get(Window).Spotify = null;
+    // TODO: Fix issue
+    TestBed.inject(Window).Spotify = null;
     jasmine.clock().uninstall();
   });
 
@@ -32,7 +33,8 @@ describe('SpotifyPlaybackService', () => {
   });
 
   it('should check waitForSpotifyWebPlaybackSDKToLoad method with Spotify object on window', fakeAsync(async () => {
-    TestBed.get(Window).Spotify = 'test';
+    // TODO: Fix issue
+    TestBed.inject(Window).Spotify = 'test';
     const result = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
     tick(10000);
     expect(result).toEqual('test');

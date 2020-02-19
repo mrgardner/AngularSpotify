@@ -32,10 +32,10 @@ describe('SpotifyStatusBarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SpotifyStatusBarComponent);
     component = fixture.componentInstance;
-    statusBarService = TestBed.get(StatusBarService);
-    deviceModalService = TestBed.get(DeviceModalService);
-    spotifyService = TestBed.get(SpotifyService);
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+    statusBarService = TestBed.inject(StatusBarService);
+    deviceModalService = TestBed.inject(DeviceModalService);
+    spotifyService = TestBed.inject(SpotifyService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {
@@ -55,23 +55,7 @@ describe('SpotifyStatusBarComponent', () => {
     expect(component.isRepeatPlaylistShowing).toBeFalsy();
     expect(component.isRepeatTrackShowing).toBeFalsy();
     expect(component.isRepeatOffShowing).toBeTruthy();
-    expect(component.imageEnlargeState).toEqual('inactive');
     expect(component.volume).toEqual(100);
-    expect(component.isEnlargeIconShowing).toBeFalsy();
-  });
-
-  it('should check ngOnInit method enlargePicture when return true', () => {
-    spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(null));
-    component.ngOnInit();
-    statusBarService.enlargePicture(true, 'test');
-    expect(component.imageEnlargeState).toEqual('active');
-  });
-
-  it('should check ngOnInit method enlargePicture when return false', () => {
-    spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(null));
-    component.ngOnInit();
-    statusBarService.enlargePicture(false, 'test');
-    expect(component.imageEnlargeState).toEqual('inactive');
   });
 
   it('should check ngOnInit method changeActiveDevices', () => {
@@ -250,23 +234,7 @@ describe('SpotifyStatusBarComponent', () => {
     component.ngOnInit();
     spotifyPlaybackService.showPlayButton(true);
     expect(component.showPlayButton).toBeTruthy();
-  });
-
-  it('should check enlargePicture method', () => {
-    const spy = spyOn(statusBarService, 'enlargePicture');
-    component.enlargePicture('test');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check showEnlargeIcon method', () => {
-    component.showEnlargeIcon();
-    expect(component.isEnlargeIconShowing).toBeTruthy();
-  });
-
-  it('should check hideEnlargeIcon method', () => {
-    component.hideEnlargeIcon();
-    expect(component.isEnlargeIconShowing).toBeFalsy();
-  });
+  })
 
   it('should check openDeviceModal method', () => {
     const spy = spyOn(component.dialog, 'open');
@@ -274,6 +242,7 @@ describe('SpotifyStatusBarComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  // TODO: Fix test
   it('should check onVolumeChange method', () => {
     const spy = spyOn(spotifyPlaybackService, 'setVolume');
     component.onVolumeChange(1);

@@ -9,6 +9,7 @@ import { Song } from '../../interfaces/song/song.interface';
   providedIn: 'root'
 })
 export class SpotifyService {
+  // TODO: Fix return types
   private readonly spotifyApiBaseURI: string;
 
   constructor(private _http: HttpClient) {

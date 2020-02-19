@@ -8,6 +8,7 @@ import { Track } from '../../interfaces/track/track.interface';
   providedIn: 'root'
 })
 export class SpotifyPlaybackService {
+  // TODO: Fix types
   public currentSongState$: EventEmitter<any>;
   public playSong$: EventEmitter<any>;
   public pauseSong$: EventEmitter<any>;

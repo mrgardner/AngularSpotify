@@ -36,7 +36,7 @@ describe('CallbackComponent', () => {
         spotifyCallback: () => {}
       }
     };
-    TestBed.get(ActivatedRoute).fragment = of('#access_token=123&token_type=123&expires_in=3600&state=123');
+    TestBed.inject(ActivatedRoute).fragment = of('#access_token=123&token_type=123&expires_in=3600&state=123');
     component.ngOnInit();
     expect(component).toBeTruthy();
   });
@@ -47,7 +47,7 @@ describe('CallbackComponent', () => {
         spotifyCallback: () => {}
       }
     };
-    TestBed.get(ActivatedRoute).fragment = of('test');
+    TestBed.inject(ActivatedRoute).fragment = of('test');
     component.ngOnInit();
     expect(component).toBeTruthy();
   });
