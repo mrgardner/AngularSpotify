@@ -3,7 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { RouteService } from '../../services/route/route.service';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { SelectedRoute, Link, ActiveLink } from 'src/app/interfaces/route/route.interface';
+import { SelectedRoute, Link, ActiveLink } from '../../interfaces/route/route.interface';
 
 @Component({
   selector: 'app-collection',
@@ -11,7 +11,7 @@ import { SelectedRoute, Link, ActiveLink } from 'src/app/interfaces/route/route.
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent implements OnInit, OnDestroy {
-  public links: Array<Link> = [
+  public links: Link[] = [
     {
       path: 'collection/playlists',
       label: 'Playlists',

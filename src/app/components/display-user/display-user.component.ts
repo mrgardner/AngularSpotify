@@ -13,12 +13,12 @@ export class DisplayUserComponent implements OnInit, OnDestroy {
   public displayNameSubscription: Subscription;
   constructor(private apolloService: ApolloService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.displayNameSubscription = this.apolloService.getUserDisplayName()
       .subscribe((user: UserDisplayName) => this.displayName = user.display_name);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.displayNameSubscription.unsubscribe();
   }
 }

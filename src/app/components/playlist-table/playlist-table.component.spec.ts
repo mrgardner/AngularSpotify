@@ -13,7 +13,7 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { ChangeDetectorRef, Type } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApolloService } from '../../services/apollo/apollo.service';
-import { SortedTrack } from 'src/app/interfaces/track/track.interface';
+import { SortedTrack } from '../../interfaces/track/track.interface';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -83,7 +83,7 @@ describe('PlaylistTableComponent', () => {
       previous: '',
       total: 0
     };
-    component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
+    component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
@@ -102,58 +102,18 @@ describe('PlaylistTableComponent', () => {
       href: '',
       items: [
         {
+          title: '',
+          artist: '',
           added_at: '',
-          added_by: '',
-          track: {
-            album: {
-              album_type: '',
-              artists: [],
-              available_markets: [],
-              external_urls: {
-                spotify: ''
-              },
-              href: '',
-              id: '',
-              images: [],
-              name: '',
-              release_date: '',
-              release_date_precision: '',
-              total_track: 0,
-              type: '',
-              uri: ''
-            },
-            artists: [],
-            available_markets: [],
-            disc_number: 0,
-            duration_ms: 0,
-            explicit: true,
-            external_ids: {
-              isrc: ''
-            },
-            external_urls: {
-              spotify: ''
-            },
-            href: '',
-            id: '',
-            name: '',
-            popularity: 0,
-            preview_url: '',
-            track_number: 0,
-            type: '',
-            uri: '',
-            isPlayButtonShowing: true,
-            isPauseButtonShowing: true,
-            remove: true,
-            album_name: '',
-            title: '',
-            artist: '',
-            time: '',
-            addedAt: '',
-            duration: 0
-          },
-          video_thumbnail: {
-            url: ''
-          }
+          album_name: '',
+          time: 0,
+          showPauseButton: false,
+          showPlayButton: false,
+          duration: 0,
+          uri: '',
+          total: 0,
+          size: 0,
+          filterText: ''
         }
       ],
       limit: 0,
@@ -311,17 +271,17 @@ describe('PlaylistTableComponent', () => {
   it('should check ngOnInit method spotifyPlaybackService currentTrack', () => {
     const mockTrack: SortedTrack = {
       title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: ''
+      artist: '',
+      added_at: '',
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     component.ngOnInit();
     spotifyPlaybackService.currentTrack(mockTrack);
@@ -333,57 +293,18 @@ describe('PlaylistTableComponent', () => {
       href: '',
       items: [
         {
+          title: '',
+          artist: '',
           added_at: '',
-          added_by: '',
-          track: {
-            album: {
-              album_type: '',
-              artists: [],
-              available_markets: [],
-              external_urls: {
-                spotify: ''
-              },
-              href: '',
-              id: '',
-              images: [],
-              name: '',
-              release_date: '',
-              release_date_precision: '',
-              total_track: 0,
-              type: '',
-              uri: ''
-            },
-            artists: [],
-            available_markets: [],
-            disc_number: 0,
-            duration_ms: 0,
-            explicit: true,
-            external_ids: {
-              isrc: ''
-            },
-            external_urls: {
-              spotify: ''
-            },
-            href: '',
-            id: '',
-            name: '',
-            popularity: 0,
-            preview_url: '',
-            track_number: 0,
-            type: '',
-            uri: '',
-            isPlayButtonShowing: true,
-            isPauseButtonShowing: true,
-            remove: true,
-            album_name: '',
-            title: '',
-            artist: '',
-            time: '',
-            addedAt: ''
-          },
-          video_thumbnail: {
-            url: ''
-          }
+          album_name: '',
+          time: 0,
+          showPauseButton: false,
+          showPlayButton: false,
+          duration: 0,
+          uri: '',
+          total: 0,
+          size: 0,
+          filterText: ''
         }
       ],
       limit: 0,
@@ -423,13 +344,13 @@ describe('PlaylistTableComponent', () => {
 
   it('should check getDisplayedColumns method with checkDuplicate true', () => {
     component.checkDuplicate = true;
-    const columns = component.getDisplayedColumns();
+    const columns: string[] = component.getDisplayedColumns();
     expect(columns.length).toEqual(7);
   });
 
   it('should check getDisplayedColumns method with checkDuplicate false', () => {
     component.checkDuplicate = false;
-    const columns = component.getDisplayedColumns();
+    const columns: string[] = component.getDisplayedColumns();
     expect(columns.length).toEqual(6);
   });
 
@@ -702,7 +623,7 @@ describe('PlaylistTableComponent', () => {
         previous_tracks: []
       }
     };
-    const spy = spyOn(spotifyPlaybackService, 'playSong');
+    const spy: jasmine.Spy = spyOn(spotifyPlaybackService, 'playSong');
     component.playSong(song);
     expect(spy).toHaveBeenCalled();
   });
@@ -748,13 +669,13 @@ describe('PlaylistTableComponent', () => {
         previous_tracks: []
       }
     };
-    const spy = spyOn(spotifyService, 'playSpotifyTrack').and.returnValue(of(null));
+    const spy: jasmine.Spy = spyOn(spotifyService, 'playSpotifyTrack').and.returnValue(of(null));
     component.playSong(song);
     expect(spy).toHaveBeenCalled();
   });
 
   it('should check pauseSong method', () => {
-    const spy = spyOn(spotifyPlaybackService, 'pauseSong');
+    const spy: jasmine.Spy = spyOn(spotifyPlaybackService, 'pauseSong');
     component.pauseSong();
     expect(spy).toHaveBeenCalled();
   });
@@ -856,17 +777,17 @@ describe('PlaylistTableComponent', () => {
     component.tracks = [
       {
         title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: ''
+        artist: '',
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     component.hidePlayButton(mockTrack);

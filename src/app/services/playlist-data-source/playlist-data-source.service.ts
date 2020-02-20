@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UtilService } from '../util/util.service';
-import { TrackResponse, SortedTrack, SortedTracks, Track, Trrack, } from '../../interfaces/track/track.interface';
+import { TrackResponse, SortedTrack, Trrack, } from '../../interfaces/track/track.interface';
 import { ApolloService } from '../apollo/apollo.service';
 
 @Injectable({

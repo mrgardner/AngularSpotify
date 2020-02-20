@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterContentInit, ViewChild, OnDestroy } from '@angular/core';
 import { SpotifyService } from '../../services/spotify/spotify.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
 import { SortedTrack } from '../../interfaces/track/track.interface';
@@ -14,9 +14,9 @@ import { UtilService } from '../../services/util/util.service';
 import { TrackService } from '../../services/track/track.service';
 import { SpotifySongResponse } from '../../interfaces/song/song.interface';
 import { ApolloService } from '../../services/apollo/apollo.service';
-import { moveItemInArray, CdkDropList, CdkDrag} from '@angular/cdk/drag-drop';
+import { moveItemInArray, CdkDropList } from '@angular/cdk/drag-drop';
 import { MatTable } from '@angular/material/table';
-import { DragSource, DropData } from 'src/app/interfaces/drag-and-drop/drag-and-drop.interface';
+import { DragSource, DropData } from '../../interfaces/drag-and-drop/drag-and-drop.interface';
 
 @Component({
   selector: 'app-playlist-table',
@@ -24,7 +24,7 @@ import { DragSource, DropData } from 'src/app/interfaces/drag-and-drop/drag-and-
   styleUrls: ['./playlist-table.component.scss']
 })
 export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestroy {
-  public tracks: Array<SortedTrack> = [];
+  public tracks: SortedTrack[] = [];
   public loading: boolean;
   public tracksLoaded: boolean;
   public checkDuplicate: boolean;
@@ -32,7 +32,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public currentTrack: SortedTrack;
   public displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'added_at', 'time'];
   public dataSource: PlaylistDataSourceService;
-  public selection = new SelectionModel<SortedTrack>(true, []);
+  public selection: SelectionModel<SortedTrack> = new SelectionModel<SortedTrack>(true, []);
   public itemCount: number;
   public pageSize: number;
   public state: SpotifySongResponse;
@@ -50,7 +50,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatTable, {static: true}) table: MatTable<Array<SortedTrack>>;
+  @ViewChild(MatTable, {static: true}) table: MatTable<SortedTrack[]>;
   @ViewChild(CdkDropList) _dropList: CdkDropList;
 
   constructor(
@@ -63,10 +63,10 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     private route: ActivatedRoute) {}
 
   // TODO: Add functionality to save drag and drop to spotify endpoint
-  dropTable(event: DropData) {
+  dropTable(event: DropData): void {
     if (this.dataSource) {
-      this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
-        const prevIndex = v.findIndex((d) => d === event.item.data);
+      this.dataSource.tableSubject$.subscribe((v: SortedTrack[]) => {
+        const prevIndex: number = v.findIndex((d) => d === event.item.data);
         moveItemInArray(v, prevIndex, event.currentIndex);
         this.tracks = v;
         if (v.length > 0) {
@@ -88,7 +88,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
 
   ngAfterContentInit(): void {
     if (this.dataSource) {
-      this.dataSource.tableSubject$.subscribe((v: Array<any>) => {
+      this.dataSource.tableSubject$.subscribe((v: SortedTrack[]) => {
         this.tracks = v;
         if (v.length > 0) {
           this.pageSize = v[0].size;
@@ -107,11 +107,11 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.dataSource = new PlaylistDataSourceService(this.apolloService, this.utilService);
     this.test = '';
 
-    this.routerSubscription = this.route.url.pipe(switchMap((tt) => {
-      if (tt.length === 3) {
-        this.dataSource.loadTracks(tt[2].path);
+    this.routerSubscription = this.route.url.pipe(switchMap((urlSegment: UrlSegment[]) => {
+      if (urlSegment.length === 3) {
+        this.dataSource.loadTracks(urlSegment[2].path);
         this.endOfChain = false;
-        return this.apolloService.getPlaylist(tt[2].path);
+        return this.apolloService.getPlaylist(urlSegment[2].path);
       } else {
         this.endOfChain = true;
         return of();
@@ -124,9 +124,9 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.currentTrackSubscription = this.spotifyPlaybackService.currentTrack$
       .subscribe((track: SortedTrack) => this.currentTrack = track);
 
-    this.filterSubscription = this.trackService.filterTrack$.subscribe(track => {
-      this.filterText = track;
-      this.dataSource.filter(track);
+    this.filterSubscription = this.trackService.filterTrack$.subscribe((filterText: string) => {
+      this.filterText = filterText;
+      this.dataSource.filter(filterText);
     });
 
     this.showPlayButtonSubscription = this.spotifyPlaybackService.showPlayButton$
@@ -143,16 +143,16 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   }
 
   loadTracks(): void {
-    const breadcrumbs = this.router.url.split('/');
+    const breadcrumbs: string[] = this.router.url.split('/');
     this.dataSource.loadTracks(breadcrumbs[3], this.paginator.pageIndex, this.paginator.pageSize);
   }
 
   getDisplayedColumns(): string[] {
-    let columns = this.displayedColumns;
+    let columns: string[] = this.displayedColumns;
 
     if (!this.checkDuplicate) {
-      columns = columns.filter(col => {
-        return col !== 'dupTrack';
+      columns = columns.filter((column: string) => {
+        return column !== 'dupTrack';
       });
     }
 
@@ -160,14 +160,14 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   }
 
   sortData(sort: Sort): void {
-    const data = this.tracks.slice();
+    const data: SortedTrack[] = this.tracks.slice();
     if (!sort.active || sort.direction === '') {
       this.tracks = data;
       return;
     }
 
     this.tracks = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
+      const isAsc: boolean = sort.direction === 'asc';
       switch (sort.active) {
         case 'title': return this.utilService.compare(a.title, b.title, isAsc);
         case 'artist': return this.utilService.compare(a.artist, b.artist, isAsc);
@@ -213,18 +213,18 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.spotifyPlaybackService.pauseSong();
   }
 
-  showPlayButton(track: SortedTrack): void {
-    this.tracks.forEach(t => {
-      if (t === track) {
-        t.showPlayButton = true;
+  showPlayButton(trackToMatch: SortedTrack): void {
+    this.tracks.forEach((track: SortedTrack) => {
+      if (track === trackToMatch) {
+        track.showPlayButton = true;
       }
     });
   }
 
-  hidePlayButton(track: SortedTrack): void {
-    this.tracks.forEach(t => {
-      if (t === track) {
-        t.showPlayButton = false;
+  hidePlayButton(trackToMatch: SortedTrack): void {
+    this.tracks.forEach((track: SortedTrack) => {
+      if (track === trackToMatch) {
+        track.showPlayButton = false;
       }
     });
   }

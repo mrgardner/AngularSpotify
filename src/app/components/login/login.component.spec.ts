@@ -41,7 +41,7 @@ describe('LoginComponent', () => {
   });
 
   it('should check the login method', () => {
-    const spy = spyOn(authService, 'login');
+    const spy: jasmine.Spy = spyOn(authService, 'login');
     component.login();
     expect(spy).toHaveBeenCalled();
   });

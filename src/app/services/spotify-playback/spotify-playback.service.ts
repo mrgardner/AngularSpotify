@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { SpotifySongResponse } from '../../interfaces/song/song.interface';
 import { UtilService } from '../util/util.service';
-import { SpotifyService } from '../spotify/spotify.service';
 import { SortedTrack } from '../../interfaces/track/track.interface';
 
 @Injectable({
@@ -21,7 +20,7 @@ export class SpotifyPlaybackService {
   public player: any;
   public statePollingInterval: number = null;
   public endOfChain: boolean;
-  constructor(private utilService: UtilService, private spotifyService: SpotifyService) {
+  constructor(private utilService: UtilService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();

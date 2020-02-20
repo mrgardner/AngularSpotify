@@ -35,7 +35,7 @@ describe('SpotifyPlaybackService', () => {
   it('should check waitForSpotifyWebPlaybackSDKToLoad method with Spotify object on window', fakeAsync(async () => {
     // TODO: Fix issue
     TestBed.inject(Window).Spotify = 'test';
-    const result = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
+    const result: string = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
     tick(10000);
     expect(result).toEqual('test');
     tick(10000);

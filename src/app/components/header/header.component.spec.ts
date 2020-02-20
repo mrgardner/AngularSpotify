@@ -47,7 +47,7 @@ describe('HeaderComponent', () => {
 
   it('should check ngOnInit method when logged in', () => {
     spyOn(component, 'isLoggedIn').and.returnValue(true);
-    const spy = spyOn(spotifyPlaybackService, 'setupPlayer');
+    const spy: jasmine.Spy = spyOn(spotifyPlaybackService, 'setupPlayer');
     component.ngOnInit();
     expect(spy).toHaveBeenCalled();
   });
@@ -60,18 +60,18 @@ describe('HeaderComponent', () => {
 
   it('should check isLoggedIn method with spotify token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('testCookie123');
-    const isLoggedIn = component.isLoggedIn();
+    const isLoggedIn: boolean = component.isLoggedIn();
     expect(isLoggedIn).toBeTruthy();
   });
 
   it('should check isLoggedIn method with no spotify token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('');
-    const isLoggedIn = component.isLoggedIn();
+    const isLoggedIn: boolean = component.isLoggedIn();
     expect(isLoggedIn).toBeFalsy();
   });
 
   it('should check logout method', () => {
-    const spy = spyOn(authService, 'logout');
+    const spy: jasmine.Spy = spyOn(authService, 'logout');
     component.logout();
     expect(spy).toHaveBeenCalled();
     expect(component.loggedIn).toBeFalsy();

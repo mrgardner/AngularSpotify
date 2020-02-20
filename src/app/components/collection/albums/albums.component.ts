@@ -3,7 +3,7 @@ import { switchMap } from 'rxjs/operators';
 import { concat, of, Subscription } from 'rxjs';
 import { UtilService } from '../../../services/util/util.service';
 import { ApolloService } from '../../../services/apollo/apollo.service';
-import { ApolloAlbumResult, AlbumApollo } from 'src/app/interfaces/apollo/apollo.inerface';
+import { ApolloAlbumResult, AlbumApollo } from '../../../interfaces/apollo/apollo.inerface';
 
 @Component({
   selector: 'app-albums',
@@ -13,7 +13,7 @@ import { ApolloAlbumResult, AlbumApollo } from 'src/app/interfaces/apollo/apollo
 export class AlbumsComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public albumsLoaded: boolean;
-  public albums: Array<AlbumApollo> = [];
+  public albums: AlbumApollo[] = [];
   public isSearchBoxShowing: boolean;
   public name: string;
   public albumsSubscription: Subscription;

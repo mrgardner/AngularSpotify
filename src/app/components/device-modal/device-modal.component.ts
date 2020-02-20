@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SpotifyService } from '../../services/spotify/spotify.service';
 import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SpotifyDeviceResponse, SpotifyDevicesResponse } from '../../interfaces/device/device.interface';
-import { Device } from '../../interfaces/device/device.interface';
+import { SpotifyDeviceResponse, SpotifyDevicesResponse, Device } from '../../interfaces/device/device.interface';
 import { UtilService } from '../../services/util/util.service';
 import { Subscription } from 'rxjs';
 
@@ -13,7 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./device-modal.component.scss']
 })
 export class DeviceModalComponent implements OnInit, OnDestroy {
-  public devices: Array<Device>;
+  public devices: Device[];
   public currentDevice: string;
   public appDevice: string;
   public availableDevicesSubscription: Subscription;

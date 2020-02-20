@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./callback.component.scss']
 })
 export class CallbackComponent implements OnInit, OnDestroy {
-  public _window: any;
+  public _window: Window;
   public routeSubscrition: Subscription;
 
   constructor(
@@ -18,11 +18,11 @@ export class CallbackComponent implements OnInit, OnDestroy {
       this._window = window;
     }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.routeSubscrition = this.route.fragment.subscribe((fragment: string) => {
       if (fragment.split('access_token=').length === 2 && fragment.split('access_token=')[1].split('&').length === 4) {
-        const authToken = fragment.split('access_token=')[1].split('&')[0];
-        const expiredDate = new Date();
+        const authToken: string = fragment.split('access_token=')[1].split('&')[0];
+        const expiredDate: Date = new Date();
         expiredDate.setHours(expiredDate.getHours() + 1);
         this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
         this._window.opener.spotifyCallback(authToken);
@@ -30,7 +30,7 @@ export class CallbackComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routeSubscrition.unsubscribe();
   }
 }

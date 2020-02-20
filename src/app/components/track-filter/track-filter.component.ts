@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SpotifyService } from '../../services/spotify/spotify.service';
 import { TrackService } from '../../services/track/track.service';
-import { PlaylistService } from '../../services/playlist/playlist.service';
-import { SortedTrack } from '../../interfaces/track/track.interface';
 import { Params } from '../../interfaces/params/params.interface';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -18,7 +15,6 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   public isDuplicateTrack: boolean;
   public name: string;
   public track: string;
-  private originalTracks: Array<SortedTrack>;
   public isSearchBoxShowing: boolean;
   public playlistID: string;
   public endOfChain: boolean;
@@ -28,10 +24,8 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private spotifyService: SpotifyService,
     private route: ActivatedRoute,
-    private trackService: TrackService,
-    private playlistService: PlaylistService) {}
+    private trackService: TrackService) {}
 
   ngOnInit(): void {
     this.isSearchBoxShowing = false;
