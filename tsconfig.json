@@ -22,6 +22,10 @@
   "angularCompilerOptions": {
     "fullTemplateTypeChecking": true,
     "strictInjectionParameters": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "noImpicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
   }
 }
