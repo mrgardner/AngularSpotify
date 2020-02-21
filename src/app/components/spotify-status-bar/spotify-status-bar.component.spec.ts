@@ -1,12 +1,21 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SpotifyStatusBarComponent } from './spotify-status-bar.component';
-import { HttpClientModule } from '@angular/common/http';
+// Angular Material
 import { MatDialogModule } from '@angular/material/dialog';
-import { StatusBarService } from '../../services/status-bar/status-bar.service';
-import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
+
+// Components
+import { SpotifyStatusBarComponent } from '@components/spotify-status-bar/spotify-status-bar.component';
+
+// Services
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;
@@ -32,10 +41,10 @@ describe('SpotifyStatusBarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SpotifyStatusBarComponent);
     component = fixture.componentInstance;
-    statusBarService = TestBed.get(StatusBarService);
-    deviceModalService = TestBed.get(DeviceModalService);
-    spotifyService = TestBed.get(SpotifyService);
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+    statusBarService = TestBed.inject(StatusBarService);
+    deviceModalService = TestBed.inject(DeviceModalService);
+    spotifyService = TestBed.inject(SpotifyService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {
@@ -55,23 +64,7 @@ describe('SpotifyStatusBarComponent', () => {
     expect(component.isRepeatPlaylistShowing).toBeFalsy();
     expect(component.isRepeatTrackShowing).toBeFalsy();
     expect(component.isRepeatOffShowing).toBeTruthy();
-    expect(component.imageEnlargeState).toEqual('inactive');
     expect(component.volume).toEqual(100);
-    expect(component.isEnlargeIconShowing).toBeFalsy();
-  });
-
-  it('should check ngOnInit method enlargePicture when return true', () => {
-    spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(null));
-    component.ngOnInit();
-    statusBarService.enlargePicture(true);
-    expect(component.imageEnlargeState).toEqual('active');
-  });
-
-  it('should check ngOnInit method enlargePicture when return false', () => {
-    spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(null));
-    component.ngOnInit();
-    statusBarService.enlargePicture(false);
-    expect(component.imageEnlargeState).toEqual('inactive');
   });
 
   it('should check ngOnInit method changeActiveDevices', () => {
@@ -250,23 +243,7 @@ describe('SpotifyStatusBarComponent', () => {
     component.ngOnInit();
     spotifyPlaybackService.showPlayButton(true);
     expect(component.showPlayButton).toBeTruthy();
-  });
-
-  it('should check enlargePicture method', () => {
-    const spy = spyOn(statusBarService, 'enlargePicture');
-    component.enlargePicture();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check showEnlargeIcon method', () => {
-    component.showEnlargeIcon();
-    expect(component.isEnlargeIconShowing).toBeTruthy();
-  });
-
-  it('should check hideEnlargeIcon method', () => {
-    component.hideEnlargeIcon();
-    expect(component.isEnlargeIconShowing).toBeFalsy();
-  });
+  })
 
   it('should check openDeviceModal method', () => {
     const spy = spyOn(component.dialog, 'open');
@@ -274,6 +251,7 @@ describe('SpotifyStatusBarComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  // TODO: Fix test
   it('should check onVolumeChange method', () => {
     const spy = spyOn(spotifyPlaybackService, 'setVolume');
     component.onVolumeChange(1);

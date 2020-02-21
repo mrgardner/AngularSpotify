@@ -4,13 +4,14 @@ Currently a WIP
 
 Features currently implemented so far:
 
-1. Custom shuffler that randomizes the entire playlist
-2. Custom pipe to detect and remove duplicate tracks
-3. Able to play full length tracks through Spotify's playback sdk
+1. Able to play full length tracks through Spotify's playback sdk
+2. The use of graphQL and angular-apollo to reduce response sizes from spotify APIs
 
 # Running the project locally
 
 To run the project use `npm start`
+
+Also need to make sure that the [GraphQL Server](https://github.com/mrgardner/AngularSpotify-GraphQL-Server) is running.
 
 # Testing
 

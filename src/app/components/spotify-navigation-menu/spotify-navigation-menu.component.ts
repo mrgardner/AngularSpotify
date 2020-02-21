@@ -1,45 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
-import { PlaylistService } from '../../services/playlist/playlist.service';
-import { StatusBarService } from '../../services/status-bar/status-bar.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+// Angular Material
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-dialog.component';
-import { Router } from '@angular/router';
-import { SpotifyPlaylistRespose } from '../../interfaces/playlist/spotifyPlaylistResponse.interface';
-import { CurrentTrack } from '../../interfaces/track/current-track.interface';
-import { UtilService } from '../../services/util/util.service';
-import { Playlist } from '../../interfaces/playlist/playlist.interface';
-import { ApolloService } from '../../services/apollo/apollo.service';
+
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
+
+// Components
+import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-playlist-dialog.component';
+
+// Interfaces
+import { CurrentTrack } from '@interfaces/track/track.interface';
+import { Playlist } from '@interfaces/playlist/playlist.interface';
+import { Section } from '@interfaces/section/section.interface';
+import { SelectedRoute } from '@interfaces/route/route.interface';
+import { SpotifyPlaylistRespose } from '@interfaces/playlist/playlist.interface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+import { PlaylistService } from '@services/playlist/playlist.service';
+import { RouteService } from '@services/route/route.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+import { UtilService } from '@services/util/util.service';
+
 
 @Component({
   selector: 'app-spotify-navigation-menu',
   templateUrl: './spotify-navigation-menu.component.html',
-  styleUrls: ['./spotify-navigation-menu.component.scss'],
-  animations: [
-    trigger('trackAlbumImage', [
-      state('active', style({
-        transform: 'translateY(0)'
-      })),
-      state('inactive', style({
-        transform: 'translateY(1000px)'
-      })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
-    ])
-  ]
+  styleUrls: ['./spotify-navigation-menu.component.scss']
 })
-export class SpotifyNavigationMenuComponent implements OnInit {
+export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public playlists: Array<Playlist> = [];
   public loading: boolean;
   public playlistsLoaded: boolean;
   public selectedPlaylist: string;
-  public isPictureEnlarged: boolean;
   public currentTrack: CurrentTrack;
-  public imageEnlargeState: string;
-  public playlistTotal: Number;
-  public nextPlaylist: String;
-  public loadMorePlaylist: Boolean;
+  public playlistTotal: number;
+  public nextPlaylist: string;
+  public loadMorePlaylist: boolean;
+  public url: string;
+  public sections: Array<Section>;
+  public selectedRoute: SelectedRoute;
+  public dialogConfig: MatDialogConfig;
+  public currentTrackSubscription: Subscription;
+  public selectPlaylistSubscription: Subscription;
+  public getPlaylistsSubscription: Subscription;
+  public getPlaylistIdSubscription: Subscription;
+  public routerSubscription: Subscription;
+  public currentPlaylist: string;
 
   constructor(
     private playlistService: PlaylistService,
@@ -47,21 +57,36 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     public utilService: UtilService,
-    public apolloService: ApolloService) {}
+    public apolloService: ApolloService,
+    private routeService: RouteService,
+    private spotifyPlaybackService: SpotifyPlaybackService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.sections = [
+      {
+        label: 'Home',
+        iconName: 'home',
+        url: 'home'
+      },
+      {
+        label: 'Search',
+        iconName: 'search',
+        url: 'search'
+      },
+      {
+        label: 'Your Library',
+        iconName: 'library_books',
+        url: 'collection'
+      }
+    ];
     this.loading = true;
     this.playlistsLoaded = false;
     this.selectedPlaylist = '';
-    this.imageEnlargeState = 'inactive';
-    this.isPictureEnlarged = false;
-    this.statusBarService.enlargePicture$.subscribe((value: boolean) => {
-      this.isPictureEnlarged = value;
-      this.imageEnlargeState = value ? 'active' : 'inactive';
-    });
-    this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
-    this.playlistService.selectPlaylist$.subscribe((playlist: string) => this.selectedPlaylist = playlist);
-    this.apolloService.getPlaylists().pipe(first())
+    // TODO: Not used
+    this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
+    this.selectPlaylistSubscription = this.playlistService.selectPlaylist$
+      .subscribe((playlist: string) => this.selectedPlaylist = playlist);
+    this.getPlaylistsSubscription = this.apolloService.getPlaylists().pipe(first())
       .subscribe((data: SpotifyPlaylistRespose) => {
         if (data.items) {
           data.items.forEach((playlist: Playlist) => {
@@ -70,6 +95,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
             } else {
               playlist.selected = false;
             }
+            playlist.selectedUrl = playlist.name.toLowerCase();
+            playlist.id = playlist.id;
           });
           this.loading = false;
           this.playlistsLoaded = true;
@@ -78,6 +105,26 @@ export class SpotifyNavigationMenuComponent implements OnInit {
           this.nextPlaylist = data.next;
         }
       });
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationStart))
+      .subscribe((event: NavigationStart) => {
+        this.selectedRoute = this.routeService.parseUrl(event.url);
+    });
+
+    this.getPlaylistIdSubscription = this.spotifyPlaybackService.currentPlaylistPlaying$
+      .subscribe((id: string) => this.currentPlaylist = id);
+
+    this.dialogConfig = new MatDialogConfig();
+    this.dialogConfig.panelClass = 'new-playlist-panel';
+    this.dialogConfig.height = '300px';
+    this.dialogConfig.width = '800px';
+  }
+
+  ngOnDestroy(): void {
+    this.currentTrackSubscription.unsubscribe();
+    this.selectPlaylistSubscription.unsubscribe();
+    this.getPlaylistsSubscription.unsubscribe();
+    this.routerSubscription.unsubscribe();
   }
 
   goToTracks(playlist): void {
@@ -89,23 +136,15 @@ export class SpotifyNavigationMenuComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 
-  goToSavedAlbums(): void {
-    this.router.navigate(['library/albums']);
-  }
-
-  shrinkPicture(): void {
-    this.statusBarService.enlargePicture(false);
+  goToSection(url: string): void {
+    this.router.navigate([url]);
   }
 
   openNewPlaylistModal(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = 'new-playlist-panel';
-    dialogConfig.height = '480px';
-    dialogConfig.width = '800px';
-    this.dialog.open(NewPlaylistDialogComponent, dialogConfig);
+    this.dialog.open(NewPlaylistDialogComponent, this.dialogConfig);
   }
 
-  loadMorePlaylists(playlistLength: Number): void {
+  loadMorePlaylists(playlistLength: number): void {
     const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
     const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
     this.loadMorePlaylist = true;
@@ -117,10 +156,10 @@ export class SpotifyNavigationMenuComponent implements OnInit {
           } else {
             playlist.selected = false;
           }
+          playlist.selectedUrl = playlist.name.toLowerCase();
         });
         this.loadMorePlaylist = false;
         this.playlists = this.playlists.concat(data.items);
-        console.log(data);
         this.playlistTotal = data.total;
         this.nextPlaylist = data.next;
       });

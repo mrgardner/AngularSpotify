@@ -1,5 +1,8 @@
+// Common
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +13,6 @@ export class LoginComponent {
   constructor(private authService: AuthService) {}
 
   login(): void {
-    this.authService.login(window);
+    this.authService.login();
   }
 }

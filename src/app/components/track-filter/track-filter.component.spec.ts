@@ -1,9 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TrackFilterComponent } from './track-filter.component';
+// Common
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { TrackService } from '../../services/track/track.service';
+
+// Components
+import { TrackFilterComponent } from '@components/track-filter/track-filter.component';
+
+// Services
+import { TrackService } from '@services/track/track.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('TrackFilterComponent', () => {
   let component: TrackFilterComponent;
@@ -30,7 +37,7 @@ describe('TrackFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TrackFilterComponent);
     component = fixture.componentInstance;
-    trackService = TestBed.get(TrackService);
+    trackService = TestBed.inject(TrackService);
   });
 
   afterEach(() => {
@@ -42,7 +49,7 @@ describe('TrackFilterComponent', () => {
   });
 
   it('should check ngOnInit method', () => {
-    TestBed.get(ActivatedRoute).params = of({});
+    TestBed.inject(ActivatedRoute).params = of({});
     component.ngOnInit();
     expect(component.isSearchBoxShowing).toBeFalsy();
     expect(component.name).toEqual('');
@@ -51,7 +58,7 @@ describe('TrackFilterComponent', () => {
   });
 
   it('should check ngOnInit method route params', () => {
-    TestBed.get(ActivatedRoute).params = of({
+    TestBed.inject(ActivatedRoute).params = of({
       playlistID: 'test'
     });
     component.ngOnInit();
@@ -71,46 +78,8 @@ describe('TrackFilterComponent', () => {
   });
 
   it('should check filterName method', () => {
-    const spy = spyOn(trackService, 'filterByTrackName');
-    component.filterName('');
+    const spy = spyOn(trackService, 'filterTrack');
+    component.filterTrack('');
     expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check filterArtist method', () => {
-    const spy = spyOn(trackService, 'filterByTrackArtist');
-    component.filterArtist('');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check filterArtist method', () => {
-    const spy = spyOn(trackService, 'filterByTrackArtist');
-    component.filterArtist('');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check showSearchBox method', () => {
-    component.showSearchBox();
-    expect(component.isSearchBoxShowing).toBeTruthy('');
-  });
-
-  it('should check hideSearchBox method', () => {
-    const spy = spyOn(component, 'filterName');
-    component.hideSearchBox();
-    expect(component.name).toEqual('');
-    expect(spy).toHaveBeenCalled();
-    expect(component.isSearchBoxShowing).toBeFalsy('');
-  });
-
-  it('should check onLoseFocus method', () => {
-    const spy = spyOn(component, 'hideSearchBox');
-    component.name = '';
-    component.onLoseFocus();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check onLoseFocus method else case', () => {
-    component.name = 'test';
-    component.onLoseFocus();
-    expect(component.endOfChain).toBeTruthy();
   });
 });

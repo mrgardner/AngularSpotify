@@ -1,9 +1,16 @@
-import { TestBed } from '@angular/core/testing';
-import { PlaylistDataSourceService } from './playlist-data-source.service';
-import { HttpClientModule } from '@angular/common/http';
-import { of, isObservable } from 'rxjs';
+// Apollo
 import { Apollo } from 'apollo-angular';
-import { ApolloService } from '../apollo/apollo.service';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
+import { isObservable, of } from 'rxjs';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
 
 describe('PlaylistDataSourceService', () => {
   let playlistDataSourceService: PlaylistDataSourceService;
@@ -20,8 +27,8 @@ describe('PlaylistDataSourceService', () => {
       ]
     });
 
-    playlistDataSourceService = TestBed.get(PlaylistDataSourceService);
-    apolloService = TestBed.get(ApolloService);
+    playlistDataSourceService = TestBed.inject(PlaylistDataSourceService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {

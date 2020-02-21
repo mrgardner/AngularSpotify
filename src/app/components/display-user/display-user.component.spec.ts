@@ -1,12 +1,21 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DisplayUserComponent } from './display-user.component';
-import { HttpClientModule } from '@angular/common/http';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { User } from '../../interfaces/user/user.interface';
-import { of } from 'rxjs';
-import { ApolloService } from '../../services/apollo/apollo.service';
-import { UserDisplayName } from '../../interfaces/user/user-display-name';
+// Apollo
 import { Apollo } from 'apollo-angular';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
+import { of } from 'rxjs';
+
+// Components
+import { DisplayUserComponent } from '@components/display-user/display-user.component';
+
+// Interfaces
+import { UserDisplayName } from '@interfaces/user/user.interface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('DisplayUserComponent', () => {
   let component: DisplayUserComponent;
@@ -31,7 +40,7 @@ describe('DisplayUserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DisplayUserComponent);
     component = fixture.componentInstance;
-    apolloService = TestBed.get(ApolloService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {

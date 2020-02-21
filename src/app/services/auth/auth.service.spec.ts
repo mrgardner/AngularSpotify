@@ -1,15 +1,23 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth.service';
-import { Routes, Router } from '@angular/router';
-import { LoginComponent } from '../../components/login/login.component';
+// Common
 import { HttpClientModule } from '@angular/common/http';
+import { Routes, Router } from '@angular/router';
+
+// Components
+import { LoginComponent } from '@components/login/login.component';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+import { UtilService } from '@services/util/util.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UtilService } from '../util/util.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
   let utilService: UtilService;
   let router: Router;
+
   const routes: Routes = [
     {path: 'login', component: LoginComponent},
   ];
@@ -24,9 +32,9 @@ describe('AuthService', () => {
       ]
     });
 
-    authService = TestBed.get(AuthService);
-    router = TestBed.get(Router);
-    utilService = TestBed.get(UtilService);
+    authService = TestBed.inject(AuthService);
+    router = TestBed.inject(Router);
+    utilService = TestBed.inject(UtilService);
   });
 
   afterEach(() => {
@@ -39,21 +47,19 @@ describe('AuthService', () => {
     expect(authService).toBeTruthy();
   });
 
-  xit('should check login method', () => {
-    const mockWindow = {
-      ...window,
-      spotifyCallback: (token) => {},
-      opener: {
-        spotifyCallback: (token) => {},
+  it('should check login method', () => {
+    spyOn(window, 'open').and.returnValue(
+      {
+        location: {
+          hash: '#access_token=123&expire_in=233'
+        },
+        close: () => {}
       }
-    };
-    // const spy = spyOn(mockWindow, 'open');
-    // spyOn(mockWindow, 'spotifyCallback').and.returnValue('test');
-    authService.login(window);
-    // mockWindow.close();
-    mockWindow.spotifyCallback('test');
-    mockWindow.opener.spotifyCallback('authToken');
-    expect(authService).toBeTruthy();
+    );
+    const spy = spyOn(utilService, 'setCookie');
+    authService.login();
+    window['spotifyCallback']('test');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should check logout method', () => {

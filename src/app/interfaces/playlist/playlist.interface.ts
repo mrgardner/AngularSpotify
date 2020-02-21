@@ -1,12 +1,15 @@
-import { ExternalUrls } from '../misc/external-urls.interface';
-import { Image } from '../image/image.interface';
-import { Tracks } from '../track/tracks.interface';
-import { Owner } from '../misc/owner.interface';
-
+// Interfaces
+import { ExternalUrls, Owner } from '@interfaces/misc/misc.interface';
+import { Image } from '@interfaces/image/image.interface';
+import { Tracks } from '@interfaces/track/track.interface';
 
 export interface Playlist {
   collaborative: boolean;
   external_urls: ExternalUrls;
+  followers: {
+    href: string;
+    total: number;
+  };
   href: string;
   id: string;
   images: Array<Image>;
@@ -19,4 +22,11 @@ export interface Playlist {
   type: string;
   uri: string;
   selected: boolean;
+  selectedUrl: string;
+}
+
+export interface SpotifyPlaylistRespose {
+  items: Array<Playlist>;
+  next: string;
+  total: number;
 }

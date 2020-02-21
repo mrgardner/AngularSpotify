@@ -1,8 +1,13 @@
+// Common
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
-import { SpotifyPlaybackService } from '../spotify-playback/spotify-playback.service';
-import { UtilService } from '../util/util.service';
+
+// Environments
+import { environment } from '@environments/environment';
+
+// Services
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { UtilService } from '@services/util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,23 +26,22 @@ export class AuthService {
     this.loginURI = environment.spotify.authURI + query;
   }
 
-  login(_window): void {
-    _window = window;
+  login(): void {
     const that = this;
-    const popup = _window.open(
+    const popup = window.open(
       this.loginURI,
       'Login with Spotify',
       'width=800, height=800'
     );
 
-    _window['spotifyCallback'] = () => {
+    window['spotifyCallback'] = () => {
       const authToken = popup.location.hash.split('#access_token=')[1].split('&')[0];
       const expiredDate = new Date();
       expiredDate.setHours(expiredDate.getHours() + 1);
       this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
       popup.close();
       setTimeout(() => {
-        that.router.navigate(['']);
+        that.router.navigate(['home']);
         that.spotifyPlaybackService.setupPlayer();
       }, 100);
     };
@@ -53,7 +57,7 @@ export class AuthService {
     return this.utilService.getCookie('spotifyToken');
   }
 
-  generateRandomString(length) {
+  generateRandomString(length): string {
     let text = '';
     const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
 

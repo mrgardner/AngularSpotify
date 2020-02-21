@@ -1,11 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderComponent } from './header.component';
-import { Routes } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
-import { RouterTestingModule } from '@angular/router/testing';
+// Common
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../services/auth/auth.service';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+import { Routes } from '@angular/router';
+
+// Components
+import { HeaderComponent } from '@components/header/header.component';
+import { LoginComponent } from '@components/login/login.component';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -32,8 +39,8 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+    authService = TestBed.inject(AuthService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {
@@ -47,7 +54,7 @@ describe('HeaderComponent', () => {
 
   it('should check ngOnInit method when logged in', () => {
     spyOn(component, 'isLoggedIn').and.returnValue(true);
-    const spy = spyOn(spotifyPlaybackService, 'setupPlayer');
+    const spy: jasmine.Spy = spyOn(spotifyPlaybackService, 'setupPlayer');
     component.ngOnInit();
     expect(spy).toHaveBeenCalled();
   });
@@ -60,18 +67,18 @@ describe('HeaderComponent', () => {
 
   it('should check isLoggedIn method with spotify token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('testCookie123');
-    const isLoggedIn = component.isLoggedIn();
+    const isLoggedIn: boolean = component.isLoggedIn();
     expect(isLoggedIn).toBeTruthy();
   });
 
   it('should check isLoggedIn method with no spotify token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('');
-    const isLoggedIn = component.isLoggedIn();
+    const isLoggedIn: boolean = component.isLoggedIn();
     expect(isLoggedIn).toBeFalsy();
   });
 
   it('should check logout method', () => {
-    const spy = spyOn(authService, 'logout');
+    const spy: jasmine.Spy = spyOn(authService, 'logout');
     component.logout();
     expect(spy).toHaveBeenCalled();
     expect(component.loggedIn).toBeFalsy();

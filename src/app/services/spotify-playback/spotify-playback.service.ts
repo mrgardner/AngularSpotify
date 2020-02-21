@@ -1,24 +1,31 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { SpotifySongResponse } from '../../interfaces/song/spotify-song-response.interface';
-import { UtilService } from '../util/util.service';
-import { SpotifyService } from '../spotify/spotify.service';
-import { Track } from '../../interfaces/track/track.interface';
+// Common
+import { EventEmitter, Injectable } from '@angular/core';
+
+// Interfaces
+import { SpotifySongResponse } from '@interfaces/song/song.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { UtilService } from '@services/util/util.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotifyPlaybackService {
-  public currentSongState$: EventEmitter<any>;
-  public playSong$: EventEmitter<any>;
-  public pauseSong$: EventEmitter<any>;
-  public nextSong$: EventEmitter<any>;
-  public previousSong$: EventEmitter<any>;
+  public currentSongState$: EventEmitter<SpotifySongResponse>;
+  public playSong$: EventEmitter<void>;
+  public pauseSong$: EventEmitter<void>;
+  public nextSong$: EventEmitter<void>;
+  public previousSong$: EventEmitter<void>;
   public showPlayButton$: EventEmitter<boolean>;
-  public currentTrack$: EventEmitter<any>;
+  public currentTrack$: EventEmitter<SortedTrack>;
   public setVolume$: EventEmitter<number>;
-  private player: any;
-  private statePollingInterval: any = null;
-  constructor(private utilService: UtilService, private spotifyService: SpotifyService) {
+  public currentPlaylistPlaying$: EventEmitter<string>;
+  // TODO: Fix type
+  public player: any;
+  public statePollingInterval: number = null;
+  public endOfChain: boolean;
+  constructor(private utilService: UtilService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
@@ -27,6 +34,7 @@ export class SpotifyPlaybackService {
     this.previousSong$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
     this.setVolume$ = new EventEmitter();
+    this.currentPlaylistPlaying$ = new EventEmitter();
   }
 
   async waitForSpotifyWebPlaybackSDKToLoad () {
@@ -47,13 +55,13 @@ export class SpotifyPlaybackService {
     script.type = 'text/javascript';
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     body.appendChild(script);
-
     (async () => {
       const Player = await this.waitForSpotifyWebPlaybackSDKToLoad();
 
       // create a new player
       this.player = new Player['Player']({
         name: 'Testing123',
+        volume: .1,
         getOAuthToken: cb => { cb(this.utilService.getCookie('spotifyToken')); },
       });
       // // set up the player's event handlers
@@ -74,66 +82,35 @@ export class SpotifyPlaybackService {
         this.clearStatePolling();
         this.showPlayButton(true);
         this.currentTrack({
-          album: {
-            album_type: '',
-            artists: [],
-            available_markets: [],
-            external_urls: {
-              spotify: ''
-            },
-            href: '',
-            id: '',
-            images: [],
-            name: '',
-            release_date: '',
-            release_date_precision: '',
-            total_track: 0,
-            type: '',
-            uri: ''
-          },
-          artists: [],
-          available_markets: [],
-          disc_number: 0,
-          duration_ms: 0,
-          explicit: true,
-          external_ids: {
-            isrc: ''
-          },
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          name: '',
-          popularity: 0,
-          preview_url: '',
-          track_number: 0,
-          type: '',
-          uri: '',
-          isPlayButtonShowing: false,
-          isPauseButtonShowing: false,
-          remove: false,
-          album_name: '',
           title: '',
           artist: '',
-          time: '',
-          addedAt: '',
-          duration: 0
+          album_name: '',
+          added_at: '',
+          time: 0,
+          showPlayButton: false,
+          showPauseButton: false,
+          duration: 0,
+          uri: '',
+          total: 0,
+          size: 0,
+          filterText: ''
         });
         await this.waitForDeviceToBeSelected();
       }
+    } else {
+      this.endOfChain = true;
     }
   }
 
   startStatePolling() {
-    this.statePollingInterval = setInterval(async () => {
+    this.statePollingInterval = window.setInterval(async () => {
       const state = await this.player.getCurrentState();
       await this.handleState(state);
     }, 1000);
   }
 
   clearStatePolling() {
-    clearInterval(this.statePollingInterval);
+    window.clearInterval(this.statePollingInterval);
   }
 
   createEventHandlers() {
@@ -156,7 +133,8 @@ export class SpotifyPlaybackService {
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
-      // this.spotifyService.makeDeviceActive(device_id).subscribe((t) => console.log(t));
+      // TODO: Make sure to eventually enable the line below
+      // this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());
@@ -167,20 +145,28 @@ export class SpotifyPlaybackService {
   }
 
   waitForDeviceToBeSelected() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (this.player) {
         this.player.getCurrentState().then(state => {
           if (state !== null) {
             this.startStatePolling();
             resolve(state);
+          } else {
+            reject('No device state');
           }
         });
+      } else {
+        reject('No Player');
       }
     });
   }
 
   sendCurrentState(state: SpotifySongResponse) {
     this.currentSongState$.emit(state);
+  }
+
+  currentPlaylistPlaying(playlistId: string) {
+    this.currentPlaylistPlaying$.emit(playlistId);
   }
 
   playSong() {
@@ -203,7 +189,7 @@ export class SpotifyPlaybackService {
     this.showPlayButton$.emit(value);
   }
 
-  currentTrack(value: Track) {
+  currentTrack(value: SortedTrack) {
     this.currentTrack$.emit(value);
   }
 

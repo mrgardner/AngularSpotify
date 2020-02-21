@@ -1,35 +1,32 @@
+// Common
 import { EventEmitter, Injectable } from '@angular/core';
-import { Track } from '../../interfaces/track/track.interface';
+
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackService {
   public checkDuplicate$: EventEmitter<any>;
-  public filterTrackName$: EventEmitter<any>;
-  public filterTrackArtist$: EventEmitter<any>;
   public currentTrack$: EventEmitter<any>;
+  public filterTrack$: EventEmitter<string>;
 
   constructor() {
     this.checkDuplicate$ = new EventEmitter();
-    this.filterTrackName$ = new EventEmitter();
-    this.filterTrackArtist$ = new EventEmitter();
     this.currentTrack$ = new EventEmitter();
+    this.filterTrack$ = new EventEmitter();
   }
 
   checkDuplicate(value: boolean) {
     this.checkDuplicate$.emit(value);
   }
 
-  filterByTrackName(trackNameString: string) {
-    this.filterTrackName$.emit(trackNameString);
+  filterTrack(text: string) {
+    this.filterTrack$.emit(text);
   }
 
-  filterByTrackArtist(trackArtistString: string) {
-    this.filterTrackArtist$.emit(trackArtistString);
-  }
-
-  filterDuplicateTracks(tracks: Array<Track>, args: boolean) {
+  filterDuplicateTracks(tracks: Array<SortedTrack>, args: boolean) {
     const getNotUnique = (array) => {
       const map = new Map();
       const map2 = new Map();

@@ -1,13 +1,25 @@
-import { Injectable } from '@angular/core';
+// Apollo
 import { Apollo } from 'apollo-angular';
+
+// Common
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { USER_DISPLAY_NAME } from '../../queries/get-user';
+
+// Interfaces
+import { ApolloAlbumResult, AlbumApolloResponse } from 'src/app/interfaces/apollo/apollo.inerface';
+
+// Queries
+import { ALBUM_INFO } from '../../queries/get-albums';
+import { FOLLOWED_ARTISTS } from '../../queries/get-artists';
 import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO} from '../../queries/get-playlists';
+import { USER_DISPLAY_NAME } from '../../queries/get-user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApolloService {
+  // TODO: Fix types
   private readonly spotifyApiBaseURI: string;
   constructor(private apollo: Apollo) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
@@ -17,7 +29,10 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: USER_DISPLAY_NAME,
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'cache-first',
+      variables: {
+        url: `${this.spotifyApiBaseURI}/me`
+      }
     })
     .valueChanges.pipe(map((result: any) => result.data.user));
   }
@@ -27,7 +42,7 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_NAME,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         url
       }
@@ -40,7 +55,7 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_INFO,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         url
       }
@@ -55,11 +70,39 @@ export class ApolloService {
     return this.apollo
     .watchQuery({
       query: PLAYLIST_TRACKS,
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-first',
       variables: {
         url
       }
     })
     .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
   }
+
+  getAlbums(moreAlbums?: string): Observable<ApolloAlbumResult> {
+    const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums?limit=50`;
+
+    return this.apollo
+    .watchQuery({
+      query: ALBUM_INFO,
+      fetchPolicy: 'cache-first',
+      variables: {
+        url
+      }
+    })
+    .valueChanges.pipe(map((result: AlbumApolloResponse) => result.data.albums));
+  }
+
+  getFollowedArtists() {
+    const url = this.spotifyApiBaseURI + `/me/following?type=artist`;
+    return this.apollo
+      .watchQuery({
+        query: FOLLOWED_ARTISTS,
+        fetchPolicy: 'cache-first',
+        variables: {
+          url
+        }
+      })
+      .valueChanges.pipe(map((result: any) => result.data.followedArtists));
+  }
 }
+
