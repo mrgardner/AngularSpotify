@@ -15,7 +15,7 @@ import { SpotifySongResponse } from '@interfaces/song/song.interface';
 import { Track } from '@interfaces/track/track.interface';
 
 // Services
-import { DeviceModalService } from '@services/deviceModal/device-modal.service';
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
 import { SpotifyService } from '@services/spotify/spotify.service';
 import { UtilService } from '@services/util/util.service';
