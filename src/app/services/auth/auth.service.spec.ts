@@ -1,10 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth.service';
-import { Routes, Router } from '@angular/router';
-import { LoginComponent } from '../../components/login/login.component';
+// Common
 import { HttpClientModule } from '@angular/common/http';
+import { Routes, Router } from '@angular/router';
+
+// Components
+import { LoginComponent } from '@components/login/login.component';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+import { UtilService } from '@services/util/util.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UtilService } from '../util/util.service';
 
 describe('AuthService', () => {
   let authService: AuthService;

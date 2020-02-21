@@ -1,10 +1,21 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DisplayUserComponent } from './display-user.component';
+// Apollo
+import { Apollo } from 'apollo-angular';
+
+// Common
 import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
-import { ApolloService } from '../../services/apollo/apollo.service';
-import { UserDisplayName } from '../../interfaces/user/user.interface';
-import { Apollo } from 'apollo-angular';
+
+// Components
+import { DisplayUserComponent } from '@components/display-user/display-user.component';
+
+// Interfaces
+import { UserDisplayName } from '@interfaces/user/user.interface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('DisplayUserComponent', () => {
   let component: DisplayUserComponent;

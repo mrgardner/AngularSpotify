@@ -1,7 +1,12 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { SpotifySongResponse } from '../../interfaces/song/song.interface';
-import { UtilService } from '../util/util.service';
-import { SortedTrack } from '../../interfaces/track/track.interface';
+// Common
+import { EventEmitter, Injectable } from '@angular/core';
+
+// Interfaces
+import { SpotifySongResponse } from '@interfaces/song/song.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { UtilService } from '@services/util/util.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,10 +1,19 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthGuard } from './auth.guard';
-import { Routes, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { LoginComponent } from '../../components/login/login.component';
-import { RouterTestingModule } from '@angular/router/testing';
+// Common
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../services/auth/auth.service';
+import { ActivatedRouteSnapshot, Routes, Router, RouterStateSnapshot } from '@angular/router';
+
+// Components
+import { LoginComponent } from '@components/login/login.component';
+
+// Guards
+import { AuthGuard } from './auth.guard';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;

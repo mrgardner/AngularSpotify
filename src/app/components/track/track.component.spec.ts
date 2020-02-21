@@ -1,9 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TrackComponent } from './track.component';
+// Common
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+
+// Components
+import { TrackComponent } from '@components/track/track.component';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('TrackComponent', () => {
   let component: TrackComponent;

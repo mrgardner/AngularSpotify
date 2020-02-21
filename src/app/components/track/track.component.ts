@@ -1,11 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { switchMap } from 'rxjs/operators';
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subscription } from 'rxjs';
-import { Params } from '../../interfaces/params/params.interface';
-import { SortedTrack } from '../../interfaces/track/track.interface';
-import { UtilService } from '../../services/util/util.service';
+import { switchMap } from 'rxjs/operators';
+
+// Interfaces
+import { Params } from '@interfaces/params/params.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-track',

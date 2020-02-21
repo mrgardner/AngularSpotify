@@ -1,7 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+// Common 
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UtilService } from '../../services/util/util.service';
 import { Subscription } from 'rxjs';
+
+// Services
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-callback',

@@ -1,19 +1,32 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { PlaylistTableComponent } from './playlist-table.component';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterTestingModule } from '@angular/router/testing';
-import { LoginComponent } from '../login/login.component';
-import { Routes, Router, ActivatedRoute } from '@angular/router';
-import { PlaylistDataSourceService } from '../../services/playlist-data-source/playlist-data-source.service';
-import { TrackService } from '../../services/track/track.service';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { of } from 'rxjs';
+// Angular Material
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { ChangeDetectorRef, Type } from '@angular/core';
+
+// Apollo
 import { Apollo } from 'apollo-angular';
-import { ApolloService } from '../../services/apollo/apollo.service';
-import { SortedTrack } from '../../interfaces/track/track.interface';
+
+// Common
+import { ChangeDetectorRef, Type } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute, Routes, Router } from '@angular/router';
+import { of } from 'rxjs';
+
+// Components
+import { LoginComponent } from '@components/login/login.component';
+import { PlaylistTableComponent } from '@components/playlist-table/playlist-table.component';
+
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
+import { TrackService } from '@services/track/track.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { ApolloService } from '@services/apollo/apollo.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;

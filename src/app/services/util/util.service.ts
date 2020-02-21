@@ -1,5 +1,8 @@
+// Common
 import { Injectable } from '@angular/core';
-import { Artist } from '../../interfaces/artist/artist.interface';
+
+// Interfaces
+import { Artist } from '@interfaces/artist/artist.interface';
 
 @Injectable({
   providedIn: 'root'

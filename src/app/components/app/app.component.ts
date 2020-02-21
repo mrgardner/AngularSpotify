@@ -1,5 +1,8 @@
+// Common
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-root',

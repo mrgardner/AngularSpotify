@@ -1,10 +1,19 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewPlaylistDialogComponent } from './new-playlist-dialog.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
+// Angular Material
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+// Common
 import { FormsModule } from '@angular/forms';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
+
+// Components
+import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-playlist-dialog.component';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('NewPlaylistDialogComponent', () => {
   let component: NewPlaylistDialogComponent;

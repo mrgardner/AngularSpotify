@@ -1,7 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ApolloService } from '../../services/apollo/apollo.service';
-import { UserDisplayName } from '../../interfaces/user/user.interface';
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+
+// Interfaces
+import { UserDisplayName } from '@interfaces/user/user.interface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
 
 @Component({
   selector: 'app-display-user',

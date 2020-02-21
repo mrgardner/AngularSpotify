@@ -1,6 +1,7 @@
-import { Artist } from '../artist/artist.interface';
-import { Album } from '../album/album.interface';
-import { AddedBy, ExternalUrls, ExternalIds, VideoThumbnail } from '../misc/misc.interface';
+// Interfaces
+import { Album } from '@interfaces/album/album.interface';
+import { Artist } from '@interfaces/artist/artist.interface';
+import { AddedBy, ExternalIds, ExternalUrls, VideoThumbnail } from '@interfaces/misc/misc.interface';
 
 export interface TrackResponse {
   total: number;

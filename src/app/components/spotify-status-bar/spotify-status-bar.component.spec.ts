@@ -1,12 +1,21 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SpotifyStatusBarComponent } from './spotify-status-bar.component';
-import { HttpClientModule } from '@angular/common/http';
+// Angular Material
 import { MatDialogModule } from '@angular/material/dialog';
-import { StatusBarService } from '../../services/status-bar/status-bar.service';
-import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
+
+// Components
+import { SpotifyStatusBarComponent } from '@components/spotify-status-bar/spotify-status-bar.component';
+
+// Services
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;

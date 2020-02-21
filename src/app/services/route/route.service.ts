@@ -1,5 +1,8 @@
+// Common
 import { Injectable } from '@angular/core';
-import { SelectedRoute } from 'src/app/interfaces/route/route.interface';
+
+// Interfaces
+import { SelectedRoute } from '@interfaces/route/route.interface';
 
 @Injectable({
   providedIn: 'root'

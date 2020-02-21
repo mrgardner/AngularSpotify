@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+// Common
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { SortedTrack } from '../../interfaces/track/track.interface';
+
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'

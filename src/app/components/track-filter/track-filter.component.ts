@@ -1,9 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+// Common
+import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TrackService } from '../../services/track/track.service';
-import { Params } from '../../interfaces/params/params.interface';
-import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
+// Interfaces
+import { Params } from '@interfaces/params/params.interface';
+
+// Services
+import { TrackService } from '@services/track/track.service';
 
 @Component({
   selector: 'app-track-filter',

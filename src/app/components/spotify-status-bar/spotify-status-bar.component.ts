@@ -1,15 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
+// Angular Material
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DeviceModalComponent } from '../device-modal/device-modal.component';
-import { SpotifyDeviceResponse } from '../../interfaces/device/device.interface';
-import { Device } from '../../interfaces/device/device.interface';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
-import { Track } from '../../interfaces/track/track.interface';
-import { UtilService } from '../../services/util/util.service';
-import { SpotifySongResponse } from '../../interfaces/song/song.interface';
 import { Subscription } from 'rxjs';
+
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+// Components
+import { DeviceModalComponent } from '@components/device-modal/device-modal.component';
+
+// Interfaces
+import { Device } from '@interfaces/device/device.interface';
+import { SpotifyDeviceResponse } from '@interfaces/device/device.interface';
+import { SpotifySongResponse } from '@interfaces/song/song.interface';
+import { Track } from '@interfaces/track/track.interface';
+
+// Services
+import { DeviceModalService } from '@services/deviceModal/device-modal.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-spotify-status-bar',

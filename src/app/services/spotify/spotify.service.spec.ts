@@ -1,10 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-import { SpotifyService } from './spotify.service';
-import { HttpClientModule, HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+// Common
 import { Type } from '@angular/core';
+import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
-import { SortedTrack } from '../../interfaces/track/track.interface';
+
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('SpotifyService', () => {
   let spotifyService: SpotifyService;

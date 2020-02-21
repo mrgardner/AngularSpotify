@@ -1,11 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceModalComponent } from './device-modal.component';
-import { HttpClientModule } from '@angular/common/http';
+// Amgular Material
 import { MatDialogRef } from '@angular/material/dialog';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
-import { SpotifyDevicesResponse, SpotifyDeviceResponse } from '../../interfaces/device/device.interface';
-import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
+
+// Components
+import { DeviceModalComponent } from '@components/device-modal/device-modal.component';
+
+// Interfaces
+import { SpotifyDeviceResponse, SpotifyDevicesResponse } from '@interfaces/device/device.interface';
+
+// Services
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('DeviceModalComponent', () => {
   let component: DeviceModalComponent;

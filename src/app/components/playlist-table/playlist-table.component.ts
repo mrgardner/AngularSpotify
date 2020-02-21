@@ -1,22 +1,29 @@
-import { Component, OnInit, AfterContentInit, ViewChild, OnDestroy } from '@angular/core';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
-import { of, Subscription } from 'rxjs';
-import { SortedTrack } from '../../interfaces/track/track.interface';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+// Angular Material
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Playlist } from '../../interfaces/playlist/playlist.interface';
-import { PlaylistDataSourceService } from '../../services/playlist-data-source/playlist-data-source.service';
-import { UtilService } from '../../services/util/util.service';
-import { TrackService } from '../../services/track/track.service';
-import { SpotifySongResponse } from '../../interfaces/song/song.interface';
-import { ApolloService } from '../../services/apollo/apollo.service';
-import { moveItemInArray, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatTable } from '@angular/material/table';
-import { DragSource, DropData } from '../../interfaces/drag-and-drop/drag-and-drop.interface';
+
+// Common
+import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { of, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+// Interfaces
+import { DragSource, DropData } from '@interfaces/drag-and-drop/drag-and-drop.interface';
+import { Playlist } from '@interfaces/playlist/playlist.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
+import { SpotifySongResponse } from '@interfaces/song/song.interface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { TrackService } from '@services/track/track.service';
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-playlist-table',

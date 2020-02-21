@@ -1,10 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-import { SpotifyInterceptorService } from './spotify-interceptor.service';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { Type } from '@angular/core';
-import { UtilService } from '../util/util.service';
 
+// Common
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Type } from '@angular/core';
+
+// Services
+import { SpotifyInterceptorService } from '@services/spotify-interceptor/spotify-interceptor.service';
+import { UtilService } from '@services/util/util.service';
+
+// Testing
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 
 describe('SpotifyInterceptorService', () => {
   let spotifyInterceptorService: SpotifyInterceptorService;

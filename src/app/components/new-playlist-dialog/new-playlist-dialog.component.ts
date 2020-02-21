@@ -1,7 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+// Angular Material
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+// Common
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
 
 @Component({
   selector: 'app-new-playlist-dialog',

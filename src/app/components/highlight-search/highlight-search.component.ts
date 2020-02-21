@@ -1,3 +1,4 @@
+// Common
 import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({

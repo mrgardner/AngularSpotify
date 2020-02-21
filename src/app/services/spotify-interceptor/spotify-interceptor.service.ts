@@ -1,7 +1,10 @@
+// Common
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UtilService } from '../util/util.service';
+
+// Services
+import { UtilService } from '@services/util/util.service';
 
 @Injectable({
   providedIn: 'root'

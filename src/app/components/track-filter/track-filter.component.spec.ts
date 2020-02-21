@@ -1,9 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TrackFilterComponent } from './track-filter.component';
+// Common
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { TrackService } from '../../services/track/track.service';
+
+// Components
+import { TrackFilterComponent } from '@components/track-filter/track-filter.component';
+
+// Services
+import { TrackService } from '@services/track/track.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('TrackFilterComponent', () => {
   let component: TrackFilterComponent;

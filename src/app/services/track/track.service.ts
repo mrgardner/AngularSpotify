@@ -1,5 +1,8 @@
+// Common
 import { EventEmitter, Injectable } from '@angular/core';
-import { SortedTrack } from '../../interfaces/track/track.interface';
+
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'

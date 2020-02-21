@@ -1,34 +1,37 @@
+// Common
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SpotifyInterceptorService } from './spotify-interceptor/spotify-interceptor.service';
-import { AuthService } from './auth/auth.service';
-import { ApolloService } from './apollo/apollo.service';
-import { DeviceModalService } from './deviceModal/device-modal.service';
-import { PlaylistService } from './playlist/playlist.service';
-import { PlaylistDataSourceService } from './playlist-data-source/playlist-data-source.service';
-import { RouteService } from './route/route.service';
-import { SpotifyService } from './spotify/spotify.service';
-import { SpotifyPlaybackService } from './spotify-playback/spotify-playback.service';
-import { StatusBarService } from './status-bar/status-bar.service';
-import { TrackService } from './track/track.service';
-import { UtilService } from './util/util.service';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+import { ApolloService } from '@services/apollo/apollo.service';
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
+import { PlaylistService } from '@services/playlist/playlist.service';
+import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { SpotifyInterceptorService } from '@services/spotify-interceptor/spotify-interceptor.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+import { RouteService } from '@services/route/route.service';
+import { TrackService } from '@services/track/track.service';
+import { UtilService } from '@services/util/util.service';
 
 @NgModule({
   providers: [
-    ApolloService,
     AuthService,
+    ApolloService,
     DeviceModalService,
     PlaylistService,
     PlaylistDataSourceService,
-    RouteService,
     SpotifyService,
-    SpotifyPlaybackService,
-    StatusBarService,
-    TrackService,
-    UtilService,
     {
       provide: HTTP_INTERCEPTORS, useClass: SpotifyInterceptorService, multi: true
-    }
+    },
+    SpotifyPlaybackService,
+    StatusBarService,
+    RouteService,
+    TrackService,
+    UtilService
   ]
 })
 export class ServiceModule {}

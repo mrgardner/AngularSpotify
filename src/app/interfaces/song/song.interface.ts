@@ -1,4 +1,5 @@
-import { TrackWindow } from '../track/track.interface';
+// Interfaces
+import { TrackWindow } from '@interfaces/track/track.interface';
 
 export interface SpotifySongResponse {
   bitrate: number;

@@ -1,6 +1,11 @@
+// Interfaces
+import { CurrentTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+
+// Testing
 import { TestBed } from '@angular/core/testing';
-import { StatusBarService } from './status-bar.service';
-import { CurrentTrack } from '../../interfaces/track/current-track.interface';
 
 describe('StatusBarService', () => {
   let statusBarService: StatusBarService;

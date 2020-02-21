@@ -1,6 +1,7 @@
-import { ExternalUrls, Owner } from '../misc/misc.interface';
-import { Image } from '../image/image.interface';
-import { Tracks } from '../track/track.interface';
+// Interfaces
+import { ExternalUrls, Owner } from '@interfaces/misc/misc.interface';
+import { Image } from '@interfaces/image/image.interface';
+import { Tracks } from '@interfaces/track/track.interface';
 
 export interface Playlist {
   collaborative: boolean;

@@ -1,7 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CallbackComponent } from './callback.component';
+// Common
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+
+// Components
+import { CallbackComponent } from '@components/callback/callback.component';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 
 describe('CallbackComponent', () => {
   let component: CallbackComponent;

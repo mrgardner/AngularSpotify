@@ -1,8 +1,13 @@
+// Common
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
-import { SpotifyPlaybackService } from '../spotify-playback/spotify-playback.service';
-import { UtilService } from '../util/util.service';
+
+// Environments
+import { environment } from '@environments/environment';
+
+// Services
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { UtilService } from '@services/util/util.service';
 
 @Injectable({
   providedIn: 'root'

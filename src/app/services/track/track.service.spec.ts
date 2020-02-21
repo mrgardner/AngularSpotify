@@ -1,6 +1,11 @@
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { TrackService } from '@services/track/track.service';
+
+// Testong
 import { TestBed } from '@angular/core/testing';
-import { TrackService } from './track.service';
-import { SortedTrack } from '../../interfaces/track/track.interface';
 
 describe('TrackService', () => {
   let trackService: TrackService;

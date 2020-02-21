@@ -1,9 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { concat, of, Subscription } from 'rxjs';
-import { UtilService } from '../../../services/util/util.service';
-import { ApolloService } from '../../../services/apollo/apollo.service';
-import { ApolloAlbumResult, AlbumApollo } from '../../../interfaces/apollo/apollo.inerface';
+import { switchMap } from 'rxjs/operators';
+
+// Interfaces
+import { AlbumApollo, ApolloAlbumResult } from '@interfaces/apollo/apollo.inerface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-albums',

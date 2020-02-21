@@ -1,11 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderComponent } from './header.component';
-import { Routes } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
-import { RouterTestingModule } from '@angular/router/testing';
+// Common
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../services/auth/auth.service';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
+import { Routes } from '@angular/router';
+
+// Components
+import { HeaderComponent } from '@components/header/header.component';
+import { LoginComponent } from '@components/login/login.component';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;

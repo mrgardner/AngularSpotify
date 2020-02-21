@@ -1,20 +1,25 @@
+// Common
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './components/app/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SpotifyApolloModule } from './services/apollo.module';
-import { ComponentModule } from './components/component.module';
-import { ServiceModule } from './services/service.module';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+
+// Components
+import { AppComponent } from '@components/app/app.component';
+import { ComponentModule } from '@components/component.module';
+
+// Services
+import { SpotifyApolloModule } from '@services/apollo.module';
+import { ServiceModule } from '@services/service.module';
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     ComponentModule,
     HttpClientModule,
+    ServiceModule,
     SpotifyApolloModule,
-    ServiceModule
   ],
   bootstrap: [AppComponent]
 })

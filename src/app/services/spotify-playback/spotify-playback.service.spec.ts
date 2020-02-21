@@ -1,6 +1,11 @@
-import { TestBed, fakeAsync, tick, async } from '@angular/core/testing';
-import { SpotifyPlaybackService } from './spotify-playback.service';
+// Common
 import { HttpClientModule } from '@angular/common/http';
+
+// Services
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+
+// Testing
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 describe('SpotifyPlaybackService', () => {
   let spotifyPlaybackService: SpotifyPlaybackService;

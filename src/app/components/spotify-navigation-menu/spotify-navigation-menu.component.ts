@@ -1,20 +1,30 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { first, filter } from 'rxjs/operators';
-import { PlaylistService } from '../../services/playlist/playlist.service';
-import { StatusBarService } from '../../services/status-bar/status-bar.service';
+// Angular Material
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { NewPlaylistDialogComponent } from '../new-playlist-dialog/new-playlist-dialog.component';
-import { Router, NavigationStart } from '@angular/router';
-import { SpotifyPlaylistRespose } from '../../interfaces/playlist/playlist.interface';
-import { CurrentTrack } from '../../interfaces/track/track.interface';
-import { UtilService } from '../../services/util/util.service';
-import { Playlist } from '../../interfaces/playlist/playlist.interface';
-import { ApolloService } from '../../services/apollo/apollo.service';
-import { RouteService } from '../../services/route/route.service';
-import { SpotifyPlaybackService } from 'src/app/services/spotify-playback/spotify-playback.service';
-import { SelectedRoute } from 'src/app/interfaces/route/route.interface';
-import { Section } from 'src/app/interfaces/section/section.interface';
+
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
+
+// Components
+import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-playlist-dialog.component';
+
+// Interfaces
+import { CurrentTrack } from '@interfaces/track/track.interface';
+import { Playlist } from '@interfaces/playlist/playlist.interface';
+import { Section } from '@interfaces/section/section.interface';
+import { SelectedRoute } from '@interfaces/route/route.interface';
+import { SpotifyPlaylistRespose } from '@interfaces/playlist/playlist.interface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+import { PlaylistService } from '@services/playlist/playlist.service';
+import { RouteService } from '@services/route/route.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+import { UtilService } from '@services/util/util.service';
+
 
 @Component({
   selector: 'app-spotify-navigation-menu',
