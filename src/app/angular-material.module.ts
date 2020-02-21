@@ -1,6 +1,3 @@
-// Common
-import { NgModule } from '@angular/core';
-
 // Angular Material
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +16,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
+// Common
+import { NgModule } from '@angular/core';
 
 @NgModule({
   exports: [
