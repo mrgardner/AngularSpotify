@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { Device, SpotifyDeviceResponse, SpotifyDevicesResponse } from '@interfaces/device/device.interface';
 
 // Services
-import { DeviceModalService } from '@services/deviceModal/device-modal.service';
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
 import { SpotifyService } from '@services/spotify/spotify.service';
 import { UtilService } from '@services/util/util.service';
 
