@@ -16,6 +16,7 @@ import { StatusBarService } from '@services/status-bar/status-bar.service';
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SpotifySongResponse } from '@app-core/interfaces/song/song.interface';
 
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;
@@ -158,7 +159,7 @@ describe('SpotifyStatusBarComponent', () => {
   });
 
   it('should check ngOnInit method currentSongState', () => {
-    const mockSongState = {
+    const mockSongState: SpotifySongResponse = {
       bitrate: 1,
       context: {
         metadata: {},
@@ -180,6 +181,12 @@ describe('SpotifyStatusBarComponent', () => {
       timestamp: 0,
       track_window: {
         current_track: {
+          filterText: '',
+          added_at: '',
+          total: 0,
+          size: 0,
+          showPauseButton: false,
+          showPlayButton: false,
           album: {
             album_type: '',
             artists: [],
@@ -222,7 +229,7 @@ describe('SpotifyStatusBarComponent', () => {
           album_name: '',
           title: '',
           artist: '',
-          time: '',
+          time: 0,
           addedAt: '',
           duration: 0
         },

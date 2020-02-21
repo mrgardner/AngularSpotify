@@ -35,7 +35,7 @@ describe('TrackService', () => {
   });
 
   it('should check the filterDuplicateTrack method with args set to false', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: '',
         artist: '',
@@ -48,7 +48,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     const result = trackService.filterDuplicateTracks(tracks, false);
@@ -56,7 +57,7 @@ describe('TrackService', () => {
   });
 
   it('should check the filterDuplicateTrack method with args set to true', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: 'Test',
         artist: '123',
@@ -69,7 +70,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test',
@@ -83,7 +85,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test1',
@@ -97,7 +100,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
 
@@ -108,7 +112,7 @@ describe('TrackService', () => {
   });
 
   it('should check the filterDuplicateTrack method with args set to true and sorting in asc', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: 'Test',
         artist: '123',
@@ -121,7 +125,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test',
@@ -135,7 +140,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test1',
@@ -149,7 +155,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test1',
@@ -163,7 +170,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'zzzzz',
@@ -177,7 +185,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'zzzzz',
@@ -191,7 +200,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     const result = trackService.filterDuplicateTracks(tracks, true);
@@ -201,7 +211,7 @@ describe('TrackService', () => {
   });
 
   it('should check the filterDuplicateTrack method with args set to true and sorting in dsc', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: 'Test',
         artist: '123',
@@ -214,7 +224,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test',
@@ -228,7 +239,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test1',
@@ -242,7 +254,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'Test1',
@@ -256,7 +269,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'zzzzz',
@@ -270,7 +284,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: 'zzzzz',
@@ -284,7 +299,8 @@ describe('TrackService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
 

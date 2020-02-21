@@ -24,5 +24,5 @@ export interface SpotifyDeviceResponse {
 }
 
 export interface SpotifyDevicesResponse {
-  devices: Array<Device>;
+  devices: Device[];
 }

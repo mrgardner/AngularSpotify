@@ -12,7 +12,7 @@ export interface Playlist {
   };
   href: string;
   id: string;
-  images: Array<Image>;
+  images: Image[];
   name: string;
   owner: Owner;
   primary_color: string;
@@ -26,7 +26,7 @@ export interface Playlist {
 }
 
 export interface SpotifyPlaylistRespose {
-  items: Array<Playlist>;
+  items: Playlist[];
   next: string;
   total: number;
 }

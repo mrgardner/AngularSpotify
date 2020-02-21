@@ -1,3 +1,6 @@
+// Interfaces
+import { SortedTrack } from '@app-core/interfaces/track/track.interface';
+
 // Pipes
 import { DuplicateTrackPipe } from '@pipes/duplicate-track/duplicate-track.pipe';
 
@@ -15,30 +18,66 @@ describe('DuplicateTrackPipe', () => {
 
   it('check transform method with args first items in correct order', () => {
     const pipe = new DuplicateTrackPipe();
-    const tracks = pipe.transform([
+    const tracks: SortedTrack[] = pipe.transform([
       {
-        track: {
-          name: 'test',
-          duration_ms: 123
-        }
+        title: 'test',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 123,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       },
       {
-        track: {
-          name: 'test',
-          duration_ms: 123
-        }
+        title: 'test',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 123,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       },
       {
-        track: {
-          name: 'test1',
-          duration_ms: 321
-        }
+        title: 'test1',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 321,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       },
       {
-        track: {
-          name: 'test1',
-          duration_ms: 321
-        }
+        title: 'test1',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 321,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       }
     ], true);
     expect(tracks.length).toEqual(4);
@@ -46,30 +85,66 @@ describe('DuplicateTrackPipe', () => {
 
   it('check transform method with args first items in wrong order', () => {
     const pipe = new DuplicateTrackPipe();
-    const tracks = pipe.transform([
+    const tracks: SortedTrack[] = pipe.transform([
       {
-        track: {
-          name: 'test1',
-          duration_ms: 123
-        }
+        title: 'test1',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 123,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       },
       {
-        track: {
-          name: 'test1',
-          duration_ms: 123
-        }
+        title: 'test1',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 123,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       },
       {
-        track: {
-          name: 'test',
-          duration_ms: 321
-        }
+        title: 'test',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 321,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       },
       {
-        track: {
-          name: 'test',
-          duration_ms: 321
-        }
+        title: 'test',
+        artist: '',
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        duration: 321,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: '',
+        remove: false
       }
     ], true);
     expect(tracks.length).toEqual(4);

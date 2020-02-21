@@ -32,7 +32,7 @@ import { UtilService } from '@services/util/util.service';
   styleUrls: ['./spotify-navigation-menu.component.scss']
 })
 export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
-  public playlists: Array<Playlist> = [];
+  public playlists: Playlist[] = [];
   public loading: boolean;
   public playlistsLoaded: boolean;
   public selectedPlaylist: string;
@@ -41,7 +41,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public nextPlaylist: string;
   public loadMorePlaylist: boolean;
   public url: string;
-  public sections: Array<Section>;
+  public sections: Section[];
   public selectedRoute: SelectedRoute;
   public dialogConfig: MatDialogConfig;
   public currentTrackSubscription: Subscription;
@@ -127,9 +127,9 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
   }
 
-  goToTracks(playlist): void {
-    this.playlists.forEach(tt => tt['selected'] = false);
-    playlist['selected'] = true;
+  goToTracks(playlist: Playlist): void {
+    this.playlists.forEach((tt: Playlist) => tt.selected = false);
+    playlist.selected = true;
     const playlistName = encodeURI(playlist.name.toLowerCase());
     const playlistId = encodeURI(playlist.id);
     const url = this.utilService.encodeSpecialSymbols(`/playlist/${playlistName}/${playlistId}`);

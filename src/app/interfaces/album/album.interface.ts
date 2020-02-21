@@ -5,12 +5,12 @@ import { Image } from '@interfaces/image/image.interface';
 
 export interface Album {
   album_type: string;
-  artists: Array<Artist>;
-  available_markets: Array<string>;
+  artists: Artist[];
+  available_markets: string[];
   external_urls: ExternalUrls;
   href: string;
   id: string;
-  images: Array<Image>;
+  images: Image[];
   name: string;
   release_date: string;
   release_date_precision: string;

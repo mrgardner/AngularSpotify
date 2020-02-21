@@ -42,7 +42,7 @@ export class UtilService {
     return hours + minutes;
   }
 
-  displayArtists(artists: Array<Artist>): Array<string> {
+  displayArtists(artists: Artist[]): string[] {
     const numberOfArtists = artists.length;
     return artists.map((artist, i) => {
       let artistString = '';

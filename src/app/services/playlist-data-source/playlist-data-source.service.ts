@@ -30,7 +30,7 @@ export class PlaylistDataSourceService {
 
   loadTracks(playlistId: string, page = 0, size = 100): void {
     this.apolloService.getTracksFromPlaylist(playlistId, page, size).subscribe((tracks: TrackResponse) => {
-      const sortedTracks: Array<SortedTrack> = tracks.items.map((t: Trrack) => {
+      const sortedTracks: SortedTrack[] = tracks.items.map((t: Trrack) => {
         return {
           title: t.track.name,
           artist: this.utilService.displayArtists(t.track.artists).join(''),
@@ -45,7 +45,8 @@ export class PlaylistDataSourceService {
           size: tracks.limit,
           filterText: `${t.track.name.toLowerCase()}
             ${this.utilService.displayArtists(t.track.artists).join('').toLowerCase()}
-            ${t.track.album.name.toLowerCase()}`.replace(/\s/g, '').trim()
+            ${t.track.album.name.toLowerCase()}`.replace(/\s/g, '').trim(),
+          remove: false
         };
       });
       this.tableSubject.next(sortedTracks);

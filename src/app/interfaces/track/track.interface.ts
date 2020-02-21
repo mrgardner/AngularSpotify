@@ -6,7 +6,7 @@ import { AddedBy, ExternalIds, ExternalUrls, VideoThumbnail } from '@interfaces/
 export interface TrackResponse {
   total: number;
   limit: number;
-  items: Array<any>;
+  items: Trrack[];
 }
 
 export interface Trrack {
@@ -35,12 +35,13 @@ export interface SortedTrack {
   total: number;
   size: number;
   filterText: string;
+  remove: boolean;
 }
 
 export interface Track {
   album: Album;
-  artists: Array<Artist>;
-  available_markets: Array<string>;
+  artists: Artist[];
+  available_markets: string[];
   disc_number: number;
   duration_ms: number;
   explicit: boolean;
@@ -78,8 +79,8 @@ export interface Tracks {
 
 export interface TrackWindow {
   current_track: Track;
-  next_tracks: Array<Track>;
-  previous_tracks: Array<Track>;
+  next_tracks: Track[];
+  previous_tracks: Track[];
 }
 
 export interface CurrentTrack {
@@ -96,7 +97,7 @@ export interface CurrentTrack {
 
 export interface TrackSpotifyReponse {
   href: string;
-  items: Array<Track>;
+  items: Track[];
   limit: number;
   next: string;
   offset: number;

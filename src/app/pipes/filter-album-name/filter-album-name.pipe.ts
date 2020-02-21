@@ -9,7 +9,7 @@ import { AlbumApollo } from '@interfaces/apollo/apollo.inerface';
 })
 export class FilterAlbumNamePipe implements PipeTransform {
   // TODO: Fix type / return type
-  transform(albums: Array<AlbumApollo>, args?: string): any {
+  transform(albums: AlbumApollo[], args?: string): AlbumApollo[] {
     if (args) {
       return albums.filter((album: AlbumApollo) => {
         return album.name.toLowerCase().includes(args.toLowerCase());

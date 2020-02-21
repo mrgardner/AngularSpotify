@@ -112,7 +112,7 @@ describe('UtilServiceService', () => {
   });
 
   it('should check displayArtists method with only 1 artist', () => {
-    const artists: Array<Artist> = [
+    const artists: Artist[] = [
       {
         external_urls: '',
         id: 'test',
@@ -126,7 +126,7 @@ describe('UtilServiceService', () => {
   });
 
   it('should check displayArtists method with 2 artists', () => {
-    const artists: Array<Artist> = [
+    const artists: Artist[] = [
       {
         external_urls: '',
         id: 'test',

@@ -27,6 +27,7 @@ import { ApolloService } from '@services/apollo/apollo.service';
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SpotifySongResponse } from '@app-core/interfaces/song/song.interface';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -204,7 +205,7 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check ngOnInit method spotifyPlaybackService currentSongState', () => {
-    const mockSongState = {
+    const mockSongState: SpotifySongResponse = {
       bitrate: 1,
       context: {
         metadata: {},
@@ -226,6 +227,12 @@ describe('PlaylistTableComponent', () => {
       timestamp: 0,
       track_window: {
         current_track: {
+          added_at: '',
+          filterText: '',
+          total: 0,
+          size: 0,
+          showPauseButton: false,
+          showPlayButton: false,
           album: {
             album_type: '',
             artists: [],
@@ -268,7 +275,7 @@ describe('PlaylistTableComponent', () => {
           album_name: '',
           title: '',
           artist: '',
-          time: '',
+          time: 0,
           addedAt: '',
           duration: 0
         },
@@ -294,7 +301,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.ngOnInit();
     spotifyPlaybackService.currentTrack(mockTrack);
@@ -381,7 +389,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -395,7 +404,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.ngOnInit();
@@ -417,7 +427,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -431,7 +442,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.ngOnInit();
@@ -453,7 +465,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -467,7 +480,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.ngOnInit();
@@ -489,7 +503,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -503,7 +518,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.ngOnInit();
@@ -525,7 +541,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -539,7 +556,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.ngOnInit();
@@ -561,7 +579,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -575,7 +594,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.ngOnInit();
@@ -608,7 +628,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.state = {
       bitrate: 1,
@@ -654,7 +675,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.state = {
       bitrate: 1,
@@ -706,7 +728,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.tracks = [
       mockTrack
@@ -728,7 +751,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.tracks = [
       {
@@ -743,7 +767,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.showPlayButton(mockTrack);
@@ -763,7 +788,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.tracks = [
       mockTrack
@@ -785,7 +811,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.tracks = [
       {
@@ -800,7 +827,8 @@ describe('PlaylistTableComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     component.hidePlayButton(mockTrack);
@@ -820,7 +848,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.showPauseButton(mockTrack);
     expect(mockTrack.showPauseButton).toBeTruthy();
@@ -839,7 +868,8 @@ describe('PlaylistTableComponent', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     component.hidePauseButton(mockTrack);
     expect(mockTrack.showPauseButton).toBeFalsy();

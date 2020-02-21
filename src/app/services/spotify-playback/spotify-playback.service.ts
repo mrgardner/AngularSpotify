@@ -93,7 +93,8 @@ export class SpotifyPlaybackService {
           uri: '',
           total: 0,
           size: 0,
-          filterText: ''
+          filterText: '',
+          remove: false
         });
         await this.waitForDeviceToBeSelected();
       }

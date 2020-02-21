@@ -6,6 +6,8 @@ import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playb
 
 // Testing
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { SpotifySongResponse } from '@app-core/interfaces/song/song.interface';
+import { SortedTrack } from '@app-core/interfaces/track/track.interface';
 
 describe('SpotifyPlaybackService', () => {
   let spotifyPlaybackService: SpotifyPlaybackService;
@@ -29,7 +31,7 @@ describe('SpotifyPlaybackService', () => {
   afterEach(() => {
     spotifyPlaybackService = null;
     // TODO: Fix issue
-    TestBed.inject(Window).Spotify = null;
+    TestBed.inject(Window)['Spotify'] = null;
     jasmine.clock().uninstall();
   });
 
@@ -39,8 +41,8 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check waitForSpotifyWebPlaybackSDKToLoad method with Spotify object on window', fakeAsync(async () => {
     // TODO: Fix issue
-    TestBed.inject(Window).Spotify = 'test';
-    const result: string = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
+    TestBed.inject(Window)['Spotify'] = 'test';
+    const result = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
     tick(10000);
     expect(result).toEqual('test');
     tick(10000);
@@ -279,7 +281,7 @@ describe('SpotifyPlaybackService', () => {
   }));
 
   it('should check sendCurrentState method', () => {
-    const mockSongState = {
+    const mockSongState: SpotifySongResponse = {
       bitrate: 1,
       context: {
         metadata: {},
@@ -301,6 +303,12 @@ describe('SpotifyPlaybackService', () => {
       timestamp: 0,
       track_window: {
         current_track: {
+          filterText: '',
+          added_at: '',
+          total: 0,
+          size: 0,
+          showPauseButton: false,
+          showPlayButton: false,
           album: {
             album_type: '',
             artists: [],
@@ -343,7 +351,7 @@ describe('SpotifyPlaybackService', () => {
           album_name: '',
           title: '',
           artist: '',
-          time: '',
+          time: 0,
           addedAt: '',
           duration: 0
         },
@@ -387,52 +395,20 @@ describe('SpotifyPlaybackService', () => {
   });
 
   it('should check currentTrack method', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
+    const mockTrack: SortedTrack = {
       title: '',
       artist: '',
-      time: '',
-      addedAt: '',
-      duration: 0
+      album_name: '',
+      added_at: '',
+      time: 0,
+      showPlayButton: false,
+      showPauseButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: '',
+      remove: false
     };
     const spy = spyOn(spotifyPlaybackService.currentTrack$, 'emit');
     spotifyPlaybackService.currentTrack(mockTrack);

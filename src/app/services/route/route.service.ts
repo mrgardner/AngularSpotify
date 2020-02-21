@@ -11,7 +11,7 @@ export class RouteService {
   constructor() {}
 
   parseUrl(route: string): SelectedRoute {
-    const splitRoute = route.split('/').filter(function (el) {
+    const splitRoute = route.split('/').filter((el) => {
       return el !== '';
     });
     const selectedRoute = {

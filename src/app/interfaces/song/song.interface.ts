@@ -3,29 +3,23 @@ import { TrackWindow } from '@interfaces/track/track.interface';
 
 export interface SpotifySongResponse {
   bitrate: number;
-  context: SongContext;
-  disallows: SongDisallows;
+  context: {
+    metadata: Object;
+    uri: string;
+  };
+  disallows: {
+    pausing: boolean;
+    skipping_prev: boolean;
+  };
   duration: number;
   paused: boolean;
   position: number;
   repeat_mode: number;
-  restrictions: SongRestrictions;
+  restrictions: {
+    disallow_pausing_reasons: string[];
+    disallow_skipping_prev_reasons: string[];
+  };
   shuffle: boolean;
   timestamp: number;
   track_window: TrackWindow;
-}
-
-interface SongContext {
-  metadata: Object;
-  uri: string;
-}
-
-interface SongDisallows {
-  pausing: boolean;
-  skipping_prev: boolean;
-}
-
-interface SongRestrictions {
-  disallow_pausing_reasons: Array<string>;
-  disallow_skipping_prev_reasons: Array<string>;
 }

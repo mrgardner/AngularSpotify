@@ -48,7 +48,7 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`);
   }
 
-  shuffleTracks(tracks: Array<SortedTrack>): Array<Object> {
+  shuffleTracks(tracks: SortedTrack[]): Object[] {
     const array = tracks;
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -58,11 +58,11 @@ export class SpotifyService {
     return array;
   }
 
-  addTracksToPlaylist(owner: string, playlistID: string, tracksUris: Array<string>): Observable<any> {
+  addTracksToPlaylist(owner: string, playlistID: string, tracksUris: string[]): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, {uris: tracksUris});
   }
 
-  postTracksToPlaylist(owner: string, playlistID: string, tracksUris: Array<string>): Observable<any> {
+  postTracksToPlaylist(owner: string, playlistID: string, tracksUris: string[]): Observable<any> {
     return this._http.post(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, {uris: tracksUris});
   }
 
@@ -126,7 +126,7 @@ export class SpotifyService {
     return this._http.put(url, requestBody);
   }
 
-  mapTrackURIs(tracks: Array<SortedTrack>): Array<string> {
+  mapTrackURIs(tracks: SortedTrack[]): string[] {
     return tracks.map((track: SortedTrack) => {
       return track.uri;
     });
@@ -213,7 +213,7 @@ export class SpotifyService {
   //     );
   // }
 
-  removeTracks(owner: string, playlistID: string, tracks: Array<SortedTrack>): Observable<any> {
+  removeTracks(owner: string, playlistID: string, tracks: SortedTrack[]): Observable<any> {
     const options = {
       headers: null,
       body: tracks

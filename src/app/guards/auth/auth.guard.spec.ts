@@ -22,7 +22,7 @@ describe('AuthGuard', () => {
   const routes: Routes = [
     {path: 'login', component: LoginComponent},
   ];
-  const mockSnapshot: any = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
+  const mockSnapshot: RouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({

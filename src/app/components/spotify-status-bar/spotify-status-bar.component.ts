@@ -96,7 +96,7 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   }
 
   onVolumeChange(event: Event): void {
-    const volume: number = +(<HTMLInputElement>event.target).value;
+    const volume: number = +(event.target as HTMLInputElement).value;
     this.spotifyPlaybackService.setVolume(volume / 100);
   }
 

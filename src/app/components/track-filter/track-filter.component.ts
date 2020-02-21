@@ -57,8 +57,8 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   // }
 
   checkForDuplicateTrack(event: Event): void {
-    this.isDuplicateTrack = (<HTMLInputElement>event.target).checked;
-    this.trackService.checkDuplicate((<HTMLInputElement>event.target).checked);
+    this.isDuplicateTrack = (event.target as HTMLInputElement).checked;
+    this.trackService.checkDuplicate((event.target as HTMLInputElement).checked);
   }
 
   // TODO: FIX when input variables are fixed

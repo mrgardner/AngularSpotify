@@ -102,7 +102,7 @@ describe('SpotifyService', () => {
   });
 
   it('should check shuffleTracks method', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: '',
         artist: '',
@@ -115,7 +115,8 @@ describe('SpotifyService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -129,7 +130,8 @@ describe('SpotifyService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     const shuffledTracks = spotifyService.shuffleTracks(tracks);
@@ -159,7 +161,7 @@ describe('SpotifyService', () => {
   });
 
   it('should check playSpotifyTrack method', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: '',
         artist: '',
@@ -172,7 +174,8 @@ describe('SpotifyService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     const song: SortedTrack = {
@@ -187,7 +190,8 @@ describe('SpotifyService', () => {
       uri: '',
       total: 0,
       size: 0,
-      filterText: ''
+      filterText: '',
+      remove: false
     };
     const spy = spyOn(http, 'put').and.returnValue(of('test'));
     spotifyService.playSpotifyTrack(tracks, song).subscribe(track => {
@@ -282,7 +286,7 @@ describe('SpotifyService', () => {
   });
 
   it('should check mapTrackURIs method', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: '',
         artist: '',
@@ -295,7 +299,8 @@ describe('SpotifyService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       {
         title: '',
@@ -309,7 +314,8 @@ describe('SpotifyService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
 
@@ -319,7 +325,7 @@ describe('SpotifyService', () => {
   });
 
   it('should check removeTracks method', () => {
-    const tracks: Array<SortedTrack> = [
+    const tracks: SortedTrack[] = [
       {
         title: '',
         artist: '',
@@ -332,7 +338,8 @@ describe('SpotifyService', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       }
     ];
     const spy = spyOn(http, 'delete').and.returnValue(of('test'));
