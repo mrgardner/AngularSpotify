@@ -1,6 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+// Angular Material
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+
+// Common
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
 
 @Component({
   selector: 'app-new-playlist-dialog',
@@ -8,6 +14,7 @@ import { SpotifyService } from '../../services/spotify/spotify.service';
   styleUrls: ['./new-playlist-dialog.component.scss']
 })
 export class NewPlaylistDialogComponent implements OnInit {
+  // TODO: Fix types
   public playlistName: string;
   public playlistDescription: string;
   public playlistNameMaxLength: number;
@@ -17,19 +24,35 @@ export class NewPlaylistDialogComponent implements OnInit {
   public imageFile: any;
   public showUserButtons: boolean;
   public reader: any;
+  public form = new FormGroup({
+    playlistName: new FormControl('', Validators.required),
+    playlistDescription: new FormControl('')
+  });
 
   constructor(
     public dialogRef: MatDialogRef<NewPlaylistDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Object,
     private spotifyService: SpotifyService) {}
 
-  ngOnInit() {
+  get playlistNameLength(): number {
+    return this.form.get('playlistName').value.length;
+  }
+
+  get playlistDescriptionLength(): number {
+    return this.form.get('playlistDescription').value.length;
+  }
+
+  ngOnInit(): void {
     this.playlistName = 'New Playlist';
     this.playlistDescription = '';
     this.playlistNameMaxLength = 100;
     this.playlistDescriptionMaxLength = 300;
     this.playlistDescriptionPlaceholder = 'Give your playlist a catchy description.';
     this.showUserButtons = false;
+  }
+
+  triggerFile(): void {
+    document.getElementById('file').click();
   }
 
   closeModal(): void {
@@ -43,10 +66,20 @@ export class NewPlaylistDialogComponent implements OnInit {
       this.reader.onload = (events: ProgressEvent) => {
         this.currentImage = (<FileReader>events.target).result;
         this.imageFile = this.currentImage.split(',')[1];
-
+        document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '380px';
       };
       this.reader.readAsDataURL(event.target.files[0]);
     }
+  }
+
+  resetImage(): void {
+    this.currentImage = null;
+    this.imageFile = null;
+    document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '300px';
+  }
+
+  replaceImage(): void {
+    document.getElementById('file2').click();
   }
 
   onSubmit(event): void {

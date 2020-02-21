@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
-import { RouteService } from '../../services/route/route.service';
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
+// Interfaces
+import { ActiveLink, Link, SelectedRoute } from '@interfaces/route/route.interface';
+
+// Services
+import { RouteService } from '@services/route/route.service';
 
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
-  public links = [
+export class CollectionComponent implements OnInit, OnDestroy {
+  public links: Link[] = [
     {
       path: 'collection/playlists',
       label: 'Playlists',
@@ -41,15 +48,13 @@ export class CollectionComponent implements OnInit {
       url: 'podcasts'
     }
   ];
-  public selectedRoute: {
-    parent: string,
-    child: string
-  };
-  public activeLink: any;
+  public selectedRoute: SelectedRoute;
+  public activeLink: ActiveLink;
+  public routerSubscription: Subscription;
 
-  constructor(private router: Router, private routeService: RouteService) { }
+  constructor(private router: Router, private routeService: RouteService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.selectedRoute = this.routeService.parseUrl(this.router.url);
     if (this.selectedRoute.child) {
       for (let i = 0; i < this.links.length; i++) {
@@ -62,12 +67,18 @@ export class CollectionComponent implements OnInit {
       this.activeLink = this.links[0];
       this.navigateTo(this.links[0].path);
     }
-    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
-      this.selectedRoute = this.routeService.parseUrl(event.url);
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationStart))
+      .subscribe((event: NavigationStart) => {
+        this.selectedRoute = this.routeService.parseUrl(event.url);
     });
   }
 
-  navigateTo(path: string) {
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
+  }
+
+  navigateTo(path: string): void {
     this.router.navigate([path]);
   }
 }

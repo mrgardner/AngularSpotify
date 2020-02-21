@@ -1,31 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { concat, of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { concat, of } from 'rxjs';
-import { SpotifyService } from '../../../services/spotify/spotify.service';
-import { Album } from '../../../interfaces/album/album.interface';
-import { SpotifyAlbumsResponse } from '../../../interfaces/album/spotify-albums-response.interface';
-import { UtilService } from '../../../services/util/util.service';
-import { ApolloService } from '../../../services/apollo/apollo.service';
+
+// Interfaces
+import { AlbumApollo, ApolloAlbumResult } from '@interfaces/apollo/apollo.inerface';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-albums',
   templateUrl: './albums.component.html',
   styleUrls: ['./albums.component.scss']
 })
-export class AlbumsComponent implements OnInit {
+export class AlbumsComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public albumsLoaded: boolean;
-  public albums: Array<Album> = [];
+  public albums: AlbumApollo[] = [];
   public isSearchBoxShowing: boolean;
   public name: string;
+  public albumsSubscription: Subscription;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService, private spotifyService: SpotifyService) { }
+  constructor(private apolloService: ApolloService, public utilService: UtilService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     let numberOfSavedAlbums = 0;
-    this.apolloService.getAlbums()
+    this.albumsSubscription = this.apolloService.getAlbums()
       .pipe(
-        switchMap((savedAlbums: SpotifyAlbumsResponse) => {
+        switchMap((savedAlbums: ApolloAlbumResult) => {
           this.loading = true;
           this.albumsLoaded = false;
           this.albums = [];
@@ -45,13 +49,17 @@ export class AlbumsComponent implements OnInit {
           }
         })
       )
-      .subscribe((data: SpotifyAlbumsResponse) => {
+      .subscribe((data: ApolloAlbumResult) => {
         this.albums = this.albums.concat(data.items);
         if (!data.next) {
           this.loading = false;
           this.albumsLoaded = true;
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.albumsSubscription.unsubscribe();
   }
 
   showSearchBox(): void {

@@ -1,6 +1,11 @@
-import { TestBed, fakeAsync, tick, async } from '@angular/core/testing';
-import { SpotifyPlaybackService } from './spotify-playback.service';
+// Common
 import { HttpClientModule } from '@angular/common/http';
+
+// Services
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+
+// Testing
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 describe('SpotifyPlaybackService', () => {
   let spotifyPlaybackService: SpotifyPlaybackService;
@@ -18,12 +23,13 @@ describe('SpotifyPlaybackService', () => {
       ]
     });
 
-    spotifyPlaybackService = TestBed.get(SpotifyPlaybackService);
+    spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {
     spotifyPlaybackService = null;
-    TestBed.get(Window).Spotify = null;
+    // TODO: Fix issue
+    TestBed.inject(Window).Spotify = null;
     jasmine.clock().uninstall();
   });
 
@@ -32,8 +38,9 @@ describe('SpotifyPlaybackService', () => {
   });
 
   it('should check waitForSpotifyWebPlaybackSDKToLoad method with Spotify object on window', fakeAsync(async () => {
-    TestBed.get(Window).Spotify = 'test';
-    const result = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
+    // TODO: Fix issue
+    TestBed.inject(Window).Spotify = 'test';
+    const result: string = await spotifyPlaybackService.waitForSpotifyWebPlaybackSDKToLoad();
     tick(10000);
     expect(result).toEqual('test');
     tick(10000);

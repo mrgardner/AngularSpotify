@@ -17,6 +17,7 @@ export const PLAYLIST_INFO = gql`
  query Playlist($url: String!) {
     playlist(url: $url) {
       name
+      id
       owner {
         display_name
       }
@@ -25,6 +26,9 @@ export const PLAYLIST_INFO = gql`
       }
       images {
         url
+      }
+      followers {
+        total
       }
     }
   }

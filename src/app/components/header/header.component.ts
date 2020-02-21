@@ -1,6 +1,9 @@
+// Common
 import { Component, OnInit } from '@angular/core';
-import { SpotifyPlaybackService } from '../../services/spotify-playback/spotify-playback.service';
-import { AuthService } from '../../services/auth/auth.service';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +18,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private spotifyPlaybackService: SpotifyPlaybackService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.isLoggedIn()) {
       this.spotifyPlaybackService.setupPlayer();
     }

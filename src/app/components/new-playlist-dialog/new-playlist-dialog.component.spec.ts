@@ -1,10 +1,19 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewPlaylistDialogComponent } from './new-playlist-dialog.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
+// Angular Material
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+// Common
 import { FormsModule } from '@angular/forms';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
+
+// Components
+import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-playlist-dialog.component';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('NewPlaylistDialogComponent', () => {
   let component: NewPlaylistDialogComponent;
@@ -21,7 +30,7 @@ describe('NewPlaylistDialogComponent', () => {
         FormsModule
       ],
       providers: [
-        {provide: MatDialogRef, useValue: {close: () => {}}},
+        {provide: MatDialogRef, useValue: {close: (): void => {}}},
         {provide: MAT_DIALOG_DATA, useValue: {}}
       ]
     })
@@ -31,7 +40,7 @@ describe('NewPlaylistDialogComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NewPlaylistDialogComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
+    spotifyService = TestBed.inject(SpotifyService);
   });
 
   afterEach(() => {
@@ -53,16 +62,16 @@ describe('NewPlaylistDialogComponent', () => {
   });
 
   it('should check closeModal method', () => {
-    const spy = spyOn(component.dialogRef, 'close');
+    const spy: jasmine.Spy = spyOn(component.dialogRef, 'close');
     component.closeModal();
     expect(spy).toHaveBeenCalled();
   });
 
   it('should check getFile method with a file', () => {
-    const blob = new Blob([''], { type: 'text/html' });
-    blob['lastModifiedDate'] = '';
-    blob['name'] = 'filename';
-    const fakeF = blob;
+    const blob: Blob = new Blob([''], { type: 'text/html' });
+    blob.lastModifiedDate = '';
+    blob.name = 'filename';
+    const fakeF: Blob = blob;
     const mockEvent = {
       target: {
         files: [
@@ -76,7 +85,7 @@ describe('NewPlaylistDialogComponent', () => {
 
   it('should check getFile method without a file', () => {
     const mockEvent = {
-      target: {}
+      target: []
     };
     component.getFile(mockEvent);
     expect(component).toBeTruthy();
@@ -104,8 +113,8 @@ describe('NewPlaylistDialogComponent', () => {
       type: 'Blob',
       webkitRelativePath: ''
     };
-    const spy = spyOn(spotifyService, 'createNewPlaylist').and.returnValue(of('test'));
-    const spy2 = spyOn(component.dialogRef, 'close');
+    const spy: jasmine.Spy = spyOn(spotifyService, 'createNewPlaylist').and.returnValue(of('test'));
+    const spy2: jasmine.Spy = spyOn(component.dialogRef, 'close');
     component.onSubmit(mockEvent);
     expect(spy).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();

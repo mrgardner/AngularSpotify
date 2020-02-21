@@ -1,12 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceModalComponent } from './device-modal.component';
-import { HttpClientModule } from '@angular/common/http';
+// Amgular Material
 import { MatDialogRef } from '@angular/material/dialog';
-import { SpotifyService } from '../../services/spotify/spotify.service';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
-import { SpotifyDevicesResponse } from '../../interfaces/device/spotify-devices-response.interface';
-import { SpotifyDeviceResponse } from '../../interfaces/device/spotify-device-response.interface';
-import { DeviceModalService } from '../../services/deviceModal/device-modal.service';
+
+// Components
+import { DeviceModalComponent } from '@components/device-modal/device-modal.component';
+
+// Interfaces
+import { SpotifyDeviceResponse, SpotifyDevicesResponse } from '@interfaces/device/device.interface';
+
+// Services
+import { DeviceModalService } from '@services/device-modal/device-modal.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('DeviceModalComponent', () => {
   let component: DeviceModalComponent;
@@ -23,7 +33,7 @@ describe('DeviceModalComponent', () => {
         HttpClientModule
       ],
       providers: [
-        {provide: MatDialogRef, useValue: {close: () => {}}},
+        {provide: MatDialogRef, useValue: {close: (): void => {}}},
       ]
     })
     .compileComponents();
@@ -32,8 +42,8 @@ describe('DeviceModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeviceModalComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
-    deviceModalService = TestBed.get(DeviceModalService);
+    spotifyService = TestBed.inject(SpotifyService);
+    deviceModalService = TestBed.inject(DeviceModalService);
   });
 
   afterEach(() => {
@@ -80,75 +90,18 @@ describe('DeviceModalComponent', () => {
       },
       is_playing: true,
       item: {
-        album: {
-          album_type: 'string',
-          artists: [
-            {
-              external_urls: 'string',
-              id: 'string',
-              name: 'string',
-              type: 'string',
-              uri: 'string'
-            }
-          ],
-          available_markets: [
-            ''
-          ],
-          external_urls: {
-            spotify: ''
-          },
-          href: 'string',
-          id: 'string',
-          images: [
-            {
-              height: 1,
-              url: 'string',
-              width: 1
-            }
-          ],
-          name: 'string',
-          release_date: 'string',
-          release_date_precision: 'string',
-          total_track: 1,
-          type: 'string',
-          uri: 'string'
-        },
-        artists: [
-          {
-            external_urls: 'string',
-            id: 'string',
-            name: 'string',
-            type: 'string',
-            uri: 'string'
-          }
-        ],
-        available_markets: ['Array<string>'],
-        disc_number: 1,
-        duration_ms: 1,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: 'string',
-        id: 'string',
-        name: 'string',
-        popularity: 1,
-        preview_url: 'string',
-        track_number: 1,
-        type: 'string',
-        uri: 'string',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: 'string',
-        title: 'string',
-        artist: 'string',
-        time: 'string',
-        addedAt: 'string',
-        duration: 0
+        title: '',
+        artist: '',
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       progress_ms: 1,
       repeat_state: 'string',
@@ -162,7 +115,7 @@ describe('DeviceModalComponent', () => {
   });
 
   it('should check the hideModal method', () => {
-    const spy = spyOn(component.dialogRef, 'close');
+    const spy: jasmine.Spy = spyOn(component.dialogRef, 'close');
     component.hideModal();
     expect(spy).toHaveBeenCalled();
   });
@@ -182,75 +135,18 @@ describe('DeviceModalComponent', () => {
       },
       is_playing: true,
       item: {
-        album: {
-          album_type: 'string',
-          artists: [
-            {
-              external_urls: 'string',
-              id: 'string',
-              name: 'string',
-              type: 'string',
-              uri: 'string'
-            }
-          ],
-          available_markets: [
-            ''
-          ],
-          external_urls: {
-            spotify: ''
-          },
-          href: 'string',
-          id: 'string',
-          images: [
-            {
-              height: 1,
-              url: 'string',
-              width: 1
-            }
-          ],
-          name: 'string',
-          release_date: 'string',
-          release_date_precision: 'string',
-          total_track: 1,
-          type: 'string',
-          uri: 'string'
-        },
-        artists: [
-          {
-            external_urls: 'string',
-            id: 'string',
-            name: 'string',
-            type: 'string',
-            uri: 'string'
-          }
-        ],
-        available_markets: ['Array<string>'],
-        disc_number: 1,
-        duration_ms: 1,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: 'string',
-        id: 'string',
-        name: 'string',
-        popularity: 1,
-        preview_url: 'string',
-        track_number: 1,
-        type: 'string',
-        uri: 'string',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: 'string',
-        title: 'string',
-        artist: 'string',
-        time: 'string',
-        addedAt: 'string',
-        duration: 0
+        title: '',
+        artist: '',
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       progress_ms: 1,
       repeat_state: 'string',
@@ -258,7 +154,7 @@ describe('DeviceModalComponent', () => {
       timestamp: 1
     };
     spyOn(spotifyService, 'makeDeviceActive').and.returnValue(of('test'));
-    const spy = spyOn(deviceModalService, 'changeActiveDevice');
+    const spy: jasmine.Spy = spyOn(deviceModalService, 'changeActiveDevice');
     component.makeDeviceActive(device.device);
     expect(component.currentDevice).toEqual(device.device.id);
     expect(spy).toHaveBeenCalled();

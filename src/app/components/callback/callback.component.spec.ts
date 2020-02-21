@@ -1,7 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CallbackComponent } from './callback.component';
+// Common
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+
+// Components
+import { CallbackComponent } from '@components/callback/callback.component';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 
 describe('CallbackComponent', () => {
   let component: CallbackComponent;
@@ -36,7 +42,7 @@ describe('CallbackComponent', () => {
         spotifyCallback: () => {}
       }
     };
-    TestBed.get(ActivatedRoute).fragment = of('#access_token=123&token_type=123&expires_in=3600&state=123');
+    TestBed.inject(ActivatedRoute).fragment = of('#access_token=123&token_type=123&expires_in=3600&state=123');
     component.ngOnInit();
     expect(component).toBeTruthy();
   });
@@ -47,7 +53,7 @@ describe('CallbackComponent', () => {
         spotifyCallback: () => {}
       }
     };
-    TestBed.get(ActivatedRoute).fragment = of('test');
+    TestBed.inject(ActivatedRoute).fragment = of('test');
     component.ngOnInit();
     expect(component).toBeTruthy();
   });

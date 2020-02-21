@@ -1,10 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {SpotifyService} from '../../services/spotify/spotify.service';
-import {TrackService} from '../../services/track/track.service';
-import {PlaylistService} from '../../services/playlist/playlist.service';
-import { Track } from '../../interfaces/track/track.interface';
-import { Params } from '../../interfaces/params/params.interface';
+// Common
+import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+// Interfaces
+import { Params } from '@interfaces/params/params.interface';
+
+// Services
+import { TrackService } from '@services/track/track.service';
 
 @Component({
   selector: 'app-track-filter',
@@ -12,35 +16,37 @@ import { Params } from '../../interfaces/params/params.interface';
   styleUrls: ['./track-filter.component.scss']
 })
 
-export class TrackFilterComponent implements OnInit {
-  // TODO: FIX
-  // @Input('tracks') tracks: Array<Object>;
-  // @Input('selectedTracks') selectedTracks: Array<Object>;
+export class TrackFilterComponent implements OnInit, OnDestroy {
   public isDuplicateTrack: boolean;
   public name: string;
-  public artist: string;
-  private originalTracks: Array<Object>;
+  public track: string;
   public isSearchBoxShowing: boolean;
   public playlistID: string;
   public endOfChain: boolean;
+  public routeSubscription: Subscription;
+  public form = new FormGroup({
+    track: new FormControl('')
+  });
 
   constructor(
-    private spotifyService: SpotifyService,
     private route: ActivatedRoute,
-    private trackService: TrackService,
-    private playlistService: PlaylistService) {}
+    private trackService: TrackService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
-    this.route.params.subscribe((params: Params) => {
+    this.routeSubscription = this.route.params.subscribe((params: Params) => {
       if (params && params.playlistID) {
         this.playlistID = params.playlistID;
       } else {
         this.endOfChain = true;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   // TODO: FIX when input variables are fixed
@@ -50,9 +56,9 @@ export class TrackFilterComponent implements OnInit {
   //   return localTracks.length > 0;
   // }
 
-  checkForDuplicateTrack(e: any): void {
-    this.isDuplicateTrack = e.target.checked;
-    this.trackService.checkDuplicate(e.target.checked);
+  checkForDuplicateTrack(event: Event): void {
+    this.isDuplicateTrack = (<HTMLInputElement>event.target).checked;
+    this.trackService.checkDuplicate((<HTMLInputElement>event.target).checked);
   }
 
   // TODO: FIX when input variables are fixed
@@ -61,7 +67,7 @@ export class TrackFilterComponent implements OnInit {
   //   that.isDuplicateTrack = false;
   //   that.trackService.checkDuplicate$.subscribe(isDuplicate => that.isDuplicateTrack = isDuplicate);
   //   const tracksToRemove = Array.from(this.selectedTracks['_selection']);
-  //   const tt = tracksToRemove.map((a: Track) => {
+  //   const tt = tracksToRemove.map((a: SortedTrack) => {
   //     const index = that.tracks.indexOf(a);
   //     return {
   //       uri: a.uri,
@@ -98,31 +104,7 @@ export class TrackFilterComponent implements OnInit {
     // });
   // }
 
-  filterName(name: string): void {
-    this.trackService.filterByTrackName(name);
-  }
-
-  filterArtist(artist: string): void {
-    this.trackService.filterByTrackArtist(artist);
-  }
-
-  showSearchBox(): void {
-    this.isSearchBoxShowing = true;
-  }
-
-  hideSearchBox(): void {
-    // if (this.isSearchBoxShowing) {
-      this.name = '';
-      this.filterName('');
-      this.isSearchBoxShowing = false;
-    // }
-  }
-
-  onLoseFocus(): void {
-    if (this.name.length === 0) {
-      this.hideSearchBox();
-    } else {
-      this.endOfChain = true;
-    }
+  filterTrack(track: string): void {
+    this.trackService.filterTrack(track);
   }
 }

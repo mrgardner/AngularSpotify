@@ -1,15 +1,21 @@
+// Common
 import { NgModule } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+
+// Apollo
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
-import { concat, ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { UtilService } from './util/util.service';
-import { HttpHeaders } from '@angular/common/http';
+import { concat, ApolloLink } from 'apollo-link';
+
+// Services
+import { UtilService } from '@services/util/util.service';
+
 
 @NgModule({
   imports: [
-    HttpLinkModule,
-    ApolloModule
+    ApolloModule,
+    HttpLinkModule
   ]
 })
 export class SpotifyApolloModule {

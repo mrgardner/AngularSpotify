@@ -1,67 +1,77 @@
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app/app.component';
-import { PlaylistTableComponent } from './tables/playlist-table/playlist-table.component';
-import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
-import { CallbackComponent } from './callback/callback.component';
-import { DuplicateTrackPipe } from '../pipes/duplicateTrack/duplicate-track.pipe';
-import { TrackFilterComponent } from './track-filter/track-filter.component';
-import { FilterTrackNamePipe } from '../pipes/filterTrackName/filter-track-name.pipe';
-import { FilterTrackArtistPipe } from '../pipes/filterTrackArtist/filter-track-artist.pipe';
-import { TrackComponent } from './track/track.component';
-import { SpotifyNavigationMenuComponent } from './spotify-navigation-menu/spotify-navigation-menu.component';
-import { SpotifyStatusBarComponent } from './spotify-status-bar/spotify-status-bar.component';
-import { LoginComponent } from './login/login.component';
-import { DeviceModalComponent } from './device-modal/device-modal.component';
-import { NewPlaylistDialogComponent } from './new-playlist-dialog/new-playlist-dialog.component';
-import { AlbumsComponent } from './collection/albums/albums.component';
-import { FilterAlbumNamePipe } from '../pipes/filterAlbumName/filter-album-name.pipe';
-import { DisplayUserComponent } from './display-user/display-user.component';
+// Common
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AngularMaterialModule } from '../angular-material.module';
-import { AppRoutingModule } from '../app.routes';
-import { CollectionComponent } from './collection/collection.component';
-import { ArtistsComponent } from './collection/artists/artists.component';
-import { PlaylistsComponent } from './collection/playlists/playlists.component';
-import { MadeForYouComponent } from './collection/made-for-you/made-for-you.component';
-import { LikedSongsComponent } from './collection/liked-songs/liked-songs.component';
-import { PodcastsComponent } from './collection/podcasts/podcasts.component';
+import { NgModule } from '@angular/core';
+
+// App-Core
+import { AngularMaterialModule } from '@app-core/angular-material.module';
+import { AppRoutingModule } from '@app-core/app.routes';
+
+// components
+import { AlbumsComponent } from '@components/collection/albums/albums.component';
+import { AppComponent } from '@components/app/app.component';
+import { ArtistsComponent } from '@components/collection/artists/artists.component';
+import { CallbackComponent } from '@components/callback/callback.component';
+import { CollectionComponent } from '@components/collection/collection.component';
+import { DeviceModalComponent } from '@components/device-modal/device-modal.component';
+import { DisplayUserComponent } from '@components/display-user/display-user.component';
+import { HeaderComponent } from '@components/header/header.component';
+import { HighlightSearchComponent } from '@components/highlight-search/highlight-search.component';
+import { HomeComponent } from '@components/home/home.component';
+import { LikedSongsComponent } from '@components/collection/liked-songs/liked-songs.component';
+import { LoginComponent } from '@components/login/login.component';
+import { MadeForYouComponent } from '@components/collection/made-for-you/made-for-you.component';
+import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-playlist-dialog.component';
+import { PlaylistsComponent } from '@components/collection/playlists/playlists.component';
+import { PlaylistTableComponent } from '@components/playlist-table/playlist-table.component';
+import { PodcastsComponent } from '@components/collection/podcasts/podcasts.component';
+import { SearchComponent } from '@components/search/search.component';
+import { SpotifyNavigationMenuComponent } from '@components/spotify-navigation-menu/spotify-navigation-menu.component';
+import { SpotifyStatusBarComponent } from '@components/spotify-status-bar/spotify-status-bar.component';
+import { TrackComponent } from '@components/track/track.component';
+import { TrackFilterComponent } from '@components/track-filter/track-filter.component';
+
+// Pipes
+import { FilterAlbumNamePipe } from '@pipes/filter-album-name/filter-album-name.pipe';
+import { DuplicateTrackPipe } from '@pipes/duplicate-track/duplicate-track.pipe';
 
 @NgModule({
   entryComponents: [
-    NewPlaylistDialogComponent,
-    DeviceModalComponent
+    DeviceModalComponent,
+    NewPlaylistDialogComponent
   ],
   declarations: [
+    AlbumsComponent,
     AppComponent,
-    PlaylistTableComponent,
-    HeaderComponent,
-    HomeComponent,
+    ArtistsComponent,
     CallbackComponent,
+    CollectionComponent,
+    DeviceModalComponent,
+    DisplayUserComponent,
     DuplicateTrackPipe,
-    TrackFilterComponent,
-    FilterTrackNamePipe,
-    FilterTrackArtistPipe,
-    TrackComponent,
+    FilterAlbumNamePipe,
+    HeaderComponent,
+    HighlightSearchComponent,
+    HomeComponent,
+    LikedSongsComponent,
+    LoginComponent,
+    MadeForYouComponent,
+    NewPlaylistDialogComponent,
+    PlaylistsComponent,
+    PlaylistTableComponent,
+    PodcastsComponent,
+    SearchComponent,
     SpotifyNavigationMenuComponent,
     SpotifyStatusBarComponent,
-    DeviceModalComponent,
-    NewPlaylistDialogComponent,
-    AlbumsComponent,
-    FilterAlbumNamePipe,
-    DisplayUserComponent,
-    LoginComponent,
-    CollectionComponent,
-    ArtistsComponent,
-    PlaylistsComponent,
-    MadeForYouComponent,
-    LikedSongsComponent,
-    PodcastsComponent
+    TrackComponent,
+    TrackFilterComponent
   ],
   imports: [
     CommonModule,
     AngularMaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ComponentModule {}

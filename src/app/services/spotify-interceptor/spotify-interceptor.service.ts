@@ -1,7 +1,10 @@
+// Common
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UtilService } from '../util/util.service';
+
+// Services
+import { UtilService } from '@services/util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +12,7 @@ import { UtilService } from '../util/util.service';
 export class SpotifyInterceptorService implements HttpInterceptor {
   constructor(private utilService: UtilService) {}
 
+  // TODO: Fix return types
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const spotifyUrl = req.url.split('https://api.spotify.com/v1/');
     // TODO: Add check for content-type of images

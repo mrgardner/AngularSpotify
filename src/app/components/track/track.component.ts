@@ -1,27 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { switchMap } from 'rxjs/operators';
+// Common
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-import { Params } from '../../interfaces/params/params.interface';
-import { Track } from '../../interfaces/track/track.interface';
-import { UtilService } from '../../services/util/util.service';
+import { of, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+// Interfaces
+import { Params } from '@interfaces/params/params.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { UtilService } from '@services/util/util.service';
 
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
   styleUrls: ['./track.component.scss']
 })
-export class TrackComponent implements OnInit {
-  public track: Object;
+export class TrackComponent implements OnInit, OnDestroy {
+  public track: SortedTrack;
   public endOfChain: boolean;
+  public routeSubscription: Subscription;
+
   constructor(
     private spotifyService: SpotifyService,
     private route: ActivatedRoute,
     public utilService: UtilService) {}
 
   ngOnInit() {
-    this.route.params.pipe(
+    this.routeSubscription = this.route.params.pipe(
       switchMap((params: Params) => {
         if (params && params.trackID) {
           return this.spotifyService.getTrack(params.trackID);
@@ -30,6 +37,10 @@ export class TrackComponent implements OnInit {
           return of();
         }
       })
-    ).subscribe((track: Track) => this.track = track);
+    ).subscribe((track: SortedTrack) => this.track = track);
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 }

@@ -149,6 +149,10 @@
       justify-content: center;
       align-items: center;
 
+      .different-device {
+        color: green;
+      }
+
       i {
         margin-right: 0.5em;
       }
@@ -168,12 +172,24 @@
 
       .device-message {
         position: absolute;
-        right: 25px;
+        right: 15px;
         font-size: 12px;
         height: 100%;
         align-items: center;
         display: flex;
         top: 8px;
+
+        .icon {
+          width: 14px;
+          height: 14px;
+          font-size: 14px;
+          margin-right: 2px;
+        }
+
+        .bold {
+          margin-left: 2px;
+          font-weight: 800;
+        }
       }
     }
 
@@ -196,12 +212,4 @@
   .status-bar-container {
     height: 10vh;
   }
-}
-
-.bold {
-  font-weight: 800;
-}
-
-.different-device {
-  color: green;
 }

@@ -1,15 +1,25 @@
-import { Injectable } from '@angular/core';
+// Apollo
 import { Apollo } from 'apollo-angular';
+
+// Common
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { USER_DISPLAY_NAME } from '../../queries/get-user';
-import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO} from '../../queries/get-playlists';
+
+// Interfaces
+import { ApolloAlbumResult, AlbumApolloResponse } from 'src/app/interfaces/apollo/apollo.inerface';
+
+// Queries
 import { ALBUM_INFO } from '../../queries/get-albums';
 import { FOLLOWED_ARTISTS } from '../../queries/get-artists';
+import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO} from '../../queries/get-playlists';
+import { USER_DISPLAY_NAME } from '../../queries/get-user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApolloService {
+  // TODO: Fix types
   private readonly spotifyApiBaseURI: string;
   constructor(private apollo: Apollo) {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
@@ -68,7 +78,7 @@ export class ApolloService {
     .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
   }
 
-  getAlbums(moreAlbums?: string) {
+  getAlbums(moreAlbums?: string): Observable<ApolloAlbumResult> {
     const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums?limit=50`;
 
     return this.apollo
@@ -79,7 +89,7 @@ export class ApolloService {
         url
       }
     })
-    .valueChanges.pipe(map((result: any) => result.data.albums));
+    .valueChanges.pipe(map((result: AlbumApolloResponse) => result.data.albums));
   }
 
   getFollowedArtists() {

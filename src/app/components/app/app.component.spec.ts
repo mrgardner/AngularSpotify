@@ -1,12 +1,17 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { Routes } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { LoginComponent } from '../login/login.component';
+// Common
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../services/auth/auth.service';
+import { Routes } from '@angular/router';
 
+// Components
+import { AppComponent } from '@components/app/app.component';
+import { LoginComponent } from '@components/login/login.component';
 
+// Services
+import { AuthService } from '@services/auth/auth.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -28,7 +33,7 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
+    authService = TestBed.inject(AuthService);
   }));
 
   afterEach(() => {

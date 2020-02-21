@@ -1,9 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { LoginComponent } from './login.component';
-import { Routes } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+// Common
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../services/auth/auth.service';
+
+import { Routes } from '@angular/router';
+
+// Components
+import { LoginComponent } from '@components/login/login.component';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -29,7 +37,7 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
+    authService = TestBed.inject(AuthService);
   });
 
   afterEach(() => {
@@ -41,7 +49,7 @@ describe('LoginComponent', () => {
   });
 
   it('should check the login method', () => {
-    const spy = spyOn(authService, 'login');
+    const spy: jasmine.Spy = spyOn(authService, 'login');
     component.login();
     expect(spy).toHaveBeenCalled();
   });

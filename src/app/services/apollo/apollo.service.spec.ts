@@ -1,12 +1,18 @@
-import { TestBed } from '@angular/core/testing';
-import { ApolloService } from './apollo.service';
+// Apollo
 import { Apollo } from 'apollo-angular';
-import {
-  ApolloTestingModule,
-  ApolloTestingController,
-} from 'apollo-angular/testing';
-import { USER_DISPLAY_NAME } from '../../queries/get-user';
-import { PLAYLIST_NAME, PLAYLIST_INFO, PLAYLIST_TRACKS } from '../../queries/get-playlists';
+import { ApolloTestingModule, ApolloTestingController } from 'apollo-angular/testing';
+
+// Queries
+import { PLAYLIST_NAME, PLAYLIST_INFO, PLAYLIST_TRACKS } from '@queries/get-playlists';
+import { USER_DISPLAY_NAME } from '@queries/get-user';
+
+// Services
+import { ApolloService } from '@services/apollo/apollo.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
+
+
 
 describe('ApolloService', () => {
   let apolloService: ApolloService;
@@ -22,8 +28,8 @@ describe('ApolloService', () => {
       ]
     });
 
-    apolloService = TestBed.get(ApolloService);
-    controller = TestBed.get(ApolloTestingController);
+    apolloService = TestBed.inject(ApolloService);
+    controller = TestBed.inject(ApolloTestingController);
   });
 
   afterEach(() => {

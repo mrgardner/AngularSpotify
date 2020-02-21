@@ -1,16 +1,30 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SpotifyNavigationMenuComponent } from './spotify-navigation-menu.component';
-import { HttpClientModule } from '@angular/common/http';
+// Angular Material
 import { MatDialogModule } from '@angular/material/dialog';
-import { Routes, Router } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { StatusBarService } from '../../services/status-bar/status-bar.service';
-import { of } from 'rxjs';
-import { SpotifyService } from '../../services/spotify/spotify.service';
-import { PlaylistService } from '../../services/playlist/playlist.service';
-import { ApolloService } from '../../services/apollo/apollo.service';
+
+// Apollo
 import { Apollo } from 'apollo-angular';
+
+// Common
+import { HttpClientModule } from '@angular/common/http';
+import { Routes, Router } from '@angular/router';
+import { of } from 'rxjs';
+
+// Components
+import { SpotifyNavigationMenuComponent } from '@components/spotify-navigation-menu/spotify-navigation-menu.component';
+import { LoginComponent } from '@components/login/login.component';
+
+// Interfaces
+import { CurrentTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+import { SpotifyService } from '@services/spotify/spotify.service';
+import { PlaylistService } from '@services/playlist/playlist.service';
+import { ApolloService } from '@services/apollo/apollo.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SpotifyNavigationMenuComponent', () => {
   let component: SpotifyNavigationMenuComponent;
@@ -44,11 +58,11 @@ describe('SpotifyNavigationMenuComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SpotifyNavigationMenuComponent);
     component = fixture.componentInstance;
-    router = TestBed.get(Router);
-    statusBarService = TestBed.get(StatusBarService);
-    spotifyService = TestBed.get(SpotifyService);
-    playlistService = TestBed.get(PlaylistService);
-    apolloService = TestBed.get(ApolloService);
+    router = TestBed.inject(Router);
+    statusBarService = TestBed.inject(StatusBarService);
+    spotifyService = TestBed.inject(SpotifyService);
+    playlistService = TestBed.inject(PlaylistService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {
@@ -71,36 +85,10 @@ describe('SpotifyNavigationMenuComponent', () => {
     }));
     component.ngOnInit();
     expect(component.selectedPlaylist).toEqual('');
-    expect(component.imageEnlargeState).toEqual('inactive');
-    expect(component.isPictureEnlarged).toEqual(false);
-  });
-
-  it('should check ngOnInit method statusBarService enlargePicture when returned false', () => {
-    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
-      items: [],
-      next: 'string',
-      total: 0
-    }));
-    component.ngOnInit();
-    statusBarService.enlargePicture$.emit({value: false, url: ''});
-    expect(component.imageEnlargeState).toEqual('inactive');
-    expect(component.isPictureEnlarged).toEqual(false);
-  });
-
-  it('should check ngOnInit method statusBarService enlargePicture when returned true', () => {
-    spyOn(apolloService, 'getPlaylists').and.returnValue(of({
-      items: [],
-      next: 'string',
-      total: 0
-    }));
-    component.ngOnInit();
-    statusBarService.enlargePicture$.emit({value: true, url: ''});
-    expect(component.imageEnlargeState).toEqual('active');
-    expect(component.isPictureEnlarged).toEqual(true);
   });
 
   it('should check ngOnInit method statusBarService currentTrack', () => {
-    const mockCurrentTrack = {
+    const mockCurrentTrack: CurrentTrack = {
       added_at: '',
       added_by: {
         external_urls: {
@@ -111,57 +99,24 @@ describe('SpotifyNavigationMenuComponent', () => {
         type: '',
         uri: ''
       },
-      highlight: true,
-      isPauseButtonShowing: true,
-      isPlayButtonShowing: true,
-      is_local: true,
+      highlight: false,
+      isPauseButtonShowing: false,
+      isPlayButtonShowing: false,
+      is_local: false,
       primary_color: '',
       track: {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
+        album_name: '',
+        added_at: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       video_thumbnail: {
         url: ''
@@ -252,25 +207,31 @@ describe('SpotifyNavigationMenuComponent', () => {
   it('should check goToTracks method', () => {
     component.playlists = [
       {
+        collaborative: false,
+        external_urls: {
+          spotify: ''
+        },
+        followers: {
+          href: '',
+          total: 0
+        },
+        href: '',
         id: '',
+        images: null,
         name: '',
-        selected: true,
+        owner: null,
+        primary_color: '',
+        public: false,
+        snapshot_id: '',
+        tracks: null,
+        type: '',
+        uri: '',
+        selected: false,
+        selectedUrl: ''
       }
     ];
     const spy = spyOn(router, 'navigateByUrl');
     component.goToTracks({name: 'test', id: 'test'});
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check goToSavedAlbums method', () => {
-    const spy = spyOn(router, 'navigate');
-    component.goToSavedAlbums();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should check shrinkPicture method', () => {
-    const spy = spyOn(statusBarService, 'enlargePicture');
-    component.shrinkPicture('test');
     expect(spy).toHaveBeenCalled();
   });
 

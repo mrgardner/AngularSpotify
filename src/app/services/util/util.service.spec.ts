@@ -1,6 +1,11 @@
+// Interfaces
+import { Artist } from '@interfaces/artist/artist.interface';
+
+// Services
+import { UtilService } from '@services/util/util.service';
+
+// Testing
 import { TestBed } from '@angular/core/testing';
-import { UtilService } from './util.service';
-import { Artist } from '../../interfaces/artist/artist.interface';
 
 describe('UtilServiceService', () => {
   let utilService: UtilService;
@@ -11,7 +16,7 @@ describe('UtilServiceService', () => {
       ]
     });
 
-    utilService = TestBed.get(UtilService);
+    utilService = TestBed.inject(UtilService);
   });
 
   afterEach(() => {

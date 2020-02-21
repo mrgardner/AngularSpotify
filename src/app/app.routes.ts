@@ -1,33 +1,41 @@
-import { RouterModule, Routes } from '@angular/router';
-import {PlaylistTableComponent} from './components/tables/playlist-table/playlist-table.component';
-import {HomeComponent} from './components/home/home.component';
-import {CallbackComponent} from './components/callback/callback.component';
-import {SpotifyGuard} from './guards/spotify/spotify.guard';
-import {TrackComponent} from './components/track/track.component';
-import {AlbumsComponent} from './components/collection/albums/albums.component';
+// Common
 import { NgModule } from '@angular/core';
-import { LoginComponent } from './components/login/login.component';
-import { CollectionComponent } from './components/collection/collection.component';
-import { ArtistsComponent } from './components/collection/artists/artists.component';
-import { MadeForYouComponent } from './components/collection/made-for-you/made-for-you.component';
-import { LikedSongsComponent } from './components/collection/liked-songs/liked-songs.component';
-import { PodcastsComponent } from './components/collection/podcasts/podcasts.component';
-import { PlaylistsComponent } from './components/collection/playlists/playlists.component';
+import { Routes, RouterModule } from '@angular/router';
+
+// Components
+import { AlbumsComponent } from '@components/collection/albums/albums.component';
+import { ArtistsComponent } from '@components/collection/artists/artists.component';
+import { CallbackComponent } from '@components/callback/callback.component';
+import { CollectionComponent } from '@components/collection/collection.component';
+import { HomeComponent } from '@components/home/home.component';
+import { LoginComponent } from '@components/login/login.component';
+import { LikedSongsComponent } from '@components/collection/liked-songs/liked-songs.component';
+import { MadeForYouComponent } from '@components/collection/made-for-you/made-for-you.component';
+import { PlaylistsComponent } from '@components/collection/playlists/playlists.component';
+import { PlaylistTableComponent } from '@components/playlist-table/playlist-table.component';
+import { PodcastsComponent } from '@components/collection/podcasts/podcasts.component';
+import { SearchComponent } from '@components/search/search.component';
+import { TrackComponent } from '@components/track/track.component';
+
+// Guards
+import { AuthGuard } from '@guards/auth/auth.guard';
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent, canActivate: [SpotifyGuard]},
-  { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [SpotifyGuard]},
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'callback', component: CallbackComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'track/:name/:id', component: TrackComponent, canActivate: [SpotifyGuard]},
-  { path: 'collection', component: CollectionComponent, canActivate: [SpotifyGuard], children: [
-    { path: 'playlists', component: PlaylistsComponent, canActivate: [SpotifyGuard]},
-    { path: 'made-for-you', component: MadeForYouComponent, canActivate: [SpotifyGuard]},
-    { path: 'liked-songs', component: LikedSongsComponent, canActivate: [SpotifyGuard]},
-    { path: 'albums', component: AlbumsComponent, canActivate: [SpotifyGuard]},
-    { path: 'artists', component: ArtistsComponent, canActivate: [SpotifyGuard]},
-    { path: 'podcasts', component: PodcastsComponent, canActivate: [SpotifyGuard]}
+  { path: 'collection', component: CollectionComponent, canActivate: [AuthGuard], children: [
+    { path: 'playlists', component: PlaylistsComponent, canActivate: [AuthGuard]},
+    { path: 'made-for-you', component: MadeForYouComponent, canActivate: [AuthGuard]},
+    { path: 'liked-songs', component: LikedSongsComponent, canActivate: [AuthGuard]},
+    { path: 'albums', component: AlbumsComponent, canActivate: [AuthGuard]},
+    { path: 'artists', component: ArtistsComponent, canActivate: [AuthGuard]},
+    { path: 'podcasts', component: PodcastsComponent, canActivate: [AuthGuard]}
   ]},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  { path: 'login', component: LoginComponent},
+  { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [AuthGuard]},
+  { path: 'search', component: SearchComponent, canActivate: [AuthGuard]},
+  { path: 'track/:name/:id', component: TrackComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

@@ -1,8 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { AlbumsComponent } from './albums.component';
+
+// Common
 import { HttpClientModule } from '@angular/common/http';
-import { SpotifyService } from '../../../services/spotify/spotify.service';
 import { of } from 'rxjs';
+
+// Components
+import { AlbumsComponent } from '@components/collection/albums/albums.component';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('AlbumsComponent', () => {
   let component: AlbumsComponent;
@@ -24,7 +32,7 @@ describe('AlbumsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlbumsComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.get(SpotifyService);
+    spotifyService = TestBed.inject(SpotifyService);
   });
 
   afterEach(() => {

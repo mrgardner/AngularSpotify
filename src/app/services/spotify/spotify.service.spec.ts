@@ -1,11 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-import { SpotifyService } from './spotify.service';
-import { HttpClientModule, HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+// Common
 import { Type } from '@angular/core';
+import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
-import { Track } from '../../interfaces/track/track.interface';
-import { Song } from '../../interfaces/song/song.interface';
+
+// Interfaces
+import { SortedTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { SpotifyService } from '@services/spotify/spotify.service';
+
+// Testing
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('SpotifyService', () => {
   let spotifyService: SpotifyService;
@@ -23,9 +29,9 @@ describe('SpotifyService', () => {
       ]
     });
 
-    spotifyService = TestBed.get(SpotifyService);
-    http = TestBed.get(HttpClient);
-    httpMock = TestBed.get(HttpTestingController as Type<HttpTestingController>);
+    spotifyService = TestBed.inject(SpotifyService);
+    http = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
   });
 
   afterEach(() => {
@@ -96,100 +102,34 @@ describe('SpotifyService', () => {
   });
 
   it('should check shuffleTracks method', () => {
-    const tracks: Array<Track> = [
+    const tracks: Array<SortedTrack> = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     const shuffledTracks = spotifyService.shuffleTracks(tracks);
@@ -219,120 +159,35 @@ describe('SpotifyService', () => {
   });
 
   it('should check playSpotifyTrack method', () => {
-    const tracks: Array<Track> = [
+    const tracks: Array<SortedTrack> = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: 'test',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
-    const song: Song = {
+    const song: SortedTrack = {
+      title: '',
+      artist: '',
       added_at: '',
-      added_by: {
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        type: '',
-        uri: ''
-      },
-      isPauseButtonShowing: true,
-      isPlayButtonShowing: true,
-      is_local: true,
-      primary_color: true,
-      track: {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: 'test',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
-        title: '',
-        artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
-      },
-      video_thumbnail: {
-        url: ''
-      },
+      album_name: '',
+      time: 0,
+      showPauseButton: false,
+      showPlayButton: false,
+      duration: 0,
+      uri: '',
+      total: 0,
+      size: 0,
+      filterText: ''
     };
     const spy = spyOn(http, 'put').and.returnValue(of('test'));
     spotifyService.playSpotifyTrack(tracks, song).subscribe(track => {
@@ -427,100 +282,34 @@ describe('SpotifyService', () => {
   });
 
   it('should check mapTrackURIs method', () => {
-    const tracks: Array<Track> = [
+    const tracks: Array<SortedTrack> = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: 'test',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: 'test2',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
 
@@ -530,53 +319,20 @@ describe('SpotifyService', () => {
   });
 
   it('should check removeTracks method', () => {
-    const tracks: Array<Track> = [
+    const tracks: Array<SortedTrack> = [
       {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: 'test',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        added_at: '',
+        album_name: '',
+        time: 0,
+        showPauseButton: false,
+        showPlayButton: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       }
     ];
     const spy = spyOn(http, 'delete').and.returnValue(of('test'));

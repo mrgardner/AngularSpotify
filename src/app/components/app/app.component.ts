@@ -1,5 +1,8 @@
+// Common
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+
+// Services
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +11,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class AppComponent {
   public showDeviceModal: boolean;
+
   constructor(private authService: AuthService) {
     this.showDeviceModal = false;
   }

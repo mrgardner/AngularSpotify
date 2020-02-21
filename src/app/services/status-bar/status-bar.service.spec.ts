@@ -1,6 +1,11 @@
+// Interfaces
+import { CurrentTrack } from '@interfaces/track/track.interface';
+
+// Services
+import { StatusBarService } from '@services/status-bar/status-bar.service';
+
+// Testing
 import { TestBed } from '@angular/core/testing';
-import { StatusBarService } from './status-bar.service';
-import { CurrentTrack } from '../../interfaces/track/current-track.interface';
 
 describe('StatusBarService', () => {
   let statusBarService: StatusBarService;
@@ -12,7 +17,7 @@ describe('StatusBarService', () => {
       ]
     });
 
-    statusBarService = TestBed.get(StatusBarService);
+    statusBarService = TestBed.inject(StatusBarService);
   });
 
   afterEach(() => {
@@ -94,11 +99,5 @@ describe('StatusBarService', () => {
     const spy = spyOn(statusBarService.currentTrack$, 'emit');
     statusBarService.setCurrentTrack(currentTrack);
     expect(spy).toHaveBeenCalledWith(currentTrack);
-  });
-
-  it('should check enlargePicture', () => {
-    const spy = spyOn(statusBarService.enlargePicture$, 'emit');
-    statusBarService.enlargePicture(true, 'test');
-    expect(spy).toHaveBeenCalledWith({value: true, url: 'test'});
   });
 });
