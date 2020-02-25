@@ -1,11 +1,11 @@
+// App-Moudules
+import { AngularMaterialModule } from '@app-modules/angular-material.module';
+import { AppRoutingModule } from '@app-modules/app.routes';
+
 // Common
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-// App-Core
-import { AngularMaterialModule } from '@app-core/angular-material.module';
-import { AppRoutingModule } from '@app-core/app.routes';
 
 // components
 import { AlbumsComponent } from '@components/collection/albums/albums.component';

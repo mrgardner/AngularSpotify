@@ -4,8 +4,11 @@ import { SortedTrack } from '@interfaces/track/track.interface';
 // Services
 import { TrackService } from '@services/track/track.service';
 
-// Testing
+// Testing Core
 import { TestBed } from '@angular/core/testing';
+
+// Testing Data
+import { mockSortedTrack } from '@test-data/tracks/tracks.test-data';
 
 describe('TrackService', () => {
   let trackService: TrackService;
@@ -36,21 +39,7 @@ describe('TrackService', () => {
 
   it('should check the filterDuplicateTrack method with args set to false', () => {
     const tracks: SortedTrack[] = [
-      {
-        title: '',
-        artist: '',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', '')
     ];
     const result = trackService.filterDuplicateTracks(tracks, false);
     expect(result).toEqual(tracks);
@@ -58,51 +47,9 @@ describe('TrackService', () => {
 
   it('should check the filterDuplicateTrack method with args set to true', () => {
     const tracks: SortedTrack[] = [
-      {
-        title: 'Test',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test1',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('Test', '123'),
+      mockSortedTrack('Test', '543'),
+      mockSortedTrack('Test1', '543')
     ];
 
     const result = trackService.filterDuplicateTracks(tracks, true);
@@ -113,96 +60,12 @@ describe('TrackService', () => {
 
   it('should check the filterDuplicateTrack method with args set to true and sorting in asc', () => {
     const tracks: SortedTrack[] = [
-      {
-        title: 'Test',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test1',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test1',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'zzzzz',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'zzzzz',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('Test', '123'),
+      mockSortedTrack('Test', '543'),
+      mockSortedTrack('Test1', '543'),
+      mockSortedTrack('Test1', '543'),
+      mockSortedTrack('zzzzz', '123'),
+      mockSortedTrack('zzzzz', '123')
     ];
     const result = trackService.filterDuplicateTracks(tracks, true);
 
@@ -212,96 +75,12 @@ describe('TrackService', () => {
 
   it('should check the filterDuplicateTrack method with args set to true and sorting in dsc', () => {
     const tracks: SortedTrack[] = [
-      {
-        title: 'Test',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test1',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'Test1',
-        artist: '543',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'zzzzz',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: 'zzzzz',
-        artist: '123',
-        album_name: '',
-        added_at: '',
-        time: 0,
-        showPlayButton: false,
-        showPauseButton: false,
-        duration: 10,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('Test', '123'),
+      mockSortedTrack('Test', '543'),
+      mockSortedTrack('Test1', '543'),
+      mockSortedTrack('Test1', '543'),
+      mockSortedTrack('zzzzz', '123'),
+      mockSortedTrack('zzzzz', '123')
     ];
 
     const result = trackService.filterDuplicateTracks(tracks, true);

@@ -6,7 +6,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Services
-import { SpotifyService } from '@services/spotify/spotify.service';
+// import { SpotifyService } from '@services/spotify/spotify.service';
 
 @Component({
   selector: 'app-new-playlist-dialog',
@@ -26,20 +26,21 @@ export class NewPlaylistDialogComponent implements OnInit {
   public reader: any;
   public form = new FormGroup({
     playlistName: new FormControl('', Validators.required),
-    playlistDescription: new FormControl('')
+    playlistDescription: new FormControl(''),
+    playlistImage: new FormControl(null)
   });
 
   constructor(
     public dialogRef: MatDialogRef<NewPlaylistDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Object,
-    private spotifyService: SpotifyService) {}
+    @Inject(MAT_DIALOG_DATA) public data) {}
+    // private spotifyService: SpotifyService) {}
 
   get playlistNameLength(): number {
-    return this.form.get('playlistName').value.length;
+    return (this.form.get('playlistName').value as string).length;
   }
 
   get playlistDescriptionLength(): number {
-    return this.form.get('playlistDescription').value.length;
+    return (this.form.get('playlistDescription').value as string).length;
   }
 
   ngOnInit(): void {
@@ -60,13 +61,13 @@ export class NewPlaylistDialogComponent implements OnInit {
   }
 
   getFile(event): void {
-    if (event.target.files && event.target.files[0]) {
+    if ((event.target as HTMLInputElement).files && (event.target as HTMLInputElement).files[0]) {
       this.reader = new FileReader();
 
       this.reader.onload = (events: ProgressEvent) => {
-        this.currentImage = (<FileReader>events.target).result;
+        this.currentImage = (events.target as FileReader).result;
         this.imageFile = this.currentImage.split(',')[1];
-        document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '380px';
+        (document.getElementsByClassName(this.dialogRef._containerInstance._config.panelClass as string)[0] as HTMLElement).style.height = '380px';
       };
       this.reader.readAsDataURL(event.target.files[0]);
     }
@@ -75,22 +76,26 @@ export class NewPlaylistDialogComponent implements OnInit {
   resetImage(): void {
     this.currentImage = null;
     this.imageFile = null;
-    document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '300px';
+    (document.getElementsByClassName(this.dialogRef._containerInstance._config.panelClass as string)[0] as HTMLElement).style.height = '300px';
   }
 
   replaceImage(): void {
     document.getElementById('file2').click();
   }
 
-  onSubmit(event): void {
-    const playlistName = event.target[0].value;
-    const playlistDescription = event.target[2].value;
-    const playlistImage = this.imageFile;
-    const body = {
-      name: playlistName,
-      description: playlistDescription,
-      public: true
-    };
-    this.spotifyService.createNewPlaylist(body, playlistImage).subscribe(() => this.dialogRef.close());
+  onSubmit(event: Event): void {
+    console.log(this.form.get('playlistName').value);
+    console.log(this.form.get('playlistDescription').value);
+    console.log(this.form.get('playlistImage').value);
+    // this.form.get('playlistName')
+    // const playlistName = (event.target as HTMLInputElement)[0].value;
+    // const playlistDescription = (event.target as HTMLInputElement)[2].value;
+    // const playlistImage = this.imageFile;
+    // const body = {
+    //   name: playlistName,
+    //   description: playlistDescription,
+    //   public: true
+    // };
+    // this.spotifyService.createNewPlaylist(body, playlistImage).subscribe(() => this.dialogRef.close());
   }
 }

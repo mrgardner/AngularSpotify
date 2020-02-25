@@ -3,14 +3,15 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@app-core/*": ["src/app/*"],
+      "@app-modules/*": ["src/app/modules/*"],
       "@components/*": ["src/app/components/*"],
       "@environments/*": ["src/environments/*"],
       "@guards/*": ["src/app/guards/*"],
       "@interfaces/*": ["src/app/interfaces/*"],
       "@pipes/*": ["src/app/pipes/*"],
       "@queries/*": ["src/app/queries/*"],
-      "@services/*": ["src/app/services/*"]
+      "@services/*": ["src/app/services/*"],
+      "@test-data/*": ["src/app/test-data/*"]
     },
     "importHelpers": true,
     "outDir": "./dist/out-tsc",

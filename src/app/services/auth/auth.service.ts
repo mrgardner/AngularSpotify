@@ -34,7 +34,7 @@ export class AuthService {
       'width=800, height=800'
     );
 
-    window['spotifyCallback'] = () => {
+    window.spotifyCallback = () => {
       const authToken = popup.location.hash.split('#access_token=')[1].split('&')[0];
       const expiredDate = new Date();
       expiredDate.setHours(expiredDate.getHours() + 1);
@@ -57,11 +57,11 @@ export class AuthService {
     return this.utilService.getCookie('spotifyToken');
   }
 
-  generateRandomString(length): string {
+  generateRandomString(length: number): string {
     let text = '';
     const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
 
-    for (let i = 0; i < possible.length; i++) {
+    for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;

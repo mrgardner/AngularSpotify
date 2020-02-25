@@ -1,6 +1,8 @@
+// Intefaces
+import { AlbumApollo } from '@interfaces/apollo/apollo.inerface';
+
 // Pipes
 import { FilterAlbumNamePipe } from '@pipes/filter-album-name/filter-album-name.pipe';
-import { AlbumApollo } from '@app-core/interfaces/apollo/apollo.inerface';
 
 describe('FilterAlbumNamePipe', () => {
   it('create an instance filter album name pipe', () => {

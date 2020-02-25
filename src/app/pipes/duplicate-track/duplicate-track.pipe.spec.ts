@@ -1,5 +1,5 @@
 // Interfaces
-import { SortedTrack } from '@app-core/interfaces/track/track.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
 
 // Pipes
 import { DuplicateTrackPipe } from '@pipes/duplicate-track/duplicate-track.pipe';

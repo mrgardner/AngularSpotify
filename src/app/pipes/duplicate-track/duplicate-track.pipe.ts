@@ -2,7 +2,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Interfaces
-import { SortedTrack } from '@app-core/interfaces/track/track.interface';
+import { SortedTrack } from '@interfaces/track/track.interface';
 
 @Pipe({
   name: 'duplicateTrack'

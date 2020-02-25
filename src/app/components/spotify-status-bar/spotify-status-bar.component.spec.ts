@@ -8,15 +8,20 @@ import { of } from 'rxjs';
 // Components
 import { SpotifyStatusBarComponent } from '@components/spotify-status-bar/spotify-status-bar.component';
 
+// Interfaces
+import { SpotifySongResponse } from '@interfaces/song/song.interface';
+
 // Services
 import { DeviceModalService } from '@services/device-modal/device-modal.service';
 import { SpotifyService } from '@services/spotify/spotify.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
 import { StatusBarService } from '@services/status-bar/status-bar.service';
 
-// Testing
+// Testing Core
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SpotifySongResponse } from '@app-core/interfaces/song/song.interface';
+
+// Testing Data
+import { mockEvent } from '@test-data/event/event.test-data';
 
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;
@@ -250,7 +255,7 @@ describe('SpotifyStatusBarComponent', () => {
     component.ngOnInit();
     spotifyPlaybackService.showPlayButton(true);
     expect(component.showPlayButton).toBeTruthy();
-  })
+  });
 
   it('should check openDeviceModal method', () => {
     const spy = spyOn(component.dialog, 'open');
@@ -258,10 +263,9 @@ describe('SpotifyStatusBarComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  // TODO: Fix test
   it('should check onVolumeChange method', () => {
     const spy = spyOn(spotifyPlaybackService, 'setVolume');
-    component.onVolumeChange(1);
+    component.onVolumeChange(mockEvent(1));
     expect(spy).toHaveBeenCalled();
   });
 

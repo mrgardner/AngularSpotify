@@ -4,7 +4,7 @@ import { TrackWindow } from '@interfaces/track/track.interface';
 export interface SpotifySongResponse {
   bitrate: number;
   context: {
-    metadata: Object;
+    metadata: {};
     uri: string;
   };
   disallows: {

@@ -127,10 +127,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.checkDuplicateSubscription = this.trackService.checkDuplicate$
       .subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
     this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
-      .subscribe((state: SpotifySongResponse) => {
-        this.state = state;
-      console.log(state);}
-        );
+      .subscribe((state: SpotifySongResponse) => this.state = state);
     this.currentTrackSubscription = this.spotifyPlaybackService.currentTrack$
       .subscribe((track: SortedTrack) => this.currentTrack = track);
 
@@ -205,7 +202,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
       && this.state.repeat_mode === 0 && this.state.track_window.next_tracks.length > 0) {
       this.spotifyPlaybackService.playSong();
     } else {
-      this.spotifyService.playSpotifyTrack(this.tracks, this.tracks[0]['track']).subscribe(() => {});
+      this.spotifyService.playSpotifyTrack(this.tracks, this.tracks[0]).subscribe(() => {});
     }
   }
 

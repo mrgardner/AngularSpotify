@@ -31,7 +31,8 @@ export const environment = {
       'user-follow-read ' +
       'ugc-image-upload',
     redirectURI: 'http://localhost:4200/callback'
-  }
+  },
+  enableSpotifyPlayback: false
 };
 
 /*

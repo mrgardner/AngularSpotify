@@ -16,6 +16,7 @@ import { PlaylistTableComponent } from '@components/playlist-table/playlist-tabl
 
 // Interfaces
 import { SortedTrack } from '@interfaces/track/track.interface';
+import { SpotifySongResponse } from '@interfaces/song/song.interface';
 
 // Services
 import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
@@ -27,7 +28,8 @@ import { ApolloService } from '@services/apollo/apollo.service';
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SpotifySongResponse } from '@app-core/interfaces/song/song.interface';
+import { mockSongState } from '@test-data/song/song.test-data';
+import { mockSortedTrack } from '@test-data/tracks/tracks.test-data';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -205,128 +207,22 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check ngOnInit method spotifyPlaybackService currentSongState', () => {
-    const mockSongState: SpotifySongResponse = {
-      bitrate: 1,
-      context: {
-        metadata: {},
-        uri: ''
-      },
-      disallows: {
-        pausing: true,
-        skipping_prev: true
-      },
-      duration: 1000,
-      paused: true,
-      position: 10000,
-      repeat_mode: 0,
-      restrictions: {
-        disallow_pausing_reasons: [],
-        disallow_skipping_prev_reasons: []
-      },
-      shuffle: true,
-      timestamp: 0,
-      track_window: {
-        current_track: {
-          added_at: '',
-          filterText: '',
-          total: 0,
-          size: 0,
-          showPauseButton: false,
-          showPlayButton: false,
-          album: {
-            album_type: '',
-            artists: [],
-            available_markets: [],
-            external_urls: {
-              spotify: ''
-            },
-            href: '',
-            id: '',
-            images: [],
-            name: '',
-            release_date: '',
-            release_date_precision: '',
-            total_track: 0,
-            type: '',
-            uri: ''
-          },
-          artists: [],
-          available_markets: [],
-          disc_number: 0,
-          duration_ms: 0,
-          explicit: true,
-          external_ids: {
-            isrc: ''
-          },
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          name: '',
-          popularity: 0,
-          preview_url: '',
-          track_number: 0,
-          type: '',
-          uri: '',
-          isPlayButtonShowing: true,
-          isPauseButtonShowing: true,
-          remove: true,
-          album_name: '',
-          title: '',
-          artist: '',
-          time: 0,
-          addedAt: '',
-          duration: 0
-        },
-        next_tracks: [],
-        previous_tracks: []
-      }
-    };
     component.ngOnInit();
     spotifyPlaybackService.sendCurrentState(mockSongState);
     expect(component.state).toEqual(mockSongState);
   });
 
   it('should check ngOnInit method spotifyPlaybackService currentTrack', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
     component.ngOnInit();
-    spotifyPlaybackService.currentTrack(mockTrack);
-    expect(component.currentTrack).toEqual(mockTrack);
+    spotifyPlaybackService.currentTrack(mockSortedTrack('', ''));
+    expect(component.currentTrack).toEqual(mockSortedTrack('', ''));
   });
 
   it('should check loadTracks in ngAfterContentInit with more than 1 track', () => {
     const mockTracks = {
       href: '',
       items: [
-        {
-          title: '',
-          artist: '',
-          added_at: '',
-          album_name: '',
-          time: 0,
-          showPauseButton: false,
-          showPlayButton: false,
-          duration: 0,
-          uri: '',
-          total: 0,
-          size: 0,
-          filterText: ''
-        }
+        mockSortedTrack('', '')
       ],
       limit: 0,
       next: '',
@@ -334,7 +230,7 @@ describe('PlaylistTableComponent', () => {
       previous: '',
       total: 1
     };
-    component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
+    component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
@@ -353,7 +249,7 @@ describe('PlaylistTableComponent', () => {
       previous: '',
       total: 0
     };
-    component.paginator = new MatPaginator(new MatPaginatorIntl, changeDetectorRef);
+    component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();

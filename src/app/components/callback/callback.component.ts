@@ -28,6 +28,7 @@ export class CallbackComponent implements OnInit, OnDestroy {
         const expiredDate: Date = new Date();
         expiredDate.setHours(expiredDate.getHours() + 1);
         this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
+        // tslint:disable-next-line: no-unsafe-any
         this._window.opener.spotifyCallback(authToken);
       }
     });

@@ -13,6 +13,9 @@ import { UtilService } from '@services/util/util.service';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+// Testing Data
+import { mockAuthWindow } from '@test-data/window/window.test-data';
+
 describe('AuthService', () => {
   let authService: AuthService;
   let utilService: UtilService;
@@ -48,17 +51,11 @@ describe('AuthService', () => {
   });
 
   it('should check login method', () => {
-    spyOn(window, 'open').and.returnValue(
-      {
-        location: {
-          hash: '#access_token=123&expire_in=233'
-        },
-        close: () => {}
-      }
-    );
+    spyOn(window, 'open').and.returnValue(mockAuthWindow('#access_token=123&expire_in=233'));
     const spy = spyOn(utilService, 'setCookie');
     authService.login();
-    window['spotifyCallback']('test');
+    // tslint:disable-next-line: no-unsafe-any
+    window.spotifyCallback();
     expect(spy).toHaveBeenCalled();
   });
 

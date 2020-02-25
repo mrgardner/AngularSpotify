@@ -4,8 +4,11 @@ import { Artist } from '@interfaces/artist/artist.interface';
 // Services
 import { UtilService } from '@services/util/util.service';
 
-// Testing
+// Testing Core
 import { TestBed } from '@angular/core/testing';
+
+// Testing Data
+import { mockArtist } from '@test-data/artists/artist.testing-data';
 
 describe('UtilServiceService', () => {
   let utilService: UtilService;
@@ -113,13 +116,7 @@ describe('UtilServiceService', () => {
 
   it('should check displayArtists method with only 1 artist', () => {
     const artists: Artist[] = [
-      {
-        external_urls: '',
-        id: 'test',
-        name: 'test',
-        type: '',
-        uri: ''
-      }
+      mockArtist('test', 'test')
     ];
     const result = utilService.displayArtists(artists);
     expect(result).toEqual(['test']);
@@ -127,20 +124,8 @@ describe('UtilServiceService', () => {
 
   it('should check displayArtists method with 2 artists', () => {
     const artists: Artist[] = [
-      {
-        external_urls: '',
-        id: 'test',
-        name: 'test',
-        type: '',
-        uri: ''
-      },
-      {
-        external_urls: '',
-        id: 'matt',
-        name: 'matt',
-        type: '',
-        uri: ''
-      }
+      mockArtist('test', 'test'),
+      mockArtist('matt', 'matt')
     ];
     const result = utilService.displayArtists(artists);
     expect(result).toEqual(['test, ', 'matt']);

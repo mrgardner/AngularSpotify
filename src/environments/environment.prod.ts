@@ -26,5 +26,6 @@ export const environment = {
       'user-library-read ' +
       'ugc-image-upload',
     redirectURI: 'http://localhost:4200/callback'
-  }
+  },
+  enableSpotifyPlayback: true
 };

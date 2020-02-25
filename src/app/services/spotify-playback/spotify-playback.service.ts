@@ -1,12 +1,27 @@
 // Common
 import { EventEmitter, Injectable } from '@angular/core';
 
+// Environments
+import { environment } from '@environments/environment';
+
 // Interfaces
+import { PlayerData, PlayerParameters, SpotifyPlayer } from '@interfaces/player/player.interface';
 import { SpotifySongResponse } from '@interfaces/song/song.interface';
+// import { SpotifyWindow } from '@interfaces/window/window.interface';
 import { SortedTrack } from '@interfaces/track/track.interface';
 
 // Services
+import { SpotifyService } from '../spotify/spotify.service';
 import { UtilService } from '@services/util/util.service';
+
+declare global {
+  interface Window {
+    Spotify: Window;
+    onSpotifyWebPlaybackSDKReady: () => void;
+    Player: (data: PlayerParameters) => void;
+    spotifyCallback: () => void;
+  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +36,10 @@ export class SpotifyPlaybackService {
   public currentTrack$: EventEmitter<SortedTrack>;
   public setVolume$: EventEmitter<number>;
   public currentPlaylistPlaying$: EventEmitter<string>;
-  // TODO: Fix type
-  public player: any;
+  public player: SpotifyPlayer;
   public statePollingInterval: number = null;
   public endOfChain: boolean;
-  constructor(private utilService: UtilService) {
+  constructor(private spotifyService: SpotifyService, private utilService: UtilService) {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
@@ -37,13 +51,15 @@ export class SpotifyPlaybackService {
     this.currentPlaylistPlaying$ = new EventEmitter();
   }
 
-  async waitForSpotifyWebPlaybackSDKToLoad () {
+  async waitForSpotifyWebPlaybackSDKToLoad(): Promise<Window> {
     return new Promise(resolve => {
-      if (window['Spotify']) {
-        resolve(window['Spotify']);
+      if (window.Spotify) {
+        // tslint:disable-next-line: no-unsafe-any
+        resolve(window.Spotify);
       } else {
-        window['onSpotifyWebPlaybackSDKReady'] = () => {
-          resolve(window['Spotify']);
+        window.onSpotifyWebPlaybackSDKReady = () => {
+          // tslint:disable-next-line: no-unsafe-any
+          resolve(window.Spotify);
         };
       }
     });
@@ -56,14 +72,17 @@ export class SpotifyPlaybackService {
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     body.appendChild(script);
     (async () => {
-      const Player = await this.waitForSpotifyWebPlaybackSDKToLoad();
+      const Player: Window = await this.waitForSpotifyWebPlaybackSDKToLoad();
 
-      // create a new player
-      this.player = new Player['Player']({
+      const params: PlayerParameters = {
         name: 'Testing123',
         volume: .1,
-        getOAuthToken: cb => { cb(this.utilService.getCookie('spotifyToken')); },
-      });
+        getOAuthToken: (cb: (token: string) => {}) => { cb(this.utilService.getCookie('spotifyToken')); }
+      };
+
+      // create a new player
+      // tslint:disable-next-line: no-unsafe-any
+      this.player = new Player.Player(params);
       // // set up the player's event handlers
       this.createEventHandlers();
 
@@ -72,7 +91,7 @@ export class SpotifyPlaybackService {
     })();
   }
 
-  async handleState(state) {
+  async handleState(state: SpotifySongResponse): Promise<void> {
     if (state) {
       if (!state.paused) {
         this.sendCurrentState(state);
@@ -103,18 +122,18 @@ export class SpotifyPlaybackService {
     }
   }
 
-  startStatePolling() {
+  startStatePolling(): void {
     this.statePollingInterval = window.setInterval(async () => {
       const state = await this.player.getCurrentState();
       await this.handleState(state);
     }, 1000);
   }
 
-  clearStatePolling() {
+  clearStatePolling(): void {
     window.clearInterval(this.statePollingInterval);
   }
 
-  createEventHandlers() {
+  createEventHandlers(): void {
     // problem setting up the player
     this.player.on('initialization_error', e => { console.error(e); });
     // problem authenticating the user.
@@ -126,16 +145,17 @@ export class SpotifyPlaybackService {
     // loading/playing the track failed for some reason
     this.player.on('playback_error', e => { console.error(e); });
     // Playback status updates
-    this.player.on('player_state_changed', async state => await this.handleState(state));
+    this.player.on('player_state_changed', async (state: SpotifySongResponse) => await this.handleState(state));
     // Ready
-    this.player.on('ready', async data => {
+    this.player.on('ready', async (data: PlayerData) => {
       const { device_id } = data;
       this.startStatePolling();
       localStorage.setItem('deviceId', device_id);
       // set the deviceId variable, then let's try
       // to swap music playback to *our* player!
-      // TODO: Make sure to eventually enable the line below
-      // this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
+      if (environment.enableSpotifyPlayback) {
+        this.spotifyService.makeDeviceActive(device_id).subscribe(() => {});
+      }
     });
 
     this.pauseSong$.subscribe(() => this.player.pause());
@@ -145,56 +165,55 @@ export class SpotifyPlaybackService {
     this.setVolume$.subscribe((value: number) => this.player.setVolume(value));
   }
 
-  waitForDeviceToBeSelected() {
-    return new Promise((resolve, reject) => {
+  waitForDeviceToBeSelected(): Promise<SpotifySongResponse> {
+    return new Promise(async (resolve, reject) => {
       if (this.player) {
-        this.player.getCurrentState().then(state => {
-          if (state !== null) {
-            this.startStatePolling();
-            resolve(state);
-          } else {
-            reject('No device state');
-          }
-        });
+        const state: SpotifySongResponse = await this.player.getCurrentState();
+        if (state !== null) {
+          this.startStatePolling();
+          resolve(state);
+        } else {
+          reject('No device state');
+        }
       } else {
         reject('No Player');
       }
     });
   }
 
-  sendCurrentState(state: SpotifySongResponse) {
+  sendCurrentState(state: SpotifySongResponse): void {
     this.currentSongState$.emit(state);
   }
 
-  currentPlaylistPlaying(playlistId: string) {
+  currentPlaylistPlaying(playlistId: string): void {
     this.currentPlaylistPlaying$.emit(playlistId);
   }
 
-  playSong() {
+  playSong(): void {
     this.playSong$.emit();
   }
 
-  pauseSong() {
+  pauseSong(): void {
     this.pauseSong$.emit();
   }
 
-  nextSong() {
+  nextSong(): void {
     this.nextSong$.emit();
   }
 
-  previousSong() {
+  previousSong(): void {
     this.previousSong$.emit();
   }
 
-  showPlayButton(value: boolean) {
+  showPlayButton(value: boolean): void {
     this.showPlayButton$.emit(value);
   }
 
-  currentTrack(value: SortedTrack) {
+  currentTrack(value: SortedTrack): void {
     this.currentTrack$.emit(value);
   }
 
-  setVolume(value: number) {
+  setVolume(value: number): void {
     this.setVolume$.emit(value);
   }
 }

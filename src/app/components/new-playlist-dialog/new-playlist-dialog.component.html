@@ -9,7 +9,7 @@
           <div *ngIf="!currentImage" class="default-image" (click)="triggerFile()">
             <img  src="/assets/blank_album.png"/>
             <div>Choose image</div>
-            <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
+            <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg" formControlName="playlistImage"/>
           </div>
           <div *ngIf="currentImage" class="user-image" (mouseenter)="showUserButtons = true" (mouseleave)="showUserButtons = false">
             <img [src]="currentImage">
@@ -20,7 +20,7 @@
               <button (click)="resetImage()" mat-menu-item>Remove image</button>
               <button (click)="replaceImage()" mat-menu-item>Replace image</button>
             </mat-menu>
-            <input type="file" name="file2" id="file2" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
+            <input type="file" name="file2" id="file2" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg" formControlName="playlistImage"/>
           </div>
         </div>
       </div>

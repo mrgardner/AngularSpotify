@@ -1,3 +1,4 @@
+// TODO: Remove from angular.json exclude list for tslint
 // Common
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -73,7 +74,7 @@ export class SpotifyService {
       - same point as above but for previous tracks
   */
 
-  playSpotifyTrack(tracks: Array<SortedTrack>, song: SortedTrack): Observable<any> {
+  playSpotifyTrack(tracks: SortedTrack[], song: SortedTrack): Observable<any> {
     const uris = tracks.map((track: SortedTrack)  => track.uri);
     const offset = uris.indexOf(song.uri);
 

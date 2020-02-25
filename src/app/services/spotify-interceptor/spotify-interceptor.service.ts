@@ -13,7 +13,7 @@ export class SpotifyInterceptorService implements HttpInterceptor {
   constructor(private utilService: UtilService) {}
 
   // TODO: Fix return types
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<string>, next: HttpHandler): Observable<HttpEvent<string>> {
     const spotifyUrl = req.url.split('https://api.spotify.com/v1/');
     // TODO: Add check for content-type of images
     if (spotifyUrl.length > 1) {

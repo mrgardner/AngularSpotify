@@ -57,10 +57,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.selectedRoute = this.routeService.parseUrl(this.router.url);
     if (this.selectedRoute.child) {
-      for (let i = 0; i < this.links.length; i++) {
-        if (this.links[i].url === this.selectedRoute.child) {
-          this.activeLink = this.links[i];
-          this.navigateTo(this.links[i].path);
+      for (const link of this.links) {
+        if (link.url === this.selectedRoute.child) {
+          this.activeLink = link;
+          this.navigateTo(link.path);
         }
       }
     } else {
