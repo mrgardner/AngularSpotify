@@ -30,6 +30,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockSongState } from '@test-data/song/song.test-data';
 import { mockSortedTrack } from '@test-data/tracks/tracks.test-data';
+import { mockUrlSegment } from '@test-data/url/url.test-data';
+import { mockPlaylistTracksResult, mockPlaylistResult } from '@test-data/apollo/apollo.test-data';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
@@ -101,7 +103,7 @@ describe('PlaylistTableComponent', () => {
     };
     component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
@@ -114,87 +116,21 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check ngOnInit method router events', () => {
-    const mockTracks = {
-      href: '',
-      items: [
-        {
-          title: '',
-          artist: '',
-          added_at: '',
-          album_name: '',
-          time: 0,
-          showPauseButton: false,
-          showPlayButton: false,
-          duration: 0,
-          uri: '',
-          total: 0,
-          size: 0,
-          filterText: ''
-        }
-      ],
-      limit: 0,
-      next: '',
-      offset: 0,
-      previous: '',
-      total: 1
-    };
-    const mockPlaylist = {
-      collaborative: true,
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      images: [],
-      name: '',
-      owner: {
-        display_name: '',
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        type: '',
-        uri: ''
-      },
-      primary_color: '',
-      public: true,
-      snapshot_id: '',
-      tracks: {
-        href: '',
-        total: 0
-      },
-      type: '',
-      uri: '',
-      selected: true,
-    };
-    // TODO: Fix depration get -> inject
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getPlaylist').and.returnValue(of(mockPlaylist));
-    TestBed.get(ActivatedRoute).url = of([
-      {
-        path: 'playlist'
-      },
-      {
-        path: 'test'
-      },
-      {
-        path: 'test'
-      }
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
+    spyOn(apolloService, 'getPlaylist').and.returnValue(of(mockPlaylistResult('')));
+    TestBed.inject(ActivatedRoute).url = of([
+      mockUrlSegment('playlist'),
+      mockUrlSegment('test'),
+      mockUrlSegment('test')
     ]);
     component.ngOnInit();
     expect(component.endOfChain).toBeFalsy();
   });
 
   it('should check ngOnInit method router events else case', () => {
-    // TODO: Fix depration get -> inject
-    TestBed.get(ActivatedRoute).url = of([
-      {
-        path: 'playlist'
-      },
-      {
-        path: 'test'
-      }
+    TestBed.inject(ActivatedRoute).url = of([
+      mockUrlSegment('playlist'),
+      mockUrlSegment('test')
     ]);
     component.ngOnInit();
     expect(component.endOfChain).toBeTruthy();
@@ -232,7 +168,7 @@ describe('PlaylistTableComponent', () => {
     };
     component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
@@ -251,7 +187,7 @@ describe('PlaylistTableComponent', () => {
     };
     component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
     spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();

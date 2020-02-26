@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 // Interfaces
-import { Artist } from '@interfaces/artist/artist.interface';
+import { ApolloFollowedArtist, ApolloFollowedArtistsResult } from '@interfaces/apollo/apollo.inerface';
 
 // Services
 import { ApolloService } from '@services/apollo/apollo.service';
@@ -15,13 +15,14 @@ import { UtilService } from '@services/util/util.service';
   styleUrls: ['./artists.component.scss']
 })
 export class ArtistsComponent implements OnInit, OnDestroy {
-  public artists: Artist[];
+  public artists: ApolloFollowedArtist[];
   public artistsSubscription: Subscription;
 
   constructor(private apolloService: ApolloService, public utilService: UtilService) {}
 
   ngOnInit(): void {
-    this.artistsSubscription = this.apolloService.getFollowedArtists().subscribe(data => this.artists = data.artists.items);
+    this.artistsSubscription = this.apolloService.getFollowedArtists()
+      .subscribe((data: ApolloFollowedArtistsResult) => this.artists = data.artists.items);
   }
 
   ngOnDestroy(): void {

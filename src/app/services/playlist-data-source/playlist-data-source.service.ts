@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 // Interfaces
-import { SortedTrack, TrackResponse, Trrack, } from '@interfaces/track/track.interface';
+import { ApolloPlaylistTracksResult } from '@interfaces/apollo/apollo.inerface';
+import { SortedTrack, Trrack, } from '@interfaces/track/track.interface';
 
 // Services
 import { ApolloService } from '@services/apollo/apollo.service';
@@ -29,7 +30,7 @@ export class PlaylistDataSourceService {
   }
 
   loadTracks(playlistId: string, page = 0, size = 100): void {
-    this.apolloService.getTracksFromPlaylist(playlistId, page, size).subscribe((tracks: TrackResponse) => {
+    this.apolloService.getTracksFromPlaylist(playlistId, page, size).subscribe((tracks: ApolloPlaylistTracksResult) => {
       const sortedTracks: SortedTrack[] = tracks.items.map((t: Trrack) => {
         return {
           title: t.track.name,

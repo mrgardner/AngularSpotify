@@ -46,6 +46,7 @@ export class HighlightSearchComponent implements OnChanges {
   getAllIndexes(text: string, searchText: string): number[] {
     const indexes: number[] = [];
     let i = -1;
+    // tslint:disable-next-line: no-conditional-assignment
     while ((i = text.toLowerCase().indexOf(searchText.toLowerCase(), i + 1)) !== -1) {
       indexes.push(i);
     }

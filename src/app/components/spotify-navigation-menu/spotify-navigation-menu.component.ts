@@ -12,10 +12,8 @@ import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-
 
 // Interfaces
 import { CurrentTrack } from '@interfaces/track/track.interface';
-import { Playlist } from '@interfaces/playlist/playlist.interface';
 import { Section } from '@interfaces/section/section.interface';
 import { SelectedRoute } from '@interfaces/route/route.interface';
-import { SpotifyPlaylistRespose } from '@interfaces/playlist/playlist.interface';
 
 // Services
 import { ApolloService } from '@services/apollo/apollo.service';
@@ -24,6 +22,7 @@ import { RouteService } from '@services/route/route.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
 import { StatusBarService } from '@services/status-bar/status-bar.service';
 import { UtilService } from '@services/util/util.service';
+import { ApolloPlaylistsResult, PlaylistNavMenu } from '@interfaces/apollo/apollo.inerface';
 
 
 @Component({
@@ -32,7 +31,7 @@ import { UtilService } from '@services/util/util.service';
   styleUrls: ['./spotify-navigation-menu.component.scss']
 })
 export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
-  public playlists: Playlist[] = [];
+  public playlists: PlaylistNavMenu[] = [];
   public loading: boolean;
   public playlistsLoaded: boolean;
   public selectedPlaylist: string;
@@ -87,9 +86,9 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.selectPlaylistSubscription = this.playlistService.selectPlaylist$
       .subscribe((playlist: string) => this.selectedPlaylist = playlist);
     this.getPlaylistsSubscription = this.apolloService.getPlaylists().pipe(first())
-      .subscribe((data: SpotifyPlaylistRespose) => {
+      .subscribe((data: ApolloPlaylistsResult) => {
         if (data.items) {
-          data.items.forEach((playlist: Playlist) => {
+          data.items.forEach((playlist: PlaylistNavMenu) => {
             if (playlist.name === this.selectedPlaylist) {
               playlist.selected = true;
             } else {
@@ -127,8 +126,8 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
   }
 
-  goToTracks(playlist: Playlist): void {
-    this.playlists.forEach((tt: Playlist) => tt.selected = false);
+  goToTracks(playlist: PlaylistNavMenu): void {
+    this.playlists.forEach((tt: PlaylistNavMenu) => tt.selected = false);
     playlist.selected = true;
     const playlistName = encodeURI(playlist.name.toLowerCase());
     const playlistId = encodeURI(playlist.id);
@@ -149,8 +148,8 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
     this.loadMorePlaylist = true;
     this.apolloService.getPlaylists(baseURI).pipe(first())
-      .subscribe((data: SpotifyPlaylistRespose) => {
-        data.items.forEach((playlist: Playlist) => {
+      .subscribe((data: ApolloPlaylistsResult) => {
+        data.items.forEach((playlist: PlaylistNavMenu) => {
           if (playlist.name === this.selectedPlaylist) {
             playlist.selected = true;
           } else {

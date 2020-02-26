@@ -7,7 +7,20 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Interfaces
-import { ApolloAlbumResult, AlbumApolloResponse } from 'src/app/interfaces/apollo/apollo.inerface';
+import {
+  AlbumApolloResponse,
+  ApolloAlbumResult,
+  ApolloFollowedArtistsResult,
+  ApolloPlaylistResult,
+  ApolloPlaylistsResult,
+  ApolloPlaylistTracksResult,
+  ApolloUserDisplayNameResult,
+  FollowedArtistsApolloResponse,
+  PlaylistApolloResponse,
+  PlaylistsApolloResponse,
+  PlaylistTracksApolloResponse,
+  UserDisplayNameApolloResponse,
+} from 'src/app/interfaces/apollo/apollo.inerface';
 
 // Queries
 import { ALBUM_INFO } from '../../queries/get-albums';
@@ -25,7 +38,7 @@ export class ApolloService {
     this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
   }
 
-  getUserDisplayName(): Observable<any> {
+  getUserDisplayName(): Observable<ApolloUserDisplayNameResult> {
     return this.apollo
     .watchQuery({
       query: USER_DISPLAY_NAME,
@@ -34,10 +47,10 @@ export class ApolloService {
         url: `${this.spotifyApiBaseURI}/me`
       }
     })
-    .valueChanges.pipe(map((result: any) => result.data.user));
+    .valueChanges.pipe(map((result: UserDisplayNameApolloResponse) => result.data.user));
   }
 
-  getPlaylists(morePlaylists?: string): Observable<any> {
+  getPlaylists(morePlaylists?: string): Observable<ApolloPlaylistsResult> {
     const url = morePlaylists ? morePlaylists : this.spotifyApiBaseURI + '/me/playlists?limit=50';
     return this.apollo
     .watchQuery({
@@ -47,10 +60,10 @@ export class ApolloService {
         url
       }
     })
-    .valueChanges.pipe(map((result: any) => result.data.playlists));
+    .valueChanges.pipe(map((result: PlaylistsApolloResponse) => result.data.playlists));
   }
 
-  getPlaylist(playlistID: string): Observable<any> {
+  getPlaylist(playlistID: string): Observable<ApolloPlaylistResult> {
     const url = `${this.spotifyApiBaseURI}/playlists/${playlistID}`;
     return this.apollo
     .watchQuery({
@@ -60,10 +73,10 @@ export class ApolloService {
         url
       }
     })
-    .valueChanges.pipe(map((result: any) => result.data.playlist));
+    .valueChanges.pipe(map((result: PlaylistApolloResponse) => result.data.playlist));
   }
 
-  getTracksFromPlaylist(playlistID: string, offset: number, limit: number): Observable<any> {
+  getTracksFromPlaylist(playlistID: string, offset: number, limit: number): Observable<ApolloPlaylistTracksResult> {
     const trackOffset = offset * limit;
     const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks?offset=${trackOffset.toString()}&limit=${limit.toString()}`;
 
@@ -75,7 +88,7 @@ export class ApolloService {
         url
       }
     })
-    .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
+    .valueChanges.pipe(map((result: PlaylistTracksApolloResponse) => result.data.playlistTracks));
   }
 
   getAlbums(moreAlbums?: string): Observable<ApolloAlbumResult> {
@@ -92,7 +105,7 @@ export class ApolloService {
     .valueChanges.pipe(map((result: AlbumApolloResponse) => result.data.albums));
   }
 
-  getFollowedArtists(): Observable<any> {
+  getFollowedArtists(): Observable<ApolloFollowedArtistsResult> {
     const url = this.spotifyApiBaseURI + `/me/following?type=artist`;
     return this.apollo
       .watchQuery({
@@ -102,7 +115,7 @@ export class ApolloService {
           url
         }
       })
-      .valueChanges.pipe(map((result: any) => result.data.followedArtists));
+      .valueChanges.pipe(map((result: FollowedArtistsApolloResponse) => result.data.followedArtists));
   }
 }
 
