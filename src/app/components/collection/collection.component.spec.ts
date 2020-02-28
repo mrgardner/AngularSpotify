@@ -3,15 +3,25 @@ import { CollectionComponent } from '@components/collection/collection.component
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 
-describe('LibraryComponent', () => {
+describe('CollectionComponent', () => {
   let component: CollectionComponent;
   let fixture: ComponentFixture<CollectionComponent>;
+  const routes: Routes = [
+    {path: 'collection', component: CollectionComponent},
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionComponent ]
+      declarations: [
+        CollectionComponent
+      ],
+      imports: [
+        RouterTestingModule.withRoutes(routes),
+      ]
     })
     .compileComponents();
   }));

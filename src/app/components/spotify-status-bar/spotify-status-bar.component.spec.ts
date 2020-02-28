@@ -15,7 +15,6 @@ import { SpotifySongResponse } from '@interfaces/song/song.interface';
 import { DeviceModalService } from '@services/device-modal/device-modal.service';
 import { SpotifyService } from '@services/spotify/spotify.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
-import { StatusBarService } from '@services/status-bar/status-bar.service';
 
 // Testing Core
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -26,7 +25,6 @@ import { mockEvent } from '@test-data/event/event.test-data';
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;
   let fixture: ComponentFixture<SpotifyStatusBarComponent>;
-  let statusBarService: StatusBarService;
   let deviceModalService: DeviceModalService;
   let spotifyService: SpotifyService;
   let spotifyPlaybackService: SpotifyPlaybackService;
@@ -47,14 +45,12 @@ describe('SpotifyStatusBarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SpotifyStatusBarComponent);
     component = fixture.componentInstance;
-    statusBarService = TestBed.inject(StatusBarService);
     deviceModalService = TestBed.inject(DeviceModalService);
     spotifyService = TestBed.inject(SpotifyService);
     spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
   afterEach(() => {
-    statusBarService = null;
     deviceModalService = null;
     spotifyService = null;
     spotifyPlaybackService = null;
@@ -265,7 +261,7 @@ describe('SpotifyStatusBarComponent', () => {
 
   it('should check onVolumeChange method', () => {
     const spy = spyOn(spotifyPlaybackService, 'setVolume');
-    component.onVolumeChange(mockEvent(1));
+    component.onVolumeChange(mockEvent());
     expect(spy).toHaveBeenCalled();
   });
 

@@ -70,7 +70,7 @@ describe('SpotifyPlaybackService', () => {
     const showPlayButtonSpy = spyOn(spotifyPlaybackService, 'showPlayButton');
     await spotifyPlaybackService.handleState(mockSongState);
     expect(sendCurrentStateSpy).toHaveBeenCalledWith(mockSongState);
-    expect(currentTrackSpy).toHaveBeenCalledWith({});
+    expect(currentTrackSpy).toHaveBeenCalledWith(mockSortedTrack('', ''));
     expect(showPlayButtonSpy).toHaveBeenCalledWith(false);
   }));
 
@@ -103,7 +103,7 @@ describe('SpotifyPlaybackService', () => {
     const spy = spyOn(window, 'clearInterval');
     spotifyPlaybackService.statePollingInterval = 1;
     spotifyPlaybackService.clearStatePolling();
-    expect(spy).toHaveBeenCalledWith(1);
+    expect(spy).toHaveBeenCalled();
   }));
 
   it('should check createEventHandlers method pauseSong', (() => {
@@ -164,7 +164,7 @@ describe('SpotifyPlaybackService', () => {
     spotifyPlaybackService.player = mockPlayer();
     const spy = spyOn(spotifyPlaybackService, 'startStatePolling');
     spotifyPlaybackService.waitForDeviceToBeSelected().then(res => {
-      expect(res).toEqual({});
+      expect(res).toEqual(mockSongState);
       expect(spy).toHaveBeenCalled();
     });
   }));

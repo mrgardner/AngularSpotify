@@ -1,4 +1,5 @@
 // Angular Material
+import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
 // Apollo
@@ -7,19 +8,15 @@ import { Apollo } from 'apollo-angular';
 // Common
 import { ChangeDetectorRef, Type } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute, Routes, Router } from '@angular/router';
+import { ActivatedRoute, Routes } from '@angular/router';
 import { of } from 'rxjs';
 
 // Components
 import { LoginComponent } from '@components/login/login.component';
 import { PlaylistTableComponent } from '@components/playlist-table/playlist-table.component';
 
-// Interfaces
-import { SortedTrack } from '@interfaces/track/track.interface';
-import { SpotifySongResponse } from '@interfaces/song/song.interface';
-
 // Services
-import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
+// import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
 import { TrackService } from '@services/track/track.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
 import { SpotifyService } from '@services/spotify/spotify.service';
@@ -31,15 +28,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { mockSongState } from '@test-data/song/song.test-data';
 import { mockSortedTrack } from '@test-data/tracks/tracks.test-data';
 import { mockUrlSegment } from '@test-data/url/url.test-data';
-import { mockPlaylistTracksResult, mockPlaylistResult } from '@test-data/apollo/apollo.test-data';
+import { mockPlaylistTracks, mockPlaylist } from '@test-data/apollo/apollo.test-data';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
   let fixture: ComponentFixture<PlaylistTableComponent>;
-  let dataSource: PlaylistDataSourceService;
+  // let dataSource: PlaylistDataSourceService;
   let trackService: TrackService;
   let spotifyPlaybackService: SpotifyPlaybackService;
-  let router: Router;
   let spotifyService: SpotifyService;
   let apolloService: ApolloService;
   let changeDetectorRef: ChangeDetectorRef;
@@ -55,7 +51,8 @@ describe('PlaylistTableComponent', () => {
       ],
       imports: [
         HttpClientModule,
-        RouterTestingModule.withRoutes(routes)
+        RouterTestingModule.withRoutes(routes),
+        MatMenuModule
       ],
       providers: [
         ChangeDetectorRef,
@@ -68,20 +65,18 @@ describe('PlaylistTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlaylistTableComponent);
     component = fixture.componentInstance;
-    dataSource = TestBed.inject(PlaylistDataSourceService);
+    // dataSource = TestBed.inject(PlaylistDataSourceService);
     trackService = TestBed.inject(TrackService);
     spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
-    router = TestBed.inject(Router);
     spotifyService = TestBed.inject(SpotifyService);
     changeDetectorRef = TestBed.inject(ChangeDetectorRef as Type<ChangeDetectorRef>);
     apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {
-    dataSource = null;
+    // dataSource = null;
     trackService = null;
     spotifyPlaybackService = null;
-    router = null;
     spotifyService = null;
     changeDetectorRef = null;
     apolloService = null;
@@ -92,18 +87,10 @@ describe('PlaylistTableComponent', () => {
   });
 
   xit('should check ngAfterContentInit when no tracks returned', () => {
-    const mockTracks = {
-      href: '',
-      items: [],
-      limit: 0,
-      next: '',
-      offset: 0,
-      previous: '',
-      total: 0
-    };
     component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
-    spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
+    // dataSource.tableSubject$
+    // spyOn(dataSource, 'loadTracks').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracks('', '' , '')));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
@@ -116,8 +103,8 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check ngOnInit method router events', () => {
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
-    spyOn(apolloService, 'getPlaylist').and.returnValue(of(mockPlaylistResult('')));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracks('', '' , '')));
+    spyOn(apolloService, 'getPlaylist').and.returnValue(of(mockPlaylist('')));
     TestBed.inject(ActivatedRoute).url = of([
       mockUrlSegment('playlist'),
       mockUrlSegment('test'),
@@ -155,20 +142,9 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check loadTracks in ngAfterContentInit with more than 1 track', () => {
-    const mockTracks = {
-      href: '',
-      items: [
-        mockSortedTrack('', '')
-      ],
-      limit: 0,
-      next: '',
-      offset: 0,
-      previous: '',
-      total: 1
-    };
     component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
-    spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
+    // spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracks('', '' , '')));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
@@ -176,18 +152,9 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check loadTracks in ngAfterContentInit with no tracks', () => {
-    const mockTracks = {
-      href: '',
-      items: [],
-      limit: 0,
-      next: '',
-      offset: 0,
-      previous: '',
-      total: 0
-    };
     component.paginator = new MatPaginator(new MatPaginatorIntl(), changeDetectorRef);
-    spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
-    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracksResult('', '' , '')));
+    // spyOn(dataSource, 'tableSubject$').and.returnValue(of(mockTracks));
+    spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracks('', '' , '')));
     component.ngOnInit();
     component.loadTracks();
     component.ngAfterContentInit();
@@ -209,36 +176,8 @@ describe('PlaylistTableComponent', () => {
 
   it('should check the sortData method title col case', () => {
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', ''),
+      mockSortedTrack('', '')
     ];
     component.ngOnInit();
     component.sortData({active: 'title', direction: 'asc'});
@@ -247,36 +186,8 @@ describe('PlaylistTableComponent', () => {
 
   it('should check the sortData method artist col case', () => {
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', ''),
+      mockSortedTrack('', '')
     ];
     component.ngOnInit();
     component.sortData({active: 'artist', direction: 'asc'});
@@ -285,36 +196,8 @@ describe('PlaylistTableComponent', () => {
 
   it('should check the sortData method album col case', () => {
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', ''),
+      mockSortedTrack('', '')
     ];
     component.ngOnInit();
     component.sortData({active: 'album', direction: 'asc'});
@@ -323,36 +206,8 @@ describe('PlaylistTableComponent', () => {
 
   it('should check the sortData method addedAt col case', () => {
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', ''),
+      mockSortedTrack('', '')
     ];
     component.ngOnInit();
     component.sortData({active: 'addedAt', direction: 'asc'});
@@ -361,36 +216,8 @@ describe('PlaylistTableComponent', () => {
 
   it('should check the sortData method time col case', () => {
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', ''),
+      mockSortedTrack('', '')
     ];
     component.ngOnInit();
     component.sortData({active: 'time', direction: 'asc'});
@@ -399,36 +226,8 @@ describe('PlaylistTableComponent', () => {
 
   it('should check the sortData method test col case', () => {
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      },
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', ''),
+      mockSortedTrack('', '')
     ];
     component.ngOnInit();
     component.sortData({active: 'test', direction: 'asc'});
@@ -448,96 +247,14 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check playSong method', () => {
-    const song: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
-    component.state = {
-      bitrate: 1,
-      context: {
-        metadata: {},
-        uri: ''
-      },
-      disallows: {
-        pausing: true,
-        skipping_prev: true
-      },
-      duration: 1000,
-      paused: true,
-      position: 1,
-      repeat_mode: 0,
-      restrictions: {
-        disallow_pausing_reasons: [],
-        disallow_skipping_prev_reasons: []
-      },
-      shuffle: true,
-      timestamp: 0,
-      track_window: {
-        current_track: null,
-        next_tracks: [],
-        previous_tracks: []
-      }
-    };
     const spy: jasmine.Spy = spyOn(spotifyPlaybackService, 'playSong');
-    component.playSong(song);
+    component.playSong(mockSortedTrack('', ''));
     expect(spy).toHaveBeenCalled();
   });
 
   it('should check playSong method else case', () => {
-    const song: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
-    component.state = {
-      bitrate: 1,
-      context: {
-        metadata: {},
-        uri: ''
-      },
-      disallows: {
-        pausing: true,
-        skipping_prev: true
-      },
-      duration: 1000,
-      paused: true,
-      position: 0,
-      repeat_mode: 0,
-      restrictions: {
-        disallow_pausing_reasons: [],
-        disallow_skipping_prev_reasons: []
-      },
-      shuffle: true,
-      timestamp: 0,
-      track_window: {
-        current_track: null,
-        next_tracks: [],
-        previous_tracks: []
-      }
-    };
     const spy: jasmine.Spy = spyOn(spotifyService, 'playSpotifyTrack').and.returnValue(of(null));
-    component.playSong(song);
+    component.playSong(mockSortedTrack('', ''));
     expect(spy).toHaveBeenCalled();
   });
 
@@ -548,162 +265,44 @@ describe('PlaylistTableComponent', () => {
   });
 
   it('should check showPlayButton method', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
     component.tracks = [
-      mockTrack
+      mockSortedTrack('', '')
     ];
-    component.showPlayButton(mockTrack);
+    component.showPlayButton(mockSortedTrack('', ''));
     expect(component.tracks[0].showPlayButton).toBeTruthy();
   });
 
   it('should check showPlayButton method else case', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', '')
     ];
-    component.showPlayButton(mockTrack);
+    component.showPlayButton(mockSortedTrack('', ''));
     expect(component.tracks[0].showPlayButton).toBeTruthy();
   });
 
   it('should check hidePlayButton method', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
     component.tracks = [
-      mockTrack
+      mockSortedTrack('', '')
     ];
-    component.hidePlayButton(mockTrack);
+    component.hidePlayButton(mockSortedTrack('', ''));
     expect(component.tracks[0].showPlayButton).toBeFalsy();
   });
 
   it('should check hidePlayButton method else case', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
     component.tracks = [
-      {
-        title: '',
-        artist: '',
-        added_at: '',
-        album_name: '',
-        time: 0,
-        showPauseButton: false,
-        showPlayButton: false,
-        duration: 0,
-        uri: '',
-        total: 0,
-        size: 0,
-        filterText: '',
-        remove: false
-      }
+      mockSortedTrack('', '')
     ];
-    component.hidePlayButton(mockTrack);
+    component.hidePlayButton(mockSortedTrack('', ''));
     expect(component.tracks[0].showPlayButton).toBeTruthy();
   });
 
   it('should check showPauseButton method', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
-    component.showPauseButton(mockTrack);
-    expect(mockTrack.showPauseButton).toBeTruthy();
+    component.showPauseButton(mockSortedTrack('', ''));
+    expect(mockSortedTrack('', '').showPauseButton).toBeTruthy();
   });
 
   it('should check hidePauseButton method', () => {
-    const mockTrack: SortedTrack = {
-      title: '',
-      artist: '',
-      added_at: '',
-      album_name: '',
-      time: 0,
-      showPauseButton: false,
-      showPlayButton: false,
-      duration: 0,
-      uri: '',
-      total: 0,
-      size: 0,
-      filterText: '',
-      remove: false
-    };
-    component.hidePauseButton(mockTrack);
-    expect(mockTrack.showPauseButton).toBeFalsy();
+    component.hidePauseButton(mockSortedTrack('', ''));
+    expect(mockSortedTrack('', '').showPauseButton).toBeFalsy();
   });
 });

@@ -1,7 +1,7 @@
 // Interfaces
 import { Album } from '@interfaces/album/album.interface';
 import { Artist } from '@interfaces/artist/artist.interface';
-import { AddedBy, ExternalIds, ExternalUrls, VideoThumbnail } from '@interfaces/misc/misc.interface';
+import { ExternalIds, ExternalUrls } from '@interfaces/misc/misc.interface';
 
 export interface TrackResponse {
   total: number;
@@ -81,18 +81,6 @@ export interface TrackWindow {
   current_track: Track;
   next_tracks: Track[];
   previous_tracks: Track[];
-}
-
-export interface CurrentTrack {
-  added_at: string;
-  added_by: AddedBy;
-  highlight: boolean;
-  isPauseButtonShowing: boolean;
-  isPlayButtonShowing: boolean;
-  is_local: boolean;
-  primary_color: string;
-  track: SortedTrack;
-  video_thumbnail: VideoThumbnail;
 }
 
 export interface TrackSpotifyReponse {

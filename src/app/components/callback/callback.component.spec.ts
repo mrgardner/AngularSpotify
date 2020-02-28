@@ -38,6 +38,7 @@ describe('CallbackComponent', () => {
 
   it('should check ngOnInit with fragment that does have access_token', () => {
     component._window = {
+      ... new Window(),
       opener: {
         spotifyCallback: () => {}
       }
@@ -49,6 +50,7 @@ describe('CallbackComponent', () => {
 
   it('should check ngOnInit with fragment that does not have access_token', () => {
     component._window = {
+      ... new Window(),
       opener: {
         spotifyCallback: () => {}
       }

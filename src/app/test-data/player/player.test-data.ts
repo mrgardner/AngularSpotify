@@ -7,12 +7,12 @@ import { mockSongState } from '@test-data/song/song.test-data';
 const mockPlayer = (): SpotifyPlayer => {
   return {
     connect: () => {},
-    on: (t: string, tt) => {},
+    on: () => {},
     pause: () => {},
     resume: () => {},
     nextTrack: () => {},
     previousTrack: () => {},
-    setVolume: (volume: number) => {},
+    setVolume: () => {},
     getCurrentState: () => {
       return mockSongState;
     }

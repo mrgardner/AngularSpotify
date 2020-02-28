@@ -1,3 +1,5 @@
+// Apollo
+import { Apollo } from 'apollo-angular';
 
 // Common
 import { HttpClientModule } from '@angular/common/http';
@@ -7,15 +9,18 @@ import { of } from 'rxjs';
 import { AlbumsComponent } from '@components/collection/albums/albums.component';
 
 // Services
-import { SpotifyService } from '@services/spotify/spotify.service';
+import { ApolloService } from '@services/apollo/apollo.service';
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+// Test Data
+import { mockAlbums } from '@test-data/apollo/apollo.test-data';
+
 describe('AlbumsComponent', () => {
   let component: AlbumsComponent;
   let fixture: ComponentFixture<AlbumsComponent>;
-  let spotifyService: SpotifyService;
+  let apolloService: ApolloService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,6 +29,9 @@ describe('AlbumsComponent', () => {
       ],
       imports: [
         HttpClientModule
+      ],
+      providers: [
+        Apollo
       ]
     })
     .compileComponents();
@@ -32,11 +40,11 @@ describe('AlbumsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlbumsComponent);
     component = fixture.componentInstance;
-    spotifyService = TestBed.inject(SpotifyService);
+    apolloService = TestBed.inject(ApolloService);
   });
 
   afterEach(() => {
-    spotifyService = null;
+    apolloService = null;
   });
 
   it('should create albums component', () => {
@@ -44,115 +52,20 @@ describe('AlbumsComponent', () => {
   });
 
   it('should check ngOnInit method when spotifyService.getUsersSavedAlbums returns no albums and next hrefs', () => {
-    const albums = {
-      href: 'string',
-      items: [],
-      limit: 1,
-      next: 'string',
-      offset: 0,
-      previous: 'string',
-      total: 0
-    };
-    spyOn(spotifyService, 'getUsersSavedAlbums').and.returnValue(of(albums));
+    spyOn(apolloService, 'getAlbums').and.returnValue(of(mockAlbums('')));
     component.ngOnInit();
     expect(component.albumsLoaded).toBeTruthy();
     expect(component.loading).toBeFalsy();
   });
 
   it('should check ngOnInit method when spotifyService.getUsersSavedAlbums returns 1 album', () => {
-    const albums = {
-      href: 'string',
-      items: [
-        {
-          album_type: 'string',
-          artists: [
-            {
-              external_urls: 'string',
-              id: 'string',
-              name: 'string',
-              type: 'string',
-              uri: 'string'
-            }
-          ],
-          available_markets: [
-            ''
-          ],
-          external_urls: {
-            spotify: ''
-          },
-          href: 'string',
-          id: 'string',
-          images: [
-            {
-              height: 1,
-              url: 'string',
-              width: 1
-            }
-          ],
-          name: 'string',
-          release_date: 'string',
-          release_date_precision: 'string',
-          total_track: 1,
-          type: 'string',
-          uri: 'string'
-        }
-      ],
-      limit: 1,
-      next: 'string',
-      offset: 0,
-      previous: 'string',
-      total: 1
-    };
-    spyOn(spotifyService, 'getUsersSavedAlbums').and.returnValue(of(albums));
+    spyOn(apolloService, 'getAlbums').and.returnValue(of(mockAlbums('')));
     component.ngOnInit();
     expect(component).toBeTruthy();
   });
 
   it('should check ngOnInit method when spotifyService.getUsersSavedAlbums returns 1 album and no next hrefs', () => {
-    const albums = {
-      href: 'string',
-      items: [
-        {
-          album_type: 'string',
-          artists: [
-            {
-              external_urls: 'string',
-              id: 'string',
-              name: 'string',
-              type: 'string',
-              uri: 'string'
-            }
-          ],
-          available_markets: [
-            ''
-          ],
-          external_urls: {
-            spotify: ''
-          },
-          href: 'string',
-          id: 'string',
-          images: [
-            {
-              height: 1,
-              url: 'string',
-              width: 1
-            }
-          ],
-          name: 'string',
-          release_date: 'string',
-          release_date_precision: 'string',
-          total_track: 1,
-          type: 'string',
-          uri: 'string'
-        }
-      ],
-      limit: 1,
-      next: '',
-      offset: 0,
-      previous: 'string',
-      total: 1
-    };
-    spyOn(spotifyService, 'getUsersSavedAlbums').and.returnValue(of(albums));
+    spyOn(apolloService, 'getAlbums').and.returnValue(of(mockAlbums('')));
     component.ngOnInit();
     expect(component.albumsLoaded).toBeTruthy();
     expect(component.loading).toBeFalsy();

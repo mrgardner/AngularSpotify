@@ -2,7 +2,7 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 // Common
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 
@@ -14,6 +14,7 @@ import { SpotifyService } from '@services/spotify/spotify.service';
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { mockEvent } from '@test-data/event/event.test-data';
 
 describe('NewPlaylistDialogComponent', () => {
   let component: NewPlaylistDialogComponent;
@@ -27,7 +28,8 @@ describe('NewPlaylistDialogComponent', () => {
       ],
       imports: [
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
       ],
       providers: [
         {provide: MatDialogRef, useValue: {close: (): void => {}}},
@@ -68,54 +70,20 @@ describe('NewPlaylistDialogComponent', () => {
   });
 
   it('should check getFile method with a file', () => {
-    const blob: Blob = new Blob([''], { type: 'text/html' });
-    blob.lastModifiedDate = '';
-    blob.name = 'filename';
-    const fakeF: Blob = blob;
-    const mockEvent = {
-      target: {
-        files: [
-          fakeF
-        ]
-      }
-    };
-    component.getFile(mockEvent);
+    component.getFile(mockEvent());
     expect(component).toBeTruthy();
   });
 
   it('should check getFile method without a file', () => {
-    const mockEvent = {
-      target: []
-    };
-    component.getFile(mockEvent);
+    component.getFile(mockEvent());
     expect(component).toBeTruthy();
   });
 
   it('should check onSubmit method', () => {
-    const mockEvent = {
-      target: [
-        {
-          value: 'test1'
-        },
-        {
-          value: 'test2'
-        },
-        {
-          value: 'test3'
-        }
-      ]
-    };
-    component.imageFile = {
-      lastModified: 1549314648684,
-      lastModifiedDate: 'Mon Feb 04 2019 16:10:48 GMT-0500 (Eastern Standard Time) {}',
-      name: 'test.jpg',
-      size: 57357,
-      type: 'Blob',
-      webkitRelativePath: ''
-    };
+    component.imageFile = 'test';
     const spy: jasmine.Spy = spyOn(spotifyService, 'createNewPlaylist').and.returnValue(of('test'));
     const spy2: jasmine.Spy = spyOn(component.dialogRef, 'close');
-    component.onSubmit(mockEvent);
+    component.onSubmit();
     expect(spy).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
   });

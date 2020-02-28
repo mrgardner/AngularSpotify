@@ -1,9 +1,11 @@
+// Apollo
+import { Apollo } from 'apollo-angular';
+
 // Components
 import { ArtistsComponent } from '@components/collection/artists/artists.component';
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 
 describe('ArtistsComponent', () => {
   let component: ArtistsComponent;
@@ -11,7 +13,10 @@ describe('ArtistsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ArtistsComponent ]
+      declarations: [ ArtistsComponent ],
+      providers: [
+        Apollo
+      ]
     })
     .compileComponents();
   }));

@@ -1,6 +1,6 @@
 // Common
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Routes, Router, RouterStateSnapshot } from '@angular/router';
+import { Routes, Router, RouterStateSnapshot } from '@angular/router';
 
 // Components
 import { LoginComponent } from '@components/login/login.component';
@@ -48,14 +48,14 @@ describe('AuthGuard', () => {
   it('should create spotify guard with token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('testCookie');
     authGuard = new AuthGuard(router, authService);
-    expect(authGuard.canActivate(new ActivatedRouteSnapshot(), mockSnapshot)).toBeTruthy();
+    expect(authGuard.canActivate()).toBeTruthy();
   });
 
   it('should create spotify guard without token', () => {
     const spy = spyOn(router, 'navigate');
     spyOn(authService, 'getSpotifyToken').and.returnValue('');
     authGuard = new AuthGuard(router, authService);
-    expect(authGuard.canActivate(new ActivatedRouteSnapshot(), mockSnapshot)).toBeFalsy();
+    expect(authGuard.canActivate()).toBeFalsy();
     expect(spy).toHaveBeenCalled();
   });
 });

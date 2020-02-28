@@ -1,7 +1,29 @@
 // Interfaces
-import { ApolloPlaylistTracksResult, ApolloPlaylistResult } from '@interfaces/apollo/apollo.inerface';
+import { ApolloPlaylistTracksResult, ApolloPlaylistResult, ApolloPlaylistsResult, PlaylistNavMenu, ApolloAlbumResult } from '@interfaces/apollo/apollo.inerface';
 
-const mockPlaylistTracksResult = (albumName: string, name: string, artistName: string): ApolloPlaylistTracksResult => {
+const mockAlbums = (name: string): ApolloAlbumResult => {
+  return {
+    total: 0,
+    items: [
+      {
+        artists: [
+          {
+            name: ''
+          }
+        ],
+        images: [
+          {
+            url: ''
+          }
+        ],
+        name
+      }
+    ],
+    next: ''
+  };
+};
+
+const mockPlaylistTracks = (albumName: string, name: string, artistName: string): ApolloPlaylistTracksResult => {
   return {
     total: 0,
     limit: 0,
@@ -26,7 +48,7 @@ const mockPlaylistTracksResult = (albumName: string, name: string, artistName: s
   };
 };
 
-const mockPlaylistResult = (name: string): ApolloPlaylistResult => {
+const mockPlaylist = (name: string): ApolloPlaylistResult => {
   return {
     name,
     id: '',
@@ -47,4 +69,28 @@ const mockPlaylistResult = (name: string): ApolloPlaylistResult => {
   };
 };
 
-export { mockPlaylistResult, mockPlaylistTracksResult };
+const mockPlaylists = (name: string): ApolloPlaylistsResult => {
+  return {
+    total: 0,
+    items: [
+      {
+        name,
+        id: '',
+        selected: false,
+        selectedUrl: ''
+      }
+    ],
+    next: ''
+  };
+};
+
+const mockPlaylistNavMenu = (name: string, id: string, selected: boolean, selectedUrl: string): PlaylistNavMenu => {
+  return {
+    name,
+    id,
+    selected,
+    selectedUrl
+  };
+};
+
+export { mockAlbums, mockPlaylist, mockPlaylists, mockPlaylistNavMenu, mockPlaylistTracks };

@@ -11,6 +11,7 @@ import { TrackService } from '@services/track/track.service';
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { mockEvent } from '@test-data/event/event.test-data';
 
 describe('TrackFilterComponent', () => {
   let component: TrackFilterComponent;
@@ -66,13 +67,8 @@ describe('TrackFilterComponent', () => {
   });
 
   it('should check checkForDuplicateTrack method', () => {
-    const mockChecked = {
-      target: {
-        checked: true
-      }
-    };
     const spy = spyOn(trackService, 'checkDuplicate');
-    component.checkForDuplicateTrack(mockChecked);
+    component.checkForDuplicateTrack(mockEvent());
     expect(component.isDuplicateTrack).toBeTruthy();
     expect(spy).toHaveBeenCalled();
   });

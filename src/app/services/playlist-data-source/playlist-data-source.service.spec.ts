@@ -11,6 +11,7 @@ import { PlaylistDataSourceService } from '@services/playlist-data-source/playli
 
 // Testing
 import { TestBed } from '@angular/core/testing';
+import { mockPlaylistTracks } from '@test-data/apollo/apollo.test-data';
 
 describe('PlaylistDataSourceService', () => {
   let playlistDataSourceService: PlaylistDataSourceService;
@@ -52,15 +53,7 @@ describe('PlaylistDataSourceService', () => {
   });
 
   it('should check loadTracks method with no tracks', () => {
-    const spy = spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of({
-      href: '',
-      items: [],
-      limit: 100,
-      next: '',
-      offset: 0,
-      previous: '',
-      total: 0
-    }));
+    const spy = spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracks('', '', '')));
     const tableSpy = spyOn(playlistDataSourceService.tableSubject, 'next');
     playlistDataSourceService.loadTracks('');
     expect(spy).toHaveBeenCalled();
@@ -68,69 +61,7 @@ describe('PlaylistDataSourceService', () => {
   });
 
   it('should check loadTracks method with one track', () => {
-    const spy = spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of({
-      href: '',
-      items: [
-        {
-          added_at: '',
-          added_by: '',
-          track: {
-            album: {
-              album_type: '',
-              artists: [],
-              available_markets: [],
-              external_urls: {
-                spotify: ''
-              },
-              href: '',
-              id: '',
-              images: [],
-              name: '',
-              release_date: '',
-              release_date_precision: '',
-              total_track: 0,
-              type: '',
-              uri: ''
-            },
-            artists: [],
-            available_markets: [],
-            disc_number: 0,
-            duration_ms: 0,
-            explicit: true,
-            external_ids: {
-              isrc: ''
-            },
-            external_urls: {
-              spotify: ''
-            },
-            href: '',
-            id: '',
-            name: '',
-            popularity: 0,
-            preview_url: '',
-            track_number: 0,
-            type: '',
-            uri: '',
-            isPlayButtonShowing: true,
-            isPauseButtonShowing: true,
-            remove: true,
-            album_name: '',
-            title: '',
-            artist: '',
-            time: '',
-            addedAt: ''
-          },
-          video_thumbnail: {
-            url: ''
-          }
-        }
-      ],
-      limit: 100,
-      next: '',
-      offset: 0,
-      previous: '',
-      total: 1
-    }));
+    const spy = spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockPlaylistTracks('', '', '')));
     const tableSpy = spyOn(playlistDataSourceService.tableSubject, 'next');
     playlistDataSourceService.loadTracks('');
     expect(spy).toHaveBeenCalled();

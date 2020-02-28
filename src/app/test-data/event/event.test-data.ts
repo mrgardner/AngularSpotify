@@ -1,4 +1,4 @@
-const mockEvent = (value: number): Event => {
+const mockEvent = (): Event => {
   return {
     ...new Event(''),
     target: new HTMLInputElement()

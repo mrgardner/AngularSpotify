@@ -1,11 +1,3 @@
-export interface AddedBy {
-  external_urls: ExternalUrls;
-  href: string;
-  id: string;
-  type: string;
-  uri: string;
-}
-
 export interface ExternalIds {
   isrc: string;
 }
@@ -21,8 +13,4 @@ export interface Owner {
   id: string;
   type: string;
   uri: string;
-}
-
-export interface VideoThumbnail {
-  url: string;
 }

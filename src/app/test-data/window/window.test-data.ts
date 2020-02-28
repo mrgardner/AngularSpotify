@@ -3,7 +3,7 @@
 const mockSpotifyWindow: Window = {
   Spotify: new Window(),
   onSpotifyWebPlaybackSDKReady: () => {},
-  Player: (data) => {},
+  Player: () => {},
   ...new Window()
 };
 

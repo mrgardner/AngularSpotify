@@ -11,16 +11,13 @@ import { filter, first } from 'rxjs/operators';
 import { NewPlaylistDialogComponent } from '@components/new-playlist-dialog/new-playlist-dialog.component';
 
 // Interfaces
-import { CurrentTrack } from '@interfaces/track/track.interface';
 import { Section } from '@interfaces/section/section.interface';
 import { SelectedRoute } from '@interfaces/route/route.interface';
 
 // Services
 import { ApolloService } from '@services/apollo/apollo.service';
-import { PlaylistService } from '@services/playlist/playlist.service';
 import { RouteService } from '@services/route/route.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
-import { StatusBarService } from '@services/status-bar/status-bar.service';
 import { UtilService } from '@services/util/util.service';
 import { ApolloPlaylistsResult, PlaylistNavMenu } from '@interfaces/apollo/apollo.inerface';
 
@@ -35,7 +32,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public playlistsLoaded: boolean;
   public selectedPlaylist: string;
-  public currentTrack: CurrentTrack;
   public playlistTotal: number;
   public nextPlaylist: string;
   public loadMorePlaylist: boolean;
@@ -43,16 +39,12 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public sections: Section[];
   public selectedRoute: SelectedRoute;
   public dialogConfig: MatDialogConfig;
-  public currentTrackSubscription: Subscription;
-  public selectPlaylistSubscription: Subscription;
   public getPlaylistsSubscription: Subscription;
   public getPlaylistIdSubscription: Subscription;
   public routerSubscription: Subscription;
   public currentPlaylist: string;
 
   constructor(
-    private playlistService: PlaylistService,
-    private statusBarService: StatusBarService,
     public dialog: MatDialog,
     private router: Router,
     public utilService: UtilService,
@@ -81,10 +73,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.playlistsLoaded = false;
     this.selectedPlaylist = '';
-    // TODO: Not used
-    this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
-    this.selectPlaylistSubscription = this.playlistService.selectPlaylist$
-      .subscribe((playlist: string) => this.selectedPlaylist = playlist);
     this.getPlaylistsSubscription = this.apolloService.getPlaylists().pipe(first())
       .subscribe((data: ApolloPlaylistsResult) => {
         if (data.items) {
@@ -120,8 +108,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.currentTrackSubscription.unsubscribe();
-    this.selectPlaylistSubscription.unsubscribe();
     this.getPlaylistsSubscription.unsubscribe();
     this.routerSubscription.unsubscribe();
   }

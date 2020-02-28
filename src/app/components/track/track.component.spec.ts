@@ -11,6 +11,7 @@ import { SpotifyService } from '@services/spotify/spotify.service';
 
 // Testing
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { mockSortedTrack } from '@test-data/tracks/tracks.test-data';
 
 describe('TrackComponent', () => {
   let component: TrackComponent;
@@ -49,58 +50,12 @@ describe('TrackComponent', () => {
   });
 
   it('should check ngOnInit method with params', () => {
-    const mockTrack = {
-      album: {
-        album_type: '',
-        artists: [],
-        available_markets: [],
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        images: [],
-        name: '',
-        release_date: '',
-        release_date_precision: '',
-        total_track: 0,
-        type: '',
-        uri: ''
-      },
-      artists: [],
-      available_markets: [],
-      disc_number: 0,
-      duration_ms: 0,
-      explicit: true,
-      external_ids: {
-        isrc: ''
-      },
-      external_urls: {
-        spotify: ''
-      },
-      href: '',
-      id: '',
-      name: '',
-      popularity: 0,
-      preview_url: '',
-      track_number: 0,
-      type: '',
-      uri: '',
-      isPlayButtonShowing: true,
-      isPauseButtonShowing: true,
-      remove: true,
-      album_name: '',
-      title: '',
-      artist: '',
-      time: '',
-      addedAt: ''
-    };
     TestBed.inject(ActivatedRoute).params = of({
       trackID: 'test'
     });
-    spyOn(spotifyService, 'getTrack').and.returnValue(of(mockTrack));
+    spyOn(spotifyService, 'getTrack').and.returnValue(of(mockSortedTrack('', '')));
     component.ngOnInit();
-    expect(component.track).toEqual(mockTrack);
+    expect(component.track).toEqual(mockSortedTrack('', ''));
   });
 
   it('should should check ngOnInit method without params', () => {

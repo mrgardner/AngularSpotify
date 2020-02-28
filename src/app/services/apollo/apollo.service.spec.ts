@@ -11,6 +11,7 @@ import { ApolloService } from '@services/apollo/apollo.service';
 
 // Testing
 import { TestBed } from '@angular/core/testing';
+import { mockPlaylistTracks, mockPlaylist, mockPlaylists } from '@test-data/apollo/apollo.test-data';
 
 
 
@@ -60,19 +61,8 @@ describe('ApolloService', () => {
   });
 
   it('should check the getPlaylists method with no parameter', () => {
-    const expectedResult = {
-      total: 0,
-      items: [
-        {
-          name: 'test',
-          id: 'test'
-        }
-      ],
-      next: ''
-    };
-
     apolloService.getPlaylists().subscribe(result => {
-      expect(result).toEqual(expectedResult);
+      expect(result).toEqual(mockPlaylists(''));
     });
 
     const op = controller.expectOne(PLAYLIST_NAME);
@@ -80,25 +70,14 @@ describe('ApolloService', () => {
 
     op.flush({
       data : {
-        playlists: expectedResult
+        playlists: mockPlaylists('')
       }
     });
   });
 
   it('should check the getPlaylists method with parameter', () => {
-    const expectedResult = {
-      total: 0,
-      items: [
-        {
-          name: 'test',
-          id: 'test'
-        }
-      ],
-      next: ''
-    };
-
     apolloService.getPlaylists('https://api.spotify.com/v1/me/playlists?limit=50&offset=50').subscribe(result => {
-      expect(result).toEqual(expectedResult);
+      expect(result).toEqual(mockPlaylists(''));
     });
 
     const op = controller.expectOne(PLAYLIST_NAME);
@@ -106,27 +85,14 @@ describe('ApolloService', () => {
 
     op.flush({
       data : {
-        playlists: expectedResult
+        playlists: mockPlaylists('')
       }
     });
   });
 
   it('should check the getPlaylist', () => {
-    const expectedResult = {
-      name: 'test',
-      owner: {
-        display_name: 'test'
-      },
-      tracks: {
-        total: 0
-      },
-      images: {
-        url: 'test'
-      }
-    };
-
     apolloService.getPlaylist('123').subscribe(result => {
-      expect(result).toEqual(expectedResult);
+      expect(result).toEqual(mockPlaylist(''));
     });
 
     const op = controller.expectOne(PLAYLIST_INFO);
@@ -134,33 +100,14 @@ describe('ApolloService', () => {
 
     op.flush({
       data : {
-        playlist: expectedResult
+        playlist: mockPlaylist('')
       }
     });
   });
 
   it('should check the getTracksFromPlaylists', () => {
-    const expectedResult = {
-      total: 0,
-      limit: 0,
-      items: {
-        added_at: '',
-        track: {
-          album: {
-            name: 'test'
-          },
-          artists: {
-            name: 'test'
-          },
-          name: 'test',
-          duration_ms: 0,
-          uri: 'test'
-        }
-      }
-    };
-
     apolloService.getTracksFromPlaylist('123', 0, 50).subscribe(result => {
-      expect(result).toEqual(expectedResult);
+      expect(result).toEqual(mockPlaylistTracks('test', 'test', 'test'));
     });
 
     const op = controller.expectOne(PLAYLIST_TRACKS);
@@ -168,7 +115,7 @@ describe('ApolloService', () => {
 
     op.flush({
       data : {
-        playlistTracks: expectedResult
+        playlistTracks: mockPlaylistTracks('test', 'test', 'test')
       }
     });
   });

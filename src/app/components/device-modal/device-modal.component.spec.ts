@@ -101,7 +101,8 @@ describe('DeviceModalComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       progress_ms: 1,
       repeat_state: 'string',
@@ -146,7 +147,8 @@ describe('DeviceModalComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        remove: false
       },
       progress_ms: 1,
       repeat_state: 'string',
