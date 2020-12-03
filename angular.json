@@ -29,6 +29,10 @@
                 "inject": true
               },
               "src/styles.scss"
+            ],
+            "allowedCommonJsDependencies": [
+              "graphql-tag",
+              "zen-observable"
             ]
           },
           "configurations": {
