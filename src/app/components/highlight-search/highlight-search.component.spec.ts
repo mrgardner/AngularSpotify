@@ -2,13 +2,13 @@
 import { HighlightSearchComponent } from '@components/highlight-search/highlight-search.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('HighlightSearchComponent', () => {
   let component: HighlightSearchComponent;
   let fixture: ComponentFixture<HighlightSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HighlightSearchComponent ]
     })

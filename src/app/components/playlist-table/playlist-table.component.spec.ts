@@ -25,7 +25,7 @@ import { SpotifyService } from '@services/spotify/spotify.service';
 import { ApolloService } from '@services/apollo/apollo.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PlaylistTableComponent', () => {
@@ -43,7 +43,7 @@ describe('PlaylistTableComponent', () => {
     {path: 'playlist/:name/:id', component: PlaylistTableComponent}
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         PlaylistTableComponent

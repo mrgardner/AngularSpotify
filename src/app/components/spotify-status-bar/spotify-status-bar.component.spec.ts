@@ -15,7 +15,7 @@ import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playb
 import { StatusBarService } from '@services/status-bar/status-bar.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;
@@ -25,7 +25,7 @@ describe('SpotifyStatusBarComponent', () => {
   let spotifyService: SpotifyService;
   let spotifyPlaybackService: SpotifyPlaybackService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         SpotifyStatusBarComponent

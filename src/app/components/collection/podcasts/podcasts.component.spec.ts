@@ -2,14 +2,14 @@
 import { PodcastsComponent } from '@components/collection/podcasts/podcasts.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('PodcastsComponent', () => {
   let component: PodcastsComponent;
   let fixture: ComponentFixture<PodcastsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PodcastsComponent ]
     })

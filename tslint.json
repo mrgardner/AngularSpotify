@@ -73,7 +73,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-unsafe-any": {"severity": "error" },
     "object-literal-sort-keys": false,

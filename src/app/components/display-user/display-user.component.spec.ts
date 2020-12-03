@@ -15,14 +15,14 @@ import { UserDisplayName } from '@interfaces/user/user.interface';
 import { ApolloService } from '@services/apollo/apollo.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('DisplayUserComponent', () => {
   let component: DisplayUserComponent;
   let fixture: ComponentFixture<DisplayUserComponent>;
   let apolloService: ApolloService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         DisplayUserComponent

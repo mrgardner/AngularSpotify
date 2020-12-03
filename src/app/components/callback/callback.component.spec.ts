@@ -6,14 +6,14 @@ import { of } from 'rxjs';
 import { CallbackComponent } from '@components/callback/callback.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('CallbackComponent', () => {
   let component: CallbackComponent;
   let fixture: ComponentFixture<CallbackComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         CallbackComponent

@@ -11,7 +11,7 @@ import { AuthService } from '@services/auth/auth.service';
 import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HeaderComponent', () => {
@@ -23,7 +23,7 @@ describe('HeaderComponent', () => {
   let authService: AuthService;
   let spotifyPlaybackService: SpotifyPlaybackService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         HeaderComponent
