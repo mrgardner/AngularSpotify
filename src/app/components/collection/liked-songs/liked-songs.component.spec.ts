@@ -2,14 +2,14 @@
 import { LikedSongsComponent } from '@components/collection/liked-songs/liked-songs.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('LikedSongsComponent', () => {
   let component: LikedSongsComponent;
   let fixture: ComponentFixture<LikedSongsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LikedSongsComponent ]
     })

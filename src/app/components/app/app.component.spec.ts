@@ -10,7 +10,7 @@ import { LoginComponent } from '@components/login/login.component';
 import { AuthService } from '@services/auth/auth.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppComponent', () => {
@@ -20,7 +20,7 @@ describe('AppComponent', () => {
   const routes: Routes = [
     {path: 'login', component: LoginComponent},
   ];
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent

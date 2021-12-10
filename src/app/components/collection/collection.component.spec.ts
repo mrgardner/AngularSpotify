@@ -2,14 +2,14 @@
 import { CollectionComponent } from '@components/collection/collection.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('LibraryComponent', () => {
   let component: CollectionComponent;
   let fixture: ComponentFixture<CollectionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent ]
     })

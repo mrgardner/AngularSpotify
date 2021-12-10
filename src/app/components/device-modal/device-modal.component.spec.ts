@@ -16,7 +16,7 @@ import { DeviceModalService } from '@services/device-modal/device-modal.service'
 import { SpotifyService } from '@services/spotify/spotify.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('DeviceModalComponent', () => {
   let component: DeviceModalComponent;
@@ -24,7 +24,7 @@ describe('DeviceModalComponent', () => {
   let spotifyService: SpotifyService;
   let deviceModalService: DeviceModalService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         DeviceModalComponent
