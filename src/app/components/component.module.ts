@@ -36,42 +36,38 @@ import { FilterAlbumNamePipe } from '@pipes/filter-album-name/filter-album-name.
 import { DuplicateTrackPipe } from '@pipes/duplicate-track/duplicate-track.pipe';
 
 @NgModule({
-  entryComponents: [
-    DeviceModalComponent,
-    NewPlaylistDialogComponent
-  ],
-  declarations: [
-    AlbumsComponent,
-    AppComponent,
-    ArtistsComponent,
-    CallbackComponent,
-    CollectionComponent,
-    DeviceModalComponent,
-    DisplayUserComponent,
-    DuplicateTrackPipe,
-    FilterAlbumNamePipe,
-    HeaderComponent,
-    HighlightSearchComponent,
-    HomeComponent,
-    LikedSongsComponent,
-    LoginComponent,
-    MadeForYouComponent,
-    NewPlaylistDialogComponent,
-    PlaylistsComponent,
-    PlaylistTableComponent,
-    PodcastsComponent,
-    SearchComponent,
-    SpotifyNavigationMenuComponent,
-    SpotifyStatusBarComponent,
-    TrackComponent,
-    TrackFilterComponent
-  ],
-  imports: [
-    CommonModule,
-    AngularMaterialModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    declarations: [
+        AlbumsComponent,
+        AppComponent,
+        ArtistsComponent,
+        CallbackComponent,
+        CollectionComponent,
+        DeviceModalComponent,
+        DisplayUserComponent,
+        DuplicateTrackPipe,
+        FilterAlbumNamePipe,
+        HeaderComponent,
+        HighlightSearchComponent,
+        HomeComponent,
+        LikedSongsComponent,
+        LoginComponent,
+        MadeForYouComponent,
+        NewPlaylistDialogComponent,
+        PlaylistsComponent,
+        PlaylistTableComponent,
+        PodcastsComponent,
+        SearchComponent,
+        SpotifyNavigationMenuComponent,
+        SpotifyStatusBarComponent,
+        TrackComponent,
+        TrackFilterComponent
+    ],
+    imports: [
+        CommonModule,
+        AngularMaterialModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule
+    ]
 })
 export class ComponentModule {}
