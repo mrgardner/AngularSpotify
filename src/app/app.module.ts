@@ -11,6 +11,7 @@ import { ComponentModule } from '@components/component.module';
 // Services
 import { SpotifyApolloModule } from '@services/apollo.module';
 import { ServiceModule } from '@services/service.module';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { ServiceModule } from '@services/service.module';
     HttpClientModule,
     ServiceModule,
     SpotifyApolloModule,
+    GraphQLModule,
   ],
   bootstrap: [AppComponent]
 })
