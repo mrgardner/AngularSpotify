@@ -9,7 +9,6 @@ import { AppComponent } from '@components/app/app.component';
 import { ComponentModule } from '@components/component.module';
 
 // Services
-import { SpotifyApolloModule } from '@services/apollo.module';
 import { ServiceModule } from '@services/service.module';
 import { GraphQLModule } from './graphql.module';
 
@@ -20,8 +19,7 @@ import { GraphQLModule } from './graphql.module';
     ComponentModule,
     HttpClientModule,
     ServiceModule,
-    SpotifyApolloModule,
-    GraphQLModule,
+    GraphQLModule
   ],
   bootstrap: [AppComponent]
 })

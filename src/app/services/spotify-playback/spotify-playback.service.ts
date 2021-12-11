@@ -5,9 +5,6 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { SpotifySongResponse } from '@interfaces/song/song.interface';
 import { SortedTrack } from '@interfaces/track/track.interface';
 
-// Services
-import { UtilService } from '@services/util/util.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +22,7 @@ export class SpotifyPlaybackService {
   public player: any;
   public statePollingInterval: number = null;
   public endOfChain: boolean;
-  constructor(private utilService: UtilService) {
+  constructor() {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
@@ -62,7 +59,7 @@ export class SpotifyPlaybackService {
       this.player = new Player['Player']({
         name: 'Testing123',
         volume: .1,
-        getOAuthToken: cb => { cb(this.utilService.getCookie('spotifyToken')); },
+        getOAuthToken: cb => { cb(sessionStorage.getItem('spotifyToken')); },
       });
       // // set up the player's event handlers
       this.createEventHandlers();

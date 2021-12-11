@@ -3,9 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-// Services
-import { UtilService } from '@services/util/util.service';
-
 @Component({
   selector: 'app-callback',
   templateUrl: './callback.component.html',
@@ -16,8 +13,7 @@ export class CallbackComponent implements OnInit, OnDestroy {
   public routeSubscrition: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
-    private utilService: UtilService) {
+    private route: ActivatedRoute) {
       this._window = window;
     }
 
@@ -27,7 +23,7 @@ export class CallbackComponent implements OnInit, OnDestroy {
         const authToken: string = fragment.split('access_token=')[1].split('&')[0];
         const expiredDate: Date = new Date();
         expiredDate.setHours(expiredDate.getHours() + 1);
-        this.utilService.setCookie('spotifyToken', authToken, expiredDate.toUTCString());
+        sessionStorage.setItem('spotifyToken', authToken)
         this._window.opener.spotifyCallback(authToken);
       }
     });
