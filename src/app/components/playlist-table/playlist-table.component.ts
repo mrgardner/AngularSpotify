@@ -243,4 +243,15 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   hidePauseButton(track: SortedTrack): void {
     track.showPauseButton = false;
   }
+
+  showTrackNumber(track: SortedTrack): void {
+    console.log('or here')
+
+    track.showTrackNumber = true;
+  }
+
+  hideTrackNumber(track: SortedTrack): void {
+    console.log('sdfsdfdsf')
+    track.showTrackNumber = false;
+  }
 }

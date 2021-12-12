@@ -39,6 +39,7 @@ export class PlaylistDataSourceService {
           time: t.track.duration_ms,
           showPlayButton: false,
           showPauseButton: false,
+          showTrackNumber: true,
           duration: t.track.duration_ms,
           uri: t.track.uri,
           total: tracks.total,

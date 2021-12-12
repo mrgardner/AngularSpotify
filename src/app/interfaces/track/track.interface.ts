@@ -30,6 +30,7 @@ export interface SortedTrack {
   time: number;
   showPlayButton: boolean;
   showPauseButton: boolean;
+  showTrackNumber: boolean;
   duration: number;
   uri: string;
   total: number;
@@ -69,6 +70,7 @@ export interface Track {
   size: number;
   showPlayButton: boolean;
   showPauseButton: boolean;
+  showTrackNumber: boolean;
 }
 
 export interface Tracks {

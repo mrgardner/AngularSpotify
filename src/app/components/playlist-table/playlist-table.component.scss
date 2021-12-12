@@ -84,13 +84,14 @@ table {
     color: white !important;
 
     .material-icons {
-      font-size: 40px;
+      font-size: 17px;
     }
   
     .mat-icon {
       position: relative;
       top: 3px;
       cursor: pointer;
+      right: 5px;
     }
   }
 
@@ -104,6 +105,7 @@ table {
   .mat-header-cell {
     color: white;
     border-color: #424242;
+    height: 50px;
   }
 }
 

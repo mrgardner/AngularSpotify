@@ -58,13 +58,13 @@ export class SpotifyPlaybackService {
       // create a new player
       this.player = new Player['Player']({
         name: 'Testing123',
-        volume: .1,
+        volume: 1,
         getOAuthToken: cb => { cb(sessionStorage.getItem('spotifyToken')); },
       });
-      // // set up the player's event handlers
+      // set up the player's event handlers
       this.createEventHandlers();
 
-      // // finally, connect!
+      //finally, connect!
       this.player.connect();
     })();
   }
@@ -86,6 +86,7 @@ export class SpotifyPlaybackService {
           time: 0,
           showPlayButton: false,
           showPauseButton: false,
+          showTrackNumber: true,
           duration: 0,
           uri: '',
           total: 0,

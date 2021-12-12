@@ -88,19 +88,18 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       .subscribe((playlist: string) => this.selectedPlaylist = playlist);
     this.getPlaylistsSubscription = this.apolloService.getPlaylists().pipe(first())
       .subscribe((data: SpotifyPlaylistRespose) => {
+        console.info(data);
         if (data.items) {
-          data.items.forEach((playlist: Playlist) => {
+          this.playlists = data.items.map((playlist: Playlist) => {
+            let selected = false;
             if (playlist.name === this.selectedPlaylist) {
-              playlist.selected = true;
-            } else {
-              playlist.selected = false;
+              selected = true;
             }
-            playlist.selectedUrl = playlist.name.toLowerCase();
-            playlist.id = playlist.id;
+            const selectedUrl = playlist.name.toLowerCase();
+            return {...playlist, selected, selectedUrl};
           });
           this.loading = false;
           this.playlistsLoaded = true;
-          this.playlists = data.items;
           this.playlistTotal = data.total;
           this.nextPlaylist = data.next;
         }
