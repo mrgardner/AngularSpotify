@@ -11,9 +11,9 @@ describe('MadeForYouComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MadeForYouComponent ]
+      declarations: [MadeForYouComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

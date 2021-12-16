@@ -23,4 +23,4 @@ import { GraphQLModule } from './graphql.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

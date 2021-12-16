@@ -33,10 +33,10 @@ describe('DeviceModalComponent', () => {
         HttpClientModule
       ],
       providers: [
-        {provide: MatDialogRef, useValue: {close: (): void => {}}},
+        { provide: MatDialogRef, useValue: { close: (): void => { } } },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

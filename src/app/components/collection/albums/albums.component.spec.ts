@@ -26,7 +26,7 @@ describe('AlbumsComponent', () => {
         HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

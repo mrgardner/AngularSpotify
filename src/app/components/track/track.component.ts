@@ -25,7 +25,7 @@ export class TrackComponent implements OnInit, OnDestroy {
   constructor(
     private spotifyService: SpotifyService,
     private route: ActivatedRoute,
-    public utilService: UtilService) {}
+    public utilService: UtilService) { }
 
   ngOnInit() {
     this.routeSubscription = this.route.params.pipe(

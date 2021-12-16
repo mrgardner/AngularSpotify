@@ -11,7 +11,7 @@ export class HighlightSearchComponent implements OnChanges {
   @Input() searchText: string;
   public finalText: string;
 
-  constructor() {}
+  constructor() { }
 
   ngOnChanges(): void {
     if (this.searchText.length > 0) {
@@ -34,10 +34,10 @@ export class HighlightSearchComponent implements OnChanges {
   }
 
   insert(fullString: string, stringToInsert: string, position: number): string {
-    if (typeof(position) === 'undefined') {
+    if (typeof (position) === 'undefined') {
       position = 0;
     }
-    if (typeof(stringToInsert) === 'undefined') {
+    if (typeof (stringToInsert) === 'undefined') {
       stringToInsert = '';
     }
     return fullString.slice(0, position) + stringToInsert + fullString.slice(position);

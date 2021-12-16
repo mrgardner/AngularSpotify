@@ -70,4 +70,4 @@ import { DuplicateTrackPipe } from '@pipes/duplicate-track/duplicate-track.pipe'
         ReactiveFormsModule
     ]
 })
-export class ComponentModule {}
+export class ComponentModule { }

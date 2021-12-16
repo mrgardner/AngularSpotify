@@ -57,7 +57,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatTable, {static: true}) table: MatTable<SortedTrack[]>;
+  @ViewChild(MatTable, { static: true }) table: MatTable<SortedTrack[]>;
   @ViewChild(CdkDropList) _dropList: CdkDropList;
 
   constructor(
@@ -67,7 +67,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     private spotifyPlaybackService: SpotifyPlaybackService,
     public utilService: UtilService,
     private trackService: TrackService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute) { }
 
   // TODO: Add functionality to save drag and drop to spotify endpoint
   dropTable(event: DropData): void {
@@ -202,7 +202,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
       && this.state.repeat_mode === 0 && this.state.track_window.next_tracks.length > 0) {
       this.spotifyPlaybackService.playSong();
     } else {
-      this.spotifyService.playSpotifyTrack(this.tracks, this.tracks[0]['track']).subscribe(() => {});
+      this.spotifyService.playSpotifyTrack(this.tracks, this.tracks[0]['track']).subscribe(() => { });
     }
   }
 
@@ -211,7 +211,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     if (this.state.position > 0 && song.title === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
-      this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => {});
+      this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => { });
     }
   }
 

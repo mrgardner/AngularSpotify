@@ -8,7 +8,7 @@ import { Artist } from '@interfaces/artist/artist.interface';
   providedIn: 'root'
 })
 export class UtilService {
-  constructor() {}
+  constructor() { }
 
   encodeSpecialSymbols(url: string): string {
     url = url.replace(new RegExp(/[~]/g), '%7E');
@@ -52,7 +52,7 @@ export class UtilService {
         } else {
           artistString += `${artist.name}, `;
         }
-      }  else {
+      } else {
         artistString = artist.name;
       }
       return artistString;

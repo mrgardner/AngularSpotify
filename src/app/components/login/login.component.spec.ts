@@ -17,7 +17,7 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent}
+    { path: 'login', component: LoginComponent }
   ];
   let authService: AuthService;
 
@@ -31,7 +31,7 @@ describe('LoginComponent', () => {
         HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

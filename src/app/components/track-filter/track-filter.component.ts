@@ -30,7 +30,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private trackService: TrackService) {}
+    private trackService: TrackService) { }
 
   ngOnInit(): void {
     this.isSearchBoxShowing = false;
@@ -87,21 +87,21 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
 
   // TODO: FIX when input variables are fixed
   // shuffleSongs(): void {
-    // const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
-    // TODO: FIX without having to use getAuthToken()
-    // this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
-    //
-    // this.route.params.pipe(switchMap(params => {
-    //   return of();
-    //
-    // })).subscribe(() => {});
-    // const that = this;
-    // this.route.params.subscribe(params => {
-    //   // this.originalTracks = this.tracks;
-    //   this.trackService.addTrackToPlaylist(params['playlistID']);
-    //   // const shuffledTracks = that.spotifyService.shuffleTracks(this.tracks);
-    //   // that.spotifyService.shuffler(params['playlistID'], this.originalTracks);
-    // });
+  // const shuffledTracks = this.spotifyService.shuffleTracks(this.tracks);
+  // TODO: FIX without having to use getAuthToken()
+  // this.spotifyService.addShuffledTracksToPlaylist(this.playlistID, shuffledTracks).subscribe(() => {});
+  //
+  // this.route.params.pipe(switchMap(params => {
+  //   return of();
+  //
+  // })).subscribe(() => {});
+  // const that = this;
+  // this.route.params.subscribe(params => {
+  //   // this.originalTracks = this.tracks;
+  //   this.trackService.addTrackToPlaylist(params['playlistID']);
+  //   // const shuffledTracks = that.spotifyService.shuffleTracks(this.tracks);
+  //   // that.spotifyService.shuffler(params['playlistID'], this.originalTracks);
+  // });
   // }
 
   filterTrack(track: string): void {

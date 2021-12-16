@@ -39,8 +39,8 @@ describe('PlaylistTableComponent', () => {
   let apolloService: ApolloService;
   let changeDetectorRef: ChangeDetectorRef;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
-    {path: 'playlist/:name/:id', component: PlaylistTableComponent}
+    { path: 'login', component: LoginComponent },
+    { path: 'playlist/:name/:id', component: PlaylistTableComponent }
   ];
 
   beforeEach(waitForAsync(() => {
@@ -57,7 +57,7 @@ describe('PlaylistTableComponent', () => {
         Apollo
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -399,7 +399,7 @@ describe('PlaylistTableComponent', () => {
       }
     ];
     component.ngOnInit();
-    component.sortData({active: 'title', direction: 'asc'});
+    component.sortData({ active: 'title', direction: 'asc' });
     expect(component.tracks.length).toEqual(2);
   });
 
@@ -435,7 +435,7 @@ describe('PlaylistTableComponent', () => {
       }
     ];
     component.ngOnInit();
-    component.sortData({active: 'artist', direction: 'asc'});
+    component.sortData({ active: 'artist', direction: 'asc' });
     expect(component.tracks.length).toEqual(2);
   });
 
@@ -471,7 +471,7 @@ describe('PlaylistTableComponent', () => {
       }
     ];
     component.ngOnInit();
-    component.sortData({active: 'album', direction: 'asc'});
+    component.sortData({ active: 'album', direction: 'asc' });
     expect(component.tracks.length).toEqual(2);
   });
 
@@ -507,7 +507,7 @@ describe('PlaylistTableComponent', () => {
       }
     ];
     component.ngOnInit();
-    component.sortData({active: 'addedAt', direction: 'asc'});
+    component.sortData({ active: 'addedAt', direction: 'asc' });
     expect(component.tracks.length).toEqual(2);
   });
 
@@ -543,7 +543,7 @@ describe('PlaylistTableComponent', () => {
       }
     ];
     component.ngOnInit();
-    component.sortData({active: 'time', direction: 'asc'});
+    component.sortData({ active: 'time', direction: 'asc' });
     expect(component.tracks.length).toEqual(2);
   });
 
@@ -579,19 +579,19 @@ describe('PlaylistTableComponent', () => {
       }
     ];
     component.ngOnInit();
-    component.sortData({active: 'test', direction: 'asc'});
+    component.sortData({ active: 'test', direction: 'asc' });
     expect(component.tracks.length).toEqual(2);
   });
 
   it('should check the sortData method with no active column', () => {
     component.tracks = [];
-    component.sortData({active: '', direction: ''});
+    component.sortData({ active: '', direction: '' });
     expect(component.tracks.length).toEqual(0);
   });
 
   it('should check the sortData method with active column and no direction', () => {
     component.tracks = [];
-    component.sortData({active: 'title', direction: ''});
+    component.sortData({ active: 'title', direction: '' });
     expect(component.tracks.length).toEqual(0);
   });
 

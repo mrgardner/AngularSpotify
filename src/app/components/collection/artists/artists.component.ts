@@ -18,7 +18,7 @@ export class ArtistsComponent implements OnInit, OnDestroy {
   public artists: Artist[];
   public artistsSubscription: Subscription;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService) {}
+  constructor(private apolloService: ApolloService, public utilService: UtilService) { }
 
   ngOnInit(): void {
     this.artistsSubscription = this.apolloService.getFollowedArtists().subscribe(data => this.artists = data.artists.items);

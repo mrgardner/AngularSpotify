@@ -41,4 +41,4 @@ import { NgModule } from '@angular/core';
     MatToolbarModule
   ]
 })
-export class AngularMaterialModule {}
+export class AngularMaterialModule { }

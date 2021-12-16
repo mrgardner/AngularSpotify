@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {APOLLO_OPTIONS} from 'apollo-angular';
-import {ApolloClientOptions, ApolloLink, InMemoryCache} from '@apollo/client/core';
-import {HttpLink} from 'apollo-angular/http';
+import { NgModule } from '@angular/core';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloClientOptions, ApolloLink, InMemoryCache } from '@apollo/client/core';
+import { HttpLink } from 'apollo-angular/http';
 import { HttpHeaders } from '@angular/common/http';
 
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
-  const http = httpLink.create({uri});
+  const http = httpLink.create({ uri });
   const middleware = new ApolloLink((operation, forward) => {
     const authtoken = sessionStorage.getItem('spotifyToken') || null;
     console.info(authtoken);
@@ -14,7 +14,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
       headers: new HttpHeaders().set(
         'Authorization',
         `Bearer ${authtoken}`
-      ) 
+      )
     });
 
     return forward(operation);
@@ -37,5 +37,5 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   ],
 })
 export class GraphQLModule {
-  
+
 }

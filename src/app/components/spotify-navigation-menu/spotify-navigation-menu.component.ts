@@ -59,7 +59,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     public utilService: UtilService,
     public apolloService: ApolloService,
     private routeService: RouteService,
-    private spotifyPlaybackService: SpotifyPlaybackService) {}
+    private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit(): void {
     this.sections = [
@@ -96,7 +96,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
               selected = true;
             }
             const selectedUrl = playlist.name.toLowerCase();
-            return {...playlist, selected, selectedUrl};
+            return { ...playlist, selected, selectedUrl };
           });
           this.loading = false;
           this.playlistsLoaded = true;
@@ -108,7 +108,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationStart))
       .subscribe((event: NavigationStart) => {
         this.selectedRoute = this.routeService.parseUrl(event.url);
-    });
+      });
 
     this.getPlaylistIdSubscription = this.spotifyPlaybackService.currentPlaylistPlaying$
       .subscribe((id: string) => this.currentPlaylist = id);

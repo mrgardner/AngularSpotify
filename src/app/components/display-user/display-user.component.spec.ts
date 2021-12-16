@@ -34,7 +34,7 @@ describe('DisplayUserComponent', () => {
         Apollo
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -18,7 +18,7 @@ export class PlaylistDataSourceService {
   public backupSubject = new BehaviorSubject<SortedTrack[]>([]);
   public backupSubject$ = this.backupSubject.asObservable();
 
-  constructor(private apolloService: ApolloService, private utilService: UtilService) {}
+  constructor(private apolloService: ApolloService, private utilService: UtilService) { }
 
   connect(): Observable<SortedTrack[]> {
     return this.tableSubject.asObservable();

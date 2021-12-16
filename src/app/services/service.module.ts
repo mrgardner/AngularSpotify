@@ -34,4 +34,4 @@ import { UtilService } from '@services/util/util.service';
     UtilService
   ]
 })
-export class ServiceModule {}
+export class ServiceModule { }

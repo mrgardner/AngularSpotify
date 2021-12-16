@@ -23,7 +23,7 @@ export class AlbumsComponent implements OnInit, OnDestroy {
   public name: string;
   public albumsSubscription: Subscription;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService) {}
+  constructor(private apolloService: ApolloService, public utilService: UtilService) { }
 
   ngOnInit(): void {
     let numberOfSavedAlbums = 0;

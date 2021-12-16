@@ -14,8 +14,8 @@ export class CallbackComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute) {
-      this._window = window;
-    }
+    this._window = window;
+  }
 
   ngOnInit(): void {
     this.routeSubscrition = this.route.fragment.subscribe((fragment: string) => {

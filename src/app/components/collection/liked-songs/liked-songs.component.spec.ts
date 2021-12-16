@@ -11,9 +11,9 @@ describe('LikedSongsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LikedSongsComponent ]
+      declarations: [LikedSongsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

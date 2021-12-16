@@ -53,7 +53,7 @@ describe('ApolloService', () => {
     expect(op.operation.variables.url).toEqual('https://api.spotify.com/v1/me');
 
     op.flush({
-      data : {
+      data: {
         user: expectedResult
       }
     });
@@ -79,7 +79,7 @@ describe('ApolloService', () => {
     expect(op.operation.variables.url).toEqual('https://api.spotify.com/v1/me/playlists?limit=50');
 
     op.flush({
-      data : {
+      data: {
         playlists: expectedResult
       }
     });
@@ -105,7 +105,7 @@ describe('ApolloService', () => {
     expect(op.operation.variables.url).toEqual('https://api.spotify.com/v1/me/playlists?limit=50&offset=50');
 
     op.flush({
-      data : {
+      data: {
         playlists: expectedResult
       }
     });
@@ -133,7 +133,7 @@ describe('ApolloService', () => {
     expect(op.operation.variables.url).toEqual('https://api.spotify.com/v1/playlists/123');
 
     op.flush({
-      data : {
+      data: {
         playlist: expectedResult
       }
     });
@@ -167,7 +167,7 @@ describe('ApolloService', () => {
     expect(op.operation.variables.url).toEqual('https://api.spotify.com/v1/playlists/123/tracks?offset=0&limit=50');
 
     op.flush({
-      data : {
+      data: {
         playlistTracks: expectedResult
       }
     });

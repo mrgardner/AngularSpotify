@@ -20,7 +20,7 @@ describe('AuthGuard', () => {
   let router: Router;
   let authService: AuthService;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
   const mockSnapshot: any = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
 
@@ -32,7 +32,7 @@ describe('AuthGuard', () => {
       ],
       providers: [
         AuthGuard,
-        {provide: RouterStateSnapshot, useValue: mockSnapshot}
+        { provide: RouterStateSnapshot, useValue: mockSnapshot }
       ]
     });
 

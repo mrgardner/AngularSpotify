@@ -27,11 +27,11 @@ describe('TrackFilterComponent', () => {
       ],
       providers: [
         {
-          provide: ActivatedRoute, useValue: {params: {}}
+          provide: ActivatedRoute, useValue: { params: {} }
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

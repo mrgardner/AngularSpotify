@@ -35,7 +35,7 @@ describe('SpotifyNavigationMenuComponent', () => {
   let apolloService: ApolloService;
   let playlistService: PlaylistService;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
 
   beforeEach(waitForAsync(() => {
@@ -52,7 +52,7 @@ describe('SpotifyNavigationMenuComponent', () => {
         Apollo
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -231,7 +231,7 @@ describe('SpotifyNavigationMenuComponent', () => {
       }
     ];
     const spy = spyOn(router, 'navigateByUrl');
-    component.goToTracks({name: 'test', id: 'test'});
+    component.goToTracks({ name: 'test', id: 'test' });
     expect(spy).toHaveBeenCalled();
   });
 

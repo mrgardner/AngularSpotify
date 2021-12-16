@@ -18,7 +18,7 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let authService: AuthService;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({

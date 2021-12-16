@@ -18,7 +18,7 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
   let authService: AuthService;
   let spotifyPlaybackService: SpotifyPlaybackService;
@@ -33,7 +33,7 @@ describe('HeaderComponent', () => {
         HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

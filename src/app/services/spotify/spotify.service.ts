@@ -39,8 +39,8 @@ export class SpotifyService {
 
     return this._http.get(url, {
       params: new HttpParams()
-      .set('offset', trackOffset.toString())
-      .set('limit', limit.toString()),
+        .set('offset', trackOffset.toString())
+        .set('limit', limit.toString()),
     });
   }
 
@@ -53,17 +53,17 @@ export class SpotifyService {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
 
-      [ array[i], array[j] ] = [ array[j], array[i] ];
+      [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
   }
 
   addTracksToPlaylist(owner: string, playlistID: string, tracksUris: Array<string>): Observable<any> {
-    return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, {uris: tracksUris});
+    return this._http.put(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, { uris: tracksUris });
   }
 
   postTracksToPlaylist(owner: string, playlistID: string, tracksUris: Array<string>): Observable<any> {
-    return this._http.post(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, {uris: tracksUris});
+    return this._http.post(this.spotifyApiBaseURI + `/users/${owner}/playlists/${playlistID}/tracks`, { uris: tracksUris });
   }
 
   /*
@@ -74,11 +74,11 @@ export class SpotifyService {
   */
 
   playSpotifyTrack(tracks: Array<SortedTrack>, song: SortedTrack): Observable<any> {
-    const uris = tracks.map((track: SortedTrack)  => track.uri);
+    const uris = tracks.map((track: SortedTrack) => track.uri);
     const offset = uris.indexOf(song.uri);
 
     return this._http.put(this.spotifyApiBaseURI + `/me/player/play?${localStorage.getItem('deviceId')}`,
-    {uris, offset: {position: offset}});
+      { uris, offset: { position: offset } });
   }
 
   setRepeatMode(context: string, deviceID: string): Observable<any> {
@@ -90,7 +90,7 @@ export class SpotifyService {
   }
 
   makeDeviceActive(deviceID: string): Observable<any> {
-    return this._http.put(this.spotifyApiBaseURI + '/me/player', {device_ids: [deviceID], play: true});
+    return this._http.put(this.spotifyApiBaseURI + '/me/player', { device_ids: [deviceID], play: true });
   }
 
   getAvailableDevices(): Observable<any> {

@@ -35,7 +35,7 @@ describe('SpotifyStatusBarComponent', () => {
         MatDialogModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

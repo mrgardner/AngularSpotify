@@ -34,7 +34,7 @@ export class SpotifyPlaybackService {
     this.currentPlaylistPlaying$ = new EventEmitter();
   }
 
-  async waitForSpotifyWebPlaybackSDKToLoad () {
+  async waitForSpotifyWebPlaybackSDKToLoad() {
     return new Promise(resolve => {
       if (window['Spotify']) {
         resolve(window['Spotify']);

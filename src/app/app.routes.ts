@@ -21,25 +21,27 @@ import { TrackComponent } from '@components/track/track.component';
 import { AuthGuard } from '@guards/auth/auth.guard';
 
 const APP_ROUTES: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: 'callback', component: CallbackComponent},
-  { path: 'collection', component: CollectionComponent, canActivate: [AuthGuard], children: [
-    { path: 'playlists', component: PlaylistsComponent, canActivate: [AuthGuard]},
-    { path: 'made-for-you', component: MadeForYouComponent, canActivate: [AuthGuard]},
-    { path: 'liked-songs', component: LikedSongsComponent, canActivate: [AuthGuard]},
-    { path: 'albums', component: AlbumsComponent, canActivate: [AuthGuard]},
-    { path: 'artists', component: ArtistsComponent, canActivate: [AuthGuard]},
-    { path: 'podcasts', component: PodcastsComponent, canActivate: [AuthGuard]}
-  ]},
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
-  { path: 'login', component: LoginComponent},
-  { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [AuthGuard]},
-  { path: 'search', component: SearchComponent, canActivate: [AuthGuard]},
-  { path: 'track/:name/:id', component: TrackComponent, canActivate: [AuthGuard]}
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'callback', component: CallbackComponent },
+  {
+    path: 'collection', component: CollectionComponent, canActivate: [AuthGuard], children: [
+      { path: 'playlists', component: PlaylistsComponent, canActivate: [AuthGuard] },
+      { path: 'made-for-you', component: MadeForYouComponent, canActivate: [AuthGuard] },
+      { path: 'liked-songs', component: LikedSongsComponent, canActivate: [AuthGuard] },
+      { path: 'albums', component: AlbumsComponent, canActivate: [AuthGuard] },
+      { path: 'artists', component: ArtistsComponent, canActivate: [AuthGuard] },
+      { path: 'podcasts', component: PodcastsComponent, canActivate: [AuthGuard] }
+    ]
+  },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
+  { path: 'playlist/:name/:id', component: PlaylistTableComponent, canActivate: [AuthGuard] },
+  { path: 'search', component: SearchComponent, canActivate: [AuthGuard] },
+  { path: 'track/:name/:id', component: TrackComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(APP_ROUTES, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

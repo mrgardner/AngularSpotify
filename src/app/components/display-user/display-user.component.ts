@@ -16,7 +16,7 @@ import { ApolloService } from '@services/apollo/apollo.service';
 export class DisplayUserComponent implements OnInit, OnDestroy {
   public displayName: string;
   public displayNameSubscription: Subscription;
-  constructor(private apolloService: ApolloService) {}
+  constructor(private apolloService: ApolloService) { }
 
   ngOnInit(): void {
     this.displayNameSubscription = this.apolloService.getUserDisplayName()

@@ -19,7 +19,7 @@ describe('AuthService', () => {
   let router: Router;
 
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,7 +53,7 @@ describe('AuthService', () => {
         location: {
           hash: '#access_token=123&expire_in=233'
         },
-        close: () => {}
+        close: () => { }
       }
     );
     const spy = spyOn(utilService, 'setCookie');

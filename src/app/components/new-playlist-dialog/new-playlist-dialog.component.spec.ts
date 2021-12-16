@@ -30,11 +30,11 @@ describe('NewPlaylistDialogComponent', () => {
         FormsModule
       ],
       providers: [
-        {provide: MatDialogRef, useValue: {close: (): void => {}}},
-        {provide: MAT_DIALOG_DATA, useValue: {}}
+        { provide: MatDialogRef, useValue: { close: (): void => { } } },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

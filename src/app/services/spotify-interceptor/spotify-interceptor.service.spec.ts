@@ -54,7 +54,7 @@ describe('SpotifyInterceptorService', () => {
     http.get('https://api.spotify.com/v1/me').subscribe(res => expect(res).toBeTruthy());
     const request = httpMock.expectOne('https://api.spotify.com/v1/me');
 
-    request.flush({data: 'test'});
+    request.flush({ data: 'test' });
     httpMock.verify();
 
     expect(request.request.headers.has('authorization')).toBeTruthy();
@@ -65,7 +65,7 @@ describe('SpotifyInterceptorService', () => {
     http.get('/api/test').subscribe(res => expect(res).toBeTruthy());
     const request = httpMock.expectOne('/api/test');
 
-    request.flush({data: 'test'});
+    request.flush({ data: 'test' });
     httpMock.verify();
 
     expect(request.request.headers.has('authorization')).toBeFalsy();

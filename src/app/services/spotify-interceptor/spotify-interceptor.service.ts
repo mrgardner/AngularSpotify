@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SpotifyInterceptorService implements HttpInterceptor {
-  constructor() {}
+  constructor() { }
 
   // TODO: Fix return types
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

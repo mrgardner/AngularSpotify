@@ -11,9 +11,9 @@ describe('PodcastsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PodcastsComponent ]
+      declarations: [PodcastsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
