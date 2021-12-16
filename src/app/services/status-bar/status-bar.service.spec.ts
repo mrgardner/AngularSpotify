@@ -46,51 +46,19 @@ describe('StatusBarService', () => {
       is_local: true,
       primary_color: '',
       track: {
-        album: {
-          album_type: '',
-          artists: [],
-          available_markets: [],
-          external_urls: {
-            spotify: ''
-          },
-          href: '',
-          id: '',
-          images: [],
-          name: '',
-          release_date: '',
-          release_date_precision: '',
-          total_track: 0,
-          type: '',
-          uri: ''
-        },
-        artists: [],
-        available_markets: [],
-        disc_number: 0,
-        duration_ms: 0,
-        explicit: true,
-        external_ids: {
-          isrc: ''
-        },
-        external_urls: {
-          spotify: ''
-        },
-        href: '',
-        id: '',
-        name: '',
-        popularity: 0,
-        preview_url: '',
-        track_number: 0,
-        type: '',
-        uri: '',
-        isPlayButtonShowing: true,
-        isPauseButtonShowing: true,
-        remove: true,
-        album_name: '',
         title: '',
         artist: '',
-        time: '',
-        addedAt: '',
-        duration: 0
+        album_name: '',
+        added_at: '',
+        time: 0,
+        showPlayButton: false,
+        showPauseButton: false,
+        showTrackNumber: false,
+        duration: 0,
+        uri: '',
+        total: 0,
+        size: 0,
+        filterText: ''
       },
       video_thumbnail: {
         url: ''

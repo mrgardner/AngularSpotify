@@ -165,47 +165,4 @@ describe('UtilServiceService', () => {
     const result = utilService.compare('banana', 'apple', false);
     expect(result).toEqual(-1);
   });
-
-  it('should check setCookie method without a value', () => {
-    const expiredDate = new Date();
-    expiredDate.setHours(expiredDate.getHours() + 1);
-    utilService.setCookie('test', null, expiredDate.toUTCString());
-    const result = utilService.getCookie('test');
-    expect(result).toEqual('');
-  });
-
-  it('should check setCookie method with a value', () => {
-    const expiredDate = new Date();
-    expiredDate.setHours(expiredDate.getHours() + 1);
-    utilService.setCookie('test', '123', expiredDate.toUTCString());
-    const result = utilService.getCookie('test');
-    expect(result).toEqual('123');
-  });
-
-  it('should check getCookie method with a existing cookie', () => {
-    const expiredDate = new Date();
-    expiredDate.setHours(expiredDate.getHours() + 1);
-    utilService.setCookie('test', '123', expiredDate.toUTCString());
-    const result = utilService.getCookie('test');
-    expect(result).toEqual('123');
-  });
-
-  it('should check getCookie method with a non-existing cookie', () => {
-    const expiredDate = new Date();
-    expiredDate.setHours(expiredDate.getHours() + 1);
-    utilService.setCookie('test', '123', expiredDate.toUTCString());
-    const result = utilService.getCookie('123');
-    expect(result).toEqual(null);
-  });
-
-  it('should check clearCookie method', () => {
-    const expiredDate = new Date();
-    expiredDate.setHours(expiredDate.getHours() + 1);
-    utilService.setCookie('test', '123', expiredDate.toUTCString());
-    const result1 = utilService.getCookie('test');
-    expect(result1).toEqual('123');
-    utilService.clearCookie('test');
-    const result2 = utilService.getCookie('test');
-    expect(result2).toEqual(null);
-  });
 });

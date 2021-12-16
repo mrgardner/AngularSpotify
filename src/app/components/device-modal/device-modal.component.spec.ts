@@ -101,12 +101,14 @@ describe('DeviceModalComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        showTrackNumber: false
       },
       progress_ms: 1,
       repeat_state: 'string',
       shuffle_state: true,
-      timestamp: 1
+      timestamp: 1,
+
     };
     spyOn(spotifyService, 'getAvailableDevices').and.returnValue(of());
     spyOn(spotifyService, 'getCurrentPlayer').and.returnValue(of(device));
@@ -146,7 +148,8 @@ describe('DeviceModalComponent', () => {
         uri: '',
         total: 0,
         size: 0,
-        filterText: ''
+        filterText: '',
+        showTrackNumber: false
       },
       progress_ms: 1,
       repeat_state: 'string',
