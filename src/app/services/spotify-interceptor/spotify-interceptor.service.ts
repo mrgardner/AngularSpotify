@@ -3,14 +3,11 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-// Services
-import { UtilService } from '@services/util/util.service';
-
 @Injectable({
   providedIn: 'root'
 })
 export class SpotifyInterceptorService implements HttpInterceptor {
-  constructor(private utilService: UtilService) {}
+  constructor() { }
 
   // TODO: Fix return types
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -19,7 +16,7 @@ export class SpotifyInterceptorService implements HttpInterceptor {
     if (spotifyUrl.length > 1) {
       req = req.clone({
         setHeaders: {
-          Authorization: 'Bearer ' + this.utilService.getCookie('spotifyToken'),
+          Authorization: `Bearer ${sessionStorage.getItem('spotifyToken')}`,
           'Content-Type': 'application/json'
         }
       });

@@ -23,7 +23,7 @@ import { PlaylistService } from '@services/playlist/playlist.service';
 import { ApolloService } from '@services/apollo/apollo.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SpotifyNavigationMenuComponent', () => {
@@ -35,10 +35,10 @@ describe('SpotifyNavigationMenuComponent', () => {
   let apolloService: ApolloService;
   let playlistService: PlaylistService;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         SpotifyNavigationMenuComponent
@@ -52,7 +52,7 @@ describe('SpotifyNavigationMenuComponent', () => {
         Apollo
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -231,7 +231,7 @@ describe('SpotifyNavigationMenuComponent', () => {
       }
     ];
     const spy = spyOn(router, 'navigateByUrl');
-    component.goToTracks({name: 'test', id: 'test'});
+    component.goToTracks({ name: 'test', id: 'test' });
     expect(spy).toHaveBeenCalled();
   });
 

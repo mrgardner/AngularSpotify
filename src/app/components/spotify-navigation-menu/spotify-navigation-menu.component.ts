@@ -59,7 +59,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     public utilService: UtilService,
     public apolloService: ApolloService,
     private routeService: RouteService,
-    private spotifyPlaybackService: SpotifyPlaybackService) {}
+    private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit(): void {
     this.sections = [
@@ -88,19 +88,18 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       .subscribe((playlist: string) => this.selectedPlaylist = playlist);
     this.getPlaylistsSubscription = this.apolloService.getPlaylists().pipe(first())
       .subscribe((data: SpotifyPlaylistRespose) => {
+        console.info(data);
         if (data.items) {
-          data.items.forEach((playlist: Playlist) => {
+          this.playlists = data.items.map((playlist: Playlist) => {
+            let selected = false;
             if (playlist.name === this.selectedPlaylist) {
-              playlist.selected = true;
-            } else {
-              playlist.selected = false;
+              selected = true;
             }
-            playlist.selectedUrl = playlist.name.toLowerCase();
-            playlist.id = playlist.id;
+            const selectedUrl = playlist.name.toLowerCase();
+            return { ...playlist, selected, selectedUrl };
           });
           this.loading = false;
           this.playlistsLoaded = true;
-          this.playlists = data.items;
           this.playlistTotal = data.total;
           this.nextPlaylist = data.next;
         }
@@ -109,7 +108,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationStart))
       .subscribe((event: NavigationStart) => {
         this.selectedRoute = this.routeService.parseUrl(event.url);
-    });
+      });
 
     this.getPlaylistIdSubscription = this.spotifyPlaybackService.currentPlaylistPlaying$
       .subscribe((id: string) => this.currentPlaylist = id);

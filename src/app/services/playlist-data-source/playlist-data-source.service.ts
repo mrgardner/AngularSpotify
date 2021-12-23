@@ -18,7 +18,7 @@ export class PlaylistDataSourceService {
   public backupSubject = new BehaviorSubject<SortedTrack[]>([]);
   public backupSubject$ = this.backupSubject.asObservable();
 
-  constructor(private apolloService: ApolloService, private utilService: UtilService) {}
+  constructor(private apolloService: ApolloService, private utilService: UtilService) { }
 
   connect(): Observable<SortedTrack[]> {
     return this.tableSubject.asObservable();
@@ -39,6 +39,7 @@ export class PlaylistDataSourceService {
           time: t.track.duration_ms,
           showPlayButton: false,
           showPauseButton: false,
+          showTrackNumber: true,
           duration: t.track.duration_ms,
           uri: t.track.uri,
           total: tracks.total,

@@ -10,14 +10,14 @@ import { TrackFilterComponent } from '@components/track-filter/track-filter.comp
 import { TrackService } from '@services/track/track.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('TrackFilterComponent', () => {
   let component: TrackFilterComponent;
   let fixture: ComponentFixture<TrackFilterComponent>;
   let trackService: TrackService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TrackFilterComponent
@@ -27,11 +27,11 @@ describe('TrackFilterComponent', () => {
       ],
       providers: [
         {
-          provide: ActivatedRoute, useValue: {params: {}}
+          provide: ActivatedRoute, useValue: { params: {} }
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

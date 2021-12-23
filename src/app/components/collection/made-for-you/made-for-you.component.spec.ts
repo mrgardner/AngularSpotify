@@ -2,18 +2,18 @@
 import { MadeForYouComponent } from '@components/collection/made-for-you/made-for-you.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('MadeForYouComponent', () => {
   let component: MadeForYouComponent;
   let fixture: ComponentFixture<MadeForYouComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MadeForYouComponent ]
+      declarations: [MadeForYouComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

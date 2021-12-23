@@ -8,7 +8,7 @@ import { SelectedRoute } from '@interfaces/route/route.interface';
   providedIn: 'root'
 })
 export class RouteService {
-  constructor() {}
+  constructor() { }
 
   parseUrl(route: string): SelectedRoute {
     const splitRoute = route.split('/').filter(function (el) {

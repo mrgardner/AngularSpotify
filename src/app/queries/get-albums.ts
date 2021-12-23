@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-angular';
 
 export const ALBUM_INFO = gql`
  query Albums($url: String!) {

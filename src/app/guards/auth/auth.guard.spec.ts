@@ -20,7 +20,7 @@ describe('AuthGuard', () => {
   let router: Router;
   let authService: AuthService;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent },
   ];
   const mockSnapshot: any = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
 
@@ -32,7 +32,7 @@ describe('AuthGuard', () => {
       ],
       providers: [
         AuthGuard,
-        {provide: RouterStateSnapshot, useValue: mockSnapshot}
+        { provide: RouterStateSnapshot, useValue: mockSnapshot }
       ]
     });
 
@@ -48,14 +48,14 @@ describe('AuthGuard', () => {
   it('should create spotify guard with token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('testCookie');
     authGuard = new AuthGuard(router, authService);
-    expect(authGuard.canActivate(new ActivatedRouteSnapshot(), mockSnapshot)).toBeTruthy();
+    expect(authGuard.canActivate()).toBeTruthy();
   });
 
   it('should create spotify guard without token', () => {
     const spy = spyOn(router, 'navigate');
     spyOn(authService, 'getSpotifyToken').and.returnValue('');
     authGuard = new AuthGuard(router, authService);
-    expect(authGuard.canActivate(new ActivatedRouteSnapshot(), mockSnapshot)).toBeFalsy();
+    expect(authGuard.canActivate()).toBeFalsy();
     expect(spy).toHaveBeenCalled();
   });
 });

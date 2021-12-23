@@ -48,7 +48,7 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     private deviceModalService: DeviceModalService,
     public dialog: MatDialog,
     private spotifyPlaybackService: SpotifyPlaybackService,
-    public utilService: UtilService) {}
+    public utilService: UtilService) { }
 
   ngOnInit(): void {
     this.isRepeatPlaylistShowing = false;
@@ -104,7 +104,7 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     this.spotifyPlaybackService.playSong();
   }
 
-  pauseSong(): void  {
+  pauseSong(): void {
     this.spotifyPlaybackService.pauseSong();
   }
 
@@ -120,20 +120,20 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = true;
     this.isRepeatTrackShowing = false;
-    this.spotifyService.setRepeatMode('context', localStorage.getItem('deviceId')).subscribe(() => {});
+    this.spotifyService.setRepeatMode('context', localStorage.getItem('deviceId')).subscribe(() => { });
   }
 
   repeatTrack(): void {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = true;
-    this.spotifyService.setRepeatMode('track', localStorage.getItem('deviceId')).subscribe(() => {});
+    this.spotifyService.setRepeatMode('track', localStorage.getItem('deviceId')).subscribe(() => { });
   }
 
   repeatOff(): void {
     this.isRepeatOffShowing = true;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
-    this.spotifyService.setRepeatMode('off', localStorage.getItem('deviceId')).subscribe(() => {});
+    this.spotifyService.setRepeatMode('off', localStorage.getItem('deviceId')).subscribe(() => { });
   }
 }

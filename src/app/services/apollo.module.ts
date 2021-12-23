@@ -21,7 +21,7 @@ import { UtilService } from '@services/util/util.service';
 export class SpotifyApolloModule {
   constructor(private apollo: Apollo, private httpLink: HttpLink, private utilService: UtilService) {
     const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
-    const http = this.httpLink.create({uri});
+    const http = this.httpLink.create({ uri });
     const authMiddleware = new ApolloLink((operation, forward) => {
       // add the authorization to the headers
       operation.setContext({

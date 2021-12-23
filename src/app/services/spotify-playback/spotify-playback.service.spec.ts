@@ -69,11 +69,11 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check setupPlayer method', fakeAsync(async () => {
     const t = class Player {
-      constructor() {}
-      on() {}
-      connect() {}
+      constructor() { }
+      on() { }
+      connect() { }
     };
-    spyOn(spotifyPlaybackService, 'waitForSpotifyWebPlaybackSDKToLoad').and.returnValue(new Promise(resolve => resolve({Player: t})));
+    spyOn(spotifyPlaybackService, 'waitForSpotifyWebPlaybackSDKToLoad').and.returnValue(new Promise(resolve => resolve({ Player: t })));
     spotifyPlaybackService.setupPlayer();
     expect(spotifyPlaybackService).toBeTruthy();
   }));
@@ -183,8 +183,8 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check createEventHandlers method pauseSong', (() => {
     spotifyPlaybackService.player = {
-      on: () => {},
-      pause: () => {}
+      on: () => { },
+      pause: () => { }
     };
     const spy = spyOn(spotifyPlaybackService.player, 'pause');
 
@@ -195,8 +195,8 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check createEventHandlers method playSong', (() => {
     spotifyPlaybackService.player = {
-      on: () => {},
-      resume: () => {}
+      on: () => { },
+      resume: () => { }
     };
     const spy = spyOn(spotifyPlaybackService.player, 'resume');
 
@@ -207,8 +207,8 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check createEventHandlers method nextSong', (() => {
     spotifyPlaybackService.player = {
-      on: () => {},
-      nextTrack: () => {}
+      on: () => { },
+      nextTrack: () => { }
     };
     const spy = spyOn(spotifyPlaybackService.player, 'nextTrack');
 
@@ -219,8 +219,8 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check createEventHandlers method previousSong', (() => {
     spotifyPlaybackService.player = {
-      on: () => {},
-      previousTrack: () => {}
+      on: () => { },
+      previousTrack: () => { }
     };
     const spy = spyOn(spotifyPlaybackService.player, 'previousTrack');
 
@@ -231,8 +231,8 @@ describe('SpotifyPlaybackService', () => {
 
   it('should check createEventHandlers method setVolume', (() => {
     spotifyPlaybackService.player = {
-      on: () => {},
-      setVolume: () => {}
+      on: () => { },
+      setVolume: () => { }
     };
     const spy = spyOn(spotifyPlaybackService.player, 'setVolume');
 
@@ -243,7 +243,7 @@ describe('SpotifyPlaybackService', () => {
 
   fit('should check createEventHandlers method player.on initialization_error', (() => {
     spotifyPlaybackService.player = {
-      on: () => {},
+      on: () => { },
     };
     const spy = spyOn(spotifyPlaybackService.player, 'on');
 

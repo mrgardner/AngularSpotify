@@ -5,9 +5,6 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { SpotifySongResponse } from '@interfaces/song/song.interface';
 import { SortedTrack } from '@interfaces/track/track.interface';
 
-// Services
-import { UtilService } from '@services/util/util.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +22,7 @@ export class SpotifyPlaybackService {
   public player: any;
   public statePollingInterval: number = null;
   public endOfChain: boolean;
-  constructor(private utilService: UtilService) {
+  constructor() {
     this.currentSongState$ = new EventEmitter();
     this.playSong$ = new EventEmitter();
     this.pauseSong$ = new EventEmitter();
@@ -37,7 +34,7 @@ export class SpotifyPlaybackService {
     this.currentPlaylistPlaying$ = new EventEmitter();
   }
 
-  async waitForSpotifyWebPlaybackSDKToLoad () {
+  async waitForSpotifyWebPlaybackSDKToLoad() {
     return new Promise(resolve => {
       if (window['Spotify']) {
         resolve(window['Spotify']);
@@ -61,13 +58,13 @@ export class SpotifyPlaybackService {
       // create a new player
       this.player = new Player['Player']({
         name: 'Testing123',
-        volume: .1,
-        getOAuthToken: cb => { cb(this.utilService.getCookie('spotifyToken')); },
+        volume: 1,
+        getOAuthToken: cb => { cb(sessionStorage.getItem('spotifyToken')); },
       });
-      // // set up the player's event handlers
+      // set up the player's event handlers
       this.createEventHandlers();
 
-      // // finally, connect!
+      //finally, connect!
       this.player.connect();
     })();
   }
@@ -89,6 +86,7 @@ export class SpotifyPlaybackService {
           time: 0,
           showPlayButton: false,
           showPauseButton: false,
+          showTrackNumber: true,
           duration: 0,
           uri: '',
           total: 0,

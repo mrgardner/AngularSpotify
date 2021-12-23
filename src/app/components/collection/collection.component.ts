@@ -52,7 +52,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public activeLink: ActiveLink;
   public routerSubscription: Subscription;
 
-  constructor(private router: Router, private routeService: RouteService) {}
+  constructor(private router: Router, private routeService: RouteService) { }
 
   ngOnInit(): void {
     this.selectedRoute = this.routeService.parseUrl(this.router.url);
@@ -71,7 +71,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationStart))
       .subscribe((event: NavigationStart) => {
         this.selectedRoute = this.routeService.parseUrl(event.url);
-    });
+      });
   }
 
   ngOnDestroy(): void {

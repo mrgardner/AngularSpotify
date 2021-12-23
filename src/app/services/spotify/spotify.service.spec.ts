@@ -87,10 +87,10 @@ describe('SpotifyService', () => {
       'https://api.spotify.com/v1/playlists/test/tracks',
       {
         params: new HttpParams()
-        .set('offset', offset.toString())
-        .set('limit', limit.toString())
+          .set('offset', offset.toString())
+          .set('limit', limit.toString())
       }
-      );
+    );
   });
 
   it('should check getPlaylist method', () => {
@@ -194,7 +194,7 @@ describe('SpotifyService', () => {
       expect(track).toEqual('test');
     });
     expect(spy).toHaveBeenCalledWith('https://api.spotify.com/v1/me/player/play?null', {
-      uris: ['test'], offset: {position: 0}
+      uris: ['test'], offset: { position: 0 }
     });
   });
 
@@ -234,10 +234,10 @@ describe('SpotifyService', () => {
 
   it('should check createPlaylist method', () => {
     const spy = spyOn(http, 'post').and.returnValue(of('test'));
-    spotifyService.createPlaylist({test: 'test'}).subscribe(devices => {
+    spotifyService.createPlaylist({ test: 'test' }).subscribe(devices => {
       expect(devices).toEqual('test');
     });
-    expect(spy).toHaveBeenCalledWith('https://api.spotify.com/v1/me/playlists', {test: 'test'});
+    expect(spy).toHaveBeenCalledWith('https://api.spotify.com/v1/me/playlists', { test: 'test' });
   });
 
   it('should check uploadPlaylistCover method', () => {
@@ -251,8 +251,8 @@ describe('SpotifyService', () => {
 
   it('should check createNewPlaylist method', () => {
     const mockFile = new File([''], 'filename', { type: 'text/html' });
-    spyOn(spotifyService, 'createPlaylist').and.returnValue(of({id: 'test', owner: {id: 'test'}}));
-    spotifyService.createNewPlaylist({test: 'test'}, mockFile).subscribe(playlist => {
+    spyOn(spotifyService, 'createPlaylist').and.returnValue(of({ id: 'test', owner: { id: 'test' } }));
+    spotifyService.createNewPlaylist({ test: 'test' }, mockFile).subscribe(playlist => {
       expect(playlist).toEqual('test');
     });
   });

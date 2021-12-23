@@ -29,7 +29,7 @@ export class DeviceModalComponent implements OnInit, OnDestroy {
     private spotifyService: SpotifyService,
     private deviceModalService: DeviceModalService,
     public dialogRef: MatDialogRef<DeviceModalComponent>,
-    public utilService: UtilService) {}
+    public utilService: UtilService) { }
 
   ngOnInit(): void {
     this.availableDevicesSubscription = this.spotifyService.getAvailableDevices()

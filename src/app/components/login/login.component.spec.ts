@@ -10,18 +10,18 @@ import { LoginComponent } from '@components/login/login.component';
 import { AuthService } from '@services/auth/auth.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   const routes: Routes = [
-    {path: 'login', component: LoginComponent}
+    { path: 'login', component: LoginComponent }
   ];
   let authService: AuthService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         LoginComponent
@@ -31,7 +31,7 @@ describe('LoginComponent', () => {
         HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

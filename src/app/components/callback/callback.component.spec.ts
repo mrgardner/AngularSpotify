@@ -6,25 +6,25 @@ import { of } from 'rxjs';
 import { CallbackComponent } from '@components/callback/callback.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('CallbackComponent', () => {
   let component: CallbackComponent;
   let fixture: ComponentFixture<CallbackComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         CallbackComponent
       ],
       providers: [
         {
-         provide: ActivatedRoute, useValue: {fragment: ''}
+          provide: ActivatedRoute, useValue: { fragment: '' }
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -39,7 +39,7 @@ describe('CallbackComponent', () => {
   it('should check ngOnInit with fragment that does have access_token', () => {
     component._window = {
       opener: {
-        spotifyCallback: () => {}
+        spotifyCallback: () => { }
       }
     };
     TestBed.inject(ActivatedRoute).fragment = of('#access_token=123&token_type=123&expires_in=3600&state=123');
@@ -50,7 +50,7 @@ describe('CallbackComponent', () => {
   it('should check ngOnInit with fragment that does not have access_token', () => {
     component._window = {
       opener: {
-        spotifyCallback: () => {}
+        spotifyCallback: () => { }
       }
     };
     TestBed.inject(ActivatedRoute).fragment = of('test');

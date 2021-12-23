@@ -3,22 +3,37 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@app-core/*": ["src/app/*"],
-      "@components/*": ["src/app/components/*"],
-      "@environments/*": ["src/environments/*"],
-      "@guards/*": ["src/app/guards/*"],
-      "@interfaces/*": ["src/app/interfaces/*"],
-      "@pipes/*": ["src/app/pipes/*"],
-      "@queries/*": ["src/app/queries/*"],
-      "@services/*": ["src/app/services/*"]
+      "@app-core/*": [
+        "src/app/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
+      "@guards/*": [
+        "src/app/guards/*"
+      ],
+      "@interfaces/*": [
+        "src/app/interfaces/*"
+      ],
+      "@pipes/*": [
+        "src/app/pipes/*"
+      ],
+      "@queries/*": [
+        "src/app/queries/*"
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ]
     },
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2015",
     "typeRoots": [
@@ -26,8 +41,10 @@
     ],
     "lib": [
       "es2018",
-      "dom"
-    ]
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeChecking": true,

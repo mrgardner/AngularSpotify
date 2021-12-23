@@ -38,7 +38,7 @@ export class TrackService {
       tt.forEach(a => map3.set(a.title, (map3.get(a.title) || 0) + 1));
       const ttt = tt.filter(a => map3.get(a.title) > 1);
       ttt.forEach(a => a['remove'] = false);
-      return ttt.sort(function(a, b) {
+      return ttt.sort(function (a, b) {
         const nameA = a.title.toLowerCase();
         const nameB = b.title.toLowerCase();
         if (nameA < nameB) {

@@ -2,18 +2,18 @@
 import { ArtistsComponent } from '@components/collection/artists/artists.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('ArtistsComponent', () => {
   let component: ArtistsComponent;
   let fixture: ComponentFixture<ArtistsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ArtistsComponent ]
+      declarations: [ArtistsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

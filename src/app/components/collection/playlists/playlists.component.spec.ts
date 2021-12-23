@@ -2,18 +2,18 @@
 import { PlaylistsComponent } from '@components/collection/playlists/playlists.component';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
 describe('PlaylistsComponent', () => {
   let component: PlaylistsComponent;
   let fixture: ComponentFixture<PlaylistsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlaylistsComponent ]
+      declarations: [PlaylistsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

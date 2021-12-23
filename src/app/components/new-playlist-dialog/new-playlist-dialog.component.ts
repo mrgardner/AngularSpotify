@@ -32,7 +32,7 @@ export class NewPlaylistDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<NewPlaylistDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Object,
-    private spotifyService: SpotifyService) {}
+    private spotifyService: SpotifyService) { }
 
   get playlistNameLength(): number {
     return this.form.get('playlistName').value.length;

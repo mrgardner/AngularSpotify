@@ -9,8 +9,8 @@ import { AppComponent } from '@components/app/app.component';
 import { ComponentModule } from '@components/component.module';
 
 // Services
-import { SpotifyApolloModule } from '@services/apollo.module';
 import { ServiceModule } from '@services/service.module';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   imports: [
@@ -19,8 +19,8 @@ import { ServiceModule } from '@services/service.module';
     ComponentModule,
     HttpClientModule,
     ServiceModule,
-    SpotifyApolloModule,
+    GraphQLModule
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

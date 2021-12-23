@@ -10,14 +10,14 @@ import { AlbumsComponent } from '@components/collection/albums/albums.component'
 import { SpotifyService } from '@services/spotify/spotify.service';
 
 // Testing
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('AlbumsComponent', () => {
   let component: AlbumsComponent;
   let fixture: ComponentFixture<AlbumsComponent>;
   let spotifyService: SpotifyService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AlbumsComponent
@@ -26,7 +26,7 @@ describe('AlbumsComponent', () => {
         HttpClientModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
