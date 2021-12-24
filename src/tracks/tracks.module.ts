@@ -1,9 +1,9 @@
 // Common
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@auth/guards/auth/auth.guard';
-import { AngularMaterialModule } from '@core/modules/angular-material.module';
-import { AngularModule } from '@core/modules/angular.module';
+import { AuthGuard } from '@app/guards/auth/auth.guard';
+import { AngularMaterialModule } from '@app/modules/angular-material.module';
+import { AngularModule } from '@app/modules/angular.module';
 import { StoreModule } from '@ngrx/store';
 import { trackComponents } from './components';
 import { TrackComponent } from './components/track/track.component';

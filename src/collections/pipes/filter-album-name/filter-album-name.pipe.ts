@@ -2,7 +2,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Interfaces
-import { AlbumApollo } from '@core/interfaces/apollo/apollo.inerface';
+import { AlbumApollo } from '@app/interfaces/apollo/apollo.inerface';
 
 @Pipe({
   name: 'filterAlbumName'

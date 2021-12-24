@@ -12,18 +12,18 @@ import { of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 // Interfaces
-import { DragSource, DropData } from '@core/interfaces/drag-and-drop/drag-and-drop.interface';
-import { Playlist } from '@core/interfaces/playlist/playlist.interface';
-import { SortedTrack } from '@core/interfaces/track/track.interface';
-import { SpotifySongResponse } from '@core/interfaces/song/song.interface';
+import { DragSource, DropData } from '@app/interfaces/drag-and-drop/drag-and-drop.interface';
+import { Playlist } from '@app/interfaces/playlist/playlist.interface';
+import { SortedTrack } from '@app/interfaces/track/track.interface';
+import { SpotifySongResponse } from '@app/interfaces/song/song.interface';
 
 // Services
-import { ApolloService } from '@core/services/apollo/apollo.service';
+import { ApolloService } from '@app/services/apollo/apollo.service';
 import { PlaylistDataSourceService } from '@playlists/services/playlist-data-source/playlist-data-source.service';
-import { SpotifyPlaybackService } from '@core/services/spotify-playback/spotify-playback.service';
-import { SpotifyService } from '@core/services/spotify/spotify.service';
+import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
+import { SpotifyService } from '@app/services/spotify/spotify.service';
 import { TrackService } from '@tracks/services/track/track.service';
-import { UtilService } from '@core/services/util/util.service';
+import { UtilService } from '@app/services/util/util.service';
 
 @Component({
   selector: 'app-playlist-table',

@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 // Interfaces
-import { ActiveLink, Link, SelectedRoute } from '@core/interfaces/route/route.interface';
+import { ActiveLink, Link, SelectedRoute } from '@app/interfaces/route/route.interface';
 
 // Services
-import { RouteService } from '@core/services/route/route.service';
+import { RouteService } from '@app/services/route/route.service';
 
 @Component({
   selector: 'app-collection',

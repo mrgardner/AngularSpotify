@@ -5,12 +5,12 @@ import { of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 // Interfaces
-import { Params } from '@core/interfaces/params/params.interface';
-import { SortedTrack } from '@core/interfaces/track/track.interface';
+import { Params } from '@app/interfaces/params/params.interface';
+import { SortedTrack } from '@app/interfaces/track/track.interface';
 
 // Services
-import { SpotifyService } from '@core/services/spotify/spotify.service';
-import { UtilService } from '@core/services/util/util.service';
+import { SpotifyService } from '@app/services/spotify/spotify.service';
+import { UtilService } from '@app/services/util/util.service';
 
 @Component({
   selector: 'app-track',

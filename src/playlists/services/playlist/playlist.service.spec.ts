@@ -1,5 +1,5 @@
 // Services
-import { PlaylistService } from '@services/playlist/playlist.service';
+import { PlaylistService } from '@playlists/services/playlist/playlist.service';
 
 // Testing
 import { TestBed } from '@angular/core/testing';

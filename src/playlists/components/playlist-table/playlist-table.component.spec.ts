@@ -11,18 +11,15 @@ import { ActivatedRoute, Routes, Router } from '@angular/router';
 import { of } from 'rxjs';
 
 // Components
-import { LoginComponent } from '@app-core/auth/components/login/login.component';
-import { PlaylistTableComponent } from '@components/playlist-table/playlist-table.component';
-
-// Interfaces
-import { SortedTrack } from '@interfaces/track/track.interface';
+import { LoginComponent } from '@app/components/login/login.component';
+import { PlaylistTableComponent } from '@playlists/components/playlist-table/playlist-table.component';
 
 // Services
-import { PlaylistDataSourceService } from '@services/playlist-data-source/playlist-data-source.service';
-import { TrackService } from '@services/track/track.service';
-import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
-import { SpotifyService } from '@services/spotify/spotify.service';
-import { ApolloService } from '@services/apollo/apollo.service';
+import { PlaylistDataSourceService } from '@playlists/services/playlist-data-source/playlist-data-source.service';
+import { TrackService } from '@tracks/services/track/track.service';
+import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
+import { SpotifyService } from '@app/services/spotify/spotify.service';
+import { ApolloService } from '@app/services/apollo/apollo.service';
 
 // Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
