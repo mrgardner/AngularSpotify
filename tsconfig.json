@@ -3,30 +3,40 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@app-core/*": [
-        "src/app/*"
+      "@core/*": [
+        "src/app/core/*"
       ],
-      "@components/*": [
-        "src/app/components/*"
+      "@auth/*": [
+        "src/app/auth/*"
+      ],
+      "@bottom-bar/*": [
+        "src/app/bottom-bar/*"
       ],
       "@environments/*": [
-        "src/environments/*"
+        "environments/*"
       ],
-      "@guards/*": [
-        "src/app/guards/*"
+      "@header/*": [
+        "src/app/header/*"
       ],
-      "@interfaces/*": [
-        "src/app/interfaces/*"
+      "@side-nav/*": [
+        "src/app/side-nav/*"
       ],
-      "@pipes/*": [
-        "src/app/pipes/*"
+      "@collections/*": [
+        "src/collections/*"
       ],
-      "@queries/*": [
-        "src/app/queries/*"
+      "@dashboard/*": [
+        "src/dashboard/*"
       ],
-      "@services/*": [
-        "src/app/services/*"
+      "@playlists/*": [
+        "src/playlists/*"
+      ],
+      "@search/*": [
+        "src/search/*"
+      ],
+      "@tracks/*": [
+        "src/tracks/*"
       ]
+      
     },
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
