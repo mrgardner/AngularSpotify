@@ -115,10 +115,10 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.test = '';
 
     this.routerSubscription = this.route.url.pipe(switchMap((urlSegment: UrlSegment[]) => {
-      if (urlSegment.length === 3) {
-        this.dataSource.loadTracks(urlSegment[2].path);
+      if (urlSegment.length === 2) {
+        this.dataSource.loadTracks(urlSegment[1].path);
         this.endOfChain = false;
-        return this.apolloService.getPlaylist(urlSegment[2].path);
+        return this.apolloService.getPlaylist(urlSegment[1].path);
       } else {
         this.endOfChain = true;
         return of();
