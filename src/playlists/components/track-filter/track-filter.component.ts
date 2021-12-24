@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 // Interfaces
-import { Params } from '@core/interfaces/params/params.interface';
+import { Params } from '@app/interfaces/params/params.interface';
 
 // Services
 import { TrackService } from '@tracks/services/track/track.service';

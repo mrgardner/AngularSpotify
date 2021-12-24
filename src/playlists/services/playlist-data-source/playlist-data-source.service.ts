@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 // Interfaces
-import { SortedTrack, TrackResponse, Trrack, } from '@core/interfaces/track/track.interface';
+import { SortedTrack, TrackResponse, Trrack, } from '@app/interfaces/track/track.interface';
 
 // Services
-import { ApolloService } from '@core/services/apollo/apollo.service';
-import { UtilService } from '@core/services/util/util.service';
+import { ApolloService } from '@app/services/apollo/apollo.service';
+import { UtilService } from '@app/services/util/util.service';
 
 @Injectable({
   providedIn: 'root'

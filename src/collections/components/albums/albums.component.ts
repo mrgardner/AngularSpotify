@@ -4,11 +4,11 @@ import { concat, of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 // Interfaces
-import { AlbumApollo, ApolloAlbumResult } from '@core/interfaces/apollo/apollo.inerface';
+import { AlbumApollo, ApolloAlbumResult } from '@app/interfaces/apollo/apollo.inerface';
 
 // Services
-import { ApolloService } from '@core/services/apollo/apollo.service';
-import { UtilService } from '@core/services/util/util.service';
+import { ApolloService } from '@app/services/apollo/apollo.service';
+import { UtilService } from '@app/services/util/util.service';
 
 @Component({
   selector: 'app-albums',

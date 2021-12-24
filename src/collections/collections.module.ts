@@ -1,7 +1,7 @@
 // Common
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@auth/guards/auth/auth.guard';
+import { AuthGuard } from '@app/guards/auth/auth.guard';
 import { AlbumsComponent } from '@collections/components/albums/albums.component';
 import { ArtistsComponent } from '@collections/components/artists/artists.component';
 import { CollectionComponent } from '@collections/components/collection/collection.component';
@@ -9,10 +9,10 @@ import { LikedSongsComponent } from '@collections/components/liked-songs/liked-s
 import { MadeForYouComponent } from '@collections/components/made-for-you/made-for-you.component';
 import { PlaylistsComponent } from '@collections/components/playlists/playlists.component';
 import { PodcastsComponent } from '@collections/components/podcasts/podcasts.component';
-import { AngularMaterialModule } from '@core/modules/angular-material.module';
-import { AngularModule } from '@core/modules/angular.module';
+import { AngularMaterialModule } from '@app/modules/angular-material.module';
+import { AngularModule } from '@app/modules/angular.module';
 import { StoreModule } from '@ngrx/store';
-import { collectionComponents } from '.';
+import { collectionComponents } from './components';
 import { collectionPipes } from './pipes';
 
 const ROUTES: Routes = [

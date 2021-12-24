@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 // Components
-import { TrackComponent } from '@components/track/track.component';
+import { TrackComponent } from '@tracks/components/track/track.component';
 
 // Services
-import { SpotifyService } from '@services/spotify/spotify.service';
+import { SpotifyService } from '@app/services/spotify/spotify.service';
 
 // Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

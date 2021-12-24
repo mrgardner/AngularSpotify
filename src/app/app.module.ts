@@ -3,47 +3,44 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Components
-import { CallbackComponent } from './auth/components/login-callback/login-callback.component';
+import { LoginCallbackComponent } from './components/login-callback/login-callback.component';
+import { LoginComponent } from './components/login/login.component';
+import { AppComponent } from './components/app/app.component';
+import { appComponents } from './components';
 
 // Guard
-// import { AuthGuard } from './auth/guards/auth/auth.guard';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 // Modules
-import { AngularModule } from './core/modules/angular.module';
-import { AngularMaterialModule } from './core/modules/angular-material.module';
-import { GraphQLModule } from './core/modules/graphql.module';
-import { LoginComponent } from './auth/components/login/login.component';
-import { headerComponents } from './header/components';
-import { bottomBarComponents } from './bottom-bar/components';
-import { sideNavComponents } from './side-nav/components';
+import { AngularModule } from './modules/angular.module';
+import { AngularMaterialModule } from './modules/angular-material.module';
+import { GraphQLModule } from './modules/graphql.module';
+
 // Environments
 import { environment } from 'environments/environment';
 
 // NgRx
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { reducers as routerReducer, CustomSerializer } from './store';
 
 // NgRx Dev
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeFreeze } from 'ngrx-store-freeze';
-import { effects as headerEffects, reducers as headerReducers } from '@header/store';
-import { effects as sideNavEffects, reducers as sideNavReducers } from '@side-nav/store';
-import { authServices } from '@auth/services';
-import { bottomBarServices } from '@bottom-bar/services';
-import { coreServices, spotifyInterceptor } from '@core/services';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
+// Services
+import { appServices, spotifyInterceptor } from '@app/services';
+import { dashboardServices } from '@dashboard/services';
 import { playlistServices } from '@playlists/services';
 import { trackServices } from '@tracks/services';
-import { AppComponent } from '../app/core/components/app/app.component';
-import { coreComponents } from '@core/components';
-import { AuthGuard } from '@auth/guards/auth/auth.guard';
-
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
 export const ROUTES: Routes = [
-  { path: 'callback', component: CallbackComponent },
+  { path: 'callback', component: LoginCallbackComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'collections',
@@ -73,23 +70,16 @@ export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
 ];
 
-const effects = [
-  ...headerEffects,
-  ...sideNavEffects
-];
+const effects = [];
 
 const reducers = {
-  ...headerReducers,
-  ...sideNavReducers
+  ...routerReducer
 };
 
 @NgModule({
   declarations: [
     AppComponent,
-    ...bottomBarComponents,
-    ...coreComponents,
-    ...headerComponents,
-    ...sideNavComponents
+    ...appComponents,
   ],
   imports: [
     BrowserModule,
@@ -102,11 +92,14 @@ const reducers = {
     EffectsModule.forRoot(effects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreModule.forRoot({}, {})
+    StoreRouterConnectingModule.forRoot({
+      serializer: CustomSerializer
+    }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
-    ...authServices,
-    ...bottomBarServices,
-    ...coreServices,
+    ...appServices,
+    ...dashboardServices,
     {
       provide: HTTP_INTERCEPTORS, useClass: spotifyInterceptor, multi: true
     },
@@ -115,10 +108,7 @@ const reducers = {
   ],
   exports: [
     AppComponent,
-    ...bottomBarComponents,
-    ...coreComponents,
-    ...headerComponents,
-    ...sideNavComponents
+    ...appComponents,
   ],
   bootstrap: [AppComponent]
 })

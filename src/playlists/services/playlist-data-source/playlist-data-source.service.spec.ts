@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { isObservable, of } from 'rxjs';
 
 // Services
-import { ApolloService } from '@core/services/apollo/apollo.service';
+import { ApolloService } from '@app/services/apollo/apollo.service';
 import { PlaylistDataSourceService } from '@playlists/services/playlist-data-source/playlist-data-source.service';
 
 // Testing
