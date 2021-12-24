@@ -3,12 +3,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { Routes } from '@angular/router';
 
 // Components
-import { HeaderComponent } from '@app-core/header/components/header/header.component';
-import { LoginComponent } from '@app-core/auth/components/login/login.component';
+import { HeaderComponent } from '@header/components/header/header.component';
+import { LoginComponent } from '@auth/components/login/login.component';
 
 // Services
-import { AuthService } from '@services/auth/auth.service';
-import { SpotifyPlaybackService } from '@services/spotify-playback/spotify-playback.service';
+import { AuthService } from '@auth/services/auth/auth.service';
+import { SpotifyPlaybackService } from '@core/services/spotify-playback/spotify-playback.service';
 
 // Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

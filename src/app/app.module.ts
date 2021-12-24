@@ -29,6 +29,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { effects as headerEffects, reducers as headerReducers } from '@header/store';
+import { effects as sideNavEffects, reducers as sideNavReducers } from '@side-nav/store';
 import { authServices } from '@auth/services';
 import { bottomBarServices } from '@bottom-bar/services';
 import { coreServices, spotifyInterceptor } from '@core/services';
@@ -73,11 +74,13 @@ export const ROUTES: Routes = [
 ];
 
 const effects = [
-  ...headerEffects
+  ...headerEffects,
+  ...sideNavEffects
 ];
 
 const reducers = {
-  ...headerReducers
+  ...headerReducers,
+  ...sideNavReducers
 };
 
 @NgModule({
