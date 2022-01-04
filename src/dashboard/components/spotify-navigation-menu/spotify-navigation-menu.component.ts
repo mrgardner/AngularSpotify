@@ -2,7 +2,7 @@
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 // Common
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -23,15 +23,19 @@ import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-p
 import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
 import { UtilService } from '@app/services/util/util.service';
 import { Store } from '@ngrx/store';
+import * as fromRoot from '@app/store';
 import * as fromStore from '@dashboard/store';
 
 
 @Component({
   selector: 'app-spotify-navigation-menu',
   templateUrl: './spotify-navigation-menu.component.html',
-  styleUrls: ['./spotify-navigation-menu.component.scss']
+  styleUrls: ['./spotify-navigation-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
+  public selectedUrl$: Observable<string>;
   public playlists$: Observable<Array<Playlist>>;
   public loading$: Observable<boolean>;
   public loaded$: Observable<boolean>;
@@ -59,12 +63,12 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     private routeService: RouteService,
 
     private spotifyPlaybackService: SpotifyPlaybackService,
-    private store: Store) { }
+    private store: Store) {
+  }
 
   /*
-  TODO: 1. fix routing to playlist
-  TODO: 2. fix selecting of playlists (green bar next to name)
-  TODO: 3. Refactor / remove old code
+  TODO: 1. fix selecting of playlists (green bar next to name)
+  TODO: 2. Refactor / remove old code
   **/
   ngOnInit(): void {
     this.selectedRoute = {
@@ -76,19 +80,20 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       {
         label: 'Home',
         iconName: 'home',
-        url: 'dashboard'
+        url: '/dashboard'
       },
       {
         label: 'Search',
         iconName: 'search',
-        url: 'search'
+        url: '/dashboard/search'
       },
       {
         label: 'Your Library',
         iconName: 'library_books',
-        url: 'collections'
+        url: '/dashboard/collections'
       }
     ];
+    this.selectedUrl$ = this.store.select(fromRoot.getRouterURL);
     this.playlists$ = this.store.select(fromStore.getAllPlaylists);
     this.loaded$ = this.store.select(fromStore.getPlaylistsLoaded);
     this.loading$ = this.store.select(fromStore.getPlaylistsLoading);
@@ -119,14 +124,12 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   }
 
   goToTracks(playlist: Playlist): void {
+    // TODO: fix selected playlist logic
     // this.playlists.forEach(tt => tt['selected'] = false);
     // playlist['selected'] = true;
-    console.log(playlist);
     this.store.dispatch(new fromStore.UpdateSelectedPlaylist(playlist.selectedUrl));
-    const playlistName = encodeURI(playlist.name.toLowerCase());
     const playlistId = encodeURI(playlist.id);
-    const url = this.utilService.encodeSpecialSymbols(`/playlists/${playlistName}/${playlistId}`);
-    this.router.navigateByUrl(url);
+    this.router.navigate(['dashboard', 'playlist', playlistId]);
   }
 
   goToSection(url: string): void {

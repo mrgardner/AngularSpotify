@@ -1,15 +1,21 @@
 // Common
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth/auth.guard';
 import { AngularMaterialModule } from '@app/modules/angular-material.module';
-import { AngularModule } from '@app/modules/angular.module';
 import { StoreModule } from '@ngrx/store';
 import { searchComponents } from './components';
 import { SearchComponent } from './components/search/search.component';
 
 const ROUTES: Routes = [
-  { path: '', component: SearchComponent, canActivate: [AuthGuard] },
+  {
+    path: '',
+    component: SearchComponent,
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({
@@ -17,7 +23,10 @@ const ROUTES: Routes = [
     ...searchComponents
   ],
   imports: [
-    AngularModule,
+    HttpClientModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AngularMaterialModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('search', {})

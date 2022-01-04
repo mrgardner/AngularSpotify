@@ -1,5 +1,5 @@
 // Components
-import { HighlightSearchComponent } from '@playlists/components/highlight-search/highlight-search.component';
+import { HighlightSearchComponent } from 'src/playlist/components/highlight-search/highlight-search.component';
 
 // Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

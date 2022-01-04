@@ -3,8 +3,8 @@
     <span class="angular-text">Angular</span>
     <span>&nbsp;Spotify</span>
   </a>
-  <div class="signInSection" *ngIf="isLoggedIn()">
-    <button mat-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn()">
+  <div class="signInSection" *ngIf="loggedIn$ | async">
+    <button mat-button [matMenuTriggerFor]="menu">
       <app-display-user></app-display-user> <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">

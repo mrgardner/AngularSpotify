@@ -1,22 +1,18 @@
-import { ActionReducerMap, createSelector } from '@ngrx/store';
+import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 import * as fromUser from './user.reducer';
 import * as fromPlaylists from './playlist.reducer';
 
-export interface SpotifyState {
+export interface DashboardState {
   user: fromUser.UserState;
-};
-
-export interface PlaylistTablesState {
   playlists: fromPlaylists.PlaylistsState;
 };
 
-export const reducers: ActionReducerMap<SpotifyState> = {
+export const reducers: ActionReducerMap<DashboardState> = {
   user: fromUser.userReducer,
-  // playlists: fromPlaylists.playlistsReducer
+  playlists: fromPlaylists.playlistsReducer
 };
 
-// user state
-export const selectUser = (state: SpotifyState) => state.user;
+export const getDashboardState = createFeatureSelector<DashboardState>(
+  'dashboard'
+);
 
-export const getUser = createSelector(selectUser, fromUser.getUser)
-export const getUserError = createSelector(selectUser, fromUser.getUserError);

@@ -1,37 +1,41 @@
 // Common 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SPOTIFY_AUTH } from '@app/constants/auth.constant';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+// import { ActivatedRoute } from '@angular/router';
+// import { SPOTIFY_AUTH } from '@app/constants/auth.constant';
+// import { Subscription } from 'rxjs';
+import * as fromStore from '@app/store';
+
 
 @Component({
   selector: 'app-login-callback',
   templateUrl: './login-callback.component.html',
   styleUrls: ['./login-callback.component.scss']
 })
-export class LoginCallbackComponent implements OnInit, OnDestroy {
+export class LoginCallbackComponent implements OnInit {
   public _window: Window;
-  public routeSubscrition: Subscription;
+  // public routeSubscrition: Subscription;
 
-  constructor(
-    private route: ActivatedRoute) {
-    this._window = window;
+  constructor(private store: Store) {
+    // this._window = window;
   }
 
   ngOnInit(): void {
-    this.routeSubscrition = this.route.fragment.subscribe((fragment: string) => {
+    this.store.dispatch(new fromStore.Login())
 
-      if (fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN).length === 2 && fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN)[1].split('&').length === 4) {
-        const authToken: string = fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN)[1].split('&')[0];
-        const expiredDate: Date = new Date();
-        expiredDate.setHours(expiredDate.getHours() + 1);
-        sessionStorage.setItem(SPOTIFY_AUTH.SPOTIFY_TOKEN, authToken)
-        this._window.opener.spotifyCallback(authToken);
-      }
-    });
+    // this.routeSubscrition = this.route.fragment.subscribe((fragment: string) => {
+
+    //   if (fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN).length === 2 && fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN)[1].split('&').length === 4) {
+    //     const authToken: string = fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN)[1].split('&')[0];
+    //     const expiredDate: Date = new Date();
+    //     expiredDate.setHours(expiredDate.getHours() + 1);
+    //     sessionStorage.setItem(SPOTIFY_AUTH.SPOTIFY_TOKEN, authToken)
+    //     this._window.opener.spotifyCallback(authToken);
+    //   }
+    // });
   }
 
-  ngOnDestroy(): void {
-    this.routeSubscrition.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //   this.routeSubscrition.unsubscribe();
+  // }
 }

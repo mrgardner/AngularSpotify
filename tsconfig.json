@@ -15,8 +15,8 @@
       "@dashboard/*": [
         "src/dashboard/*"
       ],
-      "@playlists/*": [
-        "src/playlists/*"
+      "@playlist/*": [
+        "src/playlist/*"
       ],
       "@search/*": [
         "src/search/*"

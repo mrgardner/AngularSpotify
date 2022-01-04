@@ -19,7 +19,7 @@ import { SpotifySongResponse } from '@app/interfaces/song/song.interface';
 
 // Services
 import { ApolloService } from '@app/services/apollo/apollo.service';
-import { PlaylistDataSourceService } from '@playlists/services/playlist-data-source/playlist-data-source.service';
+import { PlaylistDataSourceService } from 'src/playlist/services/playlist-data-source/playlist-data-source.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
 import { TrackService } from '@tracks/services/track/track.service';
@@ -115,10 +115,10 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     this.test = '';
 
     this.routerSubscription = this.route.url.pipe(switchMap((urlSegment: UrlSegment[]) => {
-      if (urlSegment.length === 2) {
-        this.dataSource.loadTracks(urlSegment[1].path);
+      if (urlSegment.length === 1) {
+        this.dataSource.loadTracks(urlSegment[0].path);
         this.endOfChain = false;
-        return this.apolloService.getPlaylist(urlSegment[1].path);
+        return this.apolloService.getPlaylist(urlSegment[0].path);
       } else {
         this.endOfChain = true;
         return of();

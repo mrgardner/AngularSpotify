@@ -10,14 +10,14 @@ import * as fromStore from '@dashboard/store';
   selector: 'app-display-user',
   templateUrl: './display-user.component.html',
   styleUrls: ['./display-user.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DisplayUserComponent implements OnInit {
   public displayName$: Observable<string>;
-  constructor(private store: Store<fromStore.SpotifyState>) { }
+  constructor(private store: Store<fromStore.DashboardState>) { }
 
   ngOnInit(): void {
-    this.displayName$ = this.store.select(fromStore.getUser);
+    this.displayName$ = this.store.select(fromStore.getUserDisplayName);
     this.store.dispatch(new fromStore.LoadUser());
   }
 }

@@ -1,7 +1,7 @@
 <div *ngIf="loaded$ | async" class="menuContainer">
   <div class="libraryContainer">
-    <div *ngFor="let section of sections" (click)="goToSection(section.url)" [ngClass]="{'selected': selectedRoute ? selectedRoute.parent === section.url : false, 'clickable': true, 'padding': true}">
-        <div class="selected-section" *ngIf="selectedRoute && selectedRoute?.parent === section.url"></div>
+    <div *ngFor="let section of sections" (click)="goToSection(section.url)" [ngClass]="{'selected': (selectedUrl$ | async) ? (selectedUrl$ | async) === section.url : false, 'clickable': true, 'padding': true}">
+        <div class="selected-section" *ngIf="(selectedUrl$ | async) === section.url"></div>
         <mat-icon>{{section.iconName}}</mat-icon>
         <span>{{section.label}}</span>
     </div>

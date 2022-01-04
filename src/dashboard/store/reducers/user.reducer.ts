@@ -1,33 +1,42 @@
 import * as fromUser from '../actions/user.action';
 
 export interface UserState {
-  displayName: string,
-  error: boolean,
+  displayName: string;
+  error: boolean;
+  loading: boolean;
+  loaded: Boolean;
 };
 
 export const initialState: UserState = {
   displayName: 'The Man',
-  error: false
+  error: false,
+  loaded: false,
+  loading: false
 };
 
 export function userReducer(state = initialState, action: fromUser.UserAction): UserState {
   switch (action.type) {
     case fromUser.LOAD_USER: {
       return {
-        ...state
+        ...state,
+        loading: true
       }
     }
     case fromUser.LOAD_USER_SUCCESS: {
       return {
         ...state,
         error: false,
-        displayName: action.payload
+        displayName: action.payload,
+        loaded: true,
+        loading: false
       }
     }
     case fromUser.LOAD_USER_FAIL: {
       return {
         ...state,
-        error: true
+        error: true,
+        loaded: false,
+        loading: false
       }
     }
     default: {
@@ -35,6 +44,3 @@ export function userReducer(state = initialState, action: fromUser.UserAction): 
     }
   }
 }
-
-export const getUserError = (state: UserState) => state.error;
-export const getUser = (state: UserState) => state.displayName;

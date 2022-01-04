@@ -1,5 +1,5 @@
 // Pipes
-import { DuplicateTrackPipe } from '@playlists/pipes/duplicate-track/duplicate-track.pipe';
+import { DuplicateTrackPipe } from 'src/playlist/pipes/duplicate-track/duplicate-track.pipe';
 
 describe('DuplicateTrackPipe', () => {
   it('create an instance of duplicate track pipe', () => {

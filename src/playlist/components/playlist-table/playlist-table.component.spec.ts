@@ -12,10 +12,10 @@ import { of } from 'rxjs';
 
 // Components
 import { LoginComponent } from '@app/components/login/login.component';
-import { PlaylistTableComponent } from '@playlists/components/playlist-table/playlist-table.component';
+import { PlaylistTableComponent } from '@playlist/components/playlist-table/playlist-table.component';
 
 // Services
-import { PlaylistDataSourceService } from '@playlists/services/playlist-data-source/playlist-data-source.service';
+import { PlaylistDataSourceService } from 'src/playlist/services/playlist-data-source/playlist-data-source.service';
 import { TrackService } from '@tracks/services/track/track.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
