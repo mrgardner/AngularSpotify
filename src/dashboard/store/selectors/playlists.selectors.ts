@@ -6,20 +6,21 @@ import * as fromFeature from '@dashboard/store/reducers';
 import * as fromPlaylists from '@dashboard/store/reducers/playlist.reducer';
 
 // playlist state
-export const selectPlaylists = (state: fromFeature.PlaylistTablesState) => state.playlists;
+export const getPlaylistsState = createSelector(fromFeature.getDashboardState, (state: fromFeature.DashboardState) => state.playlists);
 
-export const getPlaylistsEntities = createSelector(selectPlaylists, fromPlaylists.getPlaylistsEntities);
+export const getPlaylistsEntities = createSelector(getPlaylistsState, fromPlaylists.getPlaylistsEntities);
 
-export const getSelectedPlaylist = createSelector(getPlaylistsEntities, fromRoot.getRouterState, (entities, router): Playlist => {
+export const getSelectedPlaylist = createSelector(getPlaylistsEntities, fromRoot.getRouterReducerState, (entities, router): Playlist => {
   return router.state && entities[router.state.params.playlistId]
 });
 
 export const getAllPlaylists = createSelector(getPlaylistsEntities, (entities) => {
   return Object.keys(entities).map(id => entities[id]);
 });
-export const getPlaylistsError = createSelector(selectPlaylists, fromPlaylists.getPlaylistsError);
-export const getPlaylistsLoading = createSelector(selectPlaylists, fromPlaylists.getPlaylistsLoading);
-export const getPlaylistsLoaded = createSelector(selectPlaylists, fromPlaylists.getPlaylistsLoaded);
-export const getCanLoadMore = createSelector(selectPlaylists, fromPlaylists.getCanLoadMore);
-export const getNextPlaylists = createSelector(selectPlaylists, fromPlaylists.getNextPlaylists);
+export const getPlaylistsError = createSelector(getPlaylistsState, fromPlaylists.getPlaylistsError);
+export const getPlaylistsLoading = createSelector(getPlaylistsState, fromPlaylists.getPlaylistsLoading);
+export const getPlaylistsLoaded = createSelector(getPlaylistsState, fromPlaylists.getPlaylistsLoaded);
+export const getCanLoadMore = createSelector(getPlaylistsState, fromPlaylists.getCanLoadMore);
+export const getNextPlaylists = createSelector(getPlaylistsState, fromPlaylists.getNextPlaylists);
+export const getNextPlaylistsAndEntities = createSelector(getPlaylistsState, fromPlaylists.getNextPlaylistAndEntitiesState)
 // export const getSelectedPlaylist = createSelector(selectPlaylists, fromPlaylists.getSelectedPlaylist);

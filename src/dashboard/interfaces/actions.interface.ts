@@ -1,7 +1,8 @@
 import { Playlist } from "@app/interfaces/playlist/playlist.interface";
 
 export interface PlaylistsPayload {
-  data: Playlist[];
+  entities: { [id: number]: Playlist };
   total: number;
   nextPlaylist: string;
+  canLoadMore: boolean;
 }

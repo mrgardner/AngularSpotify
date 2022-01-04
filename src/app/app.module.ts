@@ -3,7 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Components
 import { LoginCallbackComponent } from './components/login-callback/login-callback.component';
@@ -15,7 +17,6 @@ import { appComponents } from './components';
 import { AuthGuard } from './guards/auth/auth.guard';
 
 // Modules
-import { AngularModule } from './modules/angular.module';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { GraphQLModule } from './modules/graphql.module';
 
@@ -26,7 +27,7 @@ import { environment } from 'environments/environment';
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { reducers as routerReducer, CustomSerializer } from './store';
+import { reducers, effects, CustomSerializer } from './store';
 
 // NgRx Dev
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -34,18 +35,16 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 // Services
 import { appServices, spotifyInterceptor } from '@app/services';
-import { dashboardServices } from '@dashboard/services';
-import { playlistServices } from '@playlists/services';
-import { trackServices } from '@tracks/services';
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
 export const ROUTES: Routes = [
-  { path: 'callback', component: LoginCallbackComponent },
-  { path: 'login', component: LoginComponent },
   {
-    path: 'collections',
-    loadChildren: () => import('@collections/collections.module').then(m => m.CollectionsModule),
-    canActivate: [AuthGuard]
+    path: 'callback',
+    component: LoginCallbackComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'dashboard',
@@ -53,28 +52,11 @@ export const ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'playlists',
-    loadChildren: () => import('@playlists/playlists.module').then(m => m.PlaylistsModule),
-    canActivate: [AuthGuard]
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/dashboard'
   },
-  {
-    path: 'search',
-    loadChildren: () => import('@search/search.module').then(m => m.SearchModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'tracks',
-    loadChildren: () => import('@tracks/tracks.module').then(m => m.TracksModule),
-    canActivate: [AuthGuard]
-  },
-  { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
 ];
-
-const effects = [];
-
-const reducers = {
-  ...routerReducer
-};
 
 @NgModule({
   declarations: [
@@ -84,10 +66,13 @@ const reducers = {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AngularModule,
+    HttpClientModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AngularMaterialModule,
     GraphQLModule,
-    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(ROUTES),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot({
@@ -97,12 +82,9 @@ const reducers = {
   ],
   providers: [
     ...appServices,
-    ...dashboardServices,
     {
       provide: HTTP_INTERCEPTORS, useClass: spotifyInterceptor, multi: true
-    },
-    ...playlistServices,
-    ...trackServices
+    }
   ],
   exports: [
     AppComponent,

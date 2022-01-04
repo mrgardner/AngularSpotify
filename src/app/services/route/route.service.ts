@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 // Interfaces
-import { SelectedRoute } from '@core/interfaces/route/route.interface';
+import { SelectedRoute } from '@app/interfaces/route/route.interface';
 
 @Injectable({
   providedIn: 'root'

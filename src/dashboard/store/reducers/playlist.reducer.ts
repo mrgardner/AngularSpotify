@@ -31,22 +31,7 @@ export function playlistsReducer(state = initialState, action: fromPlaylists.Pla
       }
     }
     case PLAYLIST_TYPES.LOAD_PLAYLISTS_SUCCESS: {
-      const { data, total, nextPlaylist } = action.payload
-      const mappedData = data.map((playlist: Playlist) => {
-        const selectedUrl = playlist.name.toLowerCase();
-        return { ...playlist, selected: false, selectedUrl };
-      });
-
-      const canLoadMore = total > mappedData.length;
-
-      const entities = mappedData.reduce((entities: { [id: number]: Playlist }, playlist: Playlist) => {
-        return {
-          ...entities,
-          [playlist.id]: playlist
-        }
-      }, {
-        ...state.entities
-      })
+      const { entities, nextPlaylist, canLoadMore } = action.payload
 
       return {
         ...state,
@@ -73,23 +58,7 @@ export function playlistsReducer(state = initialState, action: fromPlaylists.Pla
       }
     }
     case PLAYLIST_TYPES.LOAD_PLAYLISTS_BY_URL_SUCCESS: {
-      const { nextPlaylist } = action.payload
-      // const mappedData = data.map((playlist: Playlist) => {
-      //   const selectedUrl = playlist.name.toLowerCase();
-      //   return { ...playlist, selected: false, selectedUrl };
-      // });
-
-      // const previousData = Object.keys(state.entities).map(id => entities[id]);
-      // const canLoadMore = total > previousData.concat(mappedData).length;
-
-      // const entities = previousData.concat(mappedData).reduce((entities: { [id: number]: Playlist }, playlist: Playlist) => {
-      //   return {
-      //     ...entities,
-      //     [playlist.id]: playlist
-      //   }
-      // }, {
-      //   ...state.entities
-      // })
+      const { nextPlaylist, entities, canLoadMore } = action.payload
 
       return {
         ...state,
@@ -97,8 +66,8 @@ export function playlistsReducer(state = initialState, action: fromPlaylists.Pla
         loading: false,
         loaded: true,
         nextPlaylist,
-        // canLoadMore,
-        // entities
+        canLoadMore,
+        entities
       }
     }
     case PLAYLIST_TYPES.LOAD_PLAYLISTS_BY_URL_FAIL: {
@@ -128,3 +97,4 @@ export const getPlaylistsLoaded = (state: PlaylistsState) => state.loaded;
 export const getCanLoadMore = (state: PlaylistsState) => state.canLoadMore;
 export const getNextPlaylists = (state: PlaylistsState) => state.nextPlaylist;
 export const getSelectedPlaylist = (state: PlaylistsState) => state.selectedPlaylist;
+export const getNextPlaylistAndEntitiesState = (state: PlaylistsState) => [state.nextPlaylist, state.entities];

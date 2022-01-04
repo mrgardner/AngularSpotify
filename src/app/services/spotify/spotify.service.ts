@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 // Interfaces
-import { SortedTrack } from '@core/interfaces/track/track.interface';
+import { SortedTrack } from '@app/interfaces/track/track.interface';
 
 @Injectable({
   providedIn: 'root'

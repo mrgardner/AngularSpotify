@@ -2,7 +2,7 @@
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 // Common
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Services
@@ -11,7 +11,8 @@ import { SpotifyService } from '@app/services/spotify/spotify.service';
 @Component({
   selector: 'app-new-playlist-dialog',
   templateUrl: './new-playlist-dialog.component.html',
-  styleUrls: ['./new-playlist-dialog.component.scss']
+  styleUrls: ['./new-playlist-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewPlaylistDialogComponent implements OnInit {
   // TODO: Fix types

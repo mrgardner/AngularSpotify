@@ -1,51 +1,41 @@
 // Common
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 
 // Services
-import { AuthService } from '@app/services/auth/auth.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-import { fromEvent } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import * as fromAuthStore from '@app/store';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
-  public loggedIn: boolean;
-  public displayName: string;
+export class HeaderComponent implements OnInit, OnDestroy {
+  public loggedIn$: Observable<boolean>;
+  public loggedInSubscription: Subscription;
 
   constructor(
-    private authService: AuthService,
-    private spotifyPlaybackService: SpotifyPlaybackService,
-    private router: Router) { }
+    private store: Store,
+    private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit(): void {
-    if (this.isLoggedIn()) {
-      this.spotifyPlaybackService.setupPlayer();
-    }
+    this.loggedIn$ = this.store.select(fromAuthStore.getLoggedIn);
 
-    const message$ = fromEvent<StorageEvent>(window, "storage").pipe(
-      filter(event => event.storageArea === sessionStorage),
-      filter(event => event.key === "spotifyToken"),
-      map(event => event.newValue)
-    );
-
-    message$.subscribe(token => {
-      if (token === null || token === undefined) {
-        this.router.navigate(['login']);
+    this.loggedInSubscription = this.loggedIn$.subscribe(loggedIn => {
+      if (loggedIn) {
+        this.spotifyPlaybackService.setupPlayer();
       }
-    });
+    })
   }
 
-  isLoggedIn(): boolean {
-    return !!this.authService.getSpotifyToken();
+  ngOnDestroy(): void {
+    this.loggedInSubscription.unsubscribe();
   }
 
   logout(): void {
-    this.authService.logout();
-    this.loggedIn = false;
+    this.store.dispatch(new fromAuthStore.Logout());
   }
 }

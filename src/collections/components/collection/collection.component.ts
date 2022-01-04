@@ -18,32 +18,32 @@ import { RouteService } from '@app/services/route/route.service';
 export class CollectionComponent implements OnInit, OnDestroy {
   public links: Link[] = [
     {
-      path: 'collections/playlists',
+      path: 'dashboard/collections/playlists',
       label: 'Playlists',
       url: 'playlists'
     },
     {
-      path: 'collections/made-for-you',
+      path: 'dashboard/collections/made-for-you',
       label: 'Made For You',
       url: 'made-for-you'
     },
     {
-      path: 'collections/liked-songs',
+      path: 'dashboard/collections/liked-songs',
       label: 'Liked Songs',
       url: 'liked-songs'
     },
     {
-      path: 'collections/albums',
+      path: 'dashboard/collections/albums',
       label: 'Albums',
       url: 'albums'
     },
     {
-      path: 'collections/artists',
+      path: 'dashboard/collections/artists',
       label: 'Artists',
       url: 'artists'
     },
     {
-      path: 'collections/podcasts',
+      path: 'dashboard/collections/podcasts',
       label: 'Podcasts',
       url: 'podcasts'
     }

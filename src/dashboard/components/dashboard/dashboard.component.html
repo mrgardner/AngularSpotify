@@ -2,13 +2,13 @@
   <app-header></app-header>
   <div class="router-container">
     <mat-sidenav-container>
-      <mat-sidenav mode="side" position="start" opened *ngIf="isLoggedIn()">
+      <mat-sidenav mode="side" position="start" opened *ngIf="loggedIn$ | async">
         <app-spotify-navigation-menu></app-spotify-navigation-menu>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content *ngIf="loggedIn$ | async">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
-    <app-spotify-status-bar *ngIf="isLoggedIn()"></app-spotify-status-bar>
+    <app-spotify-status-bar *ngIf="loggedIn$ | async"></app-spotify-status-bar>
   </div>
 </div>

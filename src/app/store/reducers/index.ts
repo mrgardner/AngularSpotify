@@ -1,28 +1,34 @@
 
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Params } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Params, UrlSegment } from '@angular/router';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store'
 import * as fromRouter from '@ngrx/router-store';
+import * as fromAuth from './auth.reducer';
 
 export interface RouterStateUrl {
   url: string;
   queryParams: Params;
-  params: Params
+  params: Params,
+  urlSegments: Array<UrlSegment>,
+  fragment: any
 };
 
 export interface State {
-  routerReducer: fromRouter.RouterReducerState<RouterStateUrl>
+  router: fromRouter.RouterReducerState<RouterStateUrl>
+  auth: fromAuth.AuthState
 };
 
 export const reducers: ActionReducerMap<State> = {
-  routerReducer: fromRouter.routerReducer
+  router: fromRouter.routerReducer,
+  auth: fromAuth.authReducer
 };
 
-export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('routerReducer');
+export const getRouterReducerState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');
+export const getAuthState = createFeatureSelector<fromAuth.AuthState>('auth');
 
 export class CustomSerializer implements fromRouter.RouterStateSerializer<RouterStateUrl> {
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     const { url } = routerState;
-    const { queryParams } = routerState.root;
+    const { queryParams, fragment } = routerState.root;
 
     let state: ActivatedRouteSnapshot = routerState.root;
     while (state.firstChild) {
@@ -31,6 +37,9 @@ export class CustomSerializer implements fromRouter.RouterStateSerializer<Router
 
     const { params } = state;
 
-    return { url, queryParams, params };
+    // TODO: Revisit if this is needed
+    const urlSegments: Array<UrlSegment> = state['_urlSegment'].segments;
+
+    return { url, queryParams, params, fragment, urlSegments };
   }
 }

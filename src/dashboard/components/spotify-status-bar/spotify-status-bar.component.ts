@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 // Common
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 
 // Components
 import { DeviceModalComponent } from '@dashboard/components/device-modal/device-modal.component';
@@ -23,7 +23,8 @@ import { UtilService } from '@app/services/util/util.service';
 @Component({
   selector: 'app-spotify-status-bar',
   templateUrl: './spotify-status-bar.component.html',
-  styleUrls: ['./spotify-status-bar.component.scss']
+  styleUrls: ['./spotify-status-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   public currentTrack: Track;
