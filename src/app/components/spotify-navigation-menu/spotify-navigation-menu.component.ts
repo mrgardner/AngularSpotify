@@ -1,5 +1,5 @@
 // Angular Material
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 
 // Common
 import { Component, OnDestroy, OnInit } from '@angular/core';

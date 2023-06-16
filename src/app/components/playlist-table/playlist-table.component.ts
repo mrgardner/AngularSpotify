@@ -1,9 +1,9 @@
 // Angular Material
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatTable } from '@angular/material/table';
+import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
 
 // Common
 import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
