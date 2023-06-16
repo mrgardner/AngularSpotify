@@ -1,5 +1,5 @@
 // Common
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -24,8 +24,8 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
   public playlistID: string;
   public endOfChain: boolean;
   public routeSubscription: Subscription;
-  public form = new FormGroup({
-    track: new FormControl('')
+  public form = new UntypedFormGroup({
+    track: new UntypedFormControl('')
   });
 
   constructor(
