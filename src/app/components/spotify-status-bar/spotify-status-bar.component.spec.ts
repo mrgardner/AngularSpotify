@@ -1,5 +1,5 @@
 // Angular Material
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 
 // Common
 import { HttpClientModule } from '@angular/common/http';

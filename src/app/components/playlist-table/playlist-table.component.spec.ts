@@ -1,5 +1,5 @@
 // Angular Material
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 
 // Apollo
 import { Apollo } from 'apollo-angular';
