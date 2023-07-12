@@ -1,5 +1,5 @@
 // Angular Material
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Apollo
 import { Apollo } from 'apollo-angular';

@@ -1,5 +1,5 @@
 // Amgular Material
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 // Common
 import { HttpClientModule } from '@angular/common/http';

@@ -30,6 +30,7 @@ export class RouteService {
         selectedRoute.id = splitRoute[2].replace(/%20/g, ' ');
       }
     }
+    console.log(selectedRoute);
     return selectedRoute;
   }
 }
