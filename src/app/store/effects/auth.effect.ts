@@ -7,9 +7,9 @@ import { catchError, map, switchMap } from "rxjs/operators";
 // import * as fromStore from '@app/store';
 import { SPOTIFY_AUTH } from "@app/constants/auth.constant";
 import { Router } from "@angular/router";
-import { AuthApiActions } from "../actions";
 import { AuthPayload } from "../model/auth.model";
-import { getRouterFragment } from "../selectors";
+import { selectFragment } from "../selectors/router.selectors";
+import { AuthApiActions } from "../actions/auth.action";
 
 @Injectable()
 export class AuthEffects {
@@ -20,10 +20,10 @@ export class AuthEffects {
     switchMap(() => {
       // const ddd = .;
       // ddd.
-      // console.log(ddd);
-      return this.store.select(getRouterFragment);
+      console.log('dsdsf');
+      return this.store.select(selectFragment);
     }),
-    switchMap((fragment: string) => {
+    switchMap((fragment: any) => {
       console.log('sdfdsfsdfdsfds');
       console.log(fragment)
       if (fragment && fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN).length === 2 && fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN)[1].split('&').length === 4) {
@@ -39,6 +39,7 @@ export class AuthEffects {
           map(() => AuthApiActions.storeAuthToken({ payload: data }))
         )
       } else {
+        console.log('sdfsdfsdf')
         return of(1).pipe(
           map(() => AuthApiActions.authError({ payload: { code: 500, message: 'Something went wrong' } }))
         )

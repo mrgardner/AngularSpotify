@@ -1,10 +1,10 @@
 import { SPOTIFY_AUTH } from '@app/constants/auth.constant';
 import { AuthState } from '../model/auth.model';
 import { createReducer, on } from '@ngrx/store';
-import { AuthApiActions } from '../actions';
+import { AuthApiActions } from '../actions/auth.action';
 
 export const initialState: AuthState = {
-  loggedIn: false,
+  loggedIn: true,
   error: null,
   authToken: '',
   expiredDate: ''
@@ -12,12 +12,8 @@ export const initialState: AuthState = {
 
 export const authReducer = createReducer(
   initialState,
-  on(AuthApiActions.login, (state, { }) => {
-    return {
-      ...state
-    };
-  }),
-  on(AuthApiActions.logout, (state, { }) => {
+  on(AuthApiActions.login, state => ({ ...state })),
+  on(AuthApiActions.logout, state => {
     sessionStorage.removeItem(SPOTIFY_AUTH.SPOTIFY_TOKEN);
     sessionStorage.removeItem(SPOTIFY_AUTH.EXPIRED_DATE);
     return {
@@ -36,14 +32,12 @@ export const authReducer = createReducer(
       error: null
     }
   }),
-  on(AuthApiActions.removeAuthToken, (state, { }) => {
-    return {
-      ...state,
-      authToken: '',
-      expiredDate: '',
-      error: null
-    };
-  }),
+  on(AuthApiActions.removeAuthToken, state => ({
+    ...state,
+    authToken: '',
+    expiredDate: '',
+    error: null
+  })),
   on(AuthApiActions.authError, (state, { payload }) => {
     const error = { code: payload.code, message: payload.message }
     return {
@@ -52,9 +46,5 @@ export const authReducer = createReducer(
       error
     }
   }),
-  on(AuthApiActions.authCheck, (state, { }) => {
-    return {
-      ...state
-    }
-  }),
+  on(AuthApiActions.authCheck, state => ({ ...state }))
 );

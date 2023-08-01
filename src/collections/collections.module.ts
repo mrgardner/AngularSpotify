@@ -13,6 +13,7 @@ import { AngularMaterialModule } from '@app/modules/angular-material.module';
 import { StoreModule } from '@ngrx/store';
 import { collectionComponents } from './components';
 import { collectionPipes } from './pipes';
+
 import { AngularModule } from '@app/modules/angular.module';
 
 const ROUTES: Routes = [
