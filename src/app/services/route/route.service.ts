@@ -15,9 +15,9 @@ export class RouteService {
       return el !== '';
     });
     const selectedRoute = {
-      parent: null,
-      child: null,
-      id: null
+      parent: "",
+      child: "",
+      id: ""
     };
     for (let i = 0; i < splitRoute.length; i++) {
       if (i === 0) {

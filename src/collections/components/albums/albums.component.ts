@@ -49,7 +49,7 @@ export class AlbumsComponent implements OnInit, OnDestroy {
           }
         })
       )
-      .subscribe((data: ApolloAlbumResult) => {
+      .subscribe((data: any) => {
         this.albums = this.albums.concat(data.items);
         if (!data.next) {
           this.loading = false;

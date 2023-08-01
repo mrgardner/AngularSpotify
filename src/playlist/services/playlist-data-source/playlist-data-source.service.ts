@@ -44,10 +44,15 @@ export class PlaylistDataSourceService {
           uri: t.track.uri,
           total: tracks.total,
           size: tracks.limit,
+          name: '',
+          remove: false,
+          is_local: false,
+          track: null,
+          artists: [],
           filterText: `${t.track.name.toLowerCase()}
             ${this.utilService.displayArtists(t.track.artists).join('').toLowerCase()}
-            ${t.track.album.name.toLowerCase()}`.replace(/\s/g, '').trim()
-        };
+            ${t.track.album.name.toLowerCase()}`.replace(/\s/g, '').trim(),
+        }
       });
       this.tableSubject.next(sortedTracks);
       this.backupSubject.next(sortedTracks);

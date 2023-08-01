@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Interfaces
-import { ApolloAlbumResult, AlbumApolloResponse } from '@app/interfaces/apollo/apollo.inerface';
+import { ApolloAlbumResult } from '@app/interfaces/apollo/apollo.inerface';
 
 // Queries
 import { ALBUM_INFO } from '@app/queries/get-albums';
@@ -94,7 +94,7 @@ export class ApolloService {
         },
         errorPolicy: 'all'
       })
-      .valueChanges.pipe(map((result: AlbumApolloResponse) => result.data.albums));
+      .valueChanges.pipe(map((result: any) => result.data.albums));
   }
 
   getFollowedArtists() {

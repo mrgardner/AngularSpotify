@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "types": ["node"],
     "paths": {
       "@app/*": [
         "src/app/*"
@@ -33,6 +34,7 @@
     "module": "es2020",
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "strict": true,
     "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
@@ -43,7 +45,8 @@
       "esnext.asynciterable"
     ],
     "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "strictPropertyInitialization":false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeChecking": true,

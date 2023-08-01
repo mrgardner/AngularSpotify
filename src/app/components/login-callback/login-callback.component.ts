@@ -1,11 +1,7 @@
 // Common 
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-// import { ActivatedRoute } from '@angular/router';
-// import { SPOTIFY_AUTH } from '@app/constants/auth.constant';
-// import { Subscription } from 'rxjs';
-import * as fromStore from '@app/store';
-
+import { AuthApiActions } from '@app/store';
 
 @Component({
   selector: 'app-login-callback',
@@ -21,7 +17,8 @@ export class LoginCallbackComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new fromStore.Login())
+    // TODO: FIX SELECTORS
+    this.store.dispatch(AuthApiActions.login());
 
     // this.routeSubscrition = this.route.fragment.subscribe((fragment: string) => {
 

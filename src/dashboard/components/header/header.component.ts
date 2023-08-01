@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 
 // Services
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-import { Store } from '@ngrx/store';
+// import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import * as fromAuthStore from '@app/store';
+// import * as fromAuthStore from '@app/store';
 
 @Component({
   selector: 'app-header',
@@ -18,11 +18,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public loggedInSubscription: Subscription;
 
   constructor(
-    private store: Store,
+    // private store: Store,
     private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit(): void {
-    this.loggedIn$ = this.store.select(fromAuthStore.getLoggedIn);
+    // TODO: FIX SELECTORS
+    // this.loggedIn$ = this.store.select(fromAuthStore.getLoggedIn);
 
     this.loggedInSubscription = this.loggedIn$.subscribe(loggedIn => {
       if (loggedIn) {
@@ -36,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this.store.dispatch(new fromAuthStore.Logout());
+    // TODO: FIX SELECTORS
+    // this.store.dispatch(new fromAuthStore.Logout());
   }
 }

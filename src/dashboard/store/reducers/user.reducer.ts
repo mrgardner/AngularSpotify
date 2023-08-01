@@ -1,11 +1,6 @@
-import * as fromUser from '../actions/user.action';
-
-export interface UserState {
-  displayName: string;
-  error: boolean;
-  loading: boolean;
-  loaded: Boolean;
-};
+import { createReducer, on } from '@ngrx/store';
+import { UserState } from '../model/user.model';
+import { UserApiActions } from '../actions/user.action';
 
 export const initialState: UserState = {
   displayName: 'The Man',
@@ -14,33 +9,29 @@ export const initialState: UserState = {
   loading: false
 };
 
-export function userReducer(state = initialState, action: fromUser.UserAction): UserState {
-  switch (action.type) {
-    case fromUser.LOAD_USER: {
-      return {
-        ...state,
-        loading: true
-      }
+export const userReducer = createReducer(
+  initialState,
+  on(UserApiActions.loadUser, (state, { }) => {
+    return {
+      ...state,
+      loading: true
+    };
+  }),
+  on(UserApiActions.loadUserSuccess, (state, { payload }) => {
+    return {
+      ...state,
+      error: false,
+      loading: false,
+      loaded: true,
+      data: payload.displayName
     }
-    case fromUser.LOAD_USER_SUCCESS: {
-      return {
-        ...state,
-        error: false,
-        displayName: action.payload,
-        loaded: true,
-        loading: false
-      }
+  }),
+  on(UserApiActions.loadUserFail, (state, { }) => {
+    return {
+      ...state,
+      error: true,
+      loaded: false,
+      loading: false
     }
-    case fromUser.LOAD_USER_FAIL: {
-      return {
-        ...state,
-        error: true,
-        loaded: false,
-        loading: false
-      }
-    }
-    default: {
-      return state;
-    }
-  }
-}
+  })
+);

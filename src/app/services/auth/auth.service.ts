@@ -27,16 +27,18 @@ export class AuthService {
 
   login(): void {
     const that = this;
-    const popup = window.open(
+    const popup: Window | null = window.open(
       this.loginURI,
       'Login with Spotify',
       'width=800, height=800'
     );
 
-    window['spotifyCallback'] = () => {
-      const authToken = popup.location.hash.split('#access_token=')[1].split('&')[0];
-      sessionStorage.setItem('spotifyToken', authToken)
-      popup.close();
+    (window as any)['spotifyCallback'] = () => {
+      const authToken = popup !== null ? popup.location.hash.split('#access_token=')[1].split('&')[0] : "";
+      sessionStorage.setItem('spotifyToken', authToken);
+      if (popup !== null) {
+        popup.close();
+      }
       setTimeout(() => {
         that.router.navigate(['dashboard']);
         that.spotifyPlaybackService.setupPlayer();
@@ -50,11 +52,11 @@ export class AuthService {
     localStorage.clear();
   }
 
-  getSpotifyToken(): string {
+  getSpotifyToken(): string | null {
     return sessionStorage.getItem('spotifyToken');
   }
 
-  generateRandomString(length): string {
+  generateRandomString(length: number): string {
     let text = '';
     const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
 

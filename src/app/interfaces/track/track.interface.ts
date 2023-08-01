@@ -36,6 +36,11 @@ export interface SortedTrack {
   total: number;
   size: number;
   filterText: string;
+  remove: boolean;
+  artists: Array<Artist>,
+  name: string;
+  is_local: boolean;
+  track: Track | null;
 }
 
 export interface Track {
@@ -71,6 +76,8 @@ export interface Track {
   showPlayButton: boolean;
   showPauseButton: boolean;
   showTrackNumber: boolean;
+  is_local: boolean;
+  track: Track;
 }
 
 export interface Tracks {

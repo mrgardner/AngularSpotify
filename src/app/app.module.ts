@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Components
 import { LoginCallbackComponent } from './components/login-callback/login-callback.component';
@@ -26,8 +25,8 @@ import { environment } from 'environments/environment';
 // NgRx
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { reducers, effects, CustomSerializer } from './store';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 // NgRx Dev
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -35,6 +34,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 // Services
 import { appServices, spotifyInterceptor } from '@app/services';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
 export const ROUTES: Routes = [
@@ -76,7 +76,7 @@ export const ROUTES: Routes = [
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    StoreModule.forRoot({}, {})
+    StoreModule.forRoot({}, {}),
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer
     }),
@@ -94,4 +94,5 @@ export const ROUTES: Routes = [
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

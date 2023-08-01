@@ -1,51 +1,41 @@
-import { Playlist } from '@app/interfaces/playlist/playlist.interface';
-import { PLAYLIST_TYPES } from '@playlist/constants/actions.constant';
-import * as fromPlaylist from '../actions/playlist.action';
+import { createReducer, on } from '@ngrx/store';
+import { PlaylistsState } from '../model/playlist.model';
+import { PlaylistApiActions } from '../actions/playlist.action';
 
-export interface PlaylistsState {
-  data: Playlist,
-  loading: boolean,
-  loaded: boolean,
-  error: boolean
-};
 
-export const initialState: PlaylistsState = {
+export const initialState: Readonly<PlaylistsState> = {
   data: null,
   loading: false,
   loaded: false,
   error: false
 };
 
-export function playlistInfoReducer(state = initialState, action: fromPlaylist.PlaylistAction): PlaylistsState {
-  switch (action.type) {
-    case PLAYLIST_TYPES.LOAD_PLAYLIST: {
-      return {
-        ...state,
-        loading: true
-      }
+export const playlistReducer = createReducer(
+  initialState,
+  on(PlaylistApiActions.loadPlaylist, (state, { }) => {
+    return {
+      ...state,
+      loading: true
+    };
+  }),
+  on(PlaylistApiActions.loadPlaylistSuccess, (state, { playlist }) => {
+    return {
+      ...state,
+      error: false,
+      loading: false,
+      loaded: true,
+      data: playlist.data
     }
-    case PLAYLIST_TYPES.LOAD_PLAYLIST_SUCCESS: {
-      return {
-        ...state,
-        error: false,
-        loading: false,
-        loaded: true,
-        data: action.payload
-      }
+  }),
+  on(PlaylistApiActions.loadPlaylistFail, (state, { }) => {
+    return {
+      ...state,
+      error: true,
+      loaded: false,
+      loading: false
     }
-    case PLAYLIST_TYPES.LOAD_PLAYLIST_FAIL: {
-      return {
-        ...state,
-        error: true,
-        loaded: false,
-        loading: false
-      }
-    }
-    default: {
-      return state;
-    }
-  }
-}
+  })
+);
 
 export const getPlaylistsError = (state: PlaylistsState) => state.error;
 export const getPlaylistsEntities = (state: PlaylistsState) => state.data;

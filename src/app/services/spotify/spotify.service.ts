@@ -1,11 +1,24 @@
 // Common
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 // Interfaces
 import { SortedTrack } from '@app/interfaces/track/track.interface';
+
+export interface PlaylistDataBody {
+  owner: {
+    id: string;
+  };
+  id: string;
+}
+
+export interface HttpOptionsBody {
+  headers: HttpHeaders | null,
+  body: SortedTrack[]
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -81,7 +94,7 @@ export class SpotifyService {
       { uris, offset: { position: offset } });
   }
 
-  setRepeatMode(context: string, deviceID: string): Observable<any> {
+  setRepeatMode(context: string, deviceID: string | null): Observable<any> {
     return this._http.put(this.spotifyApiBaseURI + `/me/player/repeat?state=${context}&device_id=${deviceID}`, {});
   }
 
@@ -108,7 +121,7 @@ export class SpotifyService {
   createNewPlaylist(body: any, image: File): Observable<any> {
     return this.createPlaylist(body)
       .pipe(
-        switchMap((data: Object) => this.uploadPlaylistCover(image, data['owner']['id'], data['id']))
+        switchMap((data: PlaylistDataBody) => this.uploadPlaylistCover(image, data.owner.id, data.id))
       );
   }
 
@@ -215,7 +228,7 @@ export class SpotifyService {
 
   removeTracks(owner: string, playlistID: string, tracks: Array<SortedTrack>): Observable<any> {
     const options = {
-      headers: null,
+      headers: undefined,
       body: tracks
     };
     return this._http.delete(

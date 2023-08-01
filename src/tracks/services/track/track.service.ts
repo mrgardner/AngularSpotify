@@ -27,7 +27,7 @@ export class TrackService {
   }
 
   filterDuplicateTracks(tracks: Array<SortedTrack>, args: boolean) {
-    const getNotUnique = (array) => {
+    const getNotUnique = (array: Array<SortedTrack>) => {
       const map = new Map();
       const map2 = new Map();
       const map3 = new Map();
@@ -37,7 +37,7 @@ export class TrackService {
       const tt = t.filter(a => map2.get(a.duration) > 1);
       tt.forEach(a => map3.set(a.title, (map3.get(a.title) || 0) + 1));
       const ttt = tt.filter(a => map3.get(a.title) > 1);
-      ttt.forEach(a => a['remove'] = false);
+      ttt.forEach(a => a.remove = false);
       return ttt.sort(function (a, b) {
         const nameA = a.title.toLowerCase();
         const nameB = b.title.toLowerCase();

@@ -69,7 +69,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationStart))
-      .subscribe((event: NavigationStart) => {
+      .subscribe((event: any) => {
         this.selectedRoute = this.routeService.parseUrl(event.url);
       });
   }

@@ -20,7 +20,7 @@ export class SpotifyPlaybackService {
   public currentPlaylistPlaying$: EventEmitter<string>;
   // TODO: Fix type
   public player: any;
-  public statePollingInterval: number = null;
+  public statePollingInterval: number = 0;
   public endOfChain: boolean;
   constructor() {
     this.currentSongState$ = new EventEmitter();
@@ -36,11 +36,12 @@ export class SpotifyPlaybackService {
 
   async waitForSpotifyWebPlaybackSDKToLoad() {
     return new Promise(resolve => {
-      if (window['Spotify']) {
-        resolve(window['Spotify']);
+      // const window: 
+      if ((window as any)['Spotify']) {
+        resolve((window as any)['Spotify']);
       } else {
-        window['onSpotifyWebPlaybackSDKReady'] = () => {
-          resolve(window['Spotify']);
+        (window as any)['onSpotifyWebPlaybackSDKReady'] = () => {
+          resolve((window as any)['Spotify']);
         };
       }
     });
@@ -53,13 +54,13 @@ export class SpotifyPlaybackService {
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     body.appendChild(script);
     (async () => {
-      const Player = await this.waitForSpotifyWebPlaybackSDKToLoad();
+      const Player: any = await this.waitForSpotifyWebPlaybackSDKToLoad();
 
       // create a new player
       this.player = new Player['Player']({
         name: 'Testing123',
         volume: 1,
-        getOAuthToken: cb => { cb(sessionStorage.getItem('spotifyToken')); },
+        getOAuthToken: (cb: any) => { cb(sessionStorage.getItem('spotifyToken')); },
       });
       // set up the player's event handlers
       // TODO: fix below
@@ -70,7 +71,7 @@ export class SpotifyPlaybackService {
     })();
   }
 
-  async handleState(state) {
+  async handleState(state: any) {
     if (state) {
       if (!state.paused) {
         this.sendCurrentState(state);
@@ -92,7 +93,12 @@ export class SpotifyPlaybackService {
           uri: '',
           total: 0,
           size: 0,
-          filterText: ''
+          filterText: '',
+          remove: false,
+          artists: [],
+          name: '',
+          is_local: false,
+          track: null
         });
         await this.waitForDeviceToBeSelected();
       }
@@ -114,19 +120,19 @@ export class SpotifyPlaybackService {
 
   createEventHandlers() {
     // problem setting up the player
-    this.player.on('initialization_error', e => { console.error(e); });
+    this.player.on('initialization_error', (e: any) => { console.error(e); });
     // problem authenticating the user.
     // either the token was invalid in the first place,
     // or it expired (it lasts one hour)
-    this.player.on('authentication_error', e => console.error(e));
+    this.player.on('authentication_error', (e: any) => console.error(e));
     // currently only premium accounts can use the API
-    this.player.on('account_error', e => { console.error(e); });
+    this.player.on('account_error', (e: any) => { console.error(e); });
     // loading/playing the track failed for some reason
-    this.player.on('playback_error', e => { console.error(e); });
+    this.player.on('playback_error', (e: any) => { console.error(e); });
     // Playback status updates
-    this.player.on('player_state_changed', async state => await this.handleState(state));
+    this.player.on('player_state_changed', async (state: any) => await this.handleState(state));
     // Ready
-    this.player.on('ready', async data => {
+    this.player.on('ready', async (data: any) => {
       const { device_id } = data;
       this.startStatePolling();
       localStorage.setItem('deviceId', device_id);
@@ -146,7 +152,7 @@ export class SpotifyPlaybackService {
   waitForDeviceToBeSelected() {
     return new Promise((resolve, reject) => {
       if (this.player) {
-        this.player.getCurrentState().then(state => {
+        this.player.getCurrentState().then((state: any) => {
           if (state !== null) {
             this.startStatePolling();
             resolve(state);

@@ -1,24 +1,12 @@
-import { Action } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
+import { USER_TYPES } from './actions.constant';
+import { UserState } from '../model/user.model';
 
-// load user
-export const LOAD_USER = '[User] Load User';
-export const LOAD_USER_FAIL = '[User] Load User Fail';
-export const LOAD_USER_SUCCESS = '[User] Load User Success';
-
-export class LoadUser implements Action {
-  readonly type = LOAD_USER;
-}
-
-export class LoadUserFail implements Action {
-  readonly type = LOAD_USER_FAIL;
-  constructor(public payload: any) { }
-}
-
-export class LoadUserSuccess implements Action {
-  readonly type = LOAD_USER_SUCCESS;
-  constructor(public payload: string) { }
-}
-
-// action types
-
-export type UserAction = LoadUser | LoadUserFail | LoadUserSuccess;
+export const UserApiActions = createActionGroup({
+  source: 'User API',
+  events: {
+    [USER_TYPES.LOAD_USER]: props<{ payload: UserState }>(),
+    [USER_TYPES.LOAD_USER_FAIL]: props<{ payload: UserState }>(),
+    [USER_TYPES.LOAD_USER_SUCCESS]: props<{ payload: UserState }>()
+  }
+});

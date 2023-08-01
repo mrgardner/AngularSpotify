@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 // Common
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormControl, FormControl, FormGroup, Validators, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 
 // Services
 import { SpotifyService } from '@app/services/spotify/spotify.service';
@@ -25,7 +25,7 @@ export class NewPlaylistDialogComponent implements OnInit {
   public imageFile: any;
   public showUserButtons: boolean;
   public reader: any;
-  public form = new UntypedFormGroup({
+  public form: any = new UntypedFormGroup({
     playlistName: new UntypedFormControl('', Validators.required),
     playlistDescription: new UntypedFormControl('')
   });
@@ -53,21 +53,22 @@ export class NewPlaylistDialogComponent implements OnInit {
   }
 
   triggerFile(): void {
-    document.getElementById('file').click();
+    (document as any).getElementById('file').click();
   }
 
   closeModal(): void {
     this.dialogRef.close();
   }
 
-  getFile(event): void {
+  getFile(event: any): void {
     if (event.target.files && event.target.files[0]) {
       this.reader = new FileReader();
 
       this.reader.onload = (events: ProgressEvent) => {
         this.currentImage = (<FileReader>events.target).result;
         this.imageFile = this.currentImage.split(',')[1];
-        document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '380px';
+
+        (document as any).getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '380px';
       };
       this.reader.readAsDataURL(event.target.files[0]);
     }
@@ -76,14 +77,14 @@ export class NewPlaylistDialogComponent implements OnInit {
   resetImage(): void {
     this.currentImage = null;
     this.imageFile = null;
-    document.getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '300px';
+    (document as any).getElementsByClassName(<string>this.dialogRef._containerInstance._config.panelClass)[0]['style'].height = '300px';
   }
 
   replaceImage(): void {
-    document.getElementById('file2').click();
+    (document as any).getElementById('file2').click();
   }
 
-  onSubmit(event): void {
+  onSubmit(event: any): void {
     const playlistName = event.target[0].value;
     const playlistDescription = event.target[2].value;
     const playlistImage = this.imageFile;

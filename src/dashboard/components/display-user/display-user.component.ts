@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 // NgRx
-import { Store } from '@ngrx/store';
-import * as fromStore from '@dashboard/store';
+// import { Store } from '@ngrx/store';
+// import * as fromStore from '@dashboard/store';
 
 @Component({
   selector: 'app-display-user',
@@ -14,10 +14,11 @@ import * as fromStore from '@dashboard/store';
 })
 export class DisplayUserComponent implements OnInit {
   public displayName$: Observable<string>;
-  constructor(private store: Store<fromStore.DashboardState>) { }
+  // constructor(private store: Store<fromStore.DashboardState>) { }
 
   ngOnInit(): void {
-    this.displayName$ = this.store.select(fromStore.getUserDisplayName);
-    this.store.dispatch(new fromStore.LoadUser());
+    // TODO: FIX BELOW
+    // this.displayName$ = this.store.select(fromStore.getUserDisplayName);
+    // this.store.dispatch(new fromStore.LoadUser());
   }
 }

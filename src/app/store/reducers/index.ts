@@ -1,8 +1,10 @@
 
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Params, UrlSegment } from '@angular/router';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store'
-import * as fromRouter from '@ngrx/router-store';
-import * as fromAuth from './auth.reducer';
+import { AuthState } from '../model/auth.model';
+import { authReducer } from './auth.reducer';
+import { RouterReducerState, RouterStateSerializer, routerReducer } from '@ngrx/router-store';
+
 
 export interface RouterStateUrl {
   url: string;
@@ -13,19 +15,19 @@ export interface RouterStateUrl {
 };
 
 export interface State {
-  router: fromRouter.RouterReducerState<RouterStateUrl>
-  auth: fromAuth.AuthState
+  router: RouterReducerState<RouterStateUrl>
+  auth: AuthState
 };
 
 export const reducers: ActionReducerMap<State> = {
-  router: fromRouter.routerReducer,
-  auth: fromAuth.authReducer
+  router: routerReducer,
+  auth: authReducer
 };
 
-export const getRouterReducerState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');
-export const getAuthState = createFeatureSelector<fromAuth.AuthState>('auth');
+export const getRouterReducerState = createFeatureSelector<RouterReducerState<RouterStateUrl>>('router');
+export const getAuthState = createFeatureSelector<AuthState>('auth');
 
-export class CustomSerializer implements fromRouter.RouterStateSerializer<RouterStateUrl> {
+export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     const { url } = routerState;
     const { queryParams, fragment } = routerState.root;
@@ -38,7 +40,8 @@ export class CustomSerializer implements fromRouter.RouterStateSerializer<Router
     const { params } = state;
 
     // TODO: Revisit if this is needed
-    const urlSegments: Array<UrlSegment> = state['_urlSegment'].segments;
+    // const urlSegments: Array<UrlSegment> = state['_urlSegment'].segments;
+    const urlSegments: Array<UrlSegment> = [];
 
     return { url, queryParams, params, fragment, urlSegments };
   }

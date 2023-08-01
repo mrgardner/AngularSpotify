@@ -1,12 +1,7 @@
 import { SPOTIFY_AUTH } from '@app/constants/auth.constant';
-import * as fromAuth from '../actions/auth.action';
-
-export interface AuthState {
-  loggedIn: boolean;
-  error: any;
-  authToken: string;
-  expiredDate: string;
-};
+import { AuthState } from '../model/auth.model';
+import { createReducer, on } from '@ngrx/store';
+import { AuthApiActions } from '../actions';
 
 export const initialState: AuthState = {
   loggedIn: false,
@@ -15,53 +10,51 @@ export const initialState: AuthState = {
   expiredDate: ''
 };
 
-export function authReducer(state = initialState, action: fromAuth.UserAction): AuthState {
-  switch (action.type) {
-    case fromAuth.LOGIN: {
-      return {
-        ...state
-      };
+export const authReducer = createReducer(
+  initialState,
+  on(AuthApiActions.login, (state, { }) => {
+    return {
+      ...state
+    };
+  }),
+  on(AuthApiActions.logout, (state, { }) => {
+    sessionStorage.removeItem(SPOTIFY_AUTH.SPOTIFY_TOKEN);
+    sessionStorage.removeItem(SPOTIFY_AUTH.EXPIRED_DATE);
+    return {
+      ...state,
+      loggedIn: false
     }
-    case fromAuth.LOGOUT: {
-      sessionStorage.removeItem(SPOTIFY_AUTH.SPOTIFY_TOKEN);
-      sessionStorage.removeItem(SPOTIFY_AUTH.EXPIRED_DATE);
-      return {
-        ...state,
-        loggedIn: false
-      };
+  }),
+  on(AuthApiActions.storeAuthToken, (state, { payload }) => {
+    const { authToken, expiredDate } = payload;
+
+    return {
+      ...state,
+      loggedIn: true,
+      authToken,
+      expiredDate,
+      error: null
     }
-    case fromAuth.STORE_AUTH_TOKEN: {
-      const { authToken, expiredDate } = action.payload;
-      return {
-        ...state,
-        loggedIn: true,
-        authToken,
-        expiredDate,
-        error: null
-      }
+  }),
+  on(AuthApiActions.removeAuthToken, (state, { }) => {
+    return {
+      ...state,
+      authToken: '',
+      expiredDate: '',
+      error: null
+    };
+  }),
+  on(AuthApiActions.authError, (state, { payload }) => {
+    const error = { code: payload.code, message: payload.message }
+    return {
+      ...state,
+      loggedIn: false,
+      error
     }
-    case fromAuth.REMOVE_AUTH_TOKEN: {
-      return {
-        ...state,
-        authToken: '',
-        expiredDate: '',
-        error: null
-      }
+  }),
+  on(AuthApiActions.authCheck, (state, { }) => {
+    return {
+      ...state
     }
-    case fromAuth.AUTH_ERROR: {
-      return {
-        ...state,
-        loggedIn: false,
-        error: action.payload
-      }
-    }
-    case fromAuth.AUTH_CHECK: {
-      return {
-        ...state
-      }
-    }
-    default: {
-      return state;
-    }
-  }
-}
+  }),
+);

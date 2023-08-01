@@ -11,7 +11,7 @@ import { filter } from 'rxjs/operators';
 import { NewPlaylistDialogComponent } from '@dashboard/components/new-playlist-dialog/new-playlist-dialog.component';
 
 // Interfaces
-import { CurrentTrack } from '@app/interfaces/track/track.interface';
+// import { CurrentTrack } from '@app/interfaces/track/track.interface';
 import { Playlist } from '@app/interfaces/playlist/playlist.interface';
 import { Section } from '@app/interfaces/section/section.interface';
 import { SelectedRoute } from '@app/interfaces/route/route.interface';
@@ -20,11 +20,11 @@ import { SelectedRoute } from '@app/interfaces/route/route.interface';
 import { ApolloService } from '@app/services/apollo/apollo.service';
 import { RouteService } from '@app/services/route/route.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
+// import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
 import { UtilService } from '@app/services/util/util.service';
-import { Store } from '@ngrx/store';
-import * as fromRoot from '@app/store';
-import * as fromStore from '@dashboard/store';
+// import { Store } from '@ngrx/store';
+// import * as fromRoot from '@app/store';
+// import * as fromStore from '@dashboard/store';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public loading$: Observable<boolean>;
   public loaded$: Observable<boolean>;
   public selectedPlaylist$: Observable<string>;
-  public currentTrack: CurrentTrack;
+  // private currentTrack: CurrentTrack;
   public playlistTotal$: Observable<number>;
   public nextPlaylist$: Observable<string>;
   public canLoadMore$: Observable<boolean>;
@@ -55,7 +55,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public currentPlaylist: string;
 
   constructor(
-    private statusBarService: StatusBarService,
+    // private statusBarService: StatusBarService,
     public dialog: MatDialog,
     private router: Router,
     public utilService: UtilService,
@@ -63,7 +63,8 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     private routeService: RouteService,
 
     private spotifyPlaybackService: SpotifyPlaybackService,
-    private store: Store) {
+    // private store: Store
+  ) {
   }
 
   /*
@@ -93,18 +94,19 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
         url: '/dashboard/collections'
       }
     ];
-    this.selectedUrl$ = this.store.select(fromRoot.getRouterURL);
-    this.playlists$ = this.store.select(fromStore.getAllPlaylists);
-    this.loaded$ = this.store.select(fromStore.getPlaylistsLoaded);
-    this.loading$ = this.store.select(fromStore.getPlaylistsLoading);
-    // this.selectedPlaylist$ = this.store.select(fromStore.getSelectedPlaylist);
-    this.canLoadMore$ = this.store.select(fromStore.getCanLoadMore);
-    this.store.dispatch(new fromStore.LoadPlaylists());
+    // TODO: Fix these selectors
+    // this.selectedUrl$ = this.store.select(fromRoot.getRouterURL);
+    // this.playlists$ = this.store.select(fromStore.getAllPlaylists);
+    // this.loaded$ = this.store.select(fromStore.getPlaylistsLoaded);
+    // this.loading$ = this.store.select(fromStore.getPlaylistsLoading);
+    // // this.selectedPlaylist$ = this.store.select(fromStore.getSelectedPlaylist);
+    // this.canLoadMore$ = this.store.select(fromStore.getCanLoadMore);
+    // this.store.dispatch(new fromStore.LoadPlaylists());
     // TODO: Not used
-    this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
+    // this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationStart))
-      .subscribe((event: NavigationStart) => {
+      .subscribe((event: any) => {
         console.log(event)
         this.selectedRoute = this.routeService.parseUrl(event.url);
       });
@@ -127,7 +129,8 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     // TODO: fix selected playlist logic
     // this.playlists.forEach(tt => tt['selected'] = false);
     // playlist['selected'] = true;
-    this.store.dispatch(new fromStore.UpdateSelectedPlaylist(playlist.selectedUrl));
+    // TODO: FIX BELOW
+    // this.store.dispatch(new fromStore.UpdateSelectedPlaylist(playlist.selectedUrl));
     const playlistId = encodeURI(playlist.id);
     this.router.navigate(['dashboard', 'playlist', playlistId]);
   }
@@ -141,7 +144,10 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   }
 
   loadMorePlaylists(): void {
-    this.store.dispatch(new fromStore.LoadPlaylistsByURL);
+    // TODO: FIX BELOW
+    // this.store.dispatch(new fromStore.LoadPlaylistsByURL);
+
+
     // const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
     // const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
     // this.loadMorePlaylist = true;

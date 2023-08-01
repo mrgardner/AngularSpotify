@@ -1,12 +1,12 @@
 <div class="playlist">
   <div class="playlistHeader">
     <div class="playlistCoverSection">
-      <img class="playlistCoverImage" [src]="playlist?.images[0]?.url" />
+      <img class="playlistCoverImage" [src]="playlist.images[0].url" />
     </div>
     <div class="playlistInfoSection">
       <span>PLAYLIST</span>
-      <h1>{{playlist?.name}}</h1>
-      <div>Created by {{playlist?.owner?.display_name}} * {{playlist?.tracks?.total}} <span *ngIf="playlist?.tracks?.total > 1 || playlist?.tracks?.total === 0">songs</span><span *ngIf="tracks.length === 1">song</span></div>
+      <h1>{{playlist.name}}</h1>
+      <div>Created by {{playlist.owner.display_name}} * {{playlist.tracks.total}} <span *ngIf="playlist.tracks.total > 1 || playlist?.tracks?.total === 0">songs</span><span *ngIf="tracks.length === 1">song</span></div>
       <!-- TODO: Improve logic for these buttons-->
       <div class="button-and-follower-section">
         <div class="button-container">
@@ -21,7 +21,7 @@
         </div>
         <div class="follower-container">
           <div>Followers</div>
-          <div>{{playlist?.followers?.total}}</div>
+          <div>{{playlist.followers.total}}</div>
         </div>
       </div>
     </div>

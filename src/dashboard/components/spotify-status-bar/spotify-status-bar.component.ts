@@ -32,7 +32,7 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
   public currentDevice: Device;
   public currentDeviceId: string;
   public currentDeviceName: string;
-  public appDevice: string;
+  public appDevice: string | null;
   public songCurrentProgress: number;
   public showPlayButton: boolean;
   public isRepeatPlaylistShowing: boolean;
@@ -121,20 +121,23 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = true;
     this.isRepeatTrackShowing = false;
-    this.spotifyService.setRepeatMode('context', localStorage.getItem('deviceId')).subscribe(() => { });
+    const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
+    this.spotifyService.setRepeatMode('context', deviceId).subscribe(() => { });
   }
 
   repeatTrack(): void {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = true;
-    this.spotifyService.setRepeatMode('track', localStorage.getItem('deviceId')).subscribe(() => { });
+    const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
+    this.spotifyService.setRepeatMode('track', deviceId).subscribe(() => { });
   }
 
   repeatOff(): void {
     this.isRepeatOffShowing = true;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
-    this.spotifyService.setRepeatMode('off', localStorage.getItem('deviceId')).subscribe(() => { });
+    const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
+    this.spotifyService.setRepeatMode('off', deviceId).subscribe(() => { });
   }
 }

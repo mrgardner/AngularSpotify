@@ -5,7 +5,6 @@ import { of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 // Interfaces
-import { Params } from '@app/interfaces/params/params.interface';
 import { SortedTrack } from '@app/interfaces/track/track.interface';
 
 // Services
@@ -29,7 +28,7 @@ export class TrackComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSubscription = this.route.params.pipe(
-      switchMap((params: Params) => {
+      switchMap((params) => {
         if (params && params.trackID) {
           return this.spotifyService.getTrack(params.trackID);
         } else {

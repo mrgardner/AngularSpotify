@@ -4,9 +4,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-// Interfaces
-import { Params } from '@app/interfaces/params/params.interface';
-
 // Services
 import { TrackService } from '@tracks/services/track/track.service';
 
@@ -36,7 +33,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
-    this.routeSubscription = this.route.params.subscribe((params: Params) => {
+    this.routeSubscription = this.route.params.subscribe((params) => {
       if (params && params.playlistID) {
         this.playlistID = params.playlistID;
       } else {

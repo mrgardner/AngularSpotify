@@ -24,7 +24,7 @@ export class LoginComponent {
     location.href = loginURI;
   }
 
-  generateRandomString(length): string {
+  generateRandomString(length: number): string {
     let text = '';
     const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
 

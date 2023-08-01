@@ -27,7 +27,7 @@ export class SpotifyInterceptorService implements HttpInterceptor {
       next.handle(req).subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.body.errors) {
-            event.body.errors.forEach(error => {
+            event.body.errors.forEach((error: Error) => {
               if (error.message === "Error: Token expired") {
                 sessionStorage.clear();
                 this.router.navigate(['login']);

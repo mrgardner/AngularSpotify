@@ -11,7 +11,7 @@ export class PlaylistService {
     this.selectPlaylist$ = new EventEmitter();
   }
 
-  selectPlaylist(value) {
+  selectPlaylist(value: any) {
     this.selectPlaylist$.emit(value);
   }
 }

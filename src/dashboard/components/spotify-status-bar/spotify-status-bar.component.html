@@ -20,14 +20,14 @@
                 <button mat-icon-button color="warn">
                   <mat-icon>shuffle</mat-icon>
                 </button>
-                <button mat-icon-button [disabled]="state?.track_window?.previous_tracks?.length === 0">
+                <button mat-icon-button [disabled]="state.track_window.previous_tracks.length === 0">
                   <mat-icon (click)="previousSong()">skip_previous</mat-icon>
                 </button>
                 <button mat-icon-button>
                   <mat-icon *ngIf="showPlayButton" class="play-button" (click)="playSong()">play_circle_outline</mat-icon>
                   <mat-icon *ngIf="!showPlayButton" class="pause-button" (click)="pauseSong()">pause_circle_outline</mat-icon>
                 </button>
-                <button mat-icon-button [disabled]="state?.track_window?.next_tracks?.length === 0" (click)="nextSong()">
+                <button mat-icon-button [disabled]="state.track_window.next_tracks.length === 0" (click)="nextSong()">
                   <mat-icon>skip_next</mat-icon>
                 </button>
                 <button mat-icon-button>
