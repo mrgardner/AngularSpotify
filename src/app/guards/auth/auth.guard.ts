@@ -1,6 +1,6 @@
 // Common
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 // Services
@@ -9,7 +9,7 @@ import { AuthService } from '@services/auth/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard  {
   constructor(private router: Router, private authService: AuthService) { }
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     const token = !!this.authService.getSpotifyToken();

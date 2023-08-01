@@ -62,7 +62,8 @@ export class SpotifyPlaybackService {
         getOAuthToken: cb => { cb(sessionStorage.getItem('spotifyToken')); },
       });
       // set up the player's event handlers
-      this.createEventHandlers();
+      // TODO: fix below
+      // this.createEventHandlers();
 
       //finally, connect!
       this.player.connect();

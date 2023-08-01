@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 // Common
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 // Services
 import { SpotifyService } from '@services/spotify/spotify.service';
@@ -24,9 +24,9 @@ export class NewPlaylistDialogComponent implements OnInit {
   public imageFile: any;
   public showUserButtons: boolean;
   public reader: any;
-  public form = new FormGroup({
-    playlistName: new FormControl('', Validators.required),
-    playlistDescription: new FormControl('')
+  public form = new UntypedFormGroup({
+    playlistName: new UntypedFormControl('', Validators.required),
+    playlistDescription: new UntypedFormControl('')
   });
 
   constructor(

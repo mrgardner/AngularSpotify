@@ -59,9 +59,15 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     public utilService: UtilService,
     public apolloService: ApolloService,
     private routeService: RouteService,
-    private spotifyPlaybackService: SpotifyPlaybackService) { }
+    private spotifyPlaybackService: SpotifyPlaybackService
+  ) { }
 
   ngOnInit(): void {
+    this.selectedRoute = {
+      parent: '',
+      child: '',
+      id: ''
+    };
     this.sections = [
       {
         label: 'Home',
@@ -107,6 +113,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationStart))
       .subscribe((event: NavigationStart) => {
+        console.log(event)
         this.selectedRoute = this.routeService.parseUrl(event.url);
       });
 
