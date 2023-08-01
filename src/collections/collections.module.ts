@@ -10,11 +10,10 @@ import { MadeForYouComponent } from '@collections/components/made-for-you/made-f
 import { PlaylistsComponent } from '@collections/components/playlists/playlists.component';
 import { PodcastsComponent } from '@collections/components/podcasts/podcasts.component';
 import { AngularMaterialModule } from '@app/modules/angular-material.module';
+import { AngularModule } from '@app/modules/angular.module';
 import { StoreModule } from '@ngrx/store';
 import { collectionComponents } from './components';
 import { collectionPipes } from './pipes';
-
-import { AngularModule } from '@app/modules/angular.module';
 
 const ROUTES: Routes = [
   {

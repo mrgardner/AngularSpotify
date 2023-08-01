@@ -26,7 +26,6 @@ import { UtilService } from '@app/services/util/util.service';
 // import * as fromRoot from '@app/store';
 // import * as fromStore from '@dashboard/store';
 
-
 @Component({
   selector: 'app-spotify-navigation-menu',
   templateUrl: './spotify-navigation-menu.component.html',
@@ -61,7 +60,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     public utilService: UtilService,
     public apolloService: ApolloService,
     private routeService: RouteService,
-
     private spotifyPlaybackService: SpotifyPlaybackService,
     // private store: Store
   ) {
@@ -146,8 +144,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   loadMorePlaylists(): void {
     // TODO: FIX BELOW
     // this.store.dispatch(new fromStore.LoadPlaylistsByURL);
-
-
     // const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
     // const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
     // this.loadMorePlaylist = true;

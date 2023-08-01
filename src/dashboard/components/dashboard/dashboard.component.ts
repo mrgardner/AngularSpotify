@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.log('sdfdsfdf')
       if (token === null || token === undefined) {
         console.log('sdfdsfdf')
+        // TODO: FIX SELECTORS
         // this.store.dispatch(new fromStore.Logout());
         this.router.navigate(['login']);
       }
