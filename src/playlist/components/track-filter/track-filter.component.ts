@@ -33,7 +33,7 @@ export class TrackFilterComponent implements OnInit, OnDestroy {
     this.isSearchBoxShowing = false;
     this.name = '';
     this.playlistID = '';
-    this.routeSubscription = this.route.params.subscribe((params) => {
+    this.routeSubscription = this.route.params.subscribe((params: any) => {
       if (params && params.playlistID) {
         this.playlistID = params.playlistID;
       } else {

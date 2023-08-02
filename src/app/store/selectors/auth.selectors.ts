@@ -1,12 +1,9 @@
-// TODO: FIX SELECTORS
-// import { createSelector } from "@ngrx/store";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { AuthState } from "../model/auth.model";
 
-// import * as fromFeature from '@app/store/reducers';
-// import * as fromAuth from '@app/store/reducers/auth.reducer';
+export const getAuthState = createFeatureSelector<AuthState>('auth');
 
-// export const getAuthState = createFeatureSelector<AuthState>('auth');
-
-// export const getLoggedIn = createSelector(fromFeature.getAuthState, (state: fromAuth.AuthState) => state.loggedIn);
-// export const getAuthToken = createSelector(fromFeature.getAuthState, (state: fromAuth.AuthState) => state.authToken);
-// export const getExpiredDate = createSelector(fromFeature.getAuthState, (state: fromAuth.AuthState) => state.expiredDate);
-// export const getAuthError = createSelector(fromFeature.getAuthState, (state: fromAuth.AuthState) => state.error);
+export const getLoggedIn = createSelector(getAuthState, (state: AuthState) => state.loggedIn);
+export const getAuthToken = createSelector(getAuthState, (state: AuthState) => state.authToken);
+export const getExpiredDate = createSelector(getAuthState, (state: AuthState) => state.expiredDate);
+export const getAuthError = createSelector(getAuthState, (state: AuthState) => state.error);

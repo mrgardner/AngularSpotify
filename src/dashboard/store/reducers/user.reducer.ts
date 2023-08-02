@@ -4,34 +4,28 @@ import { UserApiActions } from '../actions/user.action';
 
 export const initialState: UserState = {
   displayName: 'The Man',
-  error: false,
+  error: null,
   loaded: false,
   loading: false
 };
 
 export const userReducer = createReducer(
   initialState,
-  on(UserApiActions.loadUser, (state, { }) => {
-    return {
-      ...state,
-      loading: true
-    };
-  }),
-  on(UserApiActions.loadUserSuccess, (state, { payload }) => {
-    return {
-      ...state,
-      error: false,
-      loading: false,
-      loaded: true,
-      data: payload.displayName
-    }
-  }),
-  on(UserApiActions.loadUserFail, (state, { }) => {
-    return {
-      ...state,
-      error: true,
-      loaded: false,
-      loading: false
-    }
-  })
+  on(UserApiActions.loadUser, state => ({
+    ...state,
+    loading: true
+  })),
+  on(UserApiActions.loadUserSuccess, (state, { payload }) => ({
+    ...state,
+    error: null,
+    loading: false,
+    loaded: true,
+    displayName: payload
+  })),
+  on(UserApiActions.loadUserFail, (state, { payload }) => ({
+    ...state,
+    error: payload.error,
+    loaded: false,
+    loading: false
+  }))
 );

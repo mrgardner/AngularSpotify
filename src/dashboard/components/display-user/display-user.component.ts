@@ -1,10 +1,10 @@
 // Common
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { UserApiActions } from '@dashboard/store/actions/user.action';
+import { DashboardState } from '@dashboard/store/reducers';
+import { getUserDisplayName } from '@dashboard/store/selectors/user.selectors';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
-// NgRx
-// import { Store } from '@ngrx/store';
-// import * as fromStore from '@dashboard/store';
 
 @Component({
   selector: 'app-display-user',
@@ -14,11 +14,10 @@ import { Observable } from 'rxjs';
 })
 export class DisplayUserComponent implements OnInit {
   public displayName$: Observable<string>;
-  // constructor(private store: Store<fromStore.DashboardState>) { }
+  constructor(private store: Store<DashboardState>) { }
 
   ngOnInit(): void {
-    // TODO: FIX BELOW
-    // this.displayName$ = this.store.select(fromStore.getUserDisplayName);
-    // this.store.dispatch(new fromStore.LoadUser());
+    this.displayName$ = this.store.select(getUserDisplayName);
+    this.store.dispatch(UserApiActions.loadUser());
   }
 }

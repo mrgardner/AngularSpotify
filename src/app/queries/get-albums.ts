@@ -1,8 +1,8 @@
 import { gql } from 'apollo-angular';
 
 export const ALBUM_INFO = gql`
- query Albums($url: String!) {
-    albums(url: $url) {
+ query Albums($morePlaylists: String) {
+    albums(morePlaylists: $morePlaylists) {
       items {
         album {
           artists {

@@ -5,7 +5,15 @@ export interface PlaylistsState {
   loading: boolean,
   loaded: boolean,
   nextPlaylist: string,
-  error: boolean,
-  selectedPlaylist: string;
+  error: any,
+  selectedPlaylist: Playlist | {};
+  canLoadMore: boolean,
+  total: number;
+}
+
+export interface PlaylistsPayload {
+  nextPlaylist: string,
+  entities: { [id: number]: Playlist },
+  total: number,
   canLoadMore: boolean
 }

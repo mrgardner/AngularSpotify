@@ -4,7 +4,12 @@ export interface AlbumApolloResponse {
   };
   loading: boolean;
   networkStatus: number;
-  stale: boolean;
+}
+
+export interface DisplayNameApolloResponse {
+  data: {}
+  loading: boolean;
+  networkStatus: number;
 }
 
 export interface ApolloAlbumResult {

@@ -16,11 +16,3 @@ export const appServices: any[] = [
 ];
 
 export const spotifyInterceptor = SpotifyInterceptorService;
-
-export * from './apollo/apollo.service';
-export * from './auth/auth.service';
-export * from './route/route.service';
-export * from './spotify/spotify.service';
-export * from './spotify-interceptor/spotify-interceptor.service';
-export * from './spotify-playback/spotify-playback.service';
-export * from './util/util.service';

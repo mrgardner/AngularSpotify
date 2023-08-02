@@ -1,7 +1,4 @@
-import { UserEffects } from "./user.effect";
 import { PlaylistEffects } from "./playlist.effect";
+import { UserEffects } from "./user.effect";
 
-export const effects: any[] = [UserEffects, PlaylistEffects];
-
-export * from './user.effect';
-export * from './playlist.effect';
+export const effects: any[] = [PlaylistEffects, UserEffects];

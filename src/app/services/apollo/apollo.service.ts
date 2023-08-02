@@ -20,32 +20,27 @@ import { USER_DISPLAY_NAME } from '@app/queries/get-user';
 })
 export class ApolloService {
   // TODO: Fix types
-  private readonly spotifyApiBaseURI: string;
-  constructor(private apollo: Apollo) {
-    this.spotifyApiBaseURI = 'https://api.spotify.com/v1';
-  }
+  constructor(private apollo: Apollo) { }
 
   getUserDisplayName() {
     return this.apollo
       .watchQuery({
         query: USER_DISPLAY_NAME,
         fetchPolicy: 'cache-first',
-        variables: {
-          url: `${this.spotifyApiBaseURI}/me`
-        },
         errorPolicy: 'all'
       })
-      .valueChanges.pipe(map((result: any) => result.data.user));
+      .valueChanges.pipe(map((result: any) => {
+        return result.data.user.display_name;
+      }));
   }
 
   getPlaylists(morePlaylists?: string) {
-    const url = morePlaylists ? morePlaylists : this.spotifyApiBaseURI + '/me/playlists?limit=50';
     return this.apollo
       .watchQuery({
         query: PLAYLIST_NAME,
         fetchPolicy: 'cache-first',
         variables: {
-          url
+          morePlaylists
         },
         errorPolicy: 'all'
       })
@@ -53,13 +48,12 @@ export class ApolloService {
   }
 
   getPlaylist(playlistID: string) {
-    const url = `${this.spotifyApiBaseURI}/playlists/${playlistID}`;
     return this.apollo
       .watchQuery({
         query: PLAYLIST_INFO,
         fetchPolicy: 'cache-first',
         variables: {
-          url
+          playlistID
         },
         errorPolicy: 'all'
       })
@@ -68,14 +62,15 @@ export class ApolloService {
 
   getTracksFromPlaylist(playlistID: string, offset: number, limit: number) {
     const trackOffset = offset * limit;
-    const url = this.spotifyApiBaseURI + `/playlists/${playlistID}/tracks?offset=${trackOffset.toString()}&limit=${limit.toString()}`;
 
     return this.apollo
       .watchQuery({
         query: PLAYLIST_TRACKS,
         fetchPolicy: 'cache-first',
         variables: {
-          url
+          trackOffset,
+          playlistID,
+          limit
         },
         errorPolicy: 'all'
       })
@@ -83,14 +78,12 @@ export class ApolloService {
   }
 
   getAlbums(moreAlbums?: string): Observable<ApolloAlbumResult> {
-    const url = moreAlbums ? moreAlbums : this.spotifyApiBaseURI + `/me/albums?limit=50`;
-
     return this.apollo
       .watchQuery({
         query: ALBUM_INFO,
         fetchPolicy: 'cache-first',
         variables: {
-          url
+          moreAlbums
         },
         errorPolicy: 'all'
       })
@@ -98,14 +91,12 @@ export class ApolloService {
   }
 
   getFollowedArtists() {
-    const url = this.spotifyApiBaseURI + `/me/following?type=artist`;
+    // TODO: Revisit and Hook up
+    // const url = this.spotifyApiBaseURI + `/me/following?type=artist`;
     return this.apollo
       .watchQuery({
         query: FOLLOWED_ARTISTS,
         fetchPolicy: 'cache-first',
-        variables: {
-          url
-        },
         errorPolicy: 'all'
       })
       .valueChanges.pipe(map((result: any) => result.data.followedArtists));

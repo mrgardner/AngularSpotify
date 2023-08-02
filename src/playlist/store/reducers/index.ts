@@ -13,4 +13,3 @@ export const reducers: ActionReducerMap<DashboardState, Action> = {
 export const getPlaylistState = createFeatureSelector<DashboardState>(
   'playlist'
 );
-

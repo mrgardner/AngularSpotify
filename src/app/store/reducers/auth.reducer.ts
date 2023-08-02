@@ -26,10 +26,9 @@ export const authReducer = createReducer(
 
     return {
       ...state,
-      loggedIn: true,
       authToken,
       expiredDate,
-      error: null
+      loggedIn: true,
     }
   }),
   on(AuthApiActions.removeAuthToken, state => ({

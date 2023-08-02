@@ -1,8 +1,8 @@
 import { gql } from 'apollo-angular';
 
 export const PLAYLIST_NAME = gql`
- query Playlists($url: String!) {
-    playlists(url: $url) {
+ query Playlists($morePlaylists: String) {
+    playlists(morePlaylists: $morePlaylists) {
       total
       items {
         name
@@ -14,8 +14,8 @@ export const PLAYLIST_NAME = gql`
 `;
 
 export const PLAYLIST_INFO = gql`
- query Playlist($url: String!) {
-    playlist(url: $url) {
+ query Playlist($playlistID: String!) {
+    playlist(playlistID: $playlistID) {
       name
       id
       owner {
@@ -35,8 +35,8 @@ export const PLAYLIST_INFO = gql`
 `;
 
 export const PLAYLIST_TRACKS = gql`
-  query PlaylistTracks($url: String!) {
-    playlistTracks(url: $url) {
+  query PlaylistTracks($trackOffset: Int!, $playlistID: String!, $limit: Int!) {
+    playlistTracks(trackOffset: $trackOffset, playlistID: $playlistID, limit: $limit) {
       total
       limit
       items {

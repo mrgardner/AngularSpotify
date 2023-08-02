@@ -1,6 +1,6 @@
 export interface UserState {
   displayName: string;
-  error: boolean;
+  error: Error | null;
   loading: boolean;
   loaded: Boolean;
 };

@@ -1,11 +1,10 @@
-// import { createSelector } from "@ngrx/store";
+import { createSelector } from "@ngrx/store";
+import { UserState } from "../model/user.model";
+import { DashboardState, getDashboardState } from "../reducers";
 
-// import * as fromUser from '@dashboard/store/reducers/user.reducer';
-// import * as fromFeature from '../reducers';
 
+// user state
+export const getUserState: any = createSelector(getDashboardState, (state: DashboardState) => state.user);
 
-// // user state
-// export const getUserState: any = createSelector(fromFeature.getDashboardState, (state: fromFeature.DashboardState) => state.user);
-
-// export const getUserDisplayName = createSelector(getUserState, (state: fromUser.UserState) => state.displayName)
-// export const getUserError = createSelector(getUserState, (state: fromUser.UserState) => state.error);
+export const getUserDisplayName = createSelector(getUserState, (state: UserState) => state.displayName)
+export const getUserError = createSelector(getUserState, (state: UserState) => state.error);

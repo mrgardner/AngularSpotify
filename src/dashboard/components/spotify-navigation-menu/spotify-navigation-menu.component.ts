@@ -22,9 +22,10 @@ import { RouteService } from '@app/services/route/route.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 // import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
 import { UtilService } from '@app/services/util/util.service';
-// import { Store } from '@ngrx/store';
-// import * as fromRoot from '@app/store';
-// import * as fromStore from '@dashboard/store';
+import { Store } from '@ngrx/store';
+import { PlaylistsApiActions } from '@dashboard/store/actions/playlist.action';
+import { selectUrl } from '@app/store/selectors/router.selectors';
+import { getAllPlaylists, getCanLoadMore, getPlaylistsLoaded, getPlaylistsLoading, getSelectedPlaylist } from '@dashboard/store/selectors/playlists.selectors';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -38,7 +39,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public playlists$: Observable<Array<Playlist>>;
   public loading$: Observable<boolean>;
   public loaded$: Observable<boolean>;
-  public selectedPlaylist$: Observable<string>;
+  public selectedPlaylist$: Observable<Playlist | {}>;
   // private currentTrack: CurrentTrack;
   public playlistTotal$: Observable<number>;
   public nextPlaylist$: Observable<string>;
@@ -61,7 +62,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     public apolloService: ApolloService,
     private routeService: RouteService,
     private spotifyPlaybackService: SpotifyPlaybackService,
-    // private store: Store
+    private store: Store
   ) {
   }
 
@@ -93,13 +94,13 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
       }
     ];
     // TODO: Fix these selectors
-    // this.selectedUrl$ = this.store.select(fromRoot.getRouterURL);
-    // this.playlists$ = this.store.select(fromStore.getAllPlaylists);
-    // this.loaded$ = this.store.select(fromStore.getPlaylistsLoaded);
-    // this.loading$ = this.store.select(fromStore.getPlaylistsLoading);
-    // // this.selectedPlaylist$ = this.store.select(fromStore.getSelectedPlaylist);
-    // this.canLoadMore$ = this.store.select(fromStore.getCanLoadMore);
-    // this.store.dispatch(new fromStore.LoadPlaylists());
+    this.selectedUrl$ = this.store.select(selectUrl);
+    this.playlists$ = this.store.select(getAllPlaylists);
+    this.loaded$ = this.store.select(getPlaylistsLoaded);
+    this.loading$ = this.store.select(getPlaylistsLoading);
+    this.selectedPlaylist$ = this.store.select(getSelectedPlaylist);
+    this.canLoadMore$ = this.store.select(getCanLoadMore);
+    this.store.dispatch(PlaylistsApiActions.loadPlaylists());
     // TODO: Not used
     // this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
     this.routerSubscription = this.router.events
@@ -127,8 +128,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     // TODO: fix selected playlist logic
     // this.playlists.forEach(tt => tt['selected'] = false);
     // playlist['selected'] = true;
-    // TODO: FIX BELOW
-    // this.store.dispatch(new fromStore.UpdateSelectedPlaylist(playlist.selectedUrl));
+    this.store.dispatch(PlaylistsApiActions.updateSelectedPlaylist({ payload: playlist }));
     const playlistId = encodeURI(playlist.id);
     this.router.navigate(['dashboard', 'playlist', playlistId]);
   }
@@ -142,25 +142,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   }
 
   loadMorePlaylists(): void {
-    // TODO: FIX BELOW
-    // this.store.dispatch(new fromStore.LoadPlaylistsByURL);
-    // const owner = String(this.nextPlaylist).split('users/')[1].split('/playlists')[0];
-    // const baseURI = `https://api.spotify.com/v1/users/${owner}/playlists?offset=${playlistLength}&limit=50`;
-    // this.loadMorePlaylist = true;
-    // this.apolloService.getPlaylists(baseURI).pipe(first())
-    //   .subscribe((data: SpotifyPlaylistRespose) => {
-    // data.items.forEach((playlist: Playlist) => {
-    //   if (playlist.name === this.selectedPlaylist) {
-    //     playlist.selected = true;
-    //   } else {
-    //     playlist.selected = false;
-    //   }
-    //   playlist.selectedUrl = playlist.name.toLowerCase();
-    // });
-    // this.loadMorePlaylist = false;
-    // this.playlists = this.playlists.concat(data.items);
-    // this.playlistTotal = data.total;
-    // this.nextPlaylist = data.next;
-    // });
+    this.store.dispatch(PlaylistsApiActions.loadPlaylistsByURL());
   }
 }
