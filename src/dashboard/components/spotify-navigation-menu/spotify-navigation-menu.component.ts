@@ -106,7 +106,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationStart))
       .subscribe((event: any) => {
-        console.log(event)
         this.selectedRoute = this.routeService.parseUrl(event.url);
       });
 

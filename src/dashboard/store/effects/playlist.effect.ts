@@ -55,6 +55,7 @@ export class PlaylistEffects {
     ofType(PlaylistsApiActions.loadPlaylistsByURL),
     switchMap(() => this.store.select(getNextPlaylistsAndEntities)),
     take(1),
+    // TODO: ADD TYPE
     switchMap((res) => {
       return this.apolloService.getPlaylists(String(res[0])).pipe(
         map((response: SpotifyPlaylistRespose) => {

@@ -14,6 +14,9 @@ import { AngularModule } from '@app/modules/angular.module';
 import { StoreModule } from '@ngrx/store';
 import { collectionComponents } from './components';
 import { collectionPipes } from './pipes';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers } from './store/reducers';
+import { effects } from './store/effects';
 
 const ROUTES: Routes = [
   {
@@ -37,7 +40,8 @@ const ROUTES: Routes = [
     AngularMaterialModule,
     AngularModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('collections', {})
+    StoreModule.forFeature('collections', reducers),
+    EffectsModule.forFeature(effects)
   ],
   exports: [
     ...collectionComponents,

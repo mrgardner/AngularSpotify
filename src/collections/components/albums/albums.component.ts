@@ -1,65 +1,37 @@
 // Common
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { concat, of, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 
 // Interfaces
-import { AlbumApollo, ApolloAlbumResult } from '@app/interfaces/apollo/apollo.inerface';
+import { AlbumApollo } from '@app/interfaces/apollo/apollo.inerface';
 
 // Services
-import { ApolloService } from '@app/services/apollo/apollo.service';
 import { UtilService } from '@app/services/util/util.service';
+import { Store } from '@ngrx/store';
+import { AlbumApiActions } from '@collections/store/actions/album.action';
+import { Observable } from 'rxjs';
+import { selectAlbums, selectCanLoadMore, selectLoaded, selectLoading } from '@collections/store/selectors/album.selectors';
 
 @Component({
   selector: 'app-albums',
   templateUrl: './albums.component.html',
   styleUrls: ['./albums.component.scss']
 })
-export class AlbumsComponent implements OnInit, OnDestroy {
-  public loading: boolean;
-  public albumsLoaded: boolean;
-  public albums: AlbumApollo[] = [];
+export class AlbumsComponent implements OnInit {
+  public loading$: Observable<boolean>;
+  public canLoadMore$: Observable<boolean>;
+  public albumsLoaded$: Observable<boolean>;
+  public albums$: Observable<AlbumApollo[]>;
   public isSearchBoxShowing: boolean;
   public name: string;
-  public albumsSubscription: Subscription;
 
-  constructor(private apolloService: ApolloService, public utilService: UtilService) { }
+  constructor(private store: Store, public utilService: UtilService) { }
 
   ngOnInit(): void {
-    let numberOfSavedAlbums = 0;
-    this.albumsSubscription = this.apolloService.getAlbums()
-      .pipe(
-        switchMap((savedAlbums: ApolloAlbumResult) => {
-          this.loading = true;
-          this.albumsLoaded = false;
-          this.albums = [];
-          const tempList = [];
-          numberOfSavedAlbums = savedAlbums.total;
-          const numberOfTimesToLoop = Math.ceil(numberOfSavedAlbums / 50);
-          if (numberOfSavedAlbums > 0) {
-            for (let i = 0; i < numberOfTimesToLoop; i++) {
-              const baseURI = `https://api.spotify.com/v1/me/albums?offset=${i * 50}&limit=50`;
-              tempList.push(this.apolloService.getAlbums(baseURI));
-            }
-            return concat(...tempList);
-          } else {
-            this.loading = false;
-            this.albumsLoaded = true;
-            return of();
-          }
-        })
-      )
-      .subscribe((data: any) => {
-        this.albums = this.albums.concat(data.items);
-        if (!data.next) {
-          this.loading = false;
-          this.albumsLoaded = true;
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.albumsSubscription.unsubscribe();
+    this.store.dispatch(AlbumApiActions.album());
+    this.albumsLoaded$ = this.store.select(selectLoaded);
+    this.loading$ = this.store.select(selectLoading);
+    this.albums$ = this.store.select(selectAlbums);
+    this.canLoadMore$ = this.store.select(selectCanLoadMore);
   }
 
   showSearchBox(): void {
@@ -69,6 +41,10 @@ export class AlbumsComponent implements OnInit, OnDestroy {
   hideSearchBox(): void {
     this.name = '';
     this.isSearchBoxShowing = false;
+  }
+
+  loadMoreAlbums() {
+    this.store.dispatch(AlbumApiActions.album())
   }
 
   onLoseFocus(): void {

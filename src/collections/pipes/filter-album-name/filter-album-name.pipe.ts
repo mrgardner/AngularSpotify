@@ -12,7 +12,7 @@ export class FilterAlbumNamePipe implements PipeTransform {
   transform(albums: Array<AlbumApollo>, args?: string): any {
     if (args) {
       return albums.filter((album: AlbumApollo) => {
-        return album.name.toLowerCase().includes(args.toLowerCase());
+        return album.album.name.toLowerCase().includes(args.toLowerCase());
       });
     } else {
       return albums;

@@ -13,21 +13,30 @@ export interface DisplayNameApolloResponse {
 }
 
 export interface ApolloAlbumResult {
-  items: [AlbumApollo];
+  items: AlbumApollo[];
   total: number;
   next: string;
 }
 
 export interface AlbumApollo {
-  artists: [Artist];
-  images: [Image];
-  name: string;
+  album: {
+    artists: Artist[];
+    images: Image[];
+    name: string;
+  }
 }
 
 interface Artist {
   name: string;
+  external_urls: string;
+  id: string
+  type: string;
+  uri: string;
+  images: Image[]
 }
 
 interface Image {
   url: string;
+  height: number;
+  width: number;
 }
