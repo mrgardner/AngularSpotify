@@ -6,10 +6,12 @@ export const initialState: AlbumState = {
   albums: [],
   loading: false,
   loaded: false,
-  next: '',
-  total: 0,
-  canLoadMore: false,
-  error: null
+  error: null,
+  moreAlbums: {
+    next: '',
+    total: 0,
+    canLoadMore: false,
+  }
 };
 
 export const albumReducer = createReducer(
@@ -22,10 +24,8 @@ export const albumReducer = createReducer(
     ...state,
     loaded: true,
     loading: false,
-    next: payload.next,
     albums: payload.albums,
-    canLoadMore: payload.canLoadMore,
-    total: payload.total
+    moreAlbums: payload.moreAlbums
   })),
   on(AlbumApiActions.albumFail, (state, { payload }) => ({
     ...state,

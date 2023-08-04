@@ -25,7 +25,7 @@ import { UtilService } from '@app/services/util/util.service';
 import { Store } from '@ngrx/store';
 import { PlaylistsApiActions } from '@dashboard/store/actions/playlist.action';
 import { selectUrl } from '@app/store/selectors/router.selectors';
-import { getAllPlaylists, getCanLoadMore, getPlaylistsLoaded, getPlaylistsLoading, getSelectedPlaylist } from '@dashboard/store/selectors/playlists.selectors';
+import { selectPlaylists, selectCanLoadMore, selectPlaylistsLoaded, selectPlaylistsLoading, selectPlaylist } from '@dashboard/store/selectors/playlists.selectors';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -95,11 +95,11 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     ];
     // TODO: Fix these selectors
     this.selectedUrl$ = this.store.select(selectUrl);
-    this.playlists$ = this.store.select(getAllPlaylists);
-    this.loaded$ = this.store.select(getPlaylistsLoaded);
-    this.loading$ = this.store.select(getPlaylistsLoading);
-    this.selectedPlaylist$ = this.store.select(getSelectedPlaylist);
-    this.canLoadMore$ = this.store.select(getCanLoadMore);
+    this.playlists$ = this.store.select(selectPlaylists);
+    this.loaded$ = this.store.select(selectPlaylistsLoaded);
+    this.loading$ = this.store.select(selectPlaylistsLoading);
+    this.selectedPlaylist$ = this.store.select(selectPlaylist);
+    this.canLoadMore$ = this.store.select(selectCanLoadMore);
     this.store.dispatch(PlaylistsApiActions.loadPlaylists());
     // TODO: Not used
     // this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
@@ -141,6 +141,6 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   }
 
   loadMorePlaylists(): void {
-    this.store.dispatch(PlaylistsApiActions.loadPlaylistsByURL());
+    this.store.dispatch(PlaylistsApiActions.loadPlaylists());
   }
 }

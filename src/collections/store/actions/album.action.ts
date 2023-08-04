@@ -7,6 +7,6 @@ export const AlbumApiActions = createActionGroup({
   events: {
     [ALBUM_TYPES.ALBUM]: emptyProps(),
     [ALBUM_TYPES.ALBUM_SUCCESS]: props<{ payload: AlbumPayload }>(),
-    [ALBUM_TYPES.ALBUM_FAIL]: props<{ payload: AlbumErrorPayload }>(),
+    [ALBUM_TYPES.ALBUM_FAIL]: props<{ payload: AlbumErrorPayload }>()
   }
 });

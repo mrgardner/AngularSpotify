@@ -1,8 +1,8 @@
 import { gql } from 'apollo-angular';
 
 export const ALBUM_INFO = gql`
- query Albums($morePlaylists: String) {
-    albums(morePlaylists: $morePlaylists) {
+ query Albums($offset: Int!) {
+    albums(offset: $offset) {
       items {
         album {
           artists {
@@ -14,7 +14,8 @@ export const ALBUM_INFO = gql`
           name
         }
       }
-      total
+      total,
+      next
     }
   }
 `;

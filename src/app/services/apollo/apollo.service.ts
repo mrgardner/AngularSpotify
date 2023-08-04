@@ -34,13 +34,13 @@ export class ApolloService {
       }));
   }
 
-  getPlaylists(morePlaylists?: string) {
+  getPlaylists(offset: number) {
     return this.apollo
       .watchQuery({
         query: PLAYLIST_NAME,
         fetchPolicy: 'cache-first',
         variables: {
-          morePlaylists
+          offset
         },
         errorPolicy: 'all'
       })
@@ -77,13 +77,13 @@ export class ApolloService {
       .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
   }
 
-  getAlbums(moreAlbums?: string): Observable<ApolloAlbumResult> {
+  getAlbums(offset: number): Observable<ApolloAlbumResult> {
     return this.apollo
       .watchQuery({
         query: ALBUM_INFO,
         fetchPolicy: 'cache-first',
         variables: {
-          moreAlbums
+          offset
         },
         errorPolicy: 'all'
       })

@@ -3,10 +3,10 @@ import { createReducer, on } from '@ngrx/store';
 import { PlaylistsApiActions } from '../actions/playlist.action';
 
 export const initialState: PlaylistsState = {
-  entities: {},
+  playlists: [],
   loading: false,
   loaded: false,
-  nextPlaylist: '',
+  next: '',
   error: null,
   selectedPlaylist: {},
   canLoadMore: true,
@@ -22,40 +22,18 @@ export const playlistsReducer = createReducer(
     };
   }),
   on(PlaylistsApiActions.loadPlaylistsSuccess, (state, { payload }) => {
-    const { entities, nextPlaylist, canLoadMore } = payload
+    const { playlists, next, canLoadMore } = payload
     return {
       ...state,
       error: false,
       loading: false,
       loaded: true,
-      nextPlaylist,
+      next,
       canLoadMore,
-      entities
+      playlists
     }
   }),
   on(PlaylistsApiActions.loadPlaylistsFail, (state, { payload }) => ({
-    ...state,
-    error: payload,
-    loaded: false,
-    loading: false
-  })),
-  on(PlaylistsApiActions.loadPlaylistsByURL, state => ({
-    ...state,
-    loading: true
-  })),
-  on(PlaylistsApiActions.loadPlaylistsByURLSuccess, (state, { payload }) => {
-    const { nextPlaylist, entities, canLoadMore } = payload
-    return {
-      ...state,
-      error: false,
-      loading: false,
-      loaded: true,
-      nextPlaylist,
-      canLoadMore,
-      entities
-    }
-  }),
-  on(PlaylistsApiActions.loadPlaylistsByURLFail, (state, { payload }) => ({
     ...state,
     error: payload,
     loaded: false,

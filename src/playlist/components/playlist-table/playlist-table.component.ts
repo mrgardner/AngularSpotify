@@ -118,6 +118,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
       if (urlSegment.length === 1) {
         this.dataSource.loadTracks(urlSegment[0].path);
         this.endOfChain = false;
+        // TODO: Break this logic into playlist.effect.ts
         return this.apolloService.getPlaylist(urlSegment[0].path);
       } else {
         this.endOfChain = true;

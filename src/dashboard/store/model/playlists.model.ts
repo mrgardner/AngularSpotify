@@ -1,10 +1,10 @@
 import { Playlist } from "@app/interfaces/playlist/playlist.interface";
 
 export interface PlaylistsState {
-  entities: { [id: number]: Playlist },
+  playlists: Playlist[],
   loading: boolean,
   loaded: boolean,
-  nextPlaylist: string,
+  next: string,
   error: any,
   selectedPlaylist: Playlist | {};
   canLoadMore: boolean,
@@ -12,8 +12,8 @@ export interface PlaylistsState {
 }
 
 export interface PlaylistsPayload {
-  nextPlaylist: string,
-  entities: { [id: number]: Playlist },
+  next: string,
+  playlists: Playlist[],
   total: number,
   canLoadMore: boolean
 }

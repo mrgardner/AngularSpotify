@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import { UserState } from "../model/user.model";
-import { DashboardState, getDashboardState } from "../reducers";
-
+import { DashboardState } from "../model";
+import { getDashboardState } from ".";
 
 // user state
 export const getUserState: any = createSelector(getDashboardState, (state: DashboardState) => state.user);

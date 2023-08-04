@@ -1,37 +1,40 @@
 import { Injectable } from "@angular/core";
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { of } from "rxjs";
-import { catchError, map, switchMap, take } from "rxjs/operators";
+import { catchError, map, switchMap, withLatestFrom } from "rxjs/operators";
 import { AlbumApiActions } from "../actions/album.action";
 import { ApolloService } from "@app/services/apollo/apollo.service";
 import { Store } from "@ngrx/store";
-import { selectNextAlbumAndPreviousAlbums } from "../selectors/album.selectors";
+import { selectAlbums } from "../selectors/album.selectors";
+// import { AlbumState } from "../model/album.model";
 
 @Injectable()
 export class AlbumEffects {
   constructor(private actions$: Actions, private apolloService: ApolloService, private store: Store) { }
 
-  // TODO: Rethink logic and remove take, then make same fix for playlist.effect.ts
   album$ = createEffect(() => this.actions$.pipe(
     ofType(AlbumApiActions.album),
-    switchMap(() => this.store.select(selectNextAlbumAndPreviousAlbums)),
-    take(2),
+    withLatestFrom(this.store.select(selectAlbums)),
     // TODO: ADD TYPE
-    switchMap((res) => {
-      console.log(res)
-      return this.apolloService.getAlbums(String(res[0])).pipe(
+    switchMap((res: any) => {
+      const albums = res[1];
+      return this.apolloService.getAlbums(albums.length).pipe(
         map((response: any) => {
-          const { items, total, next } = response;
+          const updateAlbums = albums.concat(response.items);
+          const next = response.next !== null ? response.next.split('v1/')[1] : '';
+
           return AlbumApiActions.albumSuccess({
             payload: {
-              albums: Object(res[1]).concat(items),
-              total,
-              next,
-              canLoadMore: total > items.length
+              albums: updateAlbums,
+              moreAlbums: {
+                total: response.total,
+                next,
+                canLoadMore: response.total > updateAlbums.length
+              }
             }
           })
         }),
-        catchError(error => of(AlbumApiActions.albumFail(error)))
+        catchError(error => of(AlbumApiActions.albumFail({ payload: error })))
       );
     })
   ));

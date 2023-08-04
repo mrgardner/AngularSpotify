@@ -1,8 +1,8 @@
 import { gql } from 'apollo-angular';
 
 export const PLAYLIST_NAME = gql`
- query Playlists($morePlaylists: String) {
-    playlists(morePlaylists: $morePlaylists) {
+ query Playlists($offset: Int!) {
+    playlists(offset: $offset) {
       total
       items {
         name

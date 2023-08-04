@@ -1,7 +1,7 @@
 // Common
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UserApiActions } from '@dashboard/store/actions/user.action';
-import { DashboardState } from '@dashboard/store/reducers';
+import { DashboardState } from '@dashboard/store/model';
 import { getUserDisplayName } from '@dashboard/store/selectors/user.selectors';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
