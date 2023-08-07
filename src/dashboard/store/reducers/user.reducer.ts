@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { UserState } from '../model/user.model';
 import { UserApiActions } from '../actions/user.action';
+import { UserState } from '../model/user.model';
 
 export const initialState: UserState = {
   displayName: 'The Man',

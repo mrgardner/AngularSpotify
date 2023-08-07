@@ -1,7 +1,4 @@
-// Common
 import { Pipe, PipeTransform } from '@angular/core';
-
-// Interfaces
 import { AlbumApollo } from '@app/interfaces/apollo/apollo.inerface';
 
 @Pipe({

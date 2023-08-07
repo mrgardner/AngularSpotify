@@ -1,15 +1,10 @@
 
-// Common
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
-
-// Services
+import { TestBed } from '@angular/core/testing';
 import { SpotifyInterceptorService } from '@app/services/spotify-interceptor/spotify-interceptor.service';
 import { UtilService } from '@app/services/util/util.service';
-
-// Testing
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
 
 describe('SpotifyInterceptorService', () => {
   let spotifyInterceptorService: SpotifyInterceptorService;
@@ -38,12 +33,13 @@ describe('SpotifyInterceptorService', () => {
     utilService = TestBed.inject(UtilService);
   });
 
-  afterEach(() => {
-    spotifyInterceptorService = null;
-    httpMock = null;
-    http = null;
-    utilService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   spotifyInterceptorService = null;
+  //   httpMock = null;
+  //   http = null;
+  //   utilService = null;
+  // });
 
   it('should be created', () => {
     expect(spotifyInterceptorService).toBeTruthy();

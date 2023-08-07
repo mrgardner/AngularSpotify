@@ -3,8 +3,7 @@ export interface AuthState {
   error: any;
   authToken: string;
   expiredDate: string;
-};
-
+}
 
 export interface AuthPayload {
   authToken: string;

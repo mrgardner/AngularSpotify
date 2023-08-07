@@ -1,6 +1,6 @@
-import { AlbumState } from '../model/album.model';
 import { createReducer, on } from '@ngrx/store';
 import { AlbumApiActions } from '../actions/album.action';
+import { AlbumState } from '../model/album.model';
 
 export const initialState: AlbumState = {
   albums: [],

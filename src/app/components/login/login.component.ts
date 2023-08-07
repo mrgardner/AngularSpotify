@@ -1,6 +1,4 @@
-// Common
 import { Component } from '@angular/core';
-
 import { environment } from '@environments/environment';
 
 @Component({
@@ -9,8 +7,6 @@ import { environment } from '@environments/environment';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor() { }
-
   login(): void {
     const authState = this.generateRandomString(16);
     const query =

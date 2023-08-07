@@ -1,29 +1,22 @@
-// Angular Material
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatTable } from '@angular/material/table';
-
-// Common
 import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { of, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-
-// Interfaces
 import { DragSource, DropData } from '@app/interfaces/drag-and-drop/drag-and-drop.interface';
 import { Playlist } from '@app/interfaces/playlist/playlist.interface';
-import { SortedTrack } from '@app/interfaces/track/track.interface';
 import { SpotifySongResponse } from '@app/interfaces/song/song.interface';
-
-// Services
+import { SortedTrack } from '@app/interfaces/track/track.interface';
 import { ApolloService } from '@app/services/apollo/apollo.service';
-import { PlaylistDataSourceService } from 'src/playlist/services/playlist-data-source/playlist-data-source.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
-import { TrackService } from '@tracks/services/track/track.service';
 import { UtilService } from '@app/services/util/util.service';
+import { TrackService } from '@tracks/services/track/track.service';
+import { Subscription, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { PlaylistDataSourceService } from 'src/playlist/services/playlist-data-source/playlist-data-source.service';
 
 @Component({
   selector: 'app-playlist-table',
@@ -212,7 +205,8 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
     if (this.state.position > 0 && song.title === this.state.track_window.current_track.name) {
       this.spotifyPlaybackService.playSong();
     } else {
-      this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => { });
+      // TODO: add logic or remove if not needed
+      // this.spotifyService.playSpotifyTrack(this.tracks, song).subscribe(() => { });
     }
   }
 

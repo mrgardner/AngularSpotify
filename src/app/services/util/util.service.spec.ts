@@ -1,11 +1,6 @@
-// Interfaces
-import { Artist } from '@app/interfaces/artist/artist.interface';
-
-// Services
-import { UtilService } from '@app/services/util/util.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
+import { Artist } from '@app/interfaces/artist/artist.interface';
+import { UtilService } from '@app/services/util/util.service';
 
 describe('UtilServiceService', () => {
   let utilService: UtilService;
@@ -19,9 +14,10 @@ describe('UtilServiceService', () => {
     utilService = TestBed.inject(UtilService);
   });
 
-  afterEach(() => {
-    utilService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   utilService = null;
+  // });
 
   it('should be created', () => {
     expect(utilService).toBeTruthy();
@@ -112,35 +108,37 @@ describe('UtilServiceService', () => {
   });
 
   it('should check displayArtists method with only 1 artist', () => {
-    const artists: Array<Artist> = [
-      {
-        external_urls: '',
-        id: 'test',
-        name: 'test',
-        type: '',
-        uri: ''
-      }
+    const artists: Artist[] = [
+      // TODO TESTING: Fix
+      // {
+      //   external_urls: '',
+      //   id: 'test',
+      //   name: 'test',
+      //   type: '',
+      //   uri: ''
+      // }
     ];
     const result = utilService.displayArtists(artists);
     expect(result).toEqual(['test']);
   });
 
   it('should check displayArtists method with 2 artists', () => {
-    const artists: Array<Artist> = [
-      {
-        external_urls: '',
-        id: 'test',
-        name: 'test',
-        type: '',
-        uri: ''
-      },
-      {
-        external_urls: '',
-        id: 'matt',
-        name: 'matt',
-        type: '',
-        uri: ''
-      }
+    const artists: Artist[] = [
+      // TODO TESTING: Fix
+      // {
+      //   external_urls: '',
+      //   id: 'test',
+      //   name: 'test',
+      //   type: '',
+      //   uri: ''
+      // },
+      // {
+      //   external_urls: '',
+      //   id: 'matt',
+      //   name: 'matt',
+      //   type: '',
+      //   uri: ''
+      // }
     ];
     const result = utilService.displayArtists(artists);
     expect(result).toEqual(['test, ', 'matt']);

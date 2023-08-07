@@ -1,9 +1,5 @@
-// Components
-import { CollectionComponent } from '@components/collection/collection.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { CollectionComponent } from './collection.component';
 
 describe('LibraryComponent', () => {
   let component: CollectionComponent;

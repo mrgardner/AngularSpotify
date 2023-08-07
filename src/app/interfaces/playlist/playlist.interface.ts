@@ -1,6 +1,5 @@
-// Interfaces
-import { ExternalUrls, Owner } from '@app/interfaces/misc/misc.interface';
 import { Image } from '@app/interfaces/image/image.interface';
+import { ExternalUrls, Owner } from '@app/interfaces/misc/misc.interface';
 import { Tracks } from '@app/interfaces/track/track.interface';
 
 export interface Playlist {

@@ -1,17 +1,10 @@
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { Routes, Router } from '@angular/router';
-
-// Components
+import { TestBed } from '@angular/core/testing';
+import { Router, Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { LoginComponent } from '@app/components/login/login.component';
-
-// Services
 import { AuthService } from '@app/services/auth/auth.service';
 import { UtilService } from '@app/services/util/util.service';
-
-// Testing
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -37,14 +30,14 @@ describe('AuthService', () => {
     utilService = TestBed.inject(UtilService);
   });
 
-  afterEach(() => {
-    authService = null;
-    utilService = null;
-    router = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   authService = null;
+  //   utilService = null;
+  //   router = null;
+  // });
 
   it('should create auth service', () => {
     expect(authService).toBeTruthy();
   });
-
 });

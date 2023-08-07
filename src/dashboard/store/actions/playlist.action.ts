@@ -1,7 +1,7 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { Playlist } from '@app/interfaces/playlist/playlist.interface';
 import { PLAYLISTS_TYPES } from '@dashboard/store/actions/actions.constant';
 import { PlaylistsPayload, PlaylistsState } from '@dashboard/store/model/playlists.model';
-import { Playlist } from '@app/interfaces/playlist/playlist.interface';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 
 export const PlaylistsApiActions = createActionGroup({

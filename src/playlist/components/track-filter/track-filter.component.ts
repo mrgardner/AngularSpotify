@@ -1,11 +1,8 @@
-// Common
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-
-// Services
 import { TrackService } from '@tracks/services/track/track.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-track-filter',

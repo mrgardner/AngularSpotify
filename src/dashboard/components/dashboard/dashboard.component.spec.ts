@@ -1,8 +1,5 @@
-// Components
-import { DashboardComponent } from '@dashboard/components/dashboard/dashboard.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { DashboardComponent } from '@dashboard/components/dashboard/dashboard.component';
 
 describe('HomeComponent', () => {
   let component: DashboardComponent;

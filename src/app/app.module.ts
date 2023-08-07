@@ -1,47 +1,26 @@
-// Common
+import { HTTP_INTERCEPTORS, HttpHeaders } from '@angular/common/http';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { NgModule, isDevMode } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-// Components
+import { ApolloLink, InMemoryCache } from '@apollo/client/core';
+import { appServices, spotifyInterceptor } from '@app/services';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { appComponents } from './components';
+import { AppComponent } from './components/app/app.component';
 import { LoginCallbackComponent } from './components/login-callback/login-callback.component';
 import { LoginComponent } from './components/login/login.component';
-import { AppComponent } from './components/app/app.component';
-import { appComponents } from './components';
-
-// Guard
 import { AuthGuard } from './guards/auth/auth.guard';
-
-// Modules
 import { AngularMaterialModule } from './modules/angular-material.module';
-
-// Environments
-import { environment } from 'environments/environment';
-
-// NgRx
-import { MetaReducer, StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-
-// NgRx Dev
-import { storeFreeze } from 'ngrx-store-freeze';
-
-// Services
-import { appServices, spotifyInterceptor } from '@app/services';
 import { AngularModule } from './modules/angular.module';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { reducers } from './store/reducers';
 import { effects } from './store/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { ApolloModule } from 'apollo-angular';
-import { HttpHeaders } from "@angular/common/http";
-import { APOLLO_OPTIONS } from "apollo-angular";
-import { HttpLink } from 'apollo-angular/http';
-import { ApolloLink, InMemoryCache } from '@apollo/client/core';
+import { reducers } from './store/reducers';
 
-export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
 export const ROUTES: Routes = [
   {
     path: 'callback',

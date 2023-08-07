@@ -1,18 +1,11 @@
-// Common
 import { HttpClientModule } from '@angular/common/http';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Routes } from '@angular/router';
-
-// Components
-import { HeaderComponent } from '@dashboard/components/header/header.component';
+import { RouterTestingModule } from '@angular/router/testing';
 import { LoginComponent } from '@app/components/login/login.component';
-
-// Services
 import { AuthService } from '@app/services/auth/auth.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-
-// Testing
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { HeaderComponent } from '@dashboard/components/header/header.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -43,10 +36,11 @@ describe('HeaderComponent', () => {
     spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
-  afterEach(() => {
-    authService = null;
-    spotifyPlaybackService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   authService = null;
+  //   spotifyPlaybackService = null;
+  // });
 
   it('should create header component', () => {
     expect(component).toBeTruthy();

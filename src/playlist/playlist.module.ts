@@ -1,16 +1,14 @@
-// Common
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth/auth.guard';
 import { AngularMaterialModule } from '@app/modules/angular-material.module';
+import { AngularModule } from '@app/modules/angular.module';
 import { StoreModule } from '@ngrx/store';
 import { playlistComponents } from './components';
-
 import { PlaylistTableComponent } from './components/playlist-table/playlist-table.component';
 import { playlistPipes } from './pipes';
 import { playlistServices } from './services';
 import { reducers } from './store/reducers';
-import { AngularModule } from '@app/modules/angular.module';
 
 const ROUTES: Routes = [
   {

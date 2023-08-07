@@ -1,4 +1,3 @@
-// Pipes
 import { FilterAlbumNamePipe } from '@collections/pipes/filter-album-name/filter-album-name.pipe';
 
 describe('FilterAlbumNamePipe', () => {
@@ -7,6 +6,7 @@ describe('FilterAlbumNamePipe', () => {
     expect(pipe).toBeTruthy();
   });
 
+  // TODO TESTING: Fix
   it('check transform method', () => {
     // const pipe = new FilterAlbumNamePipe();
     // const albums = pipe.transform([

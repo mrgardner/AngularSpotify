@@ -1,7 +1,4 @@
-// Common
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-
-// Services
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 import { AuthApiActions } from '@app/store/actions/auth.action';
 import { getLoggedIn } from '@app/store/selectors/auth.selectors';

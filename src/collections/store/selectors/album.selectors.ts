@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
-import { AlbumState, MoreAlbums } from "../model/album.model";
-import { CollectionsState } from "../model";
 import { getCollectionsState } from ".";
+import { CollectionsState } from "../model";
+import { AlbumState, MoreAlbums } from "../model/album.model";
 
 export const getAlbumState = createSelector(getCollectionsState, (state: CollectionsState) => state.albums)
 

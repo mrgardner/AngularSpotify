@@ -1,17 +1,9 @@
-// Common
 import { HttpClientModule } from '@angular/common/http';
-
-import { Routes } from '@angular/router';
-
-// Components
-import { LoginComponent } from '@app/components/login/login.component';
-
-// Services
-import { AuthService } from '@app/services/auth/auth.service';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { LoginComponent } from '@app/components/login/login.component';
+import { AuthService } from '@app/services/auth/auth.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -40,9 +32,10 @@ describe('LoginComponent', () => {
     authService = TestBed.inject(AuthService);
   });
 
-  afterEach(() => {
-    authService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   authService = null;
+  // });
 
   it('should create login component', () => {
     expect(component).toBeTruthy();

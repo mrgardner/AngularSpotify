@@ -1,18 +1,8 @@
-// Apollo
-import { Apollo } from 'apollo-angular';
-
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { of } from 'rxjs';
-
-// Components
-import { DisplayUserComponent } from '@dashboard/components/display-user/display-user.component';
-
-// Services
-import { ApolloService } from '@app/services/apollo/apollo.service';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ApolloService } from '@app/services/apollo/apollo.service';
+import { DisplayUserComponent } from '@dashboard/components/display-user/display-user.component';
+import { Apollo } from 'apollo-angular';
 
 describe('DisplayUserComponent', () => {
   let component: DisplayUserComponent;
@@ -40,9 +30,10 @@ describe('DisplayUserComponent', () => {
     apolloService = TestBed.inject(ApolloService);
   });
 
-  afterEach(() => {
-    apolloService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   apolloService = null;
+  // });
 
   it('should create display user component', () => {
     expect(component).toBeTruthy();

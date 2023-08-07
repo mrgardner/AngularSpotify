@@ -2,7 +2,6 @@ import { createActionGroup, props } from '@ngrx/store';
 import { PLAYLIST_TYPES } from '@playlist/store/actions/actions.constant';
 import { PlaylistsState } from '../model/playlist.model';
 
-
 export const PlaylistApiActions = createActionGroup({
   source: 'Playlist API',
   events: {

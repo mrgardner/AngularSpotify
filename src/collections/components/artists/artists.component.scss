@@ -1,4 +1,4 @@
-.albumCover {
+.artistCover {
   width: 200px;
   border-radius: 50%;
   height: 200px;
@@ -9,7 +9,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
-.albumName {
+.artistName {
   // text-align: center;
   margin-top: 0.5rem;
   color: white;

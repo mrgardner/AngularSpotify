@@ -1,11 +1,8 @@
-// Common
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-
-// Interfaces
 import { SortedTrack } from '@app/interfaces/track/track.interface';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export interface PlaylistDataBody {
   owner: {
@@ -60,7 +57,7 @@ export class SpotifyService {
     return this._http.get(this.spotifyApiBaseURI + `/playlists/${id}`);
   }
 
-  shuffleTracks(tracks: Array<SortedTrack>): Array<Object> {
+  shuffleTracks(tracks: Array<SortedTrack>): Array<any> {
     const array = tracks;
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

@@ -1,7 +1,4 @@
-// Common
 import { Component } from '@angular/core';
-
-// Services
 import { AuthService } from '@app/services/auth/auth.service';
 
 @Component({

@@ -3,7 +3,7 @@
       <div *ngIf="currentTrack" class="track-image-container">
           <div class="test3">
             <div class="test">
-              <img class="track-image" [src]="currentTrack.album.images[0].url">
+              <img class="track-image" alt="track image" [src]="currentTrack.album.images[0].url">
             </div>
           </div>
           <div class="test4">
@@ -50,7 +50,7 @@
           <i class="material-icons show-cursor">
             playlist_play
           </i>
-          <i [className]="currentDevice && appDevice !== currentDeviceId ? 'material-icons different-device show-cursor' : 'material-icons show-cursor'" (click)="openDeviceModal()">
+          <i [className]="currentDevice && appDevice !== currentDeviceId ? 'material-icons different-device show-cursor' : 'material-icons show-cursor'" (click)="openDeviceModal()" (keyup)="openDeviceModal()">
             stay_current_portrait
           </i>
           <ng-container *ngIf="volume > 0; then showSound; else showMute"></ng-container>

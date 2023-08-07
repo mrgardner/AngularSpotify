@@ -1,16 +1,9 @@
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-
-// Components
-import { TrackFilterComponent } from '@playlists/components/track-filter/track-filter.component';
-
-// Services
-import { TrackService } from '@tracks/services/track/track.service';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { TrackService } from '@tracks/services/track/track.service';
+import { of } from 'rxjs';
+import { TrackFilterComponent } from './track-filter.component';
 
 describe('TrackFilterComponent', () => {
   let component: TrackFilterComponent;
@@ -40,9 +33,10 @@ describe('TrackFilterComponent', () => {
     trackService = TestBed.inject(TrackService);
   });
 
-  afterEach(() => {
-    trackService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   trackService = null;
+  // });
 
   it('should create track filter component', () => {
     expect(component).toBeTruthy();

@@ -1,12 +1,7 @@
-// Common
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
-// Environments
-import { environment } from '@environments/environment';
-
-// Services
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,32 +20,33 @@ export class AuthService {
     this.loginURI = environment.spotify.authURI + query;
   }
 
-  login(): void {
-    const that = this;
-    const popup: Window | null = window.open(
-      this.loginURI,
-      'Login with Spotify',
-      'width=800, height=800'
-    );
+  // TODO: Remove after logic is added to ngrx effects
+  // login(): void {
+  //   const that = this;
+  //   const popup: Window | null = window.open(
+  //     this.loginURI,
+  //     'Login with Spotify',
+  //     'width=800, height=800'
+  //   );
 
-    (window as any)['spotifyCallback'] = () => {
-      const authToken = popup !== null ? popup.location.hash.split('#access_token=')[1].split('&')[0] : "";
-      sessionStorage.setItem('spotifyToken', authToken);
-      if (popup !== null) {
-        popup.close();
-      }
-      setTimeout(() => {
-        that.router.navigate(['dashboard']);
-        that.spotifyPlaybackService.setupPlayer();
-      }, 100);
-    };
-  }
+  //   (window as any)['spotifyCallback'] = () => {
+  //     const authToken = popup !== null ? popup.location.hash.split('#access_token=')[1].split('&')[0] : "";
+  //     sessionStorage.setItem('spotifyToken', authToken);
+  //     if (popup !== null) {
+  //       popup.close();
+  //     }
+  //     setTimeout(() => {
+  //       that.router.navigate(['dashboard']);
+  //       that.spotifyPlaybackService.setupPlayer();
+  //     }, 100);
+  //   };
+  // }
 
-  logout(): void {
-    sessionStorage.removeItem('spotifyToken')
-    this.router.navigate(['login']);
-    localStorage.clear();
-  }
+  // logout(): void {
+  //   sessionStorage.removeItem('spotifyToken')
+  //   this.router.navigate(['login']);
+  //   localStorage.clear();
+  // }
 
   getSpotifyToken(): string | null {
     return sessionStorage.getItem('spotifyToken');

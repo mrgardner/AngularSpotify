@@ -1,6 +1,6 @@
 <div class="grid-container">
   <div *ngFor="let artist of artists" class="artist">
-    <img class="albumCover" [src]="artist['images'][0]['url']">
-    <div class="albumName">{{utilService.shortenString(artist['name'], 27)}}</div>
+    <img class="aristCover" alt="artist cover" [src]="artist['images'][0]['url']">
+    <div class="artistName">{{utilService.shortenString(artist['name'], 27)}}</div>
   </div>
 </div>

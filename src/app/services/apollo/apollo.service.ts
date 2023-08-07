@@ -3,16 +3,15 @@ import { Apollo } from 'apollo-angular';
 
 // Common
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Interfaces
-import { ApolloAlbumResult } from '@app/interfaces/apollo/apollo.inerface';
+import { AlbumApolloResponse, DisplayNameApolloResponse } from '@app/interfaces/apollo/apollo.inerface';
 
 // Queries
 import { ALBUM_INFO } from '@app/queries/get-albums';
 import { FOLLOWED_ARTISTS } from '@app/queries/get-artists';
-import { PLAYLIST_NAME, PLAYLIST_TRACKS, PLAYLIST_INFO } from '@app/queries/get-playlists';
+import { PLAYLIST_INFO, PLAYLIST_NAME, PLAYLIST_TRACKS } from '@app/queries/get-playlists';
 import { USER_DISPLAY_NAME } from '@app/queries/get-user';
 
 @Injectable({
@@ -29,7 +28,7 @@ export class ApolloService {
         fetchPolicy: 'cache-first',
         errorPolicy: 'all'
       })
-      .valueChanges.pipe(map((result: any) => {
+      .valueChanges.pipe(map((result: DisplayNameApolloResponse) => {
         return result.data.user.display_name;
       }));
   }
@@ -77,7 +76,7 @@ export class ApolloService {
       .valueChanges.pipe(map((result: any) => result.data.playlistTracks));
   }
 
-  getAlbums(offset: number): Observable<ApolloAlbumResult> {
+  getAlbums(offset: number) {
     return this.apollo
       .watchQuery({
         query: ALBUM_INFO,
@@ -87,7 +86,7 @@ export class ApolloService {
         },
         errorPolicy: 'all'
       })
-      .valueChanges.pipe(map((result: any) => result.data.albums));
+      .valueChanges.pipe(map((result: AlbumApolloResponse) => result.data.albums));
   }
 
   getFollowedArtists() {
@@ -102,4 +101,3 @@ export class ApolloService {
       .valueChanges.pipe(map((result: any) => result.data.followedArtists));
   }
 }
-

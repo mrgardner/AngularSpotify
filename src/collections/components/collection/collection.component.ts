@@ -1,14 +1,9 @@
-// Common
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { ActiveLink, Link, SelectedRoute } from '@app/interfaces/route/route.interface';
+import { RouteService } from '@app/services/route/route.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
-// Interfaces
-import { ActiveLink, Link, SelectedRoute } from '@app/interfaces/route/route.interface';
-
-// Services
-import { RouteService } from '@app/services/route/route.service';
 
 @Component({
   selector: 'app-collection',

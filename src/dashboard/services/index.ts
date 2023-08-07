@@ -5,6 +5,3 @@ export const dashboardServices: any[] = [
   DeviceModalService,
   StatusBarService
 ];
-
-export * from './device-modal/device-modal.service'
-export * from './status-bar/status-bar.service';

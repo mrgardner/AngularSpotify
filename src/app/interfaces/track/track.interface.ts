@@ -1,4 +1,3 @@
-// Interfaces
 import { Album } from '@app/interfaces/album/album.interface';
 import { Artist } from '@app/interfaces/artist/artist.interface';
 import { AddedBy, ExternalIds, ExternalUrls, VideoThumbnail } from '@app/interfaces/misc/misc.interface';

@@ -1,4 +1,3 @@
-// Pipes
 import { DuplicateTrackPipe } from 'src/playlist/pipes/duplicate-track/duplicate-track.pipe';
 
 describe('DuplicateTrackPipe', () => {

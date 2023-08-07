@@ -5,4 +5,4 @@ export interface PlaylistsState {
   loading: boolean,
   loaded: boolean,
   error: boolean
-};
+}

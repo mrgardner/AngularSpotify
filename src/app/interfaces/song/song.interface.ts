@@ -1,4 +1,3 @@
-// Interfaces
 import { TrackWindow } from '@app/interfaces/track/track.interface';
 
 export interface SpotifySongResponse {
@@ -16,7 +15,7 @@ export interface SpotifySongResponse {
 }
 
 interface SongContext {
-  metadata: Object;
+  metadata: any;
   uri: string;
 }
 

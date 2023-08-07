@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { createEffect, Actions, ofType } from '@ngrx/effects';
+import { ApolloService } from "@app/services/apollo/apollo.service";
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { catchError, map, switchMap, withLatestFrom } from "rxjs/operators";
 import { AlbumApiActions } from "../actions/album.action";
-import { ApolloService } from "@app/services/apollo/apollo.service";
-import { Store } from "@ngrx/store";
 import { selectAlbums } from "../selectors/album.selectors";
 // import { AlbumState } from "../model/album.model";
 

@@ -1,18 +1,9 @@
-// Apollo
-import { Apollo } from 'apollo-angular';
-import { ApolloTestingModule, ApolloTestingController } from 'apollo-angular/testing';
-
-// Queries
-import { PLAYLIST_NAME, PLAYLIST_INFO, PLAYLIST_TRACKS } from '@queries/get-playlists';
-import { USER_DISPLAY_NAME } from '@queries/get-user';
-
-// Services
-import { ApolloService } from '@services/apollo/apollo.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
-
-
+import { PLAYLIST_INFO, PLAYLIST_NAME, PLAYLIST_TRACKS } from '@app/queries/get-playlists';
+import { USER_DISPLAY_NAME } from '@app/queries/get-user';
+import { Apollo } from 'apollo-angular';
+import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
+import { ApolloService } from './apollo.service';
 
 describe('ApolloService', () => {
   let apolloService: ApolloService;
@@ -71,7 +62,7 @@ describe('ApolloService', () => {
       next: ''
     };
 
-    apolloService.getPlaylists().subscribe(result => {
+    apolloService.getPlaylists(0).subscribe(result => {
       expect(result).toEqual(expectedResult);
     });
 
@@ -97,12 +88,12 @@ describe('ApolloService', () => {
       next: ''
     };
 
-    apolloService.getPlaylists('https://api.spotify.com/v1/me/playlists?limit=50&offset=50').subscribe(result => {
+    apolloService.getPlaylists(50).subscribe(result => {
       expect(result).toEqual(expectedResult);
     });
 
     const op = controller.expectOne(PLAYLIST_NAME);
-    expect(op.operation.variables.url).toEqual('https://api.spotify.com/v1/me/playlists?limit=50&offset=50');
+    expect(op.operation.variables.url).toEqual(50);
 
     op.flush({
       data: {

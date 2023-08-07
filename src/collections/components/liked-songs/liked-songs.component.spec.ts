@@ -1,9 +1,5 @@
-// Components
-import { LikedSongsComponent } from '@components/collection/liked-songs/liked-songs.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { LikedSongsComponent } from './liked-songs.component';
 
 describe('LikedSongsComponent', () => {
   let component: LikedSongsComponent;

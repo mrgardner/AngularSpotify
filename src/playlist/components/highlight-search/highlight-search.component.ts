@@ -1,4 +1,3 @@
-// Common
 import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
@@ -10,8 +9,6 @@ export class HighlightSearchComponent implements OnChanges {
   @Input() text: string;
   @Input() searchText: string;
   public finalText: string;
-
-  constructor() { }
 
   ngOnChanges(): void {
     if (this.searchText.length > 0) {
@@ -25,8 +22,8 @@ export class HighlightSearchComponent implements OnChanges {
         const firstPass: string = this.insert(result, '~~~~', firstPos);
         result = this.insert(firstPass, '====', lastPos);
       }
-      const spanStart: RegExp = new RegExp('~~~~', 'g');
-      const spanEnd: RegExp = new RegExp('====', 'g');
+      const spanStart = new RegExp('~~~~', 'g');
+      const spanEnd = new RegExp('====', 'g');
       this.finalText = result.replace(spanStart, '<span class="highlight">').replace(spanEnd, '</span>');
     } else {
       this.finalText = this.text;

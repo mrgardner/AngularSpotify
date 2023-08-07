@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { USER_TYPES } from './actions.constant';
 import { UserState } from '../model/user.model';
+import { USER_TYPES } from './actions.constant';
 
 export const UserApiActions = createActionGroup({
   source: 'User API',

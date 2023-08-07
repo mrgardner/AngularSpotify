@@ -1,9 +1,5 @@
-// Components
-import { PodcastsComponent } from '@components/collection/podcasts/podcasts.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { PodcastsComponent } from './podcasts.component';
 
 describe('PodcastsComponent', () => {
   let component: PodcastsComponent;

@@ -1,11 +1,5 @@
-// Interfaces
-import { SortedTrack } from '@core/interfaces/track/track.interface';
-
-// Services
-import { TrackService } from '@tracks/services/track/track.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
+import { TrackService } from '@tracks/services/track/track.service';
 
 describe('TrackService', () => {
   let trackService: TrackService;
@@ -20,9 +14,10 @@ describe('TrackService', () => {
     trackService = TestBed.inject(TrackService);
   });
 
-  afterEach(() => {
-    trackService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   trackService = null;
+  // });
 
   it('should be created', () => {
     expect(trackService).toBeTruthy();

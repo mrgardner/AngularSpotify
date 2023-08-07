@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { PlaylistsState } from '../model/playlist.model';
 import { PlaylistApiActions } from '../actions/playlist.action';
+import { PlaylistsState } from '../model/playlist.model';
 
 export const initialState: Readonly<PlaylistsState> = {
   data: null,

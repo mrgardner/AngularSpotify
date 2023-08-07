@@ -1,7 +1,4 @@
-// Common
 import { EventEmitter, Injectable } from '@angular/core';
-
-// Interfaces
 import { SpotifySongResponse } from '@app/interfaces/song/song.interface';
 import { SortedTrack } from '@app/interfaces/track/track.interface';
 
@@ -20,7 +17,7 @@ export class SpotifyPlaybackService {
   public currentPlaylistPlaying$: EventEmitter<string>;
   // TODO: Fix type
   public player: any;
-  public statePollingInterval: number = 0;
+  public statePollingInterval = 0;
   public endOfChain: boolean;
   constructor() {
     this.currentSongState$ = new EventEmitter();

@@ -1,13 +1,8 @@
-// Common
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-// Interfaces
 import { Artist } from '@app/interfaces/artist/artist.interface';
-
-// Services
 import { ApolloService } from '@app/services/apollo/apollo.service';
 import { UtilService } from '@app/services/util/util.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-artists',

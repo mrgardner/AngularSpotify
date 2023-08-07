@@ -1,4 +1,3 @@
-// Interfaces
 import { SortedTrack } from '@app/interfaces/track/track.interface';
 
 export interface DragSource {

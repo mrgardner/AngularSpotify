@@ -1,16 +1,9 @@
-// Apollo
-import { Apollo } from 'apollo-angular';
-
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { isObservable, of } from 'rxjs';
-
-// Services
-import { ApolloService } from '@app/services/apollo/apollo.service';
-import { PlaylistDataSourceService } from '@playlist/components/services/playlist-data-source/playlist-data-source.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
+import { ApolloService } from '@app/services/apollo/apollo.service';
+import { Apollo } from 'apollo-angular';
+import { isObservable, of } from 'rxjs';
+import { PlaylistDataSourceService } from './playlist-data-source.service';
 
 describe('PlaylistDataSourceService', () => {
   let playlistDataSourceService: PlaylistDataSourceService;
@@ -31,10 +24,11 @@ describe('PlaylistDataSourceService', () => {
     apolloService = TestBed.inject(ApolloService);
   });
 
-  afterEach(() => {
-    playlistDataSourceService = null;
-    apolloService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   playlistDataSourceService = null;
+  //   apolloService = null;
+  // });
 
   it('should be created', () => {
     expect(playlistDataSourceService).toBeTruthy();

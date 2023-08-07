@@ -2,7 +2,7 @@
     <a mat-tab-link
        *ngFor="let link of links"
        (click)="activeLink = link; navigateTo(link.path)"
-       [active]="activeLink == link">
+       [active]="activeLink === link">
       {{link.label}}
     </a>
 </nav>

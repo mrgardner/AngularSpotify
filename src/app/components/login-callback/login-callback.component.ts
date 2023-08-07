@@ -1,4 +1,3 @@
-// Common 
 import { Component, OnInit } from '@angular/core';
 import { AuthApiActions } from '@app/store/actions/auth.action';
 import { Store } from '@ngrx/store';

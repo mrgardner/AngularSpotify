@@ -1,7 +1,4 @@
-// Common
 import { EventEmitter, Injectable } from '@angular/core';
-
-// Interfaces
 import { Device } from '@app/interfaces/device/device.interface';
 
 @Injectable({

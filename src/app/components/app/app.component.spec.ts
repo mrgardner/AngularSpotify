@@ -1,17 +1,10 @@
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { Routes } from '@angular/router';
-
-// Components
-import { AppComponent } from '@components/app/app.component';
-import { LoginComponent } from '@app-core/auth/components/login/login.component';
-
-// Services
-import { AuthService } from '@services/auth/auth.service';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from '@app/services/auth/auth.service';
+import { LoginComponent } from '../login/login.component';
+import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -36,9 +29,10 @@ describe('AppComponent', () => {
     authService = TestBed.inject(AuthService);
   }));
 
-  afterEach(() => {
-    authService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   authService = null;
+  // });
 
   it('should create the app component', () => {
     const app = fixture.debugElement.componentInstance;

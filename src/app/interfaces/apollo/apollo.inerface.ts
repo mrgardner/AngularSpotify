@@ -1,13 +1,11 @@
 export interface AlbumApolloResponse {
-  data: {
-    albums: ApolloAlbumResult;
-  };
+  data: any;
   loading: boolean;
   networkStatus: number;
 }
 
 export interface DisplayNameApolloResponse {
-  data: {}
+  data: any;
   loading: boolean;
   networkStatus: number;
 }

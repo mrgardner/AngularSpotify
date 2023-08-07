@@ -1,8 +1,5 @@
-// Components
-import { SearchComponent } from '@search/components/search/search.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { SearchComponent } from '@search/components/search/search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;

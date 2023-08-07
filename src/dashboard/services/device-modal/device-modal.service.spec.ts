@@ -1,11 +1,6 @@
-// Interfaces
-import { Device } from '@app/interfaces/device/device.interface';
-
-// Services
-import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
+import { Device } from '@app/interfaces/device/device.interface';
+import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
 
 describe('DeviceModalService', () => {
   let deviceModalService: DeviceModalService;
@@ -19,9 +14,10 @@ describe('DeviceModalService', () => {
     deviceModalService = TestBed.inject(DeviceModalService);
   });
 
-  afterEach(() => {
-    deviceModalService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   deviceModalService = null;
+  // });
 
   it('should be created', () => {
     expect(deviceModalService).toBeTruthy();

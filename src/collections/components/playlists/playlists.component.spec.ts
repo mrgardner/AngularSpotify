@@ -1,9 +1,5 @@
-// Components
-import { PlaylistsComponent } from '@components/collection/playlists/playlists.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { PlaylistsComponent } from './playlists.component';
 
 describe('PlaylistsComponent', () => {
   let component: PlaylistsComponent;

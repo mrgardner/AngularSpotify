@@ -1,19 +1,10 @@
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Routes, Router, RouterStateSnapshot } from '@angular/router';
-
-// Components
-import { LoginComponent } from '@app/components/login/login.component';
-
-// Guards
-import { AuthGuard } from './auth.guard';
-
-// Services
-import { AuthService } from '@app/services/auth/auth.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
+import { Router, RouterStateSnapshot, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { LoginComponent } from '@app/components/login/login.component';
+import { AuthService } from '@app/services/auth/auth.service';
+import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
@@ -22,7 +13,7 @@ describe('AuthGuard', () => {
   const routes: Routes = [
     { path: 'login', component: LoginComponent },
   ];
-  const mockSnapshot: any = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
+  const mockSnapshot: RouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -40,10 +31,11 @@ describe('AuthGuard', () => {
     authService = TestBed.inject(AuthService);
   });
 
-  afterEach(() => {
-    router = null;
-    authService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   router = null;
+  //   authService = null;
+  // });
 
   it('should create spotify guard with token', () => {
     spyOn(authService, 'getSpotifyToken').and.returnValue('testCookie');

@@ -1,7 +1,4 @@
-// Common
 import { EventEmitter, Injectable } from '@angular/core';
-
-// Interfaces
 import { SortedTrack } from '@app/interfaces/track/track.interface';
 
 @Injectable({

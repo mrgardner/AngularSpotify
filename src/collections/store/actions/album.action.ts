@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { ALBUM_TYPES } from './actions.constant';
 import { AlbumErrorPayload, AlbumPayload } from '../model/album.model';
+import { ALBUM_TYPES } from './actions.constant';
 
 export const AlbumApiActions = createActionGroup({
   source: 'Albums API',

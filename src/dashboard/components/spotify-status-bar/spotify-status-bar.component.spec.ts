@@ -1,21 +1,12 @@
-// Angular Material
-import { MatDialogModule } from '@angular/material/dialog';
-
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { of } from 'rxjs';
-
-// Components
-import { SpotifyStatusBarComponent } from '@dashboard/components/spotify-status-bar/spotify-status-bar.component';
-
-// Services
-import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
-import { SpotifyService } from '@app/services/spotify/spotify.service';
-import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
+import { SpotifyService } from '@app/services/spotify/spotify.service';
+import { SpotifyStatusBarComponent } from '@dashboard/components/spotify-status-bar/spotify-status-bar.component';
+import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
+import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
+import { of } from 'rxjs';
 
 describe('SpotifyStatusBarComponent', () => {
   let component: SpotifyStatusBarComponent;
@@ -47,12 +38,13 @@ describe('SpotifyStatusBarComponent', () => {
     spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
   });
 
-  afterEach(() => {
-    statusBarService = null;
-    deviceModalService = null;
-    spotifyService = null;
-    spotifyPlaybackService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   statusBarService = null;
+  //   deviceModalService = null;
+  //   spotifyService = null;
+  //   spotifyPlaybackService = null;
+  // });
 
   it('should create spotify status bar component', () => {
     expect(component).toBeTruthy();

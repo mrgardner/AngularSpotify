@@ -1,31 +1,20 @@
-// Angular Material
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-
-// Common
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NavigationStart, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-
-// Components
-import { NewPlaylistDialogComponent } from '@dashboard/components/new-playlist-dialog/new-playlist-dialog.component';
-
-// Interfaces
-// import { CurrentTrack } from '@app/interfaces/track/track.interface';
 import { Playlist } from '@app/interfaces/playlist/playlist.interface';
-import { Section } from '@app/interfaces/section/section.interface';
 import { SelectedRoute } from '@app/interfaces/route/route.interface';
-
-// Services
+import { Section } from '@app/interfaces/section/section.interface';
 import { ApolloService } from '@app/services/apollo/apollo.service';
 import { RouteService } from '@app/services/route/route.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-// import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
 import { UtilService } from '@app/services/util/util.service';
-import { Store } from '@ngrx/store';
-import { PlaylistsApiActions } from '@dashboard/store/actions/playlist.action';
 import { selectUrl } from '@app/store/selectors/router.selectors';
-import { selectPlaylists, selectCanLoadMore, selectPlaylistsLoaded, selectPlaylistsLoading, selectPlaylist } from '@dashboard/store/selectors/playlists.selectors';
+import { NewPlaylistDialogComponent } from '@dashboard/components/new-playlist-dialog/new-playlist-dialog.component';
+import { PlaylistsApiActions } from '@dashboard/store/actions/playlist.action';
+import { selectCanLoadMore, selectPlaylist, selectPlaylists, selectPlaylistsLoaded, selectPlaylistsLoading } from '@dashboard/store/selectors/playlists.selectors';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-spotify-navigation-menu',
@@ -39,7 +28,7 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
   public playlists$: Observable<Array<Playlist>>;
   public loading$: Observable<boolean>;
   public loaded$: Observable<boolean>;
-  public selectedPlaylist$: Observable<Playlist | {}>;
+  public selectedPlaylist$: Observable<Playlist>;
   // private currentTrack: CurrentTrack;
   public playlistTotal$: Observable<number>;
   public nextPlaylist$: Observable<string>;

@@ -1,9 +1,5 @@
-// Components
-import { ArtistsComponent } from '@components/collection/artists/artists.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { ArtistsComponent } from './artists.component';
 
 describe('ArtistsComponent', () => {
   let component: ArtistsComponent;

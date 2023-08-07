@@ -1,6 +1,6 @@
-import { PlaylistsState } from '../model/playlists.model';
 import { createReducer, on } from '@ngrx/store';
 import { PlaylistsApiActions } from '../actions/playlist.action';
+import { PlaylistsState } from '../model/playlists.model';
 
 export const initialState: PlaylistsState = {
   playlists: [],

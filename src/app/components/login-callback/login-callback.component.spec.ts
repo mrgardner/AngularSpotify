@@ -1,12 +1,6 @@
-// Common
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-
-// Components
-import { LoginCallbackComponent } from '@app/components/login-callback/login-callback.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { LoginCallbackComponent } from '@app/components/login-callback/login-callback.component';
 
 describe('CallbackComponent', () => {
   let component: LoginCallbackComponent;

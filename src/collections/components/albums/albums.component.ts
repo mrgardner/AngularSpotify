@@ -1,15 +1,10 @@
-// Common
 import { Component, OnInit } from '@angular/core';
-
-// Interfaces
 import { AlbumApollo } from '@app/interfaces/apollo/apollo.inerface';
-
-// Services
 import { UtilService } from '@app/services/util/util.service';
-import { Store } from '@ngrx/store';
 import { AlbumApiActions } from '@collections/store/actions/album.action';
-import { Observable } from 'rxjs';
 import { selectAlbums, selectCanLoadMore, selectLoaded, selectLoading } from '@collections/store/selectors/album.selectors';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-albums',

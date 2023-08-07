@@ -1,13 +1,11 @@
-// Common
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { fromEvent, Observable, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-// import * as fromStore from '@app/store';
 import { SPOTIFY_AUTH } from '@app/constants/auth.constant';
 import { AuthApiActions } from '@app/store/actions/auth.action';
 import { getLoggedIn } from '@app/store/selectors/auth.selectors';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription, fromEvent } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',

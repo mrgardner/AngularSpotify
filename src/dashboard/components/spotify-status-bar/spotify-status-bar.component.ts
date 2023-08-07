@@ -1,24 +1,14 @@
-// Angular Material
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-
-// Common
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-
-// Components
-import { DeviceModalComponent } from '@dashboard/components/device-modal/device-modal.component';
-
-// Interfaces
-import { Device } from '@app/interfaces/device/device.interface';
-import { SpotifyDeviceResponse } from '@app/interfaces/device/device.interface';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Device, SpotifyDeviceResponse } from '@app/interfaces/device/device.interface';
 import { SpotifySongResponse } from '@app/interfaces/song/song.interface';
 import { Track } from '@app/interfaces/track/track.interface';
-
-// Services
-import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
 import { UtilService } from '@app/services/util/util.service';
+import { DeviceModalComponent } from '@dashboard/components/device-modal/device-modal.component';
+import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-spotify-status-bar',
@@ -121,23 +111,26 @@ export class SpotifyStatusBarComponent implements OnInit, OnDestroy {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = true;
     this.isRepeatTrackShowing = false;
-    const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
-    this.spotifyService.setRepeatMode('context', deviceId).subscribe(() => { });
+    // const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
+    // TODO: Refactor to use ngrx
+    // this.spotifyService.setRepeatMode('context', deviceId).subscribe(() => { });
   }
 
   repeatTrack(): void {
     this.isRepeatOffShowing = false;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = true;
-    const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
-    this.spotifyService.setRepeatMode('track', deviceId).subscribe(() => { });
+    // const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
+    // TODO: Refactor to use ngrx
+    // this.spotifyService.setRepeatMode('track', deviceId).subscribe(() => { });
   }
 
   repeatOff(): void {
     this.isRepeatOffShowing = true;
     this.isRepeatPlaylistShowing = false;
     this.isRepeatTrackShowing = false;
-    const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
-    this.spotifyService.setRepeatMode('off', deviceId).subscribe(() => { });
+    // const deviceId: string | null = localStorage.getItem('deviceId') == null ? "" : localStorage.getItem('deviceId');
+    // TODO: Refactor to use ngrx
+    // this.spotifyService.setRepeatMode('off', deviceId).subscribe(() => { });
   }
 }

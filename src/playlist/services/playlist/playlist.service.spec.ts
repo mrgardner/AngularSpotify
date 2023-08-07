@@ -1,8 +1,5 @@
-// Services
-import { PlaylistService } from '@playlists/services/playlist/playlist.service';
-
-// Testing
 import { TestBed } from '@angular/core/testing';
+import { PlaylistService } from './playlist.service';
 
 describe('PlaylistService', () => {
   let playlistService: PlaylistService;
@@ -16,9 +13,10 @@ describe('PlaylistService', () => {
     playlistService = TestBed.inject(PlaylistService);
   });
 
-  afterEach(() => {
-    playlistService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   playlistService = null;
+  // });
 
   it('should be create playlist service', () => {
     expect(playlistService).toBeTruthy();

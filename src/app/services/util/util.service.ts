@@ -1,15 +1,10 @@
-// Common
 import { Injectable } from '@angular/core';
-
-// Interfaces
 import { Artist } from '@app/interfaces/artist/artist.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
-  constructor() { }
-
   encodeSpecialSymbols(url: string): string {
     url = url.replace(new RegExp(/[~]/g), '%7E');
     url = url.replace(new RegExp(/[!]/g, 'g'), '%21');

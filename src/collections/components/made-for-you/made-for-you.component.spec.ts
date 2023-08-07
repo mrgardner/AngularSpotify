@@ -1,9 +1,5 @@
-// Components
-import { MadeForYouComponent } from '@components/collection/made-for-you/made-for-you.component';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { MadeForYouComponent } from './made-for-you.component';
 
 describe('MadeForYouComponent', () => {
   let component: MadeForYouComponent;

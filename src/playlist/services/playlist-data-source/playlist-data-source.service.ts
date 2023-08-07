@@ -1,13 +1,8 @@
-// Common
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-
-// Interfaces
 import { SortedTrack, TrackResponse, Trrack, } from '@app/interfaces/track/track.interface';
-
-// Services
 import { ApolloService } from '@app/services/apollo/apollo.service';
 import { UtilService } from '@app/services/util/util.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

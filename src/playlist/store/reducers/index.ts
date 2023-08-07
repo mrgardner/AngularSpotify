@@ -1,15 +1,7 @@
-import { Action, ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import { Action, ActionReducerMap } from '@ngrx/store';
 import { playlistReducer } from "@playlist/store/reducers/playlist.reducer";
-import { PlaylistsState } from '../model/playlist.model';
+import { PlaylistState } from '../model';
 
-export interface DashboardState {
-  playlist: PlaylistsState;
-};
-
-export const reducers: ActionReducerMap<DashboardState, Action> = {
+export const reducers: ActionReducerMap<PlaylistState, Action> = {
   playlist: playlistReducer
 };
-
-export const getPlaylistState = createFeatureSelector<DashboardState>(
-  'playlist'
-);

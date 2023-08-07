@@ -1,17 +1,10 @@
-// Angular Material
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-
-// Common
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-// Interfaces
 import { Device, SpotifyDeviceResponse, SpotifyDevicesResponse } from '@app/interfaces/device/device.interface';
-
-// Services
-import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
 import { UtilService } from '@app/services/util/util.service';
+import { DeviceModalService } from '@dashboard/services/device-modal/device-modal.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-device-modal',

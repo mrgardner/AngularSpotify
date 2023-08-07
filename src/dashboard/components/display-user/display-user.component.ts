@@ -1,4 +1,3 @@
-// Common
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UserApiActions } from '@dashboard/store/actions/user.action';
 import { DashboardState } from '@dashboard/store/model';

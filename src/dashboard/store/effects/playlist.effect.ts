@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { SpotifyPlaylistRespose } from "@app/interfaces/playlist/playlist.interface";
 import { ApolloService } from "@app/services/apollo/apollo.service";
-import { createEffect, Actions, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { catchError, map, switchMap, tap, withLatestFrom } from "rxjs/operators";
 import { PlaylistsApiActions } from "../actions/playlist.action";
-// import { selectSelectedPlaylist, selectAllPlaylists } from "../selectors/playlists.selectors";
-import { Router } from "@angular/router";
 import { selectPlaylist, selectPlaylists } from "../selectors/playlists.selectors";
 
 @Injectable()

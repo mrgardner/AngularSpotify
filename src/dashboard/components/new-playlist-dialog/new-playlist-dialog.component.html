@@ -6,13 +6,13 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
       <div class="imageContainer">
         <div>
-          <div *ngIf="!currentImage" class="default-image" (click)="triggerFile()">
-            <img  src="assets/blank_album.png"/>
+          <div *ngIf="!currentImage" class="default-image" (click)="triggerFile()" (keyup)="triggerFile()">
+            <img alt="default album cover" src="assets/blank_album.png"/>
             <div>Choose image</div>
             <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
           </div>
           <div *ngIf="currentImage" class="user-image" (mouseenter)="showUserButtons = true" (mouseleave)="showUserButtons = false">
-            <img [src]="currentImage">
+            <img alt="album cover" [src]="currentImage">
             <button mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon class="md-light md-48">more_horiz</mat-icon>
             </button>

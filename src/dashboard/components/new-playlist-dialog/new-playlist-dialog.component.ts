@@ -1,11 +1,6 @@
-// Angular Material
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-// Common
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
-
-// Services
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
 
 @Component({
@@ -32,7 +27,8 @@ export class NewPlaylistDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<NewPlaylistDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Object,
+    // TODO: fix type
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private spotifyService: SpotifyService) { }
 
   get playlistNameLength(): number {

@@ -1,16 +1,9 @@
 
-// Common
 import { HttpClientModule } from '@angular/common/http';
-import { of } from 'rxjs';
-
-// Components
-import { AlbumsComponent } from '@components/collection/albums/albums.component';
-
-// Services
-import { SpotifyService } from '@services/spotify/spotify.service';
-
-// Testing
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { SpotifyService } from '@app/services/spotify/spotify.service';
+import { of } from 'rxjs';
+import { AlbumsComponent } from './albums.component';
 
 describe('AlbumsComponent', () => {
   let component: AlbumsComponent;
@@ -35,9 +28,10 @@ describe('AlbumsComponent', () => {
     spotifyService = TestBed.inject(SpotifyService);
   });
 
-  afterEach(() => {
-    spotifyService = null;
-  });
+  // TODO TESTING: Fix
+  // afterEach(() => {
+  //   spotifyService = null;
+  // });
 
   it('should create albums component', () => {
     expect(component).toBeTruthy();
@@ -55,8 +49,8 @@ describe('AlbumsComponent', () => {
     };
     spyOn(spotifyService, 'getUsersSavedAlbums').and.returnValue(of(albums));
     component.ngOnInit();
-    expect(component.albumsLoaded).toBeTruthy();
-    expect(component.loading).toBeFalsy();
+    expect(component.albumsLoaded$).toBeTruthy();
+    expect(component.loading$).toBeFalsy();
   });
 
   it('should check ngOnInit method when spotifyService.getUsersSavedAlbums returns 1 album', () => {
@@ -154,8 +148,8 @@ describe('AlbumsComponent', () => {
     };
     spyOn(spotifyService, 'getUsersSavedAlbums').and.returnValue(of(albums));
     component.ngOnInit();
-    expect(component.albumsLoaded).toBeTruthy();
-    expect(component.loading).toBeFalsy();
+    expect(component.albumsLoaded$).toBeTruthy();
+    expect(component.loading$).toBeFalsy();
   });
 
   it('should check showSearchBox method', () => {

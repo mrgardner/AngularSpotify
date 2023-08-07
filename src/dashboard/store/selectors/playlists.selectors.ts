@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
-import { PlaylistsState } from "../model/playlists.model";
-import { DashboardState } from "../model";
 import { getDashboardState } from ".";
+import { DashboardState } from "../model";
+import { PlaylistsState } from "../model/playlists.model";
 
 // playlist state
 export const getPlaylistsState = createSelector(getDashboardState, (state: DashboardState) => state.playlists);

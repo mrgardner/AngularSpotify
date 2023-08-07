@@ -1,15 +1,10 @@
-// Common
 import { Injectable } from '@angular/core';
-
-// Interfaces
 import { SelectedRoute } from '@app/interfaces/route/route.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteService {
-  constructor() { }
-
   parseUrl(route: string): SelectedRoute {
     const splitRoute = route.split('/').filter(function (el) {
       return el !== '';
