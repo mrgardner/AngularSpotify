@@ -11,11 +11,9 @@ export class UserEffects {
 
   loadUser$ = createEffect(() => this.actions$.pipe(
     ofType(UserApiActions.loadUser),
-    switchMap(() => {
-      return this.apolloService.getUserDisplayName().pipe(
-        map((displayName: string) => UserApiActions.loadUserSuccess({ payload: displayName })),
-        catchError(error => of(UserApiActions.loadUserFail(error)))
-      );
-    })
+    switchMap(() => this.apolloService.getUserDisplayName().pipe(
+      map((displayName: string) => UserApiActions.loadUserSuccess({ payload: displayName })),
+      catchError(error => of(UserApiActions.loadUserFail(error)))
+    ))
   ))
 }

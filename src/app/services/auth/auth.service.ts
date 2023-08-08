@@ -1,25 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly state: string;
-  private readonly loginURI: string;
-  constructor(private router: Router, private spotifyPlaybackService: SpotifyPlaybackService) {
-    this.state = this.generateRandomString(16);
-    const query =
-      `response_type=${environment.spotify.loginResponseType}` +
-      `&client_id=${environment.spotify.clientID}` +
-      `&scope=${environment.spotify.scope}` +
-      `&redirect_uri=${environment.spotify.redirectURI}` +
-      `&state=${this.state}`;
-    this.loginURI = environment.spotify.authURI + query;
-  }
-
   // TODO: Remove after logic is added to ngrx effects
   // login(): void {
   //   const that = this;

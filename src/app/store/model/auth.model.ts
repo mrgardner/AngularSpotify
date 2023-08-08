@@ -9,8 +9,3 @@ export interface AuthPayload {
   authToken: string;
   expiredDate: string;
 }
-
-export interface AuthErrorPayload {
-  code: number;
-  message: string;
-}

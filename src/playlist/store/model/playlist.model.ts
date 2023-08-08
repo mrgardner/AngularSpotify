@@ -1,8 +1,19 @@
-import { Playlist } from '@app/interfaces/playlist/playlist.interface';
+import { SortedTrack } from '@app/interfaces/track/track.interface';
 
-export interface PlaylistsState {
-  data: Playlist | null,
+export interface PlaylistTracksState {
+  data: SortedTrack[],
   loading: boolean,
   loaded: boolean,
-  error: boolean
+  error: PlaylistErrorPayload | null
+}
+
+export interface LoadPlaylistTracksPayload {
+  playlistId: string;
+  offset: number;
+  limit: number;
+}
+
+export interface PlaylistErrorPayload {
+  code: number;
+  message: string;
 }

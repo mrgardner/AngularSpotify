@@ -6,7 +6,7 @@ export interface PlaylistsState {
   loaded: boolean;
   next: string;
   error: any;
-  selectedPlaylist: Playlist;
+  selectedPlaylist: SelectedPlaylist;
   canLoadMore: boolean;
   total: number;
 }
@@ -16,4 +16,9 @@ export interface PlaylistsPayload {
   playlists: Playlist[];
   total: number;
   canLoadMore: boolean;
+}
+
+export interface SelectedPlaylist {
+  id: string;
+  name: string;
 }

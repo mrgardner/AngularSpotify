@@ -5,8 +5,8 @@ import { ApolloService } from "@app/services/apollo/apollo.service";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
-import { catchError, map, switchMap, tap, withLatestFrom } from "rxjs/operators";
-import { PlaylistsApiActions } from "../actions/playlist.action";
+import { catchError, exhaustMap, map, tap, withLatestFrom } from "rxjs/operators";
+import { PlaylistsApiActions } from "../actions/playlists.action";
 import { selectPlaylist, selectPlaylists } from "../selectors/playlists.selectors";
 
 @Injectable()
@@ -17,12 +17,10 @@ export class PlaylistEffects {
     ofType(PlaylistsApiActions.loadPlaylists),
     withLatestFrom(this.store.select(selectPlaylists)),
     // TODO: ADD TYPE
-    switchMap((res: any) => {
-      console.log(res)
+    exhaustMap((res: any) => {
       const playlists = res[1];
       return this.apolloService.getPlaylists(playlists.length).pipe(
         map((response: SpotifyPlaylistRespose) => {
-          console.log(response)
           const updatePlaylists = playlists.concat(response.items);
           const next = response.next !== null ? response.next.split('v1/')[1] : '';
 
@@ -40,9 +38,9 @@ export class PlaylistEffects {
     })
   ));
 
-  selectPlaylist$ = createEffect(() => this.actions$.pipe(
+  updateSelectedPlaylist$ = createEffect(() => this.actions$.pipe(
     ofType(PlaylistsApiActions.updateSelectedPlaylist),
-    switchMap(() => this.store.select(selectPlaylist)),
-    tap((playlist: any) => this.router.navigate(['dashboard', 'playlist', encodeURI(playlist.id)]))
-  ));
+    withLatestFrom(this.store.select(selectPlaylist)),
+    tap((latest: any) => this.router.navigate(['dashboard', 'playlist', encodeURI(latest[1].id)]))
+  ), { dispatch: false });
 }

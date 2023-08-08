@@ -35,8 +35,8 @@ export const PLAYLIST_INFO = gql`
 `;
 
 export const PLAYLIST_TRACKS = gql`
-  query PlaylistTracks($trackOffset: Int!, $playlistID: String!, $limit: Int!) {
-    playlistTracks(trackOffset: $trackOffset, playlistID: $playlistID, limit: $limit) {
+  query PlaylistTracks($offset: Int, $playlistID: String!, $limit: Int) {
+    playlistTracks(offset: $offset, playlistID: $playlistID, limit: $limit) {
       total
       limit
       items {

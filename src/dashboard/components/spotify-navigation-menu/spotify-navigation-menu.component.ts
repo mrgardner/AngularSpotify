@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NavigationStart, Router } from '@angular/router';
 import { Playlist } from '@app/interfaces/playlist/playlist.interface';
@@ -10,7 +10,8 @@ import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-p
 import { UtilService } from '@app/services/util/util.service';
 import { selectUrl } from '@app/store/selectors/router.selectors';
 import { NewPlaylistDialogComponent } from '@dashboard/components/new-playlist-dialog/new-playlist-dialog.component';
-import { PlaylistsApiActions } from '@dashboard/store/actions/playlist.action';
+import { PlaylistsApiActions } from '@dashboard/store/actions/playlists.action';
+import { SelectedPlaylist } from '@dashboard/store/model/playlists.model';
 import { selectCanLoadMore, selectPlaylist, selectPlaylists, selectPlaylistsLoaded, selectPlaylistsLoading } from '@dashboard/store/selectors/playlists.selectors';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -23,12 +24,12 @@ import { filter } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
+export class SpotifyNavigationMenuComponent implements OnInit {
   public selectedUrl$: Observable<string>;
   public playlists$: Observable<Array<Playlist>>;
   public loading$: Observable<boolean>;
   public loaded$: Observable<boolean>;
-  public selectedPlaylist$: Observable<Playlist>;
+  public selectedPlaylist$: Observable<SelectedPlaylist>;
   // private currentTrack: CurrentTrack;
   public playlistTotal$: Observable<number>;
   public nextPlaylist$: Observable<string>;
@@ -107,18 +108,13 @@ export class SpotifyNavigationMenuComponent implements OnInit, OnDestroy {
     this.dialogConfig.width = '800px';
   }
 
-  ngOnDestroy(): void {
-    this.currentTrackSubscription.unsubscribe();
-    this.routerSubscription.unsubscribe();
-  }
-
   goToTracks(playlist: Playlist): void {
     // TODO: fix selected playlist logic
     // this.playlists.forEach(tt => tt['selected'] = false);
     // playlist['selected'] = true;
     this.store.dispatch(PlaylistsApiActions.updateSelectedPlaylist({ payload: playlist }));
-    const playlistId = encodeURI(playlist.id);
-    this.router.navigate(['dashboard', 'playlist', playlistId]);
+    // const playlistId = encodeURI(playlist.id);
+    // this.router.navigate(['dashboard', 'playlist', playlistId]);
   }
 
   goToSection(url: string): void {

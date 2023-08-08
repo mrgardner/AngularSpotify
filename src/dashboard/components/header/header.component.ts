@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
 import { AuthApiActions } from '@app/store/actions/auth.action';
-import { getLoggedIn } from '@app/store/selectors/auth.selectors';
+import { selectLoggedIn } from '@app/store/selectors/auth.selectors';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private spotifyPlaybackService: SpotifyPlaybackService) { }
 
   ngOnInit(): void {
-    this.loggedIn$ = this.store.select(getLoggedIn);
+    this.loggedIn$ = this.store.select(selectLoggedIn);
 
     this.loggedInSubscription = this.loggedIn$.subscribe(loggedIn => {
       if (loggedIn) {

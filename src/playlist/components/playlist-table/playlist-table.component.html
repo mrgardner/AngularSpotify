@@ -1,7 +1,8 @@
 <div class="playlist">
   <div class="playlistHeader">
     <div class="playlistCoverSection">
-      <img class="playlistCoverImage" alt="playlistCoverImage" [src]="playlist.images[0].url" />
+      <!-- TODO: FIX -->
+      <!-- <img class="playlistCoverImage" alt="playlistCoverImage" [src]="playlist.images[0].url" /> -->
     </div>
     <div class="playlistInfoSection">
       <span>PLAYLIST</span>
@@ -34,9 +35,11 @@
       <app-track-filter></app-track-filter>
     </div>
     
+    <!-- (cdkDropListDropped)="dropTable($event)" -->
+
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" cdkDropList
     [cdkDropListData]="dataSource"
-    (cdkDropListDropped)="dropTable($event)" matSortDisableClear class="mat-elevation-z8">
+     matSortDisableClear class="mat-elevation-z8">
       <ng-container matColumnDef="dupTrack" *ngIf="checkDuplicate">
         <th mat-header-cell *matHeaderCellDef class="dupliateTrackHeader">Dup</th>
         <td mat-cell *matCellDef="let row">
@@ -98,8 +101,10 @@
         <td mat-cell *matCellDef="let element"> {{utilService.prettyMs(element.time)}} </td>
       </ng-container>
 
+
+      <!-- (cdkDragStarted)="dragStart($event)" -->
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); let i = index" (mouseleave)="hidePlayButton(row)" (mouseenter)="showPlayButton(row)" [className]="(state) && (state['track_window']['current_track']['name'] === row.title) ? 'trackPlaying' : ''" cdkDrag cdkDragLockAxis="y" [cdkDragData]="row" (cdkDragStarted)="dragStart($event)">
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); let i = index" (mouseleave)="hidePlayButton(row)" (mouseenter)="showPlayButton(row)" [className]="(state) && (state['track_window']['current_track']['name'] === row.title) ? 'trackPlaying' : ''" cdkDrag cdkDragLockAxis="y" [cdkDragData]="row">
         <span *cdkDragPreview>{{draggedString}}</span>
       </tr>
     </table>

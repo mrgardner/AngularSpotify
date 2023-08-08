@@ -1,29 +1,27 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { CdkDropList } from '@angular/cdk/drag-drop';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { DragSource, DropData } from '@app/interfaces/drag-and-drop/drag-and-drop.interface';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Playlist } from '@app/interfaces/playlist/playlist.interface';
 import { SpotifySongResponse } from '@app/interfaces/song/song.interface';
 import { SortedTrack } from '@app/interfaces/track/track.interface';
-import { ApolloService } from '@app/services/apollo/apollo.service';
 import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-playback.service';
-import { SpotifyService } from '@app/services/spotify/spotify.service';
 import { UtilService } from '@app/services/util/util.service';
+import { selectRouteParams } from '@app/store/selectors/router.selectors';
+import { Store } from '@ngrx/store';
+import { PlaylistApiActions } from '@playlist/store/actions/playlist.action';
+import { selectPlaylist } from '@playlist/store/selectors/playlist.selector';
 import { TrackService } from '@tracks/services/track/track.service';
-import { Subscription, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { PlaylistDataSourceService } from 'src/playlist/services/playlist-data-source/playlist-data-source.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-playlist-table',
   templateUrl: './playlist-table.component.html',
   styleUrls: ['./playlist-table.component.scss']
 })
-export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestroy {
+export class PlaylistTableComponent implements OnInit {
   public tracks: SortedTrack[] = [];
   public loading: boolean;
   public tracksLoaded: boolean;
@@ -31,7 +29,6 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public playlist: Playlist;
   public currentTrack: SortedTrack;
   public displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'added_at', 'time'];
-  public dataSource: PlaylistDataSourceService;
   public selection: SelectionModel<SortedTrack> = new SelectionModel<SortedTrack>(true, []);
   public itemCount: number;
   public pageSize: number;
@@ -47,6 +44,8 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   public filterText: string;
   public draggedString: string;
   public showPlayButtonText: boolean;
+  public playlistTracks$: Observable<SortedTrack[]>;
+  public dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -54,70 +53,105 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
   @ViewChild(CdkDropList) _dropList: CdkDropList;
 
   constructor(
-    private apolloService: ApolloService,
-    private spotifyService: SpotifyService,
-    private router: Router,
     private spotifyPlaybackService: SpotifyPlaybackService,
     public utilService: UtilService,
     private trackService: TrackService,
-    private route: ActivatedRoute) { }
+    private store: Store) { }
 
   // TODO: Add functionality to save drag and drop to spotify endpoint
-  dropTable(event: DropData): void {
-    if (this.dataSource) {
-      this.dataSource.tableSubject$.subscribe((v: SortedTrack[]) => {
-        const prevIndex: number = v.findIndex((d) => d === event.item.data);
-        moveItemInArray(v, prevIndex, event.currentIndex);
-        this.tracks = v;
-        if (v.length > 0) {
-          this.pageSize = v[0].size;
-          this.itemCount = v[0].total;
-        } else {
-          this.itemCount = 0;
-        }
-        this.table.renderRows();
-      });
-    } else {
-      this.endOfChain = true;
-    }
-  }
+  // dropTable(event: DropData): void {
+  //   if (this.dataSource) {
+  //     this.dataSource.tableSubject$.subscribe((v: SortedTrack[]) => {
+  //       const prevIndex: number = v.findIndex((d) => d === event.item.data);
+  //       moveItemInArray(v, prevIndex, event.currentIndex);
+  //       this.tracks = v;
+  //       if (v.length > 0) {
+  //         this.pageSize = v[0].size;
+  //         this.itemCount = v[0].total;
+  //       } else {
+  //         this.itemCount = 0;
+  //       }
+  //       this.table.renderRows();
+  //     });
+  //   } else {
+  //     this.endOfChain = true;
+  //   }
+  // }
 
-  dragStart(e: DragSource): void {
-    this.draggedString = `${e.source.data.title} - ${e.source.data.artist}`;
-  }
-
-  ngAfterContentInit(): void {
-    if (this.dataSource) {
-      this.dataSource.tableSubject$.subscribe((v: SortedTrack[]) => {
-        this.tracks = v;
-        if (v.length > 0) {
-          this.pageSize = v[0].size;
-          this.itemCount = v[0].total;
-        } else {
-          this.itemCount = 0;
-        }
-      });
-    } else {
-      this.endOfChain = true;
-    }
-  }
+  // dragStart(e: DragSource): void {
+  //   this.draggedString = `${e.source.data.title} - ${e.source.data.artist}`;
+  // }
 
   ngOnInit(): void {
     this.filterText = '';
-    this.dataSource = new PlaylistDataSourceService(this.apolloService, this.utilService);
+    // this.dataSource = new PlaylistDataSourceService(this.store);
     this.test = '';
 
-    this.routerSubscription = this.route.url.pipe(switchMap((urlSegment: UrlSegment[]) => {
-      if (urlSegment.length === 1) {
-        this.dataSource.loadTracks(urlSegment[0].path);
-        this.endOfChain = false;
-        // TODO: Break this logic into playlist.effect.ts
-        return this.apolloService.getPlaylist(urlSegment[0].path);
-      } else {
-        this.endOfChain = true;
-        return of();
+    this.playlist = {
+      collaborative: false,
+      external_urls: {
+        spotify: ''
+      },
+      followers: {
+        href: '',
+        total: 0
+      },
+      href: '',
+      id: '',
+      images: [],
+      name: '',
+      owner: {
+        display_name: '',
+        external_urls: {
+          spotify: ''
+        },
+        href: '',
+        id: '',
+        type: '',
+        uri: ''
+      },
+      primary_color: '',
+      public: false,
+      snapshot_id: '',
+      tracks: {
+        href: '',
+        total: 0
+      },
+      type: '',
+      uri: '',
+      selected: false,
+      selectedUrl: '',
+    }
+    this.store.select(selectPlaylist).subscribe((playlists: SortedTrack[]) => {
+      console.log(playlists)
+      if (playlists.length > 0) {
+        // TODO: Figure out way to trigger loading data on playlist change
+        // Currently only loads first playlist selected
+        this.dataSource.data = playlists;
+        this.pageSize = playlists[0].size;
+        this.itemCount = playlists[0].total;
       }
-    })).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
+      // this.table.renderRows();
+    });
+    this.store.select(selectRouteParams).subscribe((routeParam) => {
+      console.log(routeParam);
+      // this.dataSource.loadTracks(routeParam.playlistId);
+      this.store.dispatch(PlaylistApiActions.loadPlaylist({ payload: routeParam.playlistId }));
+    });
+
+
+
+    // this.routerSubscription = this.route.url.pipe(switchMap((urlSegment: UrlSegment[]) => {
+    //   if (urlSegment.length === 1) {
+    //     this.dataSource.loadTracks(urlSegment[0].path);
+    //     this.endOfChain = false;
+    //     // TODO: Break this logic into playlist.effect.ts
+    //     return this.apolloService.getPlaylist(urlSegment[0].path);
+    //   } else {
+    //     this.endOfChain = true;
+    //     return of();
+    //   }
+    // })).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
     this.checkDuplicateSubscription = this.trackService.checkDuplicate$
       .subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
     this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
@@ -127,25 +161,24 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
 
     this.filterSubscription = this.trackService.filterTrack$.subscribe((filterText: string) => {
       this.filterText = filterText;
-      this.dataSource.filter(filterText);
+      // this.dataSource.filter(filterText);
     });
 
     this.showPlayButtonSubscription = this.spotifyPlaybackService.showPlayButton$
       .subscribe((value: boolean) => this.showPlayButtonText = value);
   }
 
-  ngOnDestroy(): void {
-    this.routerSubscription.unsubscribe();
-    this.checkDuplicateSubscription.unsubscribe();
-    this.currentSongStateSubscription.unsubscribe();
-    this.currentTrackSubscription.unsubscribe();
-    this.filterSubscription.unsubscribe();
-    this.showPlayButtonSubscription.unsubscribe();
-  }
-
   loadTracks(): void {
-    const breadcrumbs: string[] = this.router.url.split('/');
-    this.dataSource.loadTracks(breadcrumbs[3], this.paginator.pageIndex, this.paginator.pageSize);
+    // TODO: Refactor this logic
+    // const breadcrumbs: string[] = this.router.url.split('/');
+    // this.store.dispatch(PlaylistApiActions.loadPlaylist({
+    //   payload: {
+    //     playlistId: breadcrumbs[3],
+    //     offset: this.paginator.pageIndex,
+    //     limit: this.paginator.pageSize
+    //   }
+    // }))
+    // this.dataSource.loadTracks(breadcrumbs[3], this.paginator.pageIndex, this.paginator.pageSize);
   }
 
   getDisplayedColumns(): string[] {
@@ -178,7 +211,7 @@ export class PlaylistTableComponent implements OnInit, AfterContentInit, OnDestr
         default: return 0;
       }
     });
-    this.dataSource.tableSubject.next(this.tracks);
+    // this.dataSource.tableSubject.next(this.tracks);
   }
 
   startListeningText(): string {

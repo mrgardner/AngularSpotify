@@ -1,5 +1,5 @@
-import { PlaylistsState } from "./playlist.model";
+import { PlaylistTracksState } from "./playlist.model";
 
 export interface PlaylistState {
-  playlist: PlaylistsState;
+  playlistTracks: PlaylistTracksState;
 }

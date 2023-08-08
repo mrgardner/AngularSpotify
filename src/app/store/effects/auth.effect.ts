@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
-import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { Store } from "@ngrx/store";
-import { of } from "rxjs";
-import { catchError, map, switchMap, tap, withLatestFrom } from "rxjs/operators";
-import { SPOTIFY_AUTH } from "@app/constants/auth.constant";
 import { Router } from "@angular/router";
-import { AuthPayload } from "../model/auth.model";
-import { selectFragment } from "../selectors/router.selectors";
+import { SPOTIFY_AUTH } from "@app/constants/auth.constant";
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from "@ngrx/store";
+import { map, tap, withLatestFrom } from "rxjs/operators";
 import { AuthApiActions } from "../actions/auth.action";
+import { AuthPayload } from "../model/auth.model";
+import { selectAuthToken } from "../selectors/auth.selectors";
+import { selectFragment } from "../selectors/router.selectors";
 
 @Injectable()
 export class AuthEffects {
@@ -16,7 +16,7 @@ export class AuthEffects {
   login$ = createEffect(() => this.actions$.pipe(
     ofType(AuthApiActions.login),
     withLatestFrom(this.store.select(selectFragment)),
-    switchMap((latest: any) => {
+    map((latest: any) => {
       const fragment = latest[1];
       const authToken: string = fragment.split(SPOTIFY_AUTH.ACCESS_TOKEN)[1].split('&')[0];
       const expiredDate: Date = new Date();
@@ -25,23 +25,19 @@ export class AuthEffects {
       sessionStorage.setItem(SPOTIFY_AUTH.SPOTIFY_TOKEN, authToken);
       sessionStorage.setItem(SPOTIFY_AUTH.EXPIRED_DATE, expiredDate.toDateString());
       const data: AuthPayload = { authToken, expiredDate: expiredDate.toString() };
-      return of(data).pipe(
-        map(() => AuthApiActions.storeAuthToken({ payload: data })),
-      )
+      return AuthApiActions.storeAuthToken({ payload: data });
     })
   ));
 
   logout$ = createEffect(() => this.actions$.pipe(
     ofType(AuthApiActions.logout),
-    switchMap(() => {
-      sessionStorage.clear();
-      this.router.navigate(['login']);
-      return of(1).pipe(
-        map(() => AuthApiActions.removeAuthToken()),
-        catchError(error => of(AuthApiActions.authError(error)))
-      );
-    })
+    map(() => AuthApiActions.removeAuthToken())
   ));
+
+  removeAuthToken$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthApiActions.removeAuthToken),
+    tap(() => this.router.navigate(['login']))
+  ), { dispatch: false });
 
   storeAuthToken$ = createEffect(() => this.actions$.pipe(
     ofType(AuthApiActions.storeAuthToken),
@@ -50,19 +46,13 @@ export class AuthEffects {
 
   authCheck$ = createEffect(() => this.actions$.pipe(
     ofType(AuthApiActions.authCheck),
-    switchMap(() => {
-      const authToken = sessionStorage.getItem(SPOTIFY_AUTH.SPOTIFY_TOKEN) !== null ? sessionStorage.getItem(SPOTIFY_AUTH.SPOTIFY_TOKEN) : false;
-      const expiredDate = sessionStorage.getItem(SPOTIFY_AUTH.EXPIRED_DATE) !== null ? sessionStorage.getItem(SPOTIFY_AUTH.EXPIRED_DATE) : false;
-      if (authToken && expiredDate) {
-        const data = { authToken, expiredDate };
-        return of(1).pipe(
-          map(() => AuthApiActions.storeAuthToken({ payload: data }))
-        )
+    withLatestFrom(this.store.select(selectAuthToken)),
+    map((latest: any) => {
+      console.log(latest)
+      if (latest[1]) {
+        return AuthApiActions.authNOOP();
       } else {
-        this.router.navigate(['login']);
-        return of(1).pipe(
-          map(() => AuthApiActions.authError({ payload: { code: 500, message: 'Something went wrong' } }))
-        )
+        return AuthApiActions.logout();
       }
     })
   ));

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { PlaylistsApiActions } from '../actions/playlist.action';
+import { PlaylistsApiActions } from '../actions/playlists.action';
 import { PlaylistsState } from '../model/playlists.model';
 
 export const initialState: PlaylistsState = {
@@ -8,7 +8,10 @@ export const initialState: PlaylistsState = {
   loaded: false,
   next: '',
   error: null,
-  selectedPlaylist: {},
+  selectedPlaylist: {
+    id: '',
+    name: ''
+  },
   canLoadMore: true,
   total: 0
 };
@@ -42,8 +45,8 @@ export const playlistsReducer = createReducer(
   on(PlaylistsApiActions.updateSelectedPlaylist, (state, { payload }) => ({
     ...state,
     selectedPlaylist: {
-      ...payload,
-      selected: true
+      id: payload.id,
+      name: payload.name
     }
   }))
 );

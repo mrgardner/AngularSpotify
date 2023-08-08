@@ -1,12 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import { PlaylistApiActions } from '../actions/playlist.action';
-import { PlaylistsState } from '../model/playlist.model';
+import { PlaylistTracksState } from '../model/playlist.model';
 
-export const initialState: Readonly<PlaylistsState> = {
-  data: null,
+export const initialState: Readonly<PlaylistTracksState> = {
+  data: [],
   loading: false,
   loaded: false,
-  error: false
+  error: null
 };
 
 export const playlistReducer = createReducer(
@@ -15,16 +15,15 @@ export const playlistReducer = createReducer(
     ...state,
     loading: true
   })),
-  on(PlaylistApiActions.loadPlaylistSuccess, (state, { playlist }) => ({
+  on(PlaylistApiActions.loadPlaylistSuccess, (state, { payload }) => ({
     ...state,
-    error: false,
     loading: false,
     loaded: true,
-    data: playlist.data
+    data: payload
   })),
-  on(PlaylistApiActions.loadPlaylistFail, state => ({
+  on(PlaylistApiActions.loadPlaylistFail, (state, { payload }) => ({
     ...state,
-    error: true,
+    error: payload,
     loaded: false,
     loading: false
   }))

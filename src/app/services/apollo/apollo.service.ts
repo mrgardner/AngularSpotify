@@ -59,15 +59,13 @@ export class ApolloService {
       .valueChanges.pipe(map((result: any) => result.data.playlist));
   }
 
-  getTracksFromPlaylist(playlistID: string, offset: number, limit: number) {
-    const trackOffset = offset * limit;
-
+  getTracksFromPlaylist(playlistID: string, offset?: number, limit?: number) {
     return this.apollo
       .watchQuery({
         query: PLAYLIST_TRACKS,
         fetchPolicy: 'cache-first',
         variables: {
-          trackOffset,
+          offset,
           playlistID,
           limit
         },
