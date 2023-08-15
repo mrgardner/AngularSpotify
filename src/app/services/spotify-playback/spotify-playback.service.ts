@@ -88,14 +88,10 @@ export class SpotifyPlaybackService {
           showTrackNumber: true,
           duration: 0,
           uri: '',
-          total: 0,
-          size: 0,
           filterText: '',
           remove: false,
-          artists: [],
-          name: '',
           is_local: false,
-          track: null
+          album_image: ''
         });
         await this.waitForDeviceToBeSelected();
       }

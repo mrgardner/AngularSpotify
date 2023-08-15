@@ -1,18 +1,11 @@
-// Apollo
-import { Apollo } from 'apollo-angular';
-
-// Common
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
-
-// Interfaces
 import { AlbumApolloResponse, DisplayNameApolloResponse } from '@app/interfaces/apollo/apollo.inerface';
-
-// Queries
 import { ALBUM_INFO } from '@app/queries/get-albums';
 import { FOLLOWED_ARTISTS } from '@app/queries/get-artists';
 import { PLAYLIST_INFO, PLAYLIST_NAME, PLAYLIST_TRACKS } from '@app/queries/get-playlists';
 import { USER_DISPLAY_NAME } from '@app/queries/get-user';
+import { Apollo } from 'apollo-angular';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

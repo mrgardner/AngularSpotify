@@ -2,45 +2,51 @@
 @import "src/app/styles/variables.scss";
 @import "my-theme.scss";
 
-.mat-form-field-appearance-legacy .mat-form-field-prefix .mat-icon,
-.mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon {
-  position: relative;
-  top: 3px;
-  font-size: 100%;
+@font-face {
+  font-family: Monsterrat;
+  src: url(assets/fonts/Montserrat-Regular.ttf);
 }
 
-.mat-form-field-appearance-legacy .mat-form-field-infix {
-  text-indent: 5px;
-  font-size: 14px;
-}
+// .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-icon,
+// .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon {
+//   position: relative;
+//   top: 3px;
+//   font-size: 100%;
+// }
 
-.cdk-drag-preview {
-  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-  box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  font-size: 12px;
-  margin-left: 1rem !important;
-}
+// .mat-form-field-appearance-legacy .mat-form-field-infix {
+//   text-indent: 5px;
+//   font-size: 14px;
+// }
 
-.cdk-drag-placeholder {
-  opacity: 0;
-}
+// .cdk-drag-preview {
+//   padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+//   box-sizing: border-box;
+//   border-radius: 4px;
+//   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+//     0 8px 10px 1px rgba(0, 0, 0, 0.14),
+//     0 3px 14px 2px rgba(0, 0, 0, 0.12);
+//   font-size: 12px;
+//   margin-left: 1rem !important;
+// }
 
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
+// .cdk-drag-placeholder {
+//   opacity: 0;
+// }
 
-.cdk-drop-list-dragging .mat-row:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
+// .cdk-drag-animating {
+//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
+
+// .cdk-drop-list-dragging .mat-row:not(.cdk-drag-placeholder) {
+//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
 
 body {
   background-color: black;
   color: white;
   overflow: hidden;
+  font-family: 'Monsterrat';
 }
 
 button:focus {
@@ -156,4 +162,18 @@ button:focus {
 
 .highlight {
   background: #359aca;
+}
+
+.mdc-data-table__header-row {
+  height: 0px !important;
+  padding-bottom: 5px !important;
+}
+
+.mdc-data-table__header-cell {
+  border-bottom: 0.5px solid grey !important;
+}
+
+.mdc-data-table__cell {
+  border: none !important;
+  padding-bottom: 10px !important;
 }

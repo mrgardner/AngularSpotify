@@ -6,7 +6,7 @@ import { SpotifyStatusBarComponent } from "@dashboard/components/spotify-status-
 import { NewPlaylistDialogComponent } from "./new-playlist-dialog/new-playlist-dialog.component";
 import { SpotifyNavigationMenuComponent } from "./spotify-navigation-menu/spotify-navigation-menu.component";
 
-export const dashboardComponents: any[] = [
+export const dashboardComponents = [
   DashboardComponent,
   DeviceModalComponent,
   DisplayUserComponent,

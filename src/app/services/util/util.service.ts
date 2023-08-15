@@ -16,7 +16,7 @@ export class UtilService {
 
   shortenString(string: string, stringLength: number): string {
     if (string.length > stringLength) {
-      return string.substr(0, stringLength) + '...';
+      return string.substring(0, stringLength) + '...';
     } else {
       return string;
     }

@@ -24,6 +24,13 @@ export interface Playlist {
   selectedUrl: string;
 }
 
+export interface PlaylistInfo {
+  id: string;
+  name: string;
+  image: string;
+  owner: string;
+}
+
 export interface SpotifyPlaylistRespose {
   items: Array<Playlist>;
   next: string;

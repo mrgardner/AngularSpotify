@@ -1,7 +1,46 @@
 .loadingContainer {
   position: absolute;
-  top: 42%;
-  left: 47%;
+  stroke: white;
+  top: 40%;
+  left: 45%;
+}
+
+.albumImage {
+  width: 40px;
+}
+
+.titleContainer {
+  display: flex;
+}
+
+.titleTextContainer {
+  margin-left: 10px;
+}
+
+.mat-column-dupTrack {
+  width: 0% !important;
+}
+
+.mat-column-trackPlaying {
+  width: 0% !important;
+  text-align: right;
+  padding: 0;
+}
+
+.mat-column-title {
+  width: 35% !important;
+}
+
+.mat-column-album {
+  width: 25% !important;
+}
+
+.mat-column-added_at {
+  width: 10% !important;
+}
+
+.mat-column-time {
+  width: 5% !important;
 }
 
 .playlist {
@@ -22,8 +61,22 @@
 
     .playlistInfoSection {
       margin-left: 2em;
-      margin-top: 2em;
+      margin-top: 1em;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .playlistName {
+        margin-top: 0.3em;
+        margin-bottom: 0.5em;
+        font-weight: 800;
+        font-size: 5em !important;
+      }
+
+      .playlistOwner {
+        font-weight: 800;
+      }
 
       .button-and-follower-section {
         margin-top: 1rem;
@@ -37,16 +90,10 @@
             border: 1px solid white;
           }
         }
-
-        .follower-container {
-          width: 10%;
-          text-align: right;
-          margin-right: 1rem;
-        }
       }
 
       span {
-        font-size: 12px;
+        font-size: 14px;
       }
     }
   }
@@ -70,14 +117,6 @@
 table {
   width: 100%;
   background-color: #2d2929;
-
-  .trackPlayingHeader {
-    width: 35px;
-  }
-
-  .dupliateTrackHeader {
-    width: 25px;
-  }
 
   .trackPlayIcons {
     width: 45px;
@@ -109,18 +148,6 @@ table {
   }
 }
 
-::ng-deep td.mat-cell:first-of-type,
-td.mat-footer-cell:first-of-type,
-th.mat-header-cell:first-of-type {
-  padding-left: 0 !important;
-}
-
-::ng-deep td.mat-cell:last-of-type,
-td.mat-footer-cell:last-of-type,
-th.mat-header-cell:last-of-type {
-  padding-right: 0 !important;
-}
-
 ::ng-deep .mat-checkbox .mat-checkbox-frame {
   border-color: white;
 }
@@ -136,3 +163,20 @@ th.mat-header-cell:last-of-type {
     height: 75.9vh;
   }
 }
+
+.trackTitle,
+.trackDate,
+.trackDuration,
+.trackAlbum {
+  font-size: 14px;
+}
+
+.trackArtist {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+p {
+  margin: 0;
+}
+

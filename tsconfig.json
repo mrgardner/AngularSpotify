@@ -8,7 +8,7 @@
         "src/app/*"
       ],
       "@environments/*": [
-        "environments/*"
+        "src/environments/*"
       ],
       "@collections/*": [
         "src/collections/*"

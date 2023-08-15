@@ -12,7 +12,7 @@ import { UtilService } from '@app/services/util/util.service';
 import { selectRouteParams } from '@app/store/selectors/router.selectors';
 import { Store } from '@ngrx/store';
 import { PlaylistApiActions } from '@playlist/store/actions/playlist.action';
-import { selectPlaylist } from '@playlist/store/selectors/playlist.selector';
+import { selectFollowers, selectImage, selectLoaded, selectLoading, selectName, selectOwner, selectPageSize, selectPublic, selectTracks, selectTracksLength } from '@playlist/store/selectors/playlist.selector';
 import { TrackService } from '@tracks/services/track/track.service';
 import { Observable, Subscription } from 'rxjs';
 
@@ -28,24 +28,33 @@ export class PlaylistTableComponent implements OnInit {
   public checkDuplicate: boolean;
   public playlist: Playlist;
   public currentTrack: SortedTrack;
-  public displayedColumns: string[] = ['dupTrack', 'trackPlaying', 'title', 'artist', 'album', 'added_at', 'time'];
+  public displayedColumns: string[] = ['trackPlaying', 'title', 'album', 'added_at', 'time'];
   public selection: SelectionModel<SortedTrack> = new SelectionModel<SortedTrack>(true, []);
-  public itemCount: number;
-  public pageSize: number;
+  public tracksLength$: Observable<number>;
+  public pageSize$: Observable<number>;
   public state: SpotifySongResponse;
-  public endOfChain: boolean;
   public routerSubscription: Subscription;
   public checkDuplicateSubscription: Subscription;
   public currentSongStateSubscription: Subscription;
   public currentTrackSubscription: Subscription;
   public showPlayButtonSubscription: Subscription;
   public filterSubscription: Subscription;
-  public test: string;
-  public filterText: string;
+  public test: string = '';
+  public filterText: string = '';
   public draggedString: string;
   public showPlayButtonText: boolean;
   public playlistTracks$: Observable<SortedTrack[]>;
   public dataSource = new MatTableDataSource<any>();
+  public loading$: Observable<boolean>;
+  public loaded$: Observable<boolean>;
+  public followers$: Observable<number>;
+  public public$: Observable<boolean>;
+  public owner$: Observable<string>;
+  public name$: Observable<string>;
+  public image$: Observable<string>;
+
+  public test1: number = 0;
+  public test2: number = 20;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -83,10 +92,6 @@ export class PlaylistTableComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.filterText = '';
-    // this.dataSource = new PlaylistDataSourceService(this.store);
-    this.test = '';
-
     this.playlist = {
       collaborative: false,
       external_urls: {
@@ -122,36 +127,26 @@ export class PlaylistTableComponent implements OnInit {
       selected: false,
       selectedUrl: '',
     }
-    this.store.select(selectPlaylist).subscribe((playlists: SortedTrack[]) => {
-      console.log(playlists)
-      if (playlists.length > 0) {
-        // TODO: Figure out way to trigger loading data on playlist change
-        // Currently only loads first playlist selected
-        this.dataSource.data = playlists;
-        this.pageSize = playlists[0].size;
-        this.itemCount = playlists[0].total;
+
+    this.store.select(selectTracks).subscribe((tracks: SortedTrack[]) => {
+      if (tracks.length > 0) {
+        this.dataSource.data = tracks;
       }
-      // this.table.renderRows();
     });
+    this.followers$ = this.store.select(selectFollowers);
+    this.loaded$ = this.store.select(selectLoaded);
+    this.owner$ = this.store.select(selectOwner);
+    this.image$ = this.store.select(selectImage);
+    this.name$ = this.store.select(selectName);
+    this.public$ = this.store.select(selectPublic);
+    this.pageSize$ = this.store.select(selectPageSize);
+    this.tracksLength$ = this.store.select(selectTracksLength);
     this.store.select(selectRouteParams).subscribe((routeParam) => {
-      console.log(routeParam);
-      // this.dataSource.loadTracks(routeParam.playlistId);
       this.store.dispatch(PlaylistApiActions.loadPlaylist({ payload: routeParam.playlistId }));
+      this.store.dispatch(PlaylistApiActions.loadPlaylistTracks({ payload: routeParam.playlistId }));
     });
+    this.loading$ = this.store.select(selectLoading);
 
-
-
-    // this.routerSubscription = this.route.url.pipe(switchMap((urlSegment: UrlSegment[]) => {
-    //   if (urlSegment.length === 1) {
-    //     this.dataSource.loadTracks(urlSegment[0].path);
-    //     this.endOfChain = false;
-    //     // TODO: Break this logic into playlist.effect.ts
-    //     return this.apolloService.getPlaylist(urlSegment[0].path);
-    //   } else {
-    //     this.endOfChain = true;
-    //     return of();
-    //   }
-    // })).subscribe((playlistInfo: Playlist) => this.playlist = playlistInfo);
     this.checkDuplicateSubscription = this.trackService.checkDuplicate$
       .subscribe((isDuplicate: boolean) => this.checkDuplicate = isDuplicate);
     this.currentSongStateSubscription = this.spotifyPlaybackService.currentSongState$
@@ -161,7 +156,7 @@ export class PlaylistTableComponent implements OnInit {
 
     this.filterSubscription = this.trackService.filterTrack$.subscribe((filterText: string) => {
       this.filterText = filterText;
-      // this.dataSource.filter(filterText);
+      this.dataSource.filter = filterText;
     });
 
     this.showPlayButtonSubscription = this.spotifyPlaybackService.showPlayButton$

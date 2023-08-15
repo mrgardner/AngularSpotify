@@ -5,13 +5,11 @@ import { SortedTrack } from '@app/interfaces/track/track.interface';
   providedIn: 'root'
 })
 export class TrackService {
-  public checkDuplicate$: EventEmitter<any>;
-  public currentTrack$: EventEmitter<any>;
+  public checkDuplicate$: EventEmitter<boolean>;
   public filterTrack$: EventEmitter<string>;
 
   constructor() {
     this.checkDuplicate$ = new EventEmitter();
-    this.currentTrack$ = new EventEmitter();
     this.filterTrack$ = new EventEmitter();
   }
 
@@ -24,6 +22,7 @@ export class TrackService {
   }
 
   filterDuplicateTracks(tracks: Array<SortedTrack>, args: boolean) {
+    // TODO: Clean this up
     const getNotUnique = (array: Array<SortedTrack>) => {
       const map = new Map();
       const map2 = new Map();

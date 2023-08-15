@@ -7,7 +7,7 @@
       <div class="imageContainer">
         <div>
           <div *ngIf="!currentImage" class="default-image" (click)="triggerFile()" (keyup)="triggerFile()">
-            <img alt="default album cover" src="assets/blank_album.png"/>
+            <img alt="default album cover" src="assets/images/blankAlbum.png"/>
             <div>Choose image</div>
             <input type="file" name="file" id="file" class="inputfile" (change)="getFile($event)" accept=".jpg,.jpeg"/>
           </div>

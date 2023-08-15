@@ -1,11 +1,19 @@
-import { createSelector } from "@ngrx/store";
-import { getPlaylistState } from ".";
-import { PlaylistState } from "../model";
-import { PlaylistTracksState } from "../model/playlist.model";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { PlaylistState } from "../model/playlist.model";
 
-export const getPlaylistTracksState = createSelector(getPlaylistState, (state: PlaylistState) => state.playlistTracks);
+export const getPlaylistState = createFeatureSelector<PlaylistState>(
+  'playlist'
+);
 
-export const selectPlaylistError = createSelector(getPlaylistTracksState, (state: PlaylistTracksState) => state.error);
-export const selectPlaylist = createSelector(getPlaylistTracksState, (state: PlaylistTracksState) => state.data);
-export const selectPlaylistLoading = createSelector(getPlaylistTracksState, (state: PlaylistTracksState) => state.loading);
-export const selectPlaylistLoaded = createSelector(getPlaylistTracksState, (state: PlaylistTracksState) => state.loaded);
+export const selectError = createSelector(getPlaylistState, (state: PlaylistState) => state.error);
+export const selectTracks = createSelector(getPlaylistState, (state: PlaylistState) => state.tracks);
+export const selectPageSize = createSelector(getPlaylistState, (state: PlaylistState) => state.pageSize);
+export const selectTracksLength = createSelector(getPlaylistState, (state: PlaylistState) => state.tracksLength);
+export const selectLoading = createSelector(getPlaylistState, (state: PlaylistState) => state.loading);
+export const selectLoaded = createSelector(getPlaylistState, (state: PlaylistState) => state.loaded);
+export const selectFollowers = createSelector(getPlaylistState, (state: PlaylistState) => state.followers);
+export const selectId = createSelector(getPlaylistState, (state: PlaylistState) => state.id);
+export const selectImage = createSelector(getPlaylistState, (state: PlaylistState) => state.image);
+export const selectName = createSelector(getPlaylistState, (state: PlaylistState) => state.name);
+export const selectOwner = createSelector(getPlaylistState, (state: PlaylistState) => state.owner);
+export const selectPublic = createSelector(getPlaylistState, (state: PlaylistState) => state.public);

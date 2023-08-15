@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UserApiActions } from '@dashboard/store/actions/user.action';
-import { DashboardState } from '@dashboard/store/model';
 import { getUserDisplayName } from '@dashboard/store/selectors/user.selectors';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -13,7 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class DisplayUserComponent implements OnInit {
   public displayName$: Observable<string>;
-  constructor(private store: Store<DashboardState>) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.displayName$ = this.store.select(getUserDisplayName);

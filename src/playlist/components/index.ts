@@ -1,9 +1,9 @@
-import { HighlightSearchComponent } from "./highlight-search/highlight-search.component";
+import { HighlightDirective } from "./playlist-table/highlight-search.directive";
 import { PlaylistTableComponent } from "./playlist-table/playlist-table.component";
 import { TrackFilterComponent } from "./track-filter/track-filter.component";
 
-export const playlistComponents: any[] = [
-  HighlightSearchComponent,
+export const playlistComponents = [
   PlaylistTableComponent,
-  TrackFilterComponent
+  TrackFilterComponent,
+  HighlightDirective
 ];

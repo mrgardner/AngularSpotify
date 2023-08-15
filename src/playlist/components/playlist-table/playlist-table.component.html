@@ -1,15 +1,19 @@
-<div class="playlist">
+<div *ngIf="loaded$ | async" class="playlist">
   <div class="playlistHeader">
     <div class="playlistCoverSection">
-      <!-- TODO: FIX -->
-      <!-- <img class="playlistCoverImage" alt="playlistCoverImage" [src]="playlist.images[0].url" /> -->
+      <img class="playlistCoverImage" alt="playlistCoverImage" [src]="image$ | async" />
     </div>
     <div class="playlistInfoSection">
-      <span>PLAYLIST</span>
-      <h1>{{playlist.name}}</h1>
-      <div>Created by {{playlist.owner.display_name}} * {{playlist.tracks.total}} <span *ngIf="playlist.tracks.total > 1 || playlist?.tracks?.total === 0">songs</span><span *ngIf="tracks.length === 1">song</span></div>
+      <span>{{(public$ | async) ? 'PUBLIC' : 'PRIVATE'}} PLAYLIST</span>
+      <h1 class="playlistName">{{name$ | async}}</h1>
+      <span>
+        <span class="playlistOwner">{{owner$ | async}}</span>
+        <span *ngIf="(followers$ | async)! > 0"> • {{followers$ | async}} {{((followers$ | async)! > 1) ? 'likes' : 'like'}}</span>
+        <span> • {{tracksLength$ | async}} {{((tracksLength$ | async)! > 1 || (tracksLength$ | async) === 0) ? 'songs' : 'song'}}</span>
+        <!--  TODO: FIX <span>total playlist time duration</span> -->
+      </span>
       <!-- TODO: Improve logic for these buttons-->
-      <div class="button-and-follower-section">
+      <!-- <div class="button-and-follower-section">
         <div class="button-container">
           <button mat-flat-button color="primary" [disabled]="!currentTrack" (click)="startListening()">{{startListeningText()}}</button>
           <button mat-icon-button [matMenuTriggerFor]="menu" class="more-options-button">
@@ -20,11 +24,7 @@
             <div>Something 2</div>
           </mat-menu>
         </div>
-        <div class="follower-container">
-          <div>Followers</div>
-          <div>{{playlist.followers.total}}</div>
-        </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <!-- <div *ngIf="tracks.length === 0">
@@ -40,7 +40,7 @@
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" cdkDropList
     [cdkDropListData]="dataSource"
      matSortDisableClear class="mat-elevation-z8">
-      <ng-container matColumnDef="dupTrack" *ngIf="checkDuplicate">
+      <!-- <ng-container matColumnDef="dupTrack" *ngIf="checkDuplicate">
         <th mat-header-cell *matHeaderCellDef class="dupliateTrackHeader">Dup</th>
         <td mat-cell *matCellDef="let row">
           <mat-checkbox (click)="$event.stopPropagation()"
@@ -48,16 +48,19 @@
             [checked]="selection.isSelected(row)">
           </mat-checkbox>
         </td>
-      </ng-container>
+      </ng-container> -->
 
       <ng-container matColumnDef="trackPlaying">
         <th mat-header-cell *matHeaderCellDef class="trackPlayingHeader">#</th>
-        <td mat-cell *matCellDef="let element; let i = index" class="trackPlayIcons" (mouseenter)="hideTrackNumber(element)" (mouseleave)="showTrackNumber(element)">
+        <!-- ADD BACK BELOW -->
+        <!-- (mouseenter)="hideTrackNumber(element)" (mouseleave)="showTrackNumber(element)" -->
+        <td mat-cell *matCellDef="let element; let i = index" class="trackPlayIcons">
           <span *ngIf="element.showTrackNumber && element.title !== 'Plan B'">{{i + 1}}</span>
           <!-- <mat-icon class="tatt" *ngIf="element.title === 'Plan B'" (click)="playSong(element)">play_arrow</mat-icon> -->
 
           <div *ngIf="currentTrack">
-            <mat-icon *ngIf="element.showPlayButton && currentTrack['name'] !== element.title" (click)="playSong(element)">play_arrow</mat-icon>
+            <!-- TODO FIX -->
+            <!-- <mat-icon *ngIf="element.showPlayButton && currentTrack['name'] !== element.title" (click)="playSong(element)">play_arrow</mat-icon> -->
             <!-- <div *ngIf="(currentTrack['name'] === element.title)" (mouseleave)="hidePauseButton(element)" (mouseenter)="showPauseButton(element)">
               <mat-icon *ngIf="!element.showPauseButton">volume_up</mat-icon>
               <mat-icon *ngIf="element.showPauseButton" (click)="pauseSong()">pause</mat-icon>
@@ -69,21 +72,42 @@
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
         <td mat-cell *matCellDef="let element">
-            <app-highlight-search [text]="utilService.shortenString(element.title, 40)" [searchText]="filterText"></app-highlight-search>
+          <!-- TODO See Yours Truly in MONSTERCAT Playlist for shorten length -->
+          <div class="titleContainer">
+            <div>
+              <img class="albumImage" [src]="element.album_image" />
+            </div>
+            <div class="titleTextContainer">
+              <p
+                class="trackTitle"
+                highlightSearch
+                [text]="(element.title | slice:test1:test2) + (element.title.length > test2 ? '...' : '')"
+                [searchText]="filterText"
+                classToApply="highlight">
+              </p>
+              <p
+                class="trackArtist"
+                highlightSearch
+                [text]="(element.artist | slice:test1:test2) + (element.artist.length > test2 ? '...' : '')"
+                [searchText]="filterText"
+                classToApply="highlight">
+              </p>
+            </div>
+          </div>
           </td>
       </ng-container>
-    
-      <ng-container matColumnDef="artist">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Artist</th>
-        <td mat-cell *matCellDef="let element">
-            <app-highlight-search [text]="utilService.shortenString(element.artist, 20)" [searchText]="filterText"></app-highlight-search>
-        </td>
-      </ng-container>
-    
+
       <ng-container matColumnDef="album">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Album</th>
         <td mat-cell *matCellDef="let element">
-            <app-highlight-search [text]="utilService.shortenString(element.album_name, 20)" [searchText]="filterText"></app-highlight-search>
+            <!-- TODO See On my Own in MONSTERCAT Playlist for shorten length -->
+            <p
+              class="trackAlbum"
+              highlightSearch 
+              [text]="(element.album_name | slice:test1:test2) + (element.album_name.length > test2 ? '...' : '')" 
+              [searchText]="filterText" 
+              classToApply="highlight">
+            </p>
         </td>
       </ng-container>
 
@@ -91,14 +115,18 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           <mat-icon>calendar_today</mat-icon>
         </th>
-        <td mat-cell *matCellDef="let element"> {{element.added_at}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span class="trackDate">{{element.added_at}}</span>
+        </td>
       </ng-container>
     
       <ng-container matColumnDef="time">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           <mat-icon>watch_later</mat-icon>
         </th>
-        <td mat-cell *matCellDef="let element"> {{utilService.prettyMs(element.time)}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span class="trackDuration">{{utilService.prettyMs(element.time)}}</span>
+        </td>
       </ng-container>
 
 
@@ -109,6 +137,7 @@
       </tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [length]="itemCount" [pageSize]="pageSize" (page)="loadTracks()"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" [length]="tracksLength$ | async" [pageSize]="pageSize$ | async" (page)="loadTracks()"></mat-paginator>
   </div>
 </div>
+<mat-spinner class="loadingContainer" *ngIf="loading$ | async"></mat-spinner>

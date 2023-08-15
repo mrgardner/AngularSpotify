@@ -10,12 +10,8 @@ import { LikedSongsComponent } from '@collections/components/liked-songs/liked-s
 import { MadeForYouComponent } from '@collections/components/made-for-you/made-for-you.component';
 import { PlaylistsComponent } from '@collections/components/playlists/playlists.component';
 import { PodcastsComponent } from '@collections/components/podcasts/podcasts.component';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { collectionComponents } from './components';
 import { collectionPipes } from './pipes';
-import { effects } from './store/effects';
-import { reducers } from './store/reducers';
 
 const ROUTES: Routes = [
   {
@@ -38,9 +34,7 @@ const ROUTES: Routes = [
   imports: [
     AngularMaterialModule,
     AngularModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('collections', reducers),
-    EffectsModule.forFeature(effects)
+    RouterModule.forChild(ROUTES)
   ],
   exports: [
     ...collectionComponents,

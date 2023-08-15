@@ -1,6 +1,7 @@
 import { Album } from '@app/interfaces/album/album.interface';
 import { Artist } from '@app/interfaces/artist/artist.interface';
 import { AddedBy, ExternalIds, ExternalUrls, VideoThumbnail } from '@app/interfaces/misc/misc.interface';
+import { Image } from '../image/image.interface';
 
 export interface TrackResponse {
   total: number;
@@ -10,9 +11,11 @@ export interface TrackResponse {
 
 export interface Trrack {
   added_at: string;
+  is_local: boolean;
   track: {
     album: {
       name: string;
+      images: Image[]
     };
     artists: [Artist];
     name: string;
@@ -25,6 +28,7 @@ export interface SortedTrack {
   title: string;
   artist: string;
   album_name: string;
+  album_image: string;
   added_at: string;
   time: number;
   showPlayButton: boolean;
@@ -32,14 +36,10 @@ export interface SortedTrack {
   showTrackNumber: boolean;
   duration: number;
   uri: string;
-  total: number;
-  size: number;
   filterText: string;
   remove: boolean;
-  artists: Array<Artist>,
-  name: string;
   is_local: boolean;
-  track: Track | null;
+
 }
 
 export interface Track {

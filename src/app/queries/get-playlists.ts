@@ -7,6 +7,12 @@ export const PLAYLIST_NAME = gql`
       items {
         name
         id
+        images {
+          url
+        }
+        owner {
+          display_name
+        }
       }
       next
     }
@@ -16,20 +22,36 @@ export const PLAYLIST_NAME = gql`
 export const PLAYLIST_INFO = gql`
  query Playlist($playlistID: String!) {
     playlist(playlistID: $playlistID) {
-      name
       id
-      owner {
-        display_name
+    name
+    public
+    followers {
+      total
+    }
+    owner {
+      display_name
+    }
+    images {
+      url
+    }
+    tracks {
+      total
+      next
+      limit
+      items {
+        added_at
+        is_local
+        track {
+          duration_ms
+          name
+          uri
+          album {
+            name
+           
+          }
+        }
       }
-      tracks {
-        total
-      }
-      images {
-        url
-      }
-      followers {
-        total
-      }
+    }
     }
   }
 `;
@@ -41,9 +63,13 @@ export const PLAYLIST_TRACKS = gql`
       limit
       items {
         added_at
+        is_local
         track {
           album {
             name
+            images {
+              url
+            }
           }
           artists {
             name

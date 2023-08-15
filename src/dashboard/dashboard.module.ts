@@ -1,19 +1,11 @@
-import { HttpHeaders } from "@angular/common/http";
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { AuthGuard } from '@app/guards/auth/auth.guard';
 import { AngularMaterialModule } from '@app/modules/angular-material.module';
 import { AngularModule } from '@app/modules/angular.module';
 import { dashboardServices } from '@dashboard/services';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { APOLLO_OPTIONS } from "apollo-angular";
-import { HttpLink } from 'apollo-angular/http';
 import { dashboardComponents } from './components';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { effects } from './store/effects';
-import { reducers } from './store/reducers';
 
 export const ROUTES: Routes = [
   {
@@ -48,36 +40,10 @@ export const ROUTES: Routes = [
   imports: [
     AngularModule,
     AngularMaterialModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('dashboard', reducers),
-    EffectsModule.forFeature(effects),
+    RouterModule.forChild(ROUTES)
   ],
   providers: [
-    ...dashboardServices,
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink) {
-        const http = httpLink.create({ uri: 'http://localhost:4000/graphql' });
-        console.log(sessionStorage.getItem('spotifyToken'));
-        const middleware = new ApolloLink((operation, forward) => {
-          operation.setContext({
-            headers: new HttpHeaders().set(
-              'authorization',
-              `Bearer ${sessionStorage.getItem('spotifyToken') || null}`,
-            ),
-          });
-          return forward(operation);
-        });
-
-        const link = middleware.concat(http);
-
-        return {
-          link,
-          cache: new InMemoryCache(),
-        };
-      },
-      deps: [HttpLink],
-    },
+    ...dashboardServices
   ],
   exports: [
     ...dashboardComponents

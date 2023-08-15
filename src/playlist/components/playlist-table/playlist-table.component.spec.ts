@@ -12,12 +12,10 @@ import { PlaylistTableComponent } from '@playlist/components/playlist-table/play
 import { TrackService } from '@tracks/services/track/track.service';
 import { Apollo } from 'apollo-angular';
 import { of } from 'rxjs';
-import { PlaylistDataSourceService } from 'src/playlist/services/playlist-data-source/playlist-data-source.service';
 
 describe('PlaylistTableComponent', () => {
   let component: PlaylistTableComponent;
   let fixture: ComponentFixture<PlaylistTableComponent>;
-  let dataSource: PlaylistDataSourceService;
   let trackService: TrackService;
   let spotifyPlaybackService: SpotifyPlaybackService;
   let router: Router;
@@ -49,7 +47,6 @@ describe('PlaylistTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlaylistTableComponent);
     component = fixture.componentInstance;
-    dataSource = TestBed.inject(PlaylistDataSourceService);
     trackService = TestBed.inject(TrackService);
     spotifyPlaybackService = TestBed.inject(SpotifyPlaybackService);
     router = TestBed.inject(Router);
@@ -88,13 +85,10 @@ describe('PlaylistTableComponent', () => {
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
     component.loadTracks();
-    component.ngAfterContentInit();
-    expect(component.itemCount).toEqual(0);
+    expect(component.tracksLength$).toEqual(0);
   });
 
   it('should check ngAfterContentInit when dataSource is not defined', () => {
-    component.ngAfterContentInit();
-    expect(component.endOfChain).toBeTruthy();
   });
 
   it('should check ngOnInit method router events', () => {
@@ -167,7 +161,6 @@ describe('PlaylistTableComponent', () => {
       }
     ]);
     component.ngOnInit();
-    expect(component.endOfChain).toBeFalsy();
   });
 
   it('should check ngOnInit method router events else case', () => {
@@ -181,7 +174,6 @@ describe('PlaylistTableComponent', () => {
       }
     ]);
     component.ngOnInit();
-    expect(component.endOfChain).toBeTruthy();
   });
 
   it('should check ngOnInit method trackService checkDuplicate', () => {
@@ -318,7 +310,6 @@ describe('PlaylistTableComponent', () => {
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
     component.loadTracks();
-    component.ngAfterContentInit();
     expect(component.tracks.length).toEqual(1);
   });
 
@@ -337,9 +328,8 @@ describe('PlaylistTableComponent', () => {
     spyOn(apolloService, 'getTracksFromPlaylist').and.returnValue(of(mockTracks));
     component.ngOnInit();
     component.loadTracks();
-    component.ngAfterContentInit();
     expect(component.tracks.length).toEqual(0);
-    expect(component.itemCount).toEqual(0);
+    expect(component.tracksLength$).toEqual(0);
   });
 
   it('should check getDisplayedColumns method with checkDuplicate true', () => {

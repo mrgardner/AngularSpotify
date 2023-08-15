@@ -5,23 +5,31 @@ import { ApolloService } from "@app/services/apollo/apollo.service";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
-import { catchError, exhaustMap, map, tap, withLatestFrom } from "rxjs/operators";
+import { catchError, map, switchMap, tap, withLatestFrom } from "rxjs/operators";
 import { PlaylistsApiActions } from "../actions/playlists.action";
 import { selectPlaylist, selectPlaylists } from "../selectors/playlists.selectors";
 
 @Injectable()
-export class PlaylistEffects {
+export class PlaylistsEffects {
   constructor(private actions$: Actions, private apolloService: ApolloService, private store: Store, private router: Router) { }
 
   loadPlaylists$ = createEffect(() => this.actions$.pipe(
     ofType(PlaylistsApiActions.loadPlaylists),
     withLatestFrom(this.store.select(selectPlaylists)),
     // TODO: ADD TYPE
-    exhaustMap((res: any) => {
+    switchMap((res: any) => {
       const playlists = res[1];
       return this.apolloService.getPlaylists(playlists.length).pipe(
         map((response: SpotifyPlaylistRespose) => {
-          const updatePlaylists = playlists.concat(response.items);
+          const sortedTracks = response.items.map((t) => {
+            return {
+              id: t.id,
+              name: t.name,
+              image: t.images.length > 0 ? t.images[0].url : '',
+              owner: t.owner.display_name
+            }
+          });
+          const updatePlaylists = playlists.concat(sortedTracks);
           const next = response.next !== null ? response.next.split('v1/')[1] : '';
 
           return PlaylistsApiActions.loadPlaylistsSuccess({
@@ -40,6 +48,11 @@ export class PlaylistEffects {
 
   updateSelectedPlaylist$ = createEffect(() => this.actions$.pipe(
     ofType(PlaylistsApiActions.updateSelectedPlaylist),
+    switchMap(() => of(PlaylistsApiActions.navigateToPlaylist()))
+  ));
+
+  navigateToPlaylist$ = createEffect(() => this.actions$.pipe(
+    ofType(PlaylistsApiActions.navigateToPlaylist),
     withLatestFrom(this.store.select(selectPlaylist)),
     tap((latest: any) => this.router.navigate(['dashboard', 'playlist', encodeURI(latest[1].id)]))
   ), { dispatch: false });

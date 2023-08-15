@@ -1,18 +1,18 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { AuthApiActions } from '@app/store/actions/auth.action';
+import { Store } from '@ngrx/store';
 import { Observable, throwError, } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotifyInterceptorService implements HttpInterceptor {
-  constructor(private router: Router) { }
+  constructor(private store: Store) { }
 
   // TODO: Fix return types
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const graphqlUrl = req.url.includes('/graphql');
     const spotifyUrl = req.url.includes('api.spotify.com/v1/');
     // TODO: Add check for content-type of images
     if (spotifyUrl) {
@@ -22,28 +22,28 @@ export class SpotifyInterceptorService implements HttpInterceptor {
           'Content-Type': 'application/json'
         }
       });
-    } else if (graphqlUrl) {
-      next.handle(req).subscribe(event => {
+    }
+
+    return next.handle(req).pipe(
+      map((event) => {
         if (event instanceof HttpResponse) {
           if (event.body.errors) {
             event.body.errors.forEach((error: Error) => {
               if (error.message === "Error: Token expired") {
-                sessionStorage.clear();
-                this.router.navigate(['login']);
+                this.store.dispatch(AuthApiActions.logout());
               }
             })
           }
         }
-      })
-    }
-    return next.handle(req)
-      .pipe(catchError((err: HttpErrorResponse) => {
+        return event;
+      }),
+      catchError((err: HttpErrorResponse) => {
         const errorMessage = `Error Code: ${err.status} Message: ${err.message}`
         if (err.status === 401) {
-          sessionStorage.clear();
-          this.router.navigate(['login']);
+          this.store.dispatch(AuthApiActions.logout());
         }
         return throwError(errorMessage)
-      }))
+      })
+    )
   }
 }

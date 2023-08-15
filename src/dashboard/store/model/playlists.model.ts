@@ -1,7 +1,7 @@
-import { Playlist } from "@app/interfaces/playlist/playlist.interface";
+import { PlaylistInfo } from "@app/interfaces/playlist/playlist.interface";
 
 export interface PlaylistsState {
-  playlists: Playlist[];
+  playlists: PlaylistInfo[];
   loading: boolean;
   loaded: boolean;
   next: string;
@@ -13,7 +13,7 @@ export interface PlaylistsState {
 
 export interface PlaylistsPayload {
   next: string;
-  playlists: Playlist[];
+  playlists: PlaylistInfo[];
   total: number;
   canLoadMore: boolean;
 }

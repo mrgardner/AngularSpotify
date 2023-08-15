@@ -7,8 +7,6 @@ import { LoginComponent } from '@app/components/login/login.component';
 import { ApolloService } from '@app/services/apollo/apollo.service';
 import { SpotifyService } from '@app/services/spotify/spotify.service';
 import { SpotifyNavigationMenuComponent } from '@dashboard/components/spotify-navigation-menu/spotify-navigation-menu.component';
-import { StatusBarService } from '@dashboard/services/status-bar/status-bar.service';
-import { PlaylistService } from '@playlist/services';
 import { Apollo } from 'apollo-angular';
 import { of } from 'rxjs';
 
@@ -16,10 +14,8 @@ describe('SpotifyNavigationMenuComponent', () => {
   let component: SpotifyNavigationMenuComponent;
   let fixture: ComponentFixture<SpotifyNavigationMenuComponent>;
   let router: Router;
-  let statusBarService: StatusBarService;
   let spotifyService: SpotifyService;
   let apolloService: ApolloService;
-  let playlistService: PlaylistService;
   const routes: Routes = [
     { path: 'login', component: LoginComponent },
   ];
@@ -45,9 +41,7 @@ describe('SpotifyNavigationMenuComponent', () => {
     fixture = TestBed.createComponent(SpotifyNavigationMenuComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    statusBarService = TestBed.inject(StatusBarService);
     spotifyService = TestBed.inject(SpotifyService);
-    playlistService = TestBed.inject(PlaylistService);
     apolloService = TestBed.inject(ApolloService);
   });
 

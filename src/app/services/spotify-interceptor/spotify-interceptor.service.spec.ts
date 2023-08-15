@@ -1,16 +1,14 @@
 
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Type } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SpotifyInterceptorService } from '@app/services/spotify-interceptor/spotify-interceptor.service';
-import { UtilService } from '@app/services/util/util.service';
 
 describe('SpotifyInterceptorService', () => {
   let spotifyInterceptorService: SpotifyInterceptorService;
-  let httpMock: HttpTestingController;
-  let http: HttpClient;
-  let utilService: UtilService;
+  // let httpMock: HttpTestingController;
+  // let http: HttpClient;
+  // let utilService: UtilService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,9 +26,9 @@ describe('SpotifyInterceptorService', () => {
     });
 
     spotifyInterceptorService = TestBed.inject(SpotifyInterceptorService);
-    httpMock = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
-    http = TestBed.inject(HttpClient);
-    utilService = TestBed.inject(UtilService);
+    // httpMock = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    // http = TestBed.inject(HttpClient);
+    // utilService = TestBed.inject(UtilService);
   });
 
   // TODO TESTING: Fix
