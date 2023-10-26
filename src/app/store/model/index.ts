@@ -1,5 +1,7 @@
-import { AlbumState } from "@collections/store/model/album.model";
+import { AlbumState } from "@dashboard/store/model/albums.model";
+import { ArtistsState } from "@dashboard/store/model/artists.model";
 import { PlaylistsState } from "@dashboard/store/model/playlists.model";
+import { PodcastsState } from "@dashboard/store/model/podcasts.model";
 import { UserState } from "@dashboard/store/model/user.model";
 import { RouterReducerState } from "@ngrx/router-store";
 import { PlaylistState } from "@playlist/store/model/playlist.model";
@@ -12,5 +14,7 @@ export interface AppState {
   playlists: PlaylistsState,
   user: UserState,
   playlist: PlaylistState,
-  albums: AlbumState
+  albums: AlbumState,
+  artists: ArtistsState
+  podcasts: PodcastsState
 }

@@ -10,6 +10,21 @@
   font-size: 100px;
 }
 
+.signInSection {
+  color: white;
+  right: 0;
+  position: absolute;
+  
+  .mat-icon {
+    font-size: 30px;
+    width: 2rem;
+    height: 2rem;
+    color: white;
+    background-color: #514848;
+    border-radius: 50%;
+  }
+}
+
 
 .mat-drawer {
   width: 250px;

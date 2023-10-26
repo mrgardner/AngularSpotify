@@ -12,7 +12,9 @@ export const PLAYLIST_NAME = gql`
         }
         owner {
           display_name
+          id
         }
+        type
       }
       next
     }

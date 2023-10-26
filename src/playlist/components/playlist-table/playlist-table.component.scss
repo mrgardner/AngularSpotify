@@ -146,6 +146,16 @@ table {
     border-color: #424242;
     height: 50px;
   }
+
+  .mat-mdc-header-cell {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    padding: .5em 0 .5em 0;
+
+    .mat-icon {
+      height: 17px !important;
+    }
+  }
 }
 
 ::ng-deep .mat-checkbox .mat-checkbox-frame {
@@ -164,16 +174,34 @@ table {
   }
 }
 
-.trackTitle,
+.trackTitle {
+  font-size: 14px;
+  color: white;
+}
+
 .trackDate,
 .trackDuration,
-.trackAlbum {
-  font-size: 14px;
+.trackAlbum,
+.trackPlayingContainer {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .trackArtist {
   font-size: 12px;
   margin-top: 5px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.mat-row:hover {
+  .mat-mdc-cell {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .trackAlbum,
+  .trackArtist {
+    color: white;
+  }
 }
 
 p {

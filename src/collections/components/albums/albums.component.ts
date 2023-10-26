@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlbumApollo } from '@app/interfaces/apollo/apollo.inerface';
 import { UtilService } from '@app/services/util/util.service';
-import { AlbumApiActions } from '@collections/store/actions/album.action';
-import { selectAlbums, selectCanLoadMore, selectLoaded, selectLoading } from '@collections/store/selectors/album.selectors';
+import { selectCanLoadMoreAlbums, selectLoadedAlbums, selectLoadingAlbums } from '@dashboard/store/selectors/albums.selectors';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -22,11 +21,11 @@ export class AlbumsComponent implements OnInit {
   constructor(private store: Store, public utilService: UtilService) { }
 
   ngOnInit(): void {
-    this.store.dispatch(AlbumApiActions.album());
-    this.albumsLoaded$ = this.store.select(selectLoaded);
-    this.loading$ = this.store.select(selectLoading);
-    this.albums$ = this.store.select(selectAlbums);
-    this.canLoadMore$ = this.store.select(selectCanLoadMore);
+    // this.store.dispatch(AlbumApiActions.album());
+    this.albumsLoaded$ = this.store.select(selectLoadedAlbums);
+    this.loading$ = this.store.select(selectLoadingAlbums);
+    // this.albums$ = this.store.select(selectAlbums);
+    this.canLoadMore$ = this.store.select(selectCanLoadMoreAlbums);
   }
 
   showSearchBox(): void {
@@ -39,7 +38,7 @@ export class AlbumsComponent implements OnInit {
   }
 
   loadMoreAlbums() {
-    this.store.dispatch(AlbumApiActions.album())
+    // this.store.dispatch(AlbumApiActions.album())
   }
 
   onLoseFocus(): void {

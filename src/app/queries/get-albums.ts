@@ -11,7 +11,9 @@ export const ALBUM_INFO = gql`
           images {
             url
           }
+          type
           name
+          id
         }
       }
       total,

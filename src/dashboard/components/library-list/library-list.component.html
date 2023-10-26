@@ -1,0 +1,30 @@
+
+<!-- TODO: Add overlay when loading  -->
+<div class="playlist-list" *ngIf="loaded | async">
+  <mat-list>
+    <div *ngFor="let item of list | async">
+      <!-- TODO: improve logic for showing this icon -->
+      <!-- <mat-icon *ngIf="selectedRoute && selectedRoute.parent === 'playlist' && selectedRoute.child !== playlist.selectedUrl && currentPlaylist === playlist.id" class="playlist-playing">volume_up</mat-icon> -->
+      <!-- <div class="selected-playlist" *ngIf="(selectedPlaylist$ | async)!.id === playlist.id" color="primary"></div> -->
+      <div [ngClass]="{'selected': (selectedPlaylist$ | async)?.playlistId === item.id, 'clickable': true, 'playlist': true}" (click)="goToTracks(item)">
+        <div>
+          <img class="playlistCover" [src]="item.image === '' ?  'assets/images/blankAlbum.png' : item.image">
+        </div>
+        <div>
+          <mat-list-item >
+            <span class="playlistTitle">
+              {{utilService.shortenString(item.name, 18)}}
+            </span>
+          </mat-list-item>
+          <mat-list-item *ngIf="item.type !== 'artist'">
+            <span class="playlistOwner">
+              {{utilService.shortenString(item.ownerId, 18)}}
+            </span>
+          </mat-list-item>
+        </div>
+      </div>
+    </div>
+  </mat-list>
+  <!-- <mat-spinner *ngIf="loadMorePlaylist"></mat-spinner> -->
+  <button *ngIf="canLoadMore | async" (click)="loadMorePlaylists()">Load More</button>
+</div>

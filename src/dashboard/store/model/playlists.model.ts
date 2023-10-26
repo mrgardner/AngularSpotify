@@ -9,6 +9,7 @@ export interface PlaylistsState {
   selectedPlaylist: SelectedPlaylist;
   canLoadMore: boolean;
   total: number;
+  type: string;
 }
 
 export interface PlaylistsPayload {

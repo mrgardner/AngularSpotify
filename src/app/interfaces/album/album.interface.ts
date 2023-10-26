@@ -17,3 +17,9 @@ export interface Album {
   type: string;
   uri: string;
 }
+
+export interface AlbumInfo {
+  id: string;
+  name: string;
+  image: string;
+}

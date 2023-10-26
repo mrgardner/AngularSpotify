@@ -1,11 +1,20 @@
 <div class="app-container">
-  <app-header></app-header>
+  <!-- <app-header></app-header> -->
+  
   <div class="router-container">
     <mat-sidenav-container>
       <mat-sidenav mode="side" position="start" opened *ngIf="loggedIn$ | async">
         <app-spotify-navigation-menu></app-spotify-navigation-menu>
       </mat-sidenav>
       <mat-sidenav-content *ngIf="loggedIn$ | async">
+        <div class="signInSection" *ngIf="loggedIn$ | async">
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button (click)="logout()" mat-menu-item>LOGOUT</button> 
+          </mat-menu>
+        </div>
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>

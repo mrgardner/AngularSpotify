@@ -13,7 +13,8 @@ export const initialState: PlaylistsState = {
     name: ''
   },
   canLoadMore: true,
-  total: 0
+  total: 0,
+  type: ''
 };
 
 export const playlistsReducer = createReducer(
@@ -25,7 +26,7 @@ export const playlistsReducer = createReducer(
     };
   }),
   on(PlaylistsApiActions.loadPlaylistsSuccess, (state, { payload }) => {
-    const { playlists, next, canLoadMore } = payload
+    const { playlists, next, canLoadMore, total } = payload
     return {
       ...state,
       error: false,
@@ -33,7 +34,8 @@ export const playlistsReducer = createReducer(
       loaded: true,
       next,
       canLoadMore,
-      playlists
+      playlists,
+      total
     }
   }),
   on(PlaylistsApiActions.loadPlaylistsFail, (state, { payload }) => ({

@@ -1,17 +1,19 @@
 import { gql } from 'apollo-angular';
 
 export const FOLLOWED_ARTISTS = gql`
-  query FollowedArtists($url: String!) {
-    followedArtists(url: $url) {
+  query Artists {
+    artists {
       artists {
         items {
           images {
-            height,
-            width,
             url
           },
           name
+          id
+          type
         }
+        total
+        next
       }
     }
   }

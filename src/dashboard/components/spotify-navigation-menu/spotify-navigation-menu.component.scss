@@ -6,16 +6,15 @@
 
   .clickable {
     cursor: pointer;
-
     position: relative;
+
+     &:hover {
+        color: white;
+    }
   }
 
   .padding {
     padding: 0 0 0 10px;
-  }
-
-  .clickable:hover {
-    color: white;
   }
 
   .selected-section {
@@ -44,10 +43,11 @@
         height: auto;
       }
 
-      &:hover {
-        color: white;
-        cursor: pointer;
-      }
+
+      // &:hover {
+      //   color: white;
+      //   cursor: pointer;
+      // }
 
       div {
         align-self: center;
@@ -57,7 +57,7 @@
 
     .playlist-list {
       overflow-y: scroll;
-      height: 90%;
+      height: 77.5%;
       padding: 0 5px 0 5px;
 
       .selected {
@@ -83,21 +83,21 @@
         .playlist-selected {
           border-left: 5px solid #57d05a;
         }
-  
+
         .playlistTitle {
-          font-weight: bold;
-          color: white;
-          font-size: 12px;
+          font-size: 12px !important;
           cursor: pointer !important;
+          font-weight: bold !important;
+          color: white !important;
         }
-        
+
         .playlistOwner {
+          cursor: pointer  !important;
           font-size: 12px;
           color: grey;
           margin-top: 5px;
-          cursor: pointer  !important;
         }
-        
+
         .playlistCover {
           width: 40px;
         }
@@ -188,3 +188,4 @@
   left: 25%;
   stroke: white;
 }
+

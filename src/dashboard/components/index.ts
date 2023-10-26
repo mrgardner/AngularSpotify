@@ -3,6 +3,7 @@ import { DeviceModalComponent } from "@dashboard/components/device-modal/device-
 import { DisplayUserComponent } from "@dashboard/components/display-user/display-user.component";
 import { HeaderComponent } from "@dashboard/components/header/header.component";
 import { SpotifyStatusBarComponent } from "@dashboard/components/spotify-status-bar/spotify-status-bar.component";
+import { LibraryListComponent } from "./library-list/library-list.component";
 import { NewPlaylistDialogComponent } from "./new-playlist-dialog/new-playlist-dialog.component";
 import { SpotifyNavigationMenuComponent } from "./spotify-navigation-menu/spotify-navigation-menu.component";
 
@@ -13,5 +14,6 @@ export const dashboardComponents = [
   HeaderComponent,
   NewPlaylistDialogComponent,
   SpotifyNavigationMenuComponent,
-  SpotifyStatusBarComponent
+  SpotifyStatusBarComponent,
+  LibraryListComponent
 ];

@@ -16,20 +16,25 @@ export const environment = {
     authURI: 'https://accounts.spotify.com/authorize?',
     loginResponseType: 'token',
     clientID: '8533e022572d49caa870cfb4fb5c6e90',
-    scope: 'user-read-playback-state ' +
-      'user-read-currently-playing ' +
+    scope: 'ugc-image-upload ' +
+      'user-read-playback-state ' +
       'user-modify-playback-state ' +
-      'streaming app-remote-control ' +
+      'user-read-currently-playing ' +
+      'app-remote-control ' +
+      'streaming ' +
+      'playlist-read-private ' +
       'playlist-read-collaborative ' +
       'playlist-modify-private ' +
       'playlist-modify-public ' +
-      'playlist-read-private ' +
-      'user-read-birthdate ' +
-      'user-read-email ' +
-      'user-read-private ' +
-      'user-library-read ' +
+      'user-follow-modify ' +
       'user-follow-read ' +
-      'ugc-image-upload',
+      'user-read-playback-position ' +
+      'user-top-read ' +
+      'user-read-recently-played ' +
+      'user-library-modify ' +
+      'user-library-read ' +
+      'user-read-email ' +
+      'user-read-private ',
     redirectURI: 'http://localhost:4200/callback'
   }
 };

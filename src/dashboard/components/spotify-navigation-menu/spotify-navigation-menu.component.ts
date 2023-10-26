@@ -9,8 +9,14 @@ import { SpotifyPlaybackService } from '@app/services/spotify-playback/spotify-p
 import { UtilService } from '@app/services/util/util.service';
 import { selectRouteParams, selectUrl } from '@app/store/selectors/router.selectors';
 import { NewPlaylistDialogComponent } from '@dashboard/components/new-playlist-dialog/new-playlist-dialog.component';
+import { AlbumsApiActions } from '@dashboard/store/actions/album.action';
+import { ArtistsApiActions } from '@dashboard/store/actions/artists.action';
 import { PlaylistsApiActions } from '@dashboard/store/actions/playlists.action';
-import { selectCanLoadMore, selectPlaylists, selectPlaylistsLoaded, selectPlaylistsLoading } from '@dashboard/store/selectors/playlists.selectors';
+import { PodcastsApiActions } from '@dashboard/store/actions/podcasts.action';
+import { selectAlbums, selectAlbumsType, selectCanLoadMoreAlbums, selectLoadedAlbums, selectLoadingAlbums } from '@dashboard/store/selectors/albums.selectors';
+import { selectArtists, selectArtistsType, selectCanLoadMoreArtists, selectLoadedArtists, selectLoadingArtists } from '@dashboard/store/selectors/artists.selectors';
+import { selectCanLoadMorePlaylists, selectLoadedPlaylists, selectLoadingPlaylists, selectPlaylists, selectPlaylistsType } from '@dashboard/store/selectors/playlists.selectors';
+import { selectCanLoadMorePodcasts, selectLoadedPodcasts, selectLoadingPodcasts, selectPodcasts, selectPodcastsType } from '@dashboard/store/selectors/podcasts.selectors';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -19,7 +25,6 @@ import { Observable, Subscription } from 'rxjs';
   templateUrl: './spotify-navigation-menu.component.html',
   styleUrls: ['./spotify-navigation-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
 export class SpotifyNavigationMenuComponent implements OnInit {
   public selectedUrl$: Observable<string>;
@@ -30,6 +35,7 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   public playlistTotal$: Observable<number>;
   public nextPlaylist$: Observable<string>;
   public canLoadMore$: Observable<boolean>;
+  public type$: Observable<string>;
   public loadMorePlaylist: boolean;
   public url: string;
   public sections: Array<Section>;
@@ -38,6 +44,8 @@ export class SpotifyNavigationMenuComponent implements OnInit {
   public currentTrackSubscription: Subscription;
   public getPlaylistIdSubscription: Subscription;
   public currentPlaylist: string;
+
+  public list$: Observable<Array<any>>;
 
   constructor(
     public dialog: MatDialog,
@@ -72,12 +80,12 @@ export class SpotifyNavigationMenuComponent implements OnInit {
       }
     ];
     this.selectedUrl$ = this.store.select(selectUrl);
-    this.playlists$ = this.store.select(selectPlaylists);
-    this.loaded$ = this.store.select(selectPlaylistsLoaded);
-    this.loading$ = this.store.select(selectPlaylistsLoading);
+    // this.playlists$ = this.store.select(selectPlaylists);
+    // this.loaded$ = this.store.select(selectLoadedPlaylists);
+    // this.loading$ = 
     this.selectedPlaylist$ = this.store.select(selectRouteParams);
-    this.canLoadMore$ = this.store.select(selectCanLoadMore);
-    this.store.dispatch(PlaylistsApiActions.loadPlaylists());
+    // this.canLoadMore$ = this.store.select(selectCanLoadMorePlaylists);
+
     // TODO: Not used
     // this.currentTrackSubscription = this.statusBarService.currentTrack$.subscribe((value: CurrentTrack) => this.currentTrack = value);
 
@@ -104,5 +112,41 @@ export class SpotifyNavigationMenuComponent implements OnInit {
 
   loadMorePlaylists(): void {
     this.store.dispatch(PlaylistsApiActions.loadPlaylists());
+  }
+
+  loadPlaylists(): void {
+    this.store.dispatch(PlaylistsApiActions.loadPlaylists());
+    this.list$ = this.store.select(selectPlaylists);
+    this.loading$ = this.store.select(selectLoadingPlaylists);
+    this.loaded$ = this.store.select(selectLoadedPlaylists);
+    this.canLoadMore$ = this.store.select(selectCanLoadMorePlaylists);
+    this.type$ = this.store.select(selectPlaylistsType);
+  }
+
+  loadAlbums(): void {
+    this.store.dispatch(AlbumsApiActions.loadAlbums());
+    this.list$ = this.store.select(selectAlbums);
+    this.loading$ = this.store.select(selectLoadingAlbums);
+    this.loaded$ = this.store.select(selectLoadedAlbums);
+    this.canLoadMore$ = this.store.select(selectCanLoadMoreAlbums);
+    this.type$ = this.store.select(selectAlbumsType);
+  }
+
+  loadArtists(): void {
+    this.store.dispatch(ArtistsApiActions.loadArtists());
+    this.list$ = this.store.select(selectArtists);
+    this.loading$ = this.store.select(selectLoadingArtists);
+    this.loaded$ = this.store.select(selectLoadedArtists);
+    this.canLoadMore$ = this.store.select(selectCanLoadMoreArtists);
+    this.type$ = this.store.select(selectArtistsType);
+  }
+
+  loadPodcasts(): void {
+    this.store.dispatch(PodcastsApiActions.loadPodcasts());
+    this.list$ = this.store.select(selectPodcasts);
+    this.loading$ = this.store.select(selectLoadingPodcasts);
+    this.loaded$ = this.store.select(selectLoadedPodcasts);
+    this.canLoadMore$ = this.store.select(selectCanLoadMorePodcasts);
+    this.type$ = this.store.select(selectPodcastsType);
   }
 }

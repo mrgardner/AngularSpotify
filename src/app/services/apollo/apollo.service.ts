@@ -3,6 +3,7 @@ import { AlbumApolloResponse, DisplayNameApolloResponse } from '@app/interfaces/
 import { ALBUM_INFO } from '@app/queries/get-albums';
 import { FOLLOWED_ARTISTS } from '@app/queries/get-artists';
 import { PLAYLIST_INFO, PLAYLIST_NAME, PLAYLIST_TRACKS } from '@app/queries/get-playlists';
+import { PODCASTS } from '@app/queries/get-podcasts';
 import { USER_DISPLAY_NAME } from '@app/queries/get-user';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
@@ -81,14 +82,25 @@ export class ApolloService {
   }
 
   getFollowedArtists() {
-    // TODO: Revisit and Hook up
-    // const url = this.spotifyApiBaseURI + `/me/following?type=artist`;
     return this.apollo
       .watchQuery({
         query: FOLLOWED_ARTISTS,
         fetchPolicy: 'cache-first',
         errorPolicy: 'all'
       })
-      .valueChanges.pipe(map((result: any) => result.data.followedArtists));
+      .valueChanges.pipe(map((result: any) => result.data.artists.artists));
+  }
+
+  getPodcasts(offset: number) {
+    return this.apollo
+      .watchQuery({
+        query: PODCASTS,
+        fetchPolicy: 'cache-first',
+        variables: {
+          offset
+        },
+        errorPolicy: 'all'
+      })
+      .valueChanges.pipe(map((result: any) => result.data.podcasts));
   }
 }

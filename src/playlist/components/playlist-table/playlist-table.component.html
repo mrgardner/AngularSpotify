@@ -55,7 +55,9 @@
         <!-- ADD BACK BELOW -->
         <!-- (mouseenter)="hideTrackNumber(element)" (mouseleave)="showTrackNumber(element)" -->
         <td mat-cell *matCellDef="let element; let i = index" class="trackPlayIcons">
-          <span *ngIf="element.showTrackNumber && element.title !== 'Plan B'">{{i + 1}}</span>
+          <div class="trackPlayingContainer">
+            <span *ngIf="element.showTrackNumber && element.title !== 'Plan B'">{{i + 1}}</span>
+          </div>
           <!-- <mat-icon class="tatt" *ngIf="element.title === 'Plan B'" (click)="playSong(element)">play_arrow</mat-icon> -->
 
           <div *ngIf="currentTrack">
@@ -132,7 +134,7 @@
 
       <!-- (cdkDragStarted)="dragStart($event)" -->
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); let i = index" (mouseleave)="hidePlayButton(row)" (mouseenter)="showPlayButton(row)" [className]="(state) && (state['track_window']['current_track']['name'] === row.title) ? 'trackPlaying' : ''" cdkDrag cdkDragLockAxis="y" [cdkDragData]="row">
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); let i = index" (mouseleave)="hidePlayButton(row)" (mouseenter)="showPlayButton(row)" class="mat-row" cdkDrag cdkDragLockAxis="y" [cdkDragData]="row">
         <span *cdkDragPreview>{{draggedString}}</span>
       </tr>
     </table>

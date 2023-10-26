@@ -28,7 +28,8 @@ export interface PlaylistInfo {
   id: string;
   name: string;
   image: string;
-  owner: string;
+  ownerId: string;
+  ownerName: string;
 }
 
 export interface SpotifyPlaylistRespose {

@@ -21,12 +21,14 @@ export class PlaylistsEffects {
       const playlists = res[1];
       return this.apolloService.getPlaylists(playlists.length).pipe(
         map((response: SpotifyPlaylistRespose) => {
-          const sortedTracks = response.items.map((t) => {
+          const sortedTracks = response.items.map((playlist) => {
             return {
-              id: t.id,
-              name: t.name,
-              image: t.images.length > 0 ? t.images[0].url : '',
-              owner: t.owner.display_name
+              id: playlist.id,
+              name: playlist.name,
+              image: playlist.images.length > 0 ? playlist.images[0].url : '',
+              ownerId: playlist.owner.id,
+              ownerName: playlist.owner.display_name,
+              type: playlist.type
             }
           });
           const updatePlaylists = playlists.concat(sortedTracks);
